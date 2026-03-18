@@ -1,0 +1,77 @@
+import { Suspense } from "react";
+import { SummaryCards } from "@/components/dashboard/summary-cards";
+import { ExpenseChart } from "@/components/dashboard/expense-chart";
+import { CategoryPieChart } from "@/components/dashboard/category-pie-chart";
+import { RecentExpenses } from "@/components/dashboard/recent-expenses";
+import { PageHeader } from "@/components/shared/page-header";
+import {
+  getDashboardStats,
+  getCategoryBreakdown,
+  getSpendingByDay,
+  getRecentExpenses,
+} from "@/lib/queries/dashboard-queries";
+import { getDefaultHousehold } from "@/lib/queries/household-queries";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import Link from "next/link";
+
+export const metadata = { title: "Dashboard" };
+
+function DashboardSkeleton() {
+  return (
+    <div className="space-y-6">
+      <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <Skeleton key={i} className="h-[120px] rounded-xl" />
+        ))}
+      </div>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <Skeleton className="h-[380px] rounded-xl" />
+        <Skeleton className="h-[380px] rounded-xl" />
+      </div>
+    </div>
+  );
+}
+
+async function DashboardContent() {
+  const household = await getDefaultHousehold();
+  if (!household) return <p>No household found. Please set up your home first.</p>;
+
+  const [stats, categoryData, dailyData, recent] = await Promise.all([
+    getDashboardStats(household.id),
+    getCategoryBreakdown(household.id),
+    getSpendingByDay(household.id, 30),
+    getRecentExpenses(household.id, 5),
+  ]);
+
+  return (
+    <div className="space-y-6">
+      <SummaryCards stats={stats} />
+      <div className="grid gap-4 lg:grid-cols-2">
+        <ExpenseChart data={dailyData} />
+        <CategoryPieChart data={categoryData} />
+      </div>
+      <RecentExpenses expenses={recent} />
+    </div>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <div className="space-y-6">
+      <PageHeader
+        title="Dashboard"
+        description="Overview of your household spending"
+        action={
+          <Button render={<Link href="/expenses/new" />}>
+            <Plus className="mr-2 h-4 w-4" /> Add Expense
+          </Button>
+        }
+      />
+      <Suspense fallback={<DashboardSkeleton />}>
+        <DashboardContent />
+      </Suspense>
+    </div>
+  );
+}
