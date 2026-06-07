@@ -24,7 +24,7 @@ async function ExpenseContent() {
         title="No expenses yet"
         description="Start tracking your spending by adding your first expense."
         action={
-          <Button render={<Link href="/expenses/new" />}>
+          <Button nativeButton={false} render={<Link href="/expenses/new" />}>
             <Plus className="mr-2 h-4 w-4" /> Add Expense
           </Button>
         }
@@ -42,7 +42,7 @@ export default function ExpensesPage() {
         title="Expenses"
         description="All your household expenses"
         action={
-          <Button render={<Link href="/expenses/new" />}>
+          <Button nativeButton={false} render={<Link href="/expenses/new" />}>
             <Plus className="mr-2 h-4 w-4" /> Add Expense
           </Button>
         }

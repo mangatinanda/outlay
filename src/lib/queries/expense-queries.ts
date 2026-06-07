@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { expenses, categories, householdMembers } from "@/lib/db/schema";
-import { eq, desc, and, gte, lte, sql } from "drizzle-orm";
+import { eq, desc, and, gte, lte } from "drizzle-orm";
 
 export async function getExpenses(householdId: string, filters?: {
   categoryId?: string;

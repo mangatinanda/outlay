@@ -23,7 +23,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { createMember, updateMember, deleteMember } from "@/lib/actions/member-actions";
-import { formatCurrency } from "@/components/shared/currency-display";
+import { useFormatCurrency } from "@/components/providers/currency-provider";
 import { Plus, Edit, Trash2, Crown } from "lucide-react";
 import { toast } from "sonner";
 
@@ -37,6 +37,7 @@ interface MemberItem {
 }
 
 export function MemberManager({ members }: { members: MemberItem[] }) {
+  const formatCurrency = useFormatCurrency();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [editing, setEditing] = useState<MemberItem | null>(null);
@@ -74,7 +75,11 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
     if (!deleteId) return;
     setLoading(true);
     try {
-      await deleteMember(deleteId);
+      const result = await deleteMember(deleteId);
+      if (result.error) {
+        toast.error(result.error);
+        return;
+      }
       toast.success("Member removed");
     } finally {
       setDeleteId(null);

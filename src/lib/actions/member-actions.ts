@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { householdMembers } from "@/lib/db/schema";
+import { householdMembers, expenses } from "@/lib/db/schema";
 import { memberSchema } from "@/lib/validators/member-schema";
 import { getDefaultHousehold } from "@/lib/queries/household-queries";
 import { createId } from "@paralleldrive/cuid2";
@@ -58,6 +58,18 @@ export async function updateMember(id: string, formData: FormData) {
 }
 
 export async function deleteMember(id: string) {
+  // Block deletion while the member still has expenses, otherwise those rows
+  // would be orphaned (expenses.member_id references household_members.id).
+  const linkedExpenses = await db
+    .select({ id: expenses.id })
+    .from(expenses)
+    .where(eq(expenses.memberId, id))
+    .limit(1);
+
+  if (linkedExpenses.length > 0) {
+    return { error: "Cannot delete a member with existing expenses. Reassign their expenses first." };
+  }
+
   await db.delete(householdMembers).where(eq(householdMembers.id, id));
   revalidatePath("/members");
   return { success: true };

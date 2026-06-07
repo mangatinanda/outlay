@@ -1,5 +1,7 @@
+"use client";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatCurrency } from "@/components/shared/currency-display";
+import { useFormatCurrency } from "@/components/providers/currency-provider";
 import { format, parseISO } from "date-fns";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -20,6 +22,8 @@ interface RecentExpensesProps {
 }
 
 export function RecentExpenses({ expenses }: RecentExpensesProps) {
+  const formatCurrency = useFormatCurrency();
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
@@ -27,7 +31,7 @@ export function RecentExpenses({ expenses }: RecentExpensesProps) {
           <CardTitle>Recent Expenses</CardTitle>
           <CardDescription>Your latest transactions</CardDescription>
         </div>
-        <Button variant="ghost" size="sm" render={<Link href="/expenses" />}>
+        <Button variant="ghost" size="sm" nativeButton={false} render={<Link href="/expenses" />}>
           View all <ArrowRight className="ml-1 h-4 w-4" />
         </Button>
       </CardHeader>

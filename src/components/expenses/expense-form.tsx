@@ -83,7 +83,7 @@ export function ExpenseForm({ categories, members, expense }: ExpenseFormProps) 
                 id="date"
                 name="date"
                 type="date"
-                defaultValue={expense?.date || new Date().toISOString().split("T")[0]}
+                defaultValue={expense?.date || new Date().toLocaleDateString("en-CA")}
                 required
               />
             </div>

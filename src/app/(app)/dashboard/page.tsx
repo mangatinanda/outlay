@@ -64,7 +64,7 @@ export default function DashboardPage() {
         title="Dashboard"
         description="Overview of your household spending"
         action={
-          <Button render={<Link href="/expenses/new" />}>
+          <Button nativeButton={false} render={<Link href="/expenses/new" />}>
             <Plus className="mr-2 h-4 w-4" /> Add Expense
           </Button>
         }

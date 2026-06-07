@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CategoryIcon } from "./category-icon";
-import { formatCurrency } from "@/components/shared/currency-display";
+import { useFormatCurrency } from "@/components/providers/currency-provider";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { deleteExpense } from "@/lib/actions/expense-actions";
 import { toast } from "sonner";
@@ -29,6 +29,7 @@ interface ExpenseItem {
 }
 
 export function ExpenseList({ expenses }: { expenses: ExpenseItem[] }) {
+  const formatCurrency = useFormatCurrency();
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 

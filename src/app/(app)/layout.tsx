@@ -1,32 +1,31 @@
 import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { MobileNav } from "@/components/layout/mobile-nav";
-import { db } from "@/lib/db";
-import { households } from "@/lib/db/schema";
-import { seed } from "@/lib/db/seed";
+import { CurrencyProvider } from "@/components/providers/currency-provider";
+import { getDefaultHousehold } from "@/lib/queries/household-queries";
 
-async function ensureSeeded() {
-  const existing = await db.select().from(households).limit(1);
-  if (existing.length === 0) {
-    await seed();
-  }
-}
+// These pages read from the database per request, so they must render
+// dynamically rather than being statically prerendered at build time (which
+// would require a populated database during the build / CI).
+export const dynamic = "force-dynamic";
 
 export default async function AppLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  await ensureSeeded();
+  const household = await getDefaultHousehold();
 
   return (
-    <div className="min-h-screen bg-background">
-      <Sidebar />
-      <div className="md:pl-64">
-        <Header />
-        <main className="p-4 md:p-6 pb-24 md:pb-6">{children}</main>
+    <CurrencyProvider currency={household?.currency ?? "INR"}>
+      <div className="min-h-screen bg-background">
+        <Sidebar />
+        <div className="md:pl-64">
+          <Header />
+          <main className="p-4 md:p-6 pb-24 md:pb-6">{children}</main>
+        </div>
+        <MobileNav />
       </div>
-      <MobileNav />
-    </div>
+    </CurrencyProvider>
   );
 }

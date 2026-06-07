@@ -1,6 +1,8 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DollarSign, TrendingUp, TrendingDown, Receipt, CalendarDays } from "lucide-react";
-import { formatCurrency } from "@/components/shared/currency-display";
+import { useFormatCurrency } from "@/components/providers/currency-provider";
 import { cn } from "@/lib/utils";
 
 interface SummaryCardsProps {
@@ -14,6 +16,7 @@ interface SummaryCardsProps {
 }
 
 export function SummaryCards({ stats }: SummaryCardsProps) {
+  const formatCurrency = useFormatCurrency();
   const cards = [
     {
       title: "This Month",

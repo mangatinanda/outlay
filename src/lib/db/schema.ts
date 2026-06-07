@@ -13,7 +13,7 @@ export const users = sqliteTable("users", {
 export const households = sqliteTable("households", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
-  currency: text("currency").notNull().default("USD"),
+  currency: text("currency").notNull().default("INR"),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),

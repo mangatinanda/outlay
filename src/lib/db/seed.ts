@@ -1,7 +1,6 @@
 import { db } from "./index";
 import { households, householdMembers, categories, expenses } from "./schema";
 import { createId } from "@paralleldrive/cuid2";
-import { sql } from "drizzle-orm";
 
 const DEFAULT_CATEGORIES = [
   { name: "Groceries", icon: "shopping-cart", color: "#22c55e" },
@@ -33,7 +32,7 @@ export async function seed() {
   await db.insert(households).values({
     id: householdId,
     name: "My Home",
-    currency: "USD",
+    currency: "INR",
   });
 
   // Create default member

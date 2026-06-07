@@ -2,13 +2,14 @@
 
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatCurrency } from "@/components/shared/currency-display";
+import { useFormatCurrency } from "@/components/providers/currency-provider";
 
 interface CategoryPieChartProps {
   data: { name: string; color: string; total: number; count: number }[];
 }
 
 export function CategoryPieChart({ data }: CategoryPieChartProps) {
+  const formatCurrency = useFormatCurrency();
   const total = data.reduce((sum, d) => sum + d.total, 0);
 
   return (
