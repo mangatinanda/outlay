@@ -1,5 +1,3 @@
-export const HOUSEHOLD_ID = "default"; // Will be dynamic once auth is wired up
-
 export const CURRENCIES = [
   { code: "USD", symbol: "$", name: "US Dollar" },
   { code: "EUR", symbol: "\u20ac", name: "Euro" },

@@ -1,0 +1,108 @@
+"use server";
+
+import { db } from "@/lib/db";
+import { households, householdMembers, categories, expenses } from "@/lib/db/schema";
+import { householdSchema } from "@/lib/validators/household-schema";
+import { currencySchema } from "@/lib/validators/settings-schema";
+import { DEFAULT_CATEGORIES } from "@/lib/db/default-categories";
+import { HOUSEHOLD_COOKIE, listHouseholds } from "@/lib/queries/household-queries";
+import { createId } from "@paralleldrive/cuid2";
+import { eq } from "drizzle-orm";
+import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
+
+async function setCurrentHousehold(id: string) {
+  (await cookies()).set(HOUSEHOLD_COOKIE, id, {
+    httpOnly: true,
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 365, // 1 year
+  });
+}
+
+function revalidateAll() {
+  for (const path of ["/dashboard", "/expenses", "/members", "/categories", "/settings", "/households"]) {
+    revalidatePath(path);
+  }
+}
+
+export async function switchHousehold(id: string) {
+  const exists = await db
+    .select({ id: households.id })
+    .from(households)
+    .where(eq(households.id, id))
+    .limit(1);
+  if (!exists[0]) return { error: "Household not found" };
+
+  await setCurrentHousehold(id);
+  revalidateAll();
+  return { success: true };
+}
+
+export async function createHousehold(formData: FormData) {
+  const parsed = householdSchema.safeParse({ name: formData.get("name") });
+  if (!parsed.success) return { error: parsed.error.issues[0].message };
+
+  const currencyParsed = currencySchema.safeParse({
+    currency: String(formData.get("currency") ?? "INR"),
+  });
+  const currency = currencyParsed.success ? currencyParsed.data.currency : "INR";
+
+  const householdId = createId();
+  await db.insert(households).values({ id: householdId, name: parsed.data.name, currency });
+  // Seed a default member + the default categories so the household is usable immediately.
+  await db.insert(householdMembers).values({
+    id: createId(),
+    householdId,
+    name: "Me",
+    role: "admin",
+  });
+  for (const cat of DEFAULT_CATEGORIES) {
+    await db.insert(categories).values({
+      id: createId(),
+      householdId,
+      name: cat.name,
+      icon: cat.icon,
+      color: cat.color,
+      isDefault: true,
+    });
+  }
+
+  await setCurrentHousehold(householdId); // make the new household active
+  revalidateAll();
+  return { success: true };
+}
+
+export async function renameHousehold(id: string, formData: FormData) {
+  const parsed = householdSchema.safeParse({ name: formData.get("name") });
+  if (!parsed.success) return { error: parsed.error.issues[0].message };
+
+  await db.update(households).set({ name: parsed.data.name }).where(eq(households.id, id));
+  revalidateAll();
+  return { success: true };
+}
+
+export async function deleteHousehold(id: string) {
+  const all = await listHouseholds();
+  if (all.length <= 1) {
+    return { error: "You can't delete your only household." };
+  }
+
+  // Cascade-delete children in FK order, then the household — atomically.
+  await db.batch([
+    db.delete(expenses).where(eq(expenses.householdId, id)),
+    db.delete(categories).where(eq(categories.householdId, id)),
+    db.delete(householdMembers).where(eq(householdMembers.householdId, id)),
+    db.delete(households).where(eq(households.id, id)),
+  ]);
+
+  // If the deleted household was active, switch to another remaining one.
+  const current = (await cookies()).get(HOUSEHOLD_COOKIE)?.value;
+  if (current === id) {
+    const next = all.find((h) => h.id !== id);
+    if (next) await setCurrentHousehold(next.id);
+  }
+
+  revalidateAll();
+  return { success: true };
+}

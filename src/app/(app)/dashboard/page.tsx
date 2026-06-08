@@ -10,7 +10,7 @@ import {
   getSpendingByDay,
   getRecentExpenses,
 } from "@/lib/queries/dashboard-queries";
-import { getDefaultHousehold } from "@/lib/queries/household-queries";
+import { getCurrentHousehold } from "@/lib/queries/household-queries";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -35,7 +35,7 @@ function DashboardSkeleton() {
 }
 
 async function DashboardContent() {
-  const household = await getDefaultHousehold();
+  const household = await getCurrentHousehold();
   if (!household) return <p>No household found. Please set up your home first.</p>;
 
   const [stats, categoryData, dailyData, recent] = await Promise.all([

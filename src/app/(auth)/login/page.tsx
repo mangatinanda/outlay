@@ -12,7 +12,7 @@ export default function LoginPage() {
           </div>
         </div>
         <div>
-          <CardTitle className="text-2xl">Welcome to HomeExpense</CardTitle>
+          <CardTitle className="text-2xl">Welcome to Outlay</CardTitle>
           <CardDescription className="mt-2">
             Enter your household passcode to continue
           </CardDescription>

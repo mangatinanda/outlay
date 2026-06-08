@@ -26,10 +26,10 @@ export function Header() {
               <Menu className="h-5 w-5" />
             </SheetTrigger>
             <SheetContent side="left" className="w-64 p-0">
-              <Sidebar />
+              <Sidebar inSheet />
             </SheetContent>
           </Sheet>
-          <span className="text-lg font-bold">HomeExpense</span>
+          <span className="text-lg font-bold">Outlay</span>
         </div>
 
         <div className="hidden md:block" />

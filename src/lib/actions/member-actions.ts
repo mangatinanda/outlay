@@ -3,7 +3,7 @@
 import { db } from "@/lib/db";
 import { householdMembers, expenses } from "@/lib/db/schema";
 import { memberSchema } from "@/lib/validators/member-schema";
-import { getDefaultHousehold } from "@/lib/queries/household-queries";
+import { getCurrentHousehold } from "@/lib/queries/household-queries";
 import { createId } from "@paralleldrive/cuid2";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
@@ -19,7 +19,7 @@ export async function createMember(formData: FormData) {
     return { error: parsed.error.issues[0].message };
   }
 
-  const household = await getDefaultHousehold();
+  const household = await getCurrentHousehold();
   if (!household) return { error: "No household found" };
 
   await db.insert(householdMembers).values({

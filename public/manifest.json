@@ -1,6 +1,6 @@
 {
-  "name": "HomeExpense - Household Expense Tracker",
-  "short_name": "HomeExpense",
+  "name": "Outlay - Household Expense Tracker",
+  "short_name": "Outlay",
   "description": "Track and manage your household expenses together",
   "start_url": "/dashboard",
   "display": "standalone",

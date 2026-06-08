@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db";
 import { households } from "@/lib/db/schema";
-import { getDefaultHousehold } from "@/lib/queries/household-queries";
+import { getCurrentHousehold } from "@/lib/queries/household-queries";
 import { currencySchema } from "@/lib/validators/settings-schema";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
@@ -13,7 +13,7 @@ export async function updateHouseholdCurrency(currency: string) {
     return { error: parsed.error.issues[0].message };
   }
 
-  const household = await getDefaultHousehold();
+  const household = await getCurrentHousehold();
   if (!household) return { error: "No household found" };
 
   await db

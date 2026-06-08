@@ -3,7 +3,7 @@ import { ExpenseForm } from "@/components/expenses/expense-form";
 import { getExpenseById } from "@/lib/queries/expense-queries";
 import { getCategories } from "@/lib/queries/category-queries";
 import { getMembers } from "@/lib/queries/member-queries";
-import { getDefaultHousehold } from "@/lib/queries/household-queries";
+import { getCurrentHousehold } from "@/lib/queries/household-queries";
 import { PageHeader } from "@/components/shared/page-header";
 
 export const metadata = { title: "Edit Expense" };
@@ -17,7 +17,7 @@ export default async function EditExpensePage({
   const expense = await getExpenseById(id);
   if (!expense) notFound();
 
-  const household = await getDefaultHousehold();
+  const household = await getCurrentHousehold();
   if (!household) return <p>No household found.</p>;
 
   const [categories, members] = await Promise.all([

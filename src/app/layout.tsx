@@ -16,15 +16,15 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "HomeExpense - Track Your Household Spending",
-    template: "%s | HomeExpense",
+    default: "Outlay - Track Your Household Spending",
+    template: "%s | Outlay",
   },
   description: "A collaborative household expense tracker for all family members",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "HomeExpense",
+    title: "Outlay",
   },
 };
 

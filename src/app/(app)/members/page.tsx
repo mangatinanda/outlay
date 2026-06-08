@@ -2,13 +2,13 @@ import { Suspense } from "react";
 import { PageHeader } from "@/components/shared/page-header";
 import { MemberManager } from "@/components/members/member-manager";
 import { getMembersWithStats } from "@/lib/queries/member-queries";
-import { getDefaultHousehold } from "@/lib/queries/household-queries";
+import { getCurrentHousehold } from "@/lib/queries/household-queries";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export const metadata = { title: "Members" };
 
 async function MemberContent() {
-  const household = await getDefaultHousehold();
+  const household = await getCurrentHousehold();
   if (!household) return null;
 
   const members = await getMembersWithStats(household.id);

@@ -1,4 +1,4 @@
-# HomeExpense
+# Outlay
 
 A collaborative household expense‑tracking **Progressive Web App**. Every member of a home
 logs shared expenses, organizes them by category and person, and sees where the money goes on
@@ -63,7 +63,7 @@ a charts‑driven dashboard — installable to a phone home screen and usable of
 
 ## Architecture
 
-HomeExpense follows the Next.js App Router data‑flow convention: **reads** happen in Server
+Outlay follows the Next.js App Router data‑flow convention: **reads** happen in Server
 Components via `lib/queries`, and **writes** happen through Server Actions in `lib/actions`
 (Zod‑validated, then `revalidatePath`). There are no REST/CRUD API routes.
 
@@ -358,9 +358,9 @@ Target: **Vercel** + **Turso**.
 
 ```bash
 # 1. Provision a Turso database, capture its URL + token
-turso db create home-expense
-turso db show home-expense --url
-turso db tokens create home-expense
+turso db create outlay
+turso db show outlay --url
+turso db tokens create outlay
 
 # 2. Apply migrations + seed against Turso (one time)
 DATABASE_URL="libsql://…" TURSO_AUTH_TOKEN="…" pnpm db:migrate

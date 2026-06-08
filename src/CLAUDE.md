@@ -28,6 +28,8 @@
 6. Create page that composes everything
 
 ## Household Context
-- Currently uses a single default household (first one in DB)
-- `getDefaultHousehold()` from `lib/queries/household-queries.ts` returns it
-- Multi-household support can be added by passing householdId through auth session
+- Multiple households are supported as shared "workspaces" behind the single passcode
+- `getCurrentHousehold()` (`lib/queries/household-queries.ts`) resolves the active household
+  from the `he_household` cookie, falling back to the first household
+- Manage/create/switch via the sidebar switcher and `/households`; per-user ownership and
+  permissions await real authentication

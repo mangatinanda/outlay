@@ -2,7 +2,8 @@ import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { CurrencyProvider } from "@/components/providers/currency-provider";
-import { getDefaultHousehold } from "@/lib/queries/household-queries";
+import { HouseholdProvider } from "@/components/providers/household-provider";
+import { getCurrentHousehold, listHouseholds } from "@/lib/queries/household-queries";
 
 // These pages read from the database per request, so they must render
 // dynamically rather than being statically prerendered at build time (which
@@ -14,18 +15,24 @@ export default async function AppLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const household = await getDefaultHousehold();
+  const household = await getCurrentHousehold();
+  const householdList = await listHouseholds();
 
   return (
-    <CurrencyProvider currency={household?.currency ?? "INR"}>
-      <div className="min-h-screen bg-background">
-        <Sidebar />
-        <div className="md:pl-64">
-          <Header />
-          <main className="p-4 md:p-6 pb-24 md:pb-6">{children}</main>
+    <HouseholdProvider
+      households={householdList.map((h) => ({ id: h.id, name: h.name }))}
+      currentId={household?.id ?? null}
+    >
+      <CurrencyProvider currency={household?.currency ?? "INR"}>
+        <div className="min-h-screen bg-background">
+          <Sidebar />
+          <div className="md:pl-64">
+            <Header />
+            <main className="p-4 md:p-6 pb-24 md:pb-6">{children}</main>
+          </div>
+          <MobileNav />
         </div>
-        <MobileNav />
-      </div>
-    </CurrencyProvider>
+      </CurrencyProvider>
+    </HouseholdProvider>
   );
 }

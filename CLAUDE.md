@@ -1,4 +1,4 @@
-# HomeExpense - Household Expense Tracker
+# Outlay - Household Expense Tracker
 
 ## Project Overview
 A collaborative household expense tracking PWA built with Next.js 15, SQLite, and shadcn/ui. Designed for all family/home members to track shared expenses.

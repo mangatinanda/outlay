@@ -2,13 +2,13 @@ import { Suspense } from "react";
 import { PageHeader } from "@/components/shared/page-header";
 import { CategoryManager } from "@/components/categories/category-manager";
 import { getCategoriesWithCount } from "@/lib/queries/category-queries";
-import { getDefaultHousehold } from "@/lib/queries/household-queries";
+import { getCurrentHousehold } from "@/lib/queries/household-queries";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export const metadata = { title: "Categories" };
 
 async function CategoryContent() {
-  const household = await getDefaultHousehold();
+  const household = await getCurrentHousehold();
   if (!household) return null;
 
   const categories = await getCategoriesWithCount(household.id);

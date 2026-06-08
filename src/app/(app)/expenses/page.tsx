@@ -3,7 +3,7 @@ import { ExpenseList } from "@/components/expenses/expense-list";
 import { PageHeader } from "@/components/shared/page-header";
 import { EmptyState } from "@/components/shared/empty-state";
 import { getExpenses } from "@/lib/queries/expense-queries";
-import { getDefaultHousehold } from "@/lib/queries/household-queries";
+import { getCurrentHousehold } from "@/lib/queries/household-queries";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Plus, Receipt } from "lucide-react";
@@ -12,7 +12,7 @@ import Link from "next/link";
 export const metadata = { title: "Expenses" };
 
 async function ExpenseContent() {
-  const household = await getDefaultHousehold();
+  const household = await getCurrentHousehold();
   if (!household) return null;
 
   const expenses = await getExpenses(household.id);

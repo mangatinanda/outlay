@@ -2,7 +2,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
-import { getDefaultHousehold } from "@/lib/queries/household-queries";
+import { getCurrentHousehold } from "@/lib/queries/household-queries";
 import { CurrencySwitcher } from "@/components/settings/currency-switcher";
 
 export const metadata = { title: "Settings" };
@@ -19,7 +19,7 @@ function GoogleIcon() {
 }
 
 export default async function SettingsPage() {
-  const household = await getDefaultHousehold();
+  const household = await getCurrentHousehold();
   const currency = household?.currency ?? "INR";
 
   return (
@@ -73,7 +73,7 @@ export default async function SettingsPage() {
           <CardTitle>About</CardTitle>
         </CardHeader>
         <CardContent className="text-sm text-muted-foreground space-y-1">
-          <p>HomeExpense v0.1.0</p>
+          <p>Outlay v0.1.0</p>
           <p>A collaborative household expense tracker</p>
           <p>Built with Next.js, SQLite, and shadcn/ui</p>
         </CardContent>
