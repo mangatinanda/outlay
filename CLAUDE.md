@@ -7,10 +7,10 @@ A collaborative household expense tracking PWA built with Next.js 15, SQLite, an
 - **Framework**: Next.js 16 (App Router, React 19, Server Components, Server Actions)
 - **Language**: TypeScript 5 (strict mode)
 - **Styling**: Tailwind CSS v4 + shadcn/ui (base-nova style, OKLCH colors)
-- **Database**: SQLite via better-sqlite3 + Drizzle ORM
+- **Database**: Turso/libSQL via @libsql/client + Drizzle ORM (local SQLite file in dev, Turso cloud in prod — same driver)
 - **Validation**: Zod v4
-- **Charts**: Recharts (via shadcn/ui chart component)
-- **Auth**: Auth.js v5 (Google provider, UI-only for now)
+- **Charts**: Recharts
+- **Auth**: Shared-passcode gate (Web Crypto HMAC cookie, enforced in `proxy.ts`); Google sign-in planned (Auth.js v5 — see `plans/2026-06-09-google-login.md`)
 - **PWA**: Web manifest + icons (Serwist service worker planned)
 - **Date Utils**: date-fns
 
@@ -50,9 +50,10 @@ src/
 - No API routes needed for CRUD; Server Actions handle all mutations
 
 ### Database
-- SQLite file stored at `data/expense.db` (gitignored)
-- Auto-seeded on first app load via `(app)/layout.tsx`
+- libSQL via `@libsql/client`: a local SQLite file `data/expense.db` (gitignored) in dev, a Turso cloud DB in prod
+- Schema managed by Drizzle migrations (`pnpm db:migrate`); seeded on demand with `pnpm db:seed` (not auto-seeded)
 - Tables: users, households, household_members, categories, expenses
+- Multi-household: the active household is resolved from the `he_household` cookie via `getCurrentHousehold()`
 - IDs are cuid2 strings
 - Timestamps stored as integer (unix epoch) via Drizzle `mode: "timestamp"`
 
