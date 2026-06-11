@@ -1,0 +1,9 @@
+# pnpm settings (pnpm 10+ reads these from here, not from package.json#pnpm).
+# Build-script allowlist: which dependencies may run install scripts.
+allowBuilds:
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+  '@swc/core': false
+  better-sqlite3: false
+  msw: false
