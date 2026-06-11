@@ -14,11 +14,13 @@ export default async function EditExpensePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const expense = await getExpenseById(id);
-  if (!expense) notFound();
-
   const household = await getCurrentHousehold();
   if (!household) return <p>No household found.</p>;
+
+  // Scoped to the active household: a foreign expense id 404s instead of
+  // rendering against this household's categories/members.
+  const expense = await getExpenseById(id, household.id);
+  if (!expense) notFound();
 
   const [categories, members] = await Promise.all([
     getCategories(household.id),

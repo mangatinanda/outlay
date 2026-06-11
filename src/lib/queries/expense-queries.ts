@@ -49,7 +49,8 @@ export async function getExpenses(householdId: string, filters?: {
   return result;
 }
 
-export async function getExpenseById(id: string) {
+/** Scoped by household so one household's pages can never load another's expense. */
+export async function getExpenseById(id: string, householdId: string) {
   const result = await db
     .select({
       id: expenses.id,
@@ -66,7 +67,7 @@ export async function getExpenseById(id: string) {
     .from(expenses)
     .innerJoin(categories, eq(expenses.categoryId, categories.id))
     .innerJoin(householdMembers, eq(expenses.memberId, householdMembers.id))
-    .where(eq(expenses.id, id))
+    .where(and(eq(expenses.id, id), eq(expenses.householdId, householdId)))
     .limit(1);
 
   return result[0] ?? null;

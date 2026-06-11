@@ -5,7 +5,7 @@ import { householdMembers, expenses } from "@/lib/db/schema";
 import { memberSchema } from "@/lib/validators/member-schema";
 import { getCurrentHousehold } from "@/lib/queries/household-queries";
 import { createId } from "@paralleldrive/cuid2";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 export async function createMember(formData: FormData) {
@@ -45,19 +45,44 @@ export async function updateMember(id: string, formData: FormData) {
     return { error: parsed.error.issues[0].message };
   }
 
-  await db
+  const household = await getCurrentHousehold();
+  if (!household) return { error: "No household found" };
+
+  const updated = await db
     .update(householdMembers)
     .set({
       name: parsed.data.name,
       role: parsed.data.role,
     })
-    .where(eq(householdMembers.id, id));
+    .where(
+      and(
+        eq(householdMembers.id, id),
+        eq(householdMembers.householdId, household.id),
+      ),
+    )
+    .returning({ id: householdMembers.id });
+  if (updated.length === 0) return { error: "Member not found" };
 
   revalidatePath("/members");
   return { success: true };
 }
 
 export async function deleteMember(id: string) {
+  const household = await getCurrentHousehold();
+  if (!household) return { error: "No household found" };
+
+  const [owned] = await db
+    .select({ id: householdMembers.id })
+    .from(householdMembers)
+    .where(
+      and(
+        eq(householdMembers.id, id),
+        eq(householdMembers.householdId, household.id),
+      ),
+    )
+    .limit(1);
+  if (!owned) return { error: "Member not found" };
+
   // Block deletion while the member still has expenses, otherwise those rows
   // would be orphaned (expenses.member_id references household_members.id).
   const linkedExpenses = await db

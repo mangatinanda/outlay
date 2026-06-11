@@ -1,12 +1,47 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { expenses } from "@/lib/db/schema";
+import { expenses, categories, householdMembers } from "@/lib/db/schema";
 import { expenseSchema } from "@/lib/validators/expense-schema";
 import { getCurrentHousehold } from "@/lib/queries/household-queries";
 import { createId } from "@paralleldrive/cuid2";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+
+/**
+ * Returns an error message unless categoryId AND memberId both belong to the
+ * given household. Prevents cross-household references (an expense in
+ * household A pointing at household B's category corrupts both households'
+ * reports).
+ */
+async function checkOwnership(
+  householdId: string,
+  categoryId: string,
+  memberId: string,
+): Promise<string | null> {
+  const [category] = await db
+    .select({ id: categories.id })
+    .from(categories)
+    .where(
+      and(eq(categories.id, categoryId), eq(categories.householdId, householdId)),
+    )
+    .limit(1);
+  if (!category) return "Category not found in this household";
+
+  const [member] = await db
+    .select({ id: householdMembers.id })
+    .from(householdMembers)
+    .where(
+      and(
+        eq(householdMembers.id, memberId),
+        eq(householdMembers.householdId, householdId),
+      ),
+    )
+    .limit(1);
+  if (!member) return "Member not found in this household";
+
+  return null;
+}
 
 export async function createExpense(formData: FormData) {
   const raw = {
@@ -25,6 +60,13 @@ export async function createExpense(formData: FormData) {
 
   const household = await getCurrentHousehold();
   if (!household) return { error: "No household found" };
+
+  const ownershipError = await checkOwnership(
+    household.id,
+    parsed.data.categoryId,
+    parsed.data.memberId,
+  );
+  if (ownershipError) return { error: ownershipError };
 
   await db.insert(expenses).values({
     id: createId(),
@@ -57,7 +99,17 @@ export async function updateExpense(id: string, formData: FormData) {
     return { error: parsed.error.issues[0].message };
   }
 
-  await db
+  const household = await getCurrentHousehold();
+  if (!household) return { error: "No household found" };
+
+  const ownershipError = await checkOwnership(
+    household.id,
+    parsed.data.categoryId,
+    parsed.data.memberId,
+  );
+  if (ownershipError) return { error: ownershipError };
+
+  const updated = await db
     .update(expenses)
     .set({
       categoryId: parsed.data.categoryId,
@@ -68,7 +120,9 @@ export async function updateExpense(id: string, formData: FormData) {
       notes: parsed.data.notes || null,
       updatedAt: new Date(),
     })
-    .where(eq(expenses.id, id));
+    .where(and(eq(expenses.id, id), eq(expenses.householdId, household.id)))
+    .returning({ id: expenses.id });
+  if (updated.length === 0) return { error: "Expense not found" };
 
   revalidatePath("/dashboard");
   revalidatePath("/expenses");
@@ -76,7 +130,15 @@ export async function updateExpense(id: string, formData: FormData) {
 }
 
 export async function deleteExpense(id: string) {
-  await db.delete(expenses).where(eq(expenses.id, id));
+  const household = await getCurrentHousehold();
+  if (!household) return { error: "No household found" };
+
+  const deleted = await db
+    .delete(expenses)
+    .where(and(eq(expenses.id, id), eq(expenses.householdId, household.id)))
+    .returning({ id: expenses.id });
+  if (deleted.length === 0) return { error: "Expense not found" };
+
   revalidatePath("/dashboard");
   revalidatePath("/expenses");
   return { success: true };

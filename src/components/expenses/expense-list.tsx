@@ -37,8 +37,12 @@ export function ExpenseList({ expenses }: { expenses: ExpenseItem[] }) {
     if (!deleteId) return;
     setLoading(true);
     try {
-      await deleteExpense(deleteId);
-      toast.success("Expense deleted");
+      const result = await deleteExpense(deleteId);
+      if (result.error) {
+        toast.error(result.error);
+      } else {
+        toast.success("Expense deleted");
+      }
     } finally {
       setDeleteId(null);
       setLoading(false);

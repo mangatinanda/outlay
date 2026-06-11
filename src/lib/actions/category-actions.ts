@@ -5,7 +5,7 @@ import { categories, expenses } from "@/lib/db/schema";
 import { categorySchema } from "@/lib/validators/category-schema";
 import { getCurrentHousehold } from "@/lib/queries/household-queries";
 import { createId } from "@paralleldrive/cuid2";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 export async function createCategory(formData: FormData) {
@@ -48,14 +48,19 @@ export async function updateCategory(id: string, formData: FormData) {
     return { error: parsed.error.issues[0].message };
   }
 
-  await db
+  const household = await getCurrentHousehold();
+  if (!household) return { error: "No household found" };
+
+  const updated = await db
     .update(categories)
     .set({
       name: parsed.data.name,
       icon: parsed.data.icon,
       color: parsed.data.color,
     })
-    .where(eq(categories.id, id));
+    .where(and(eq(categories.id, id), eq(categories.householdId, household.id)))
+    .returning({ id: categories.id });
+  if (updated.length === 0) return { error: "Category not found" };
 
   revalidatePath("/categories");
   revalidatePath("/expenses");
@@ -63,13 +68,24 @@ export async function updateCategory(id: string, formData: FormData) {
 }
 
 export async function deleteCategory(id: string) {
-  // Check if category has expenses
-  const expenseCount = await db
-    .select({ count: eq(expenses.categoryId, id) })
-    .from(expenses)
-    .where(eq(expenses.categoryId, id));
+  const household = await getCurrentHousehold();
+  if (!household) return { error: "No household found" };
 
-  if (expenseCount.length > 0) {
+  const [owned] = await db
+    .select({ id: categories.id })
+    .from(categories)
+    .where(and(eq(categories.id, id), eq(categories.householdId, household.id)))
+    .limit(1);
+  if (!owned) return { error: "Category not found" };
+
+  // Block deletion while the category still has expenses, otherwise those
+  // rows would be orphaned (expenses.category_id references categories.id).
+  const linkedExpenses = await db
+    .select({ id: expenses.id })
+    .from(expenses)
+    .where(eq(expenses.categoryId, id))
+    .limit(1);
+  if (linkedExpenses.length > 0) {
     return { error: "Cannot delete category with existing expenses. Reassign expenses first." };
   }
 

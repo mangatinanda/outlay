@@ -77,13 +77,22 @@ export async function renameHousehold(id: string, formData: FormData) {
   const parsed = householdSchema.safeParse({ name: formData.get("name") });
   if (!parsed.success) return { error: parsed.error.issues[0].message };
 
-  await db.update(households).set({ name: parsed.data.name }).where(eq(households.id, id));
+  const updated = await db
+    .update(households)
+    .set({ name: parsed.data.name })
+    .where(eq(households.id, id))
+    .returning({ id: households.id });
+  if (updated.length === 0) return { error: "Household not found" };
+
   revalidateAll();
   return { success: true };
 }
 
 export async function deleteHousehold(id: string) {
   const all = await listHouseholds();
+  if (!all.some((h) => h.id === id)) {
+    return { error: "Household not found" };
+  }
   if (all.length <= 1) {
     return { error: "You can't delete your only household." };
   }
