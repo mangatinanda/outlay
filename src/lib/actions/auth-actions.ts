@@ -2,7 +2,12 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { SESSION_COOKIE, signSession, constantTimeEqual } from "@/lib/gate";
+import {
+  SESSION_COOKIE,
+  SESSION_MAX_AGE_SECONDS,
+  signSession,
+  constantTimeEqual,
+} from "@/lib/gate";
 import { signOut } from "@/auth";
 
 export type PasscodeState = { error: string } | null;
@@ -27,7 +32,7 @@ export async function verifyPasscode(
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
-    maxAge: 60 * 60 * 24 * 30, // 30 days
+    maxAge: SESSION_MAX_AGE_SECONDS, // matches the token's own expiry
   });
 
   redirect("/dashboard");
