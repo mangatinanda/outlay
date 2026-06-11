@@ -48,7 +48,33 @@ TypeScript 6 · Tailwind v4 + shadcn/ui on **Base UI 1.5** · **Turso/libSQL** (
 
 ## Work log
 
-### 2026‑06‑05 → 06‑10 (this session)
+### 2026‑06‑11 — Repo audit + top‑5 hardening pass
+
+**Full audit** written to `docs/2026-06-11-repo-audit.md` (graded B‑; findings cite file:line as of
+`d39655c`). Then implemented the top‑5 high‑leverage tasks, TDD (41 tests, all green):
+
+- **Tests + CI:** Vitest 4 (`vitest.config.ts`, `pnpm test`) — unit tests for `gate.ts`,
+  `allow-list.ts`, `expense-schema`; integration tests (`src/lib/actions/scoping.test.ts`) against
+  an in‑memory libSQL DB with real migrations (next/headers + next/cache mocked). GitHub Actions CI
+  (`.github/workflows/ci.yml`): lint → tsc → test → build (build uses a dummy `AUTH_SECRET`; needs
+  no DB).
+- **Fail‑closed Google allow‑list:** new `src/lib/allow-list.ts` (`isEmailAllowed`); in production
+  an EMPTY `HOUSEHOLD_ALLOWED_EMAILS` now denies all sign‑ins (dev stays open). `src/auth.ts` uses it.
+- **Expiring passcode sessions:** `he_session` token format is now `v1.<issued-at>.<HMAC sig>`
+  with server‑side 30‑day expiry (`SESSION_MAX_AGE_SECONDS` in `gate.ts`); legacy constant tokens
+  are rejected — everyone re‑enters the passcode once. Bump `SESSION_VERSION` to mass‑invalidate.
+- **Household‑scoped mutations:** all update/delete actions now filter by the active household and
+  return `{error}` on foreign ids (checked via `.returning()`); `createExpense`/`updateExpense`
+  verify categoryId/memberId belong to the household (`checkOwnership`); `getExpenseById(id,
+  householdId)` is scoped and the edit page 404s on foreign expenses; `deleteCategory`'s
+  accidental‑boolean guard rewritten (`select({id}).limit(1)`); rename/deleteHousehold check
+  existence; expense‑list now surfaces delete errors.
+- **Validators tightened:** `date` → `z.iso.date()` (real YYYY‑MM‑DD; column is compared
+  lexicographically), `amount` → positive, ≤ 100M, ≤ 2 decimal places (epsilon for float noise).
+- **Tooling:** pnpm 11 store migration forced a fresh `node_modules`; build‑script allowlist moved
+  from `package.json#pnpm` (ignored by pnpm 11) to `pnpm-workspace.yaml` `allowBuilds`.
+
+### 2026‑06‑05 → 06‑10 (previous session)
 
 **Made the app deployable + a major hardening/feature pass, then renamed it to Outlay.**
 
@@ -96,9 +122,14 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
 
 ## Current state & open items
 
-- **Model A code is implemented + verified but UNCOMMITTED.** Files: `src/auth.ts`, the `/api/auth`
-  route, `proxy.ts`, login page, header, `(app)/layout.tsx`, `auth-actions.ts` (`logout`), env files,
-  removed `lib/auth.ts`.
+- **Model A is committed** (`22815b5`). The 2026‑06‑11 audit + hardening pass (see work log) is
+  **implemented but uncommitted** — audit doc, tests, CI, fail‑closed allow‑list, expiring
+  sessions, scoped mutations, tightened validators, pnpm‑workspace.yaml.
+- **Remaining audit milestones** (see `docs/2026-06-11-repo-audit.md`): 1.5 passcode attempt
+  damping, 1.6 postcss override, M2 (money → integer minor units, action error envelope, docs
+  reconciliation — CLAUDE.md still claims auth is mocked, src/lib/CLAUDE.md still says
+  better‑sqlite3, README still says single‑household, settings page still shows a disabled
+  "Google coming soon" card), M3 polish (indexes, dead code, a11y).
 - **To finish Google login:** user must create a Google Cloud OAuth client (redirect URI
   `http://localhost:3000/api/auth/callback/google`) and set `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` /
   `HOUSEHOLD_ALLOWED_EMAILS` in `.env.local`, then restart. Browser end‑to‑end test still owed.
@@ -108,5 +139,5 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
 
 ## Commands
 
-`pnpm dev` · `pnpm build` · `pnpm lint` · `pnpm exec tsc --noEmit` · `pnpm db:migrate` · `pnpm db:seed` ·
-`pnpm db:init` (migrate + seed).
+`pnpm dev` · `pnpm build` · `pnpm lint` · `pnpm test` (vitest) · `pnpm exec tsc --noEmit` ·
+`pnpm db:migrate` · `pnpm db:seed` · `pnpm db:init` (migrate + seed).
