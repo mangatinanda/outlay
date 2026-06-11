@@ -4,6 +4,7 @@ import { MobileNav } from "@/components/layout/mobile-nav";
 import { CurrencyProvider } from "@/components/providers/currency-provider";
 import { HouseholdProvider } from "@/components/providers/household-provider";
 import { getCurrentHousehold, listHouseholds } from "@/lib/queries/household-queries";
+import { auth } from "@/auth";
 
 // These pages read from the database per request, so they must render
 // dynamically rather than being statically prerendered at build time (which
@@ -17,6 +18,7 @@ export default async function AppLayout({
 }) {
   const household = await getCurrentHousehold();
   const householdList = await listHouseholds();
+  const session = await auth();
 
   return (
     <HouseholdProvider
@@ -27,7 +29,7 @@ export default async function AppLayout({
         <div className="min-h-screen bg-background">
           <Sidebar />
           <div className="md:pl-64">
-            <Header />
+            <Header user={session?.user ?? null} />
             <main className="p-4 md:p-6 pb-24 md:pb-6">{children}</main>
           </div>
           <MobileNav />

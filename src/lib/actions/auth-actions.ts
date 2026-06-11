@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { SESSION_COOKIE, signSession, constantTimeEqual } from "@/lib/gate";
+import { signOut } from "@/auth";
 
 export type PasscodeState = { error: string } | null;
 
@@ -30,4 +31,11 @@ export async function verifyPasscode(
   });
 
   redirect("/dashboard");
+}
+
+/** Sign out of both auth paths: clear the passcode cookie and any Google session. */
+export async function logout() {
+  const cookieStore = await cookies();
+  cookieStore.delete(SESSION_COOKIE);
+  await signOut({ redirectTo: "/login" });
 }
