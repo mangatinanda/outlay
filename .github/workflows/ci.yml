@@ -34,6 +34,10 @@ jobs:
       - name: Build
         run: pnpm build
         env:
-          # The build needs no database (pages are force-dynamic) and no real
-          # auth credentials; a dummy secret keeps Auth.js initialization happy.
+          # The build runs no queries (pages are force-dynamic) and needs no
+          # real auth credentials; a dummy secret keeps Auth.js initialization
+          # happy. The libSQL client still opens its connection eagerly at
+          # import time, so point it at an in-memory database instead of the
+          # default file path (the gitignored data/ dir doesn't exist in CI).
           AUTH_SECRET: ci-only-dummy-secret
+          DATABASE_URL: ":memory:"
