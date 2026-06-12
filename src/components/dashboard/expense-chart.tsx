@@ -2,6 +2,7 @@
 
 import { Bar, BarChart, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useFormatCurrency } from "@/components/providers/currency-provider";
 import { format, parseISO } from "date-fns";
 
 interface ExpenseChartProps {
@@ -9,6 +10,7 @@ interface ExpenseChartProps {
 }
 
 export function ExpenseChart({ data }: ExpenseChartProps) {
+  const formatCurrency = useFormatCurrency();
   const chartData = data.map((d) => ({
     ...d,
     label: format(parseISO(d.date), "MMM d"),
@@ -35,7 +37,12 @@ export function ExpenseChart({ data }: ExpenseChartProps) {
                 className="text-xs fill-muted-foreground"
                 tickLine={false}
                 axisLine={false}
-                tickFormatter={(v) => `$${v}`}
+                tickFormatter={(v) =>
+                  formatCurrency(Number(v), {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })
+                }
               />
               <Tooltip
                 content={({ active, payload }) => {
@@ -43,7 +50,7 @@ export function ExpenseChart({ data }: ExpenseChartProps) {
                   return (
                     <div className="rounded-lg border bg-card p-2 shadow-sm">
                       <div className="text-sm font-medium">
-                        ${Number(payload[0].value).toFixed(2)}
+                        {formatCurrency(Number(payload[0].value))}
                       </div>
                       <div className="text-xs text-muted-foreground">
                         {payload[0].payload.label}

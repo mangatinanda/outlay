@@ -4,10 +4,15 @@ const CURRENCY_LOCALE: Record<string, string> = {
   INR: "en-IN",
 };
 
-export function formatCurrency(amount: number, currency = "INR") {
+export function formatCurrency(
+  amount: number,
+  currency = "INR",
+  options?: Intl.NumberFormatOptions,
+) {
   const locale = CURRENCY_LOCALE[currency] ?? "en-US";
   return new Intl.NumberFormat(locale, {
     style: "currency",
     currency,
+    ...options,
   }).format(amount);
 }

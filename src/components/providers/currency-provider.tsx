@@ -28,5 +28,9 @@ export function useCurrency() {
 /** A formatter bound to the active household currency: `(amount) => "₹1,234.00"`. */
 export function useFormatCurrency() {
   const currency = useContext(CurrencyContext);
-  return useCallback((amount: number) => formatCurrency(amount, currency), [currency]);
+  return useCallback(
+    (amount: number, options?: Intl.NumberFormatOptions) =>
+      formatCurrency(amount, currency, options),
+    [currency],
+  );
 }
