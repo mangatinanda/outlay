@@ -13,6 +13,10 @@ import { safeAction } from "./safe-action";
 
 export type PasscodeState = { error: string } | null;
 
+// Constant delay on every failed attempt: damps online brute-forcing of the
+// shared passcode without needing a shared rate-limit store (serverless-safe).
+const FAILED_ATTEMPT_DELAY_MS = 1000;
+
 // safeAction rethrows the redirect() control-flow error, so a successful
 // unlock still navigates; only real failures become { error }.
 export const verifyPasscode = safeAction("verifyPasscode", async (
@@ -26,6 +30,8 @@ export const verifyPasscode = safeAction("verifyPasscode", async (
     return { error: "Server is missing HOUSEHOLD_PASSCODE." };
   }
   if (!constantTimeEqual(passcode, expected)) {
+    console.error("[auth] failed passcode attempt");
+    await new Promise((resolve) => setTimeout(resolve, FAILED_ATTEMPT_DELAY_MS));
     return { error: "Incorrect passcode." };
   }
 
