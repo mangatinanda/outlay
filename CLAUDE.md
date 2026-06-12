@@ -1,17 +1,18 @@
 # Outlay - Household Expense Tracker
 
 ## Project Overview
-A collaborative household expense tracking PWA built with Next.js 15, SQLite, and shadcn/ui. Designed for all family/home members to track shared expenses.
+A collaborative household expense tracking PWA built with Next.js 16, Turso/libSQL, and shadcn/ui. Designed for all family/home members to track shared expenses across multiple household workspaces.
 
 ## Tech Stack
 - **Framework**: Next.js 16 (App Router, React 19, Server Components, Server Actions)
-- **Language**: TypeScript 5 (strict mode)
+- **Language**: TypeScript 6 (strict mode)
 - **Styling**: Tailwind CSS v4 + shadcn/ui (base-nova style, OKLCH colors)
 - **Database**: Turso/libSQL via @libsql/client + Drizzle ORM (local SQLite file in dev, Turso cloud in prod — same driver)
 - **Validation**: Zod v4
 - **Charts**: Recharts
-- **Auth**: Shared-passcode gate (Web Crypto HMAC cookie, enforced in `proxy.ts`); Google sign-in planned (Auth.js v5 — see `plans/2026-06-09-google-login.md`)
-- **PWA**: Web manifest + icons (Serwist service worker planned)
+- **Auth**: Two coexisting paths, either grants access (enforced in `proxy.ts`): Google sign-in (Auth.js v5, JWT sessions, `src/auth.ts`, allow-list in `src/lib/allow-list.ts` — FAILS CLOSED in production if `HOUSEHOLD_ALLOWED_EMAILS` is empty) OR shared-passcode gate (`src/lib/gate.ts`, expiring `v1.<issued-at>.<sig>` HMAC cookie, 30-day server-side expiry)
+- **PWA**: @serwist/turbopack service worker (served at `/serwist/sw.js`), manifest + icons, `/~offline` fallback
+- **Testing**: Vitest (`pnpm test`) — unit + integration against in-memory libSQL; GitHub Actions CI runs lint/typecheck/test/build
 - **Date Utils**: date-fns
 
 ## Architecture
@@ -45,9 +46,11 @@ src/
 ```
 
 ### Data Flow Pattern
-- **Reads**: Server Components call functions from `lib/queries/` → Drizzle ORM → SQLite
-- **Writes**: Client Components call Server Actions from `lib/actions/` → Zod validation → Drizzle ORM → `revalidatePath()`
-- No API routes needed for CRUD; Server Actions handle all mutations
+- **Reads**: Server Components call functions from `lib/queries/` → Drizzle ORM → libSQL
+- **Writes**: Client Components call Server Actions from `lib/actions/` → Zod validation → household-scoping check → Drizzle ORM → `revalidatePath()`
+- Every action is wrapped in `safeAction` (`lib/actions/safe-action.ts`): thrown errors are logged and returned as `{ error }`; redirect() passes through
+- All id-based mutations filter by the active household and return `{ error }` for foreign ids
+- No API routes needed for CRUD; Server Actions handle all mutations (`/api/auth/*` is Auth.js)
 
 ### Database
 - libSQL via `@libsql/client`: a local SQLite file `data/expense.db` (gitignored) in dev, a Turso cloud DB in prod
@@ -56,6 +59,7 @@ src/
 - Multi-household: the active household is resolved from the `he_household` cookie via `getCurrentHousehold()`
 - IDs are cuid2 strings
 - Timestamps stored as integer (unix epoch) via Drizzle `mode: "timestamp"`
+- **Money**: stored as integer minor units (`expenses.amount_minor`, fixed scale 100 — see `lib/money.ts`); queries convert back to major units with one `/ 100.0` at the boundary, so components always see major units
 
 ## Package Manager
 Uses **pnpm** (not npm/yarn). Always use `pnpm` commands.
@@ -65,6 +69,7 @@ Uses **pnpm** (not npm/yarn). Always use `pnpm` commands.
 pnpm dev             # Start dev server
 pnpm build           # Production build
 pnpm lint            # Run ESLint
+pnpm test            # Run Vitest (also in CI)
 pnpm db:init         # Initialize and seed database
 pnpm db:generate     # Generate Drizzle migrations
 pnpm db:push         # Push schema to database
@@ -81,9 +86,9 @@ pnpm dlx <cmd>       # Run a one-off command (replaces npx)
 - Currency formatting uses `Intl.NumberFormat` via `components/shared/currency-display.tsx`
 
 ## Auth Status
-- Google Sign-In button is UI-only (disabled state)
-- Mock session in `lib/auth.ts`
-- To enable: Add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET to .env.local, then wire up NextAuth
+- **Implemented (Model A)**: Google sign-in via Auth.js v5 (`src/auth.ts`, JWT, no DB adapter) coexists with the shared passcode; either grants access. Households remain shared by everyone who can sign in.
+- Requires `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` / `HOUSEHOLD_ALLOWED_EMAILS` in env (see `.env.example`). An empty allow-list denies all Google sign-ins in production (fails closed) but allows all in development.
+- **Model B** (per-user household ownership, passcode retired) is the documented future — see `plans/2026-06-09-google-login.md`.
 
 ## Environment Variables
 See `.env.example` for required variables.

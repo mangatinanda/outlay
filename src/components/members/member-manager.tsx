@@ -198,7 +198,7 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
         open={!!deleteId}
         onOpenChange={(open) => !open && setDeleteId(null)}
         title="Remove member"
-        description="This will remove this member from the household. Their expense history will be preserved."
+        description="This will remove this member from the household. Members with recorded expenses can't be removed — reassign their expenses first."
         onConfirm={handleDelete}
         loading={loading}
       />

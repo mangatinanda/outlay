@@ -4,8 +4,9 @@ A collaborative household expense‑tracking **Progressive Web App**. Every memb
 logs shared expenses, organizes them by category and person, and sees where the money goes on
 a charts‑driven dashboard — installable to a phone home screen and usable offline.
 
-> **Status:** single‑household deployment, protected by a shared passcode. Real per‑user
-> Google accounts and multi‑household support are deferred (see [Roadmap](#roadmap)).
+> **Status:** multi‑household workspaces behind two coexisting auth paths — Google sign‑in
+> (Auth.js v5, email allow‑list) or a shared passcode. Households are shared by everyone who
+> can sign in; per‑user ownership ("Model B") is deferred (see [Roadmap](#roadmap)).
 
 ---
 
@@ -36,10 +37,11 @@ a charts‑driven dashboard — installable to a phone home screen and usable of
 | Area | Capability |
 |---|---|
 | **Dashboard** | Monthly total, daily average, transaction count, month‑over‑month change; 30‑day spending bar chart; category donut chart; recent‑expense feed. |
-| **Expenses** | Full create / edit / delete; filter by category, member, and date range; grouped‑by‑date list. |
+| **Expenses** | Full create / edit / delete; grouped‑by‑date list. |
 | **Categories** | Manage categories with icon + color pickers and per‑category expense counts. |
 | **Members** | Manage household members with roles (`admin` / `member`), avatars, and per‑member spend stats. Members with existing expenses cannot be deleted. |
-| **Access** | Shared‑passcode gate over all app routes (HMAC‑signed, HttpOnly cookie). |
+| **Households** | Multiple household workspaces with per‑household currency (default INR); create / rename / delete / switch via the sidebar switcher and `/households`. |
+| **Access** | Google sign‑in (Auth.js v5, allow‑list — fails closed in production) **or** shared‑passcode gate (HMAC‑signed, expiring HttpOnly cookie); every mutation is scoped to the active household. |
 | **PWA** | Installable, offline‑capable (Serwist service worker + precached offline fallback). |
 | **Theming** | Light / dark / system via `next-themes`. |
 
@@ -53,7 +55,9 @@ a charts‑driven dashboard — installable to a phone home screen and usable of
 | Language | **TypeScript 6** (strict) |
 | Styling | **Tailwind CSS v4** + **shadcn/ui** (base‑nova style, OKLCH colors) on **Base UI** |
 | Database | **Turso / libSQL** via **Drizzle ORM** (`drizzle-orm/libsql`) — local dev uses a `file:` SQLite DB through the same driver |
+| Auth | **Auth.js v5** (Google, JWT sessions) + custom Web Crypto HMAC passcode gate |
 | Validation | **Zod v4** |
+| Testing | **Vitest** (unit + integration against in‑memory libSQL) + GitHub Actions CI |
 | Charts | **Recharts 3** |
 | Dates | **date-fns v4** |
 | PWA | **@serwist/turbopack** (service worker + offline) |
@@ -118,7 +122,7 @@ erDiagram
     households {
         text id PK
         text name
-        text currency "default USD"
+        text currency "default INR"
         int  created_at
     }
     household_members {
@@ -144,7 +148,7 @@ erDiagram
         text household_id FK
         text category_id FK
         text member_id FK
-        real amount
+        int  amount_minor "integer minor units (x100)"
         text description
         text date "ISO YYYY-MM-DD"
         text notes "nullable"
@@ -191,10 +195,12 @@ sequenceDiagram
 
 ### Access Gate
 
-The app is single‑tenant and protected by one shared passcode. `proxy.ts` (Next.js 16's
-renamed middleware, Node runtime) guards every route except `/login`, the offline page, and
-static assets. The session cookie is a constant payload signed with **HMAC‑SHA256** via the
-Web Crypto API — no JWT library, and the same helper runs in the proxy and the Server Action.
+`proxy.ts` (Next.js 16's renamed middleware, Node runtime) guards every route except `/login`,
+the Auth.js endpoints, the offline page, and static assets. Access is granted by **either** a
+Google session (Auth.js v5, JWT, `HOUSEHOLD_ALLOWED_EMAILS` allow‑list — fails closed in
+production) **or** the passcode cookie: `v1.<issued‑at>.<HMAC‑SHA256 signature>` signed via the
+Web Crypto API, expiring server‑side after 30 days — no JWT library, and the same helper runs
+in the proxy and the Server Action.
 
 ```mermaid
 sequenceDiagram
@@ -210,7 +216,7 @@ sequenceDiagram
     User->>Verify: submit passcode
     Verify->>Verify: constantTimeEqual(input, HOUSEHOLD_PASSCODE)
     alt correct
-        Verify-->>User: Set-Cookie he_session = HMAC(AUTH_SECRET) · redirect /dashboard
+        Verify-->>User: Set-Cookie he_session = v1.issuedAt.HMAC(AUTH_SECRET) · redirect /dashboard
     else wrong
         Verify-->>User: { error: "Incorrect passcode." }
     end
@@ -226,30 +232,35 @@ sequenceDiagram
 ```
 src/
 ├── app/
-│   ├── (auth)/login/         # passcode login page
+│   ├── (auth)/login/         # login page (Google button + passcode form)
 │   ├── (app)/                # gated app (force-dynamic layout)
 │   │   ├── dashboard/        # charts + summary
 │   │   ├── expenses/         # list · new · [id]/edit
 │   │   ├── categories/       # category manager
 │   │   ├── members/          # member manager
+│   │   ├── households/       # workspace manager (create/rename/delete/switch)
 │   │   └── settings/
+│   ├── api/auth/[...nextauth]/ # Auth.js route handlers
 │   ├── serwist/[path]/       # service-worker route handler
 │   ├── ~offline/             # precached offline fallback
 │   ├── sw.ts                 # Serwist service worker source
 │   └── layout.tsx            # root layout + SerwistProvider
 ├── components/
 │   ├── ui/                   # shadcn/Base UI primitives (CLI-managed)
-│   ├── layout/ dashboard/ expenses/ categories/ members/ shared/ auth/
+│   ├── layout/ dashboard/ expenses/ categories/ members/ households/ shared/ auth/
 ├── lib/
 │   ├── db/                   # Drizzle schema, libSQL connection, seed
 │   ├── queries/              # READ functions (Server Components)
-│   ├── actions/              # WRITE Server Actions
+│   ├── actions/              # WRITE Server Actions (safeAction-wrapped)
 │   ├── validators/           # Zod schemas
-│   ├── gate.ts               # Web Crypto HMAC sign/verify
-│   └── auth.ts               # mock session (display only)
+│   ├── gate.ts               # Web Crypto HMAC sign/verify (expiring tokens)
+│   ├── allow-list.ts         # Google sign-in allow-list (fails closed in prod)
+│   └── money.ts              # integer minor-unit helpers
 ├── hooks/
-└── proxy.ts                  # passcode gate (Next 16 proxy)
+├── auth.ts                   # Auth.js v5 config (Google provider)
+└── proxy.ts                  # access gate (Next 16 proxy): Google session OR passcode
 drizzle/                      # generated SQL migrations
+.github/workflows/ci.yml      # CI: lint · typecheck · test · build
 ```
 
 ---
@@ -286,10 +297,13 @@ file at `data/expense.db` (gitignored) accessed through the libSQL driver.
 
 ## API Reference (Server Actions & Queries)
 
-> **There is no REST API.** Mutations are **Server Actions** (`"use server"`), invoked directly
-> from client components via the form `action` prop; reads are plain async functions called
-> inside Server Components. Every mutation validates with Zod and returns
-> `{ success: true }` or `{ error: string }`.
+> **There is no REST API** (other than the Auth.js endpoints). Mutations are **Server Actions**
+> (`"use server"`), invoked directly from client components via the form `action` prop; reads
+> are plain async functions called inside Server Components. Every mutation validates with Zod,
+> is **scoped to the active household**, and returns `{ success: true }` or `{ error: string }`
+> — infrastructure failures are caught by the `safeAction` wrapper and returned as `{ error }`
+> too. Amounts are stored as integer minor units (`amount_minor`, scale 100); queries return
+> major units.
 
 ### Mutations — `src/lib/actions/`
 
@@ -297,26 +311,34 @@ file at `data/expense.db` (gitignored) accessed through the libSQL driver.
 |---|---|---|---|---|
 | `createExpense` | `(formData)` | `amount, description, categoryId, memberId, date, notes?` | `{success}` \| `{error}` | `/dashboard`, `/expenses` |
 | `updateExpense` | `(id, formData)` | same as create | `{success}` \| `{error}` | `/dashboard`, `/expenses` |
-| `deleteExpense` | `(id)` | — | `{success}` | `/dashboard`, `/expenses` |
+| `deleteExpense` | `(id)` | — | `{success}` \| `{error}` (not in household) | `/dashboard`, `/expenses` |
 | `createCategory` | `(formData)` | `name, icon, color` | `{success}` \| `{error}` | `/categories`, `/expenses` |
 | `updateCategory` | `(id, formData)` | `name, icon, color` | `{success}` \| `{error}` | `/categories`, `/expenses` |
 | `deleteCategory` | `(id)` | — | `{success}` \| `{error}` (blocked if expenses exist) | `/categories` |
 | `createMember` | `(formData)` | `name, role` | `{success}` \| `{error}` | `/members`, `/expenses` |
 | `updateMember` | `(id, formData)` | `name, role` | `{success}` \| `{error}` | `/members` |
 | `deleteMember` | `(id)` | — | `{success}` \| `{error}` (blocked if expenses exist) | `/members` |
+| `createHousehold` | `(formData)` | `name, currency?` | `{success}` \| `{error}` | all app routes |
+| `renameHousehold` | `(id, formData)` | `name` | `{success}` \| `{error}` | all app routes |
+| `deleteHousehold` | `(id)` | — | `{success}` \| `{error}` (blocked for the last household) | all app routes |
+| `switchHousehold` | `(id)` | — | sets `he_household` cookie | all app routes |
+| `updateHouseholdCurrency` | `(currency)` | currency code | `{success}` \| `{error}` | all app routes |
 | `verifyPasscode` | `(prevState, formData)` | `passcode` | sets `he_session` + redirect, or `{error}` | — |
+| `logout` | `()` | — | clears passcode cookie + Google session, redirects `/login` | — |
 
-**Validation schemas** (`src/lib/validators/`): `expenseSchema` (amount > 0, description 1–200,
-required `categoryId`/`memberId`/`date`, notes ≤ 500), `categorySchema` (name 1–50, icon, color),
-`memberSchema` (name 1–50, role ∈ {admin, member}).
+**Validation schemas** (`src/lib/validators/`): `expenseSchema` (amount > 0, ≤ 100M, ≤ 2 decimal
+places; description 1–200; required `categoryId`/`memberId`; `date` a real ISO `YYYY-MM-DD`;
+notes ≤ 500), `categorySchema` (name 1–50, icon, color), `memberSchema` (name 1–50, role ∈
+{admin, member}), `householdSchema` (name 1–50), `currencySchema` (supported code).
 
 ### Reads — `src/lib/queries/`
 
 | Function | Returns |
 |---|---|
-| `getDefaultHousehold()` | the active household (Phase‑1 single‑tenant) |
-| `getExpenses(householdId, filters?)` | expenses joined with category + member; filters: `categoryId`, `memberId`, `startDate`, `endDate`, `limit` |
-| `getExpenseById(id)` | a single expense with joins |
+| `getCurrentHousehold()` | the active household — from the `he_household` cookie, falling back to the first (request‑deduped via React `cache()`) |
+| `listHouseholds()` | all households, for the switcher |
+| `getExpenses(householdId, filters?)` | expenses joined with category + member; filters: `categoryId`, `memberId`, `startDate`, `endDate`, `limit` (no filter UI yet) |
+| `getExpenseById(id, householdId)` | a single expense with joins, scoped to the household |
 | `getCategories()` / `getCategoriesWithCount()` | categories, optionally with expense counts |
 | `getMembers()` / `getMembersWithStats()` | members, optionally with count + total spent |
 | `getDashboardStats()` | month total/count, prior month, daily avg, % change |
@@ -329,10 +351,9 @@ required `categoryId`/`memberId`/`date`, notes ≤ 500), `categorySchema` (name 
 
 ## HTTP Routes
 
-The only HTTP route handler is the service worker:
-
 | Method | Path | Handler | Purpose |
 |---|---|---|---|
+| `GET`/`POST` | `/api/auth/*` | `src/app/api/auth/[...nextauth]/route.ts` | Auth.js v5 endpoints (Google OAuth round‑trip, session, CSRF). |
 | `GET` | `/serwist/sw.js` | `src/app/serwist/[path]/route.ts` | Serves the esbuild‑bundled Serwist service worker (and source map). Registered by `SerwistProvider` in the root layout. |
 
 All other URLs are App Router pages, gated by `proxy.ts`.
@@ -347,8 +368,10 @@ See `.env.example`.
 |---|---|---|
 | `DATABASE_URL` | all | `file:./data/expense.db` locally; `libsql://<db>.turso.io` in production. **The `file:` prefix is required locally.** |
 | `TURSO_AUTH_TOKEN` | production | Turso database auth token. |
-| `AUTH_SECRET` | all | Secret used to HMAC‑sign the gate cookie (`openssl rand -base64 32`). |
+| `AUTH_SECRET` | all | Signs both the passcode‑gate cookie and the Auth.js JWT (`openssl rand -base64 32`). |
 | `HOUSEHOLD_PASSCODE` | all | The shared passcode that unlocks the app at `/login`. |
+| `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` | all | Google OAuth client for Auth.js (redirect URI `<origin>/api/auth/callback/google`). |
+| `HOUSEHOLD_ALLOWED_EMAILS` | all | Comma‑separated Google emails permitted to sign in. **Empty in production = nobody can sign in with Google** (fails closed); empty in development = everyone can. |
 
 ---
 
@@ -393,6 +416,7 @@ access — it renders pages per request against Turso at runtime.
 | `pnpm build` | Production build (Turbopack) |
 | `pnpm start` | Run the production build |
 | `pnpm lint` | ESLint |
+| `pnpm test` | Vitest (unit + integration; also run in CI) |
 | `pnpm db:generate` | Generate Drizzle migrations from the schema |
 | `pnpm db:migrate` | Apply migrations |
 | `pnpm db:seed` | Seed sample data (idempotent) |
@@ -402,10 +426,12 @@ access — it renders pages per request against Turso at runtime.
 
 ## Roadmap
 
-- Real authentication (Auth.js v5 Google provider) replacing the shared‑passcode gate.
-- Multi‑household / multi‑tenant support (resolve household from the session).
+- **Model B**: per‑user household ownership and permissions (resolve household from the
+  session, retire the shared passcode). See `plans/2026-06-09-google-login.md`.
+- Expense filtering UI (the query layer already supports category/member/date filters).
 - Product features: category budgets, recurring expenses, CSV export, expense splitting.
 - Migrate Recharts `<Cell>` usage ahead of Recharts 4 (currently deprecated‑but‑working).
+- Remaining audit items: see `docs/2026-06-11-repo-audit.md` (milestone 3).
 
 ---
 
