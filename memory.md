@@ -177,10 +177,13 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
   Vercel env + `/tmp/outlay-passcode.txt` locally, NOT in the repo). Browser‑verified E2E:
   passcode login → dashboard (Turso reads), created "My Home" (INR) via UI (atomic batch
   write), zero console errors. No sample seed in prod (real household made via UI).
-- **Google sign‑in in prod still pending:** create the Google Cloud OAuth client (redirect URI
-  `https://outlay-kappa.vercel.app/api/auth/callback/google`), then set `AUTH_GOOGLE_ID` /
-  `AUTH_GOOGLE_SECRET` / `HOUSEHOLD_ALLOWED_EMAILS` in Vercel and redeploy. Until then the
-  Google button errors at runtime (allow‑list correctly fails closed); passcode is unaffected.
+- **Google sign‑in ENABLED in prod (2026‑06‑13):** OAuth client created (redirect URIs for
+  myoutlay.vercel.app, outlay-kappa.vercel.app, and localhost:3000); `AUTH_GOOGLE_ID` /
+  `AUTH_GOOGLE_SECRET` / `HOUSEHOLD_ALLOWED_EMAILS` (3 family Gmails) set in Vercel production.
+  Verified live: the Google button reaches Google's sign‑in for myoutlay.vercel.app with the
+  correct client + callback. NOTE: the consent screen is in "Testing" mode — family members
+  must be added as test users in Google Cloud Console (or publish the app). For local dev,
+  the same three vars go in `.env.local`.
 - Deliberately kept: `getExpenses` filters param (roadmap filter UI) and the `users` table
   (Model B). Optional future: filter UI, `.claude/agents/`, claude-code-action PR review.
 - **To finish Google login:** user must create a Google Cloud OAuth client (redirect URI
