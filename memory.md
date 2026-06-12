@@ -181,8 +181,6 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
   `https://outlay-kappa.vercel.app/api/auth/callback/google`), then set `AUTH_GOOGLE_ID` /
   `AUTH_GOOGLE_SECRET` / `HOUSEHOLD_ALLOWED_EMAILS` in Vercel and redeploy. Until then the
   Google button errors at runtime (allow‑list correctly fails closed); passcode is unaffected.
-- Cosmetic follow‑up: the dashboard bar chart's Y‑axis tick formatter hardcodes `$` instead of
-  the household currency (`components/dashboard/expense-chart.tsx`).
 - Deliberately kept: `getExpenses` filters param (roadmap filter UI) and the `users` table
   (Model B). Optional future: filter UI, `.claude/agents/`, claude-code-action PR review.
 - **To finish Google login:** user must create a Google Cloud OAuth client (redirect URI
