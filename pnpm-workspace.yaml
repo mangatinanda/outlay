@@ -1,4 +1,10 @@
 # pnpm settings (pnpm 10+ reads these from here, not from package.json#pnpm).
+
+# Force the patched postcss everywhere (GHSA-qx2v-qp2m-jg93: XSS in stringified
+# output, <8.5.10) — next and next-auth's transitive next still pin older.
+overrides:
+  postcss: ">=8.5.10"
+
 # Build-script allowlist: which dependencies may run install scripts.
 allowBuilds:
   esbuild: true
