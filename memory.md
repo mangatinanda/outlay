@@ -48,6 +48,26 @@ TypeScript 6 · Tailwind v4 + shadcn/ui on **Base UI 1.5** · **Turso/libSQL** (
 
 ## Work log
 
+### 2026‑06‑12 — Audit milestone 2 (committed + pushed)
+
+- **2.4 perf:** `getCurrentHousehold`/`listHouseholds` wrapped in React `cache()` (one DB
+  round‑trip per request); `(app)/layout.tsx` fetches household/list/session via `Promise.all`.
+- **2.2 error envelope:** all CRUD actions wrapped in `safeAction` (`lib/actions/safe-action.ts`)
+  — throws are `console.error`‑logged and returned as `{error}`; `unstable_rethrow` keeps
+  `redirect()` working (`verifyPasscode`); `logout` stays unwrapped (bare `<form action>` needs
+  `Promise<void>`).
+- **2.1 money → integer minor units:** `expenses.amount` (REAL) → `amount_minor` (INTEGER,
+  fixed scale 100; `lib/money.ts`). Queries convert back with one `/100.0` so components are
+  untouched. Migration `drizzle/0001_money_minor_units.sql` was **hand‑written** (table
+  recreate + `CAST(ROUND(amount*100) AS INTEGER)`) because `drizzle-kit generate` needs an
+  interactive rename prompt; snapshot/journal authored by hand — `pnpm db:generate` confirms
+  no drift. Local dev DB migrated losslessly (15 rows, 2328.27 → 232827).
+- **2.3 docs reconciliation:** CLAUDE.md (auth real, Next 16, conventions), src/lib/CLAUDE.md
+  (libSQL, safeAction/scoping pattern, tests), README (status, features, ER diagram, gate
+  format, API reference incl. household actions, env vars, roadmap → Model B). Removed the
+  settings page's disabled "Google coming soon" card; fixed the member‑delete dialog copy.
+- Tests now 49 (added money, dashboard‑exactness, safe‑action suites).
+
 ### 2026‑06‑11 — Repo audit + top‑5 hardening pass
 
 **Full audit** written to `docs/2026-06-11-repo-audit.md` (graded B‑; findings cite file:line as of
@@ -122,14 +142,13 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
 
 ## Current state & open items
 
-- **Model A is committed** (`22815b5`). The 2026‑06‑11 audit + hardening pass (see work log) is
-  **implemented but uncommitted** — audit doc, tests, CI, fail‑closed allow‑list, expiring
-  sessions, scoped mutations, tightened validators, pnpm‑workspace.yaml.
-- **Remaining audit milestones** (see `docs/2026-06-11-repo-audit.md`): 1.5 passcode attempt
-  damping, 1.6 postcss override, M2 (money → integer minor units, action error envelope, docs
-  reconciliation — CLAUDE.md still claims auth is mocked, src/lib/CLAUDE.md still says
-  better‑sqlite3, README still says single‑household, settings page still shows a disabled
-  "Google coming soon" card), M3 polish (indexes, dead code, a11y).
+- **Audit milestones 0, 1 (top‑5), and 2 are committed and pushed**; CI is green.
+- **Remaining audit items** (see `docs/2026-06-11-repo-audit.md`): 1.5 passcode attempt damping,
+  1.6 postcss override (`pnpm audit` still flags postcss <8.5.10 via next/next-auth), and M3
+  polish — indexes, dead‑code sweep (use-mobile, input-group, CurrencyDisplay, unused
+  `getExpenses` filters, dead `users` table), createHousehold batching, a11y (maximumScale,
+  Bell button), chart zero‑fill, seeder UTC date. Also: bump GH Actions to Node‑24 action
+  majors before 2026‑09 (deprecation warning in CI).
 - **To finish Google login:** user must create a Google Cloud OAuth client (redirect URI
   `http://localhost:3000/api/auth/callback/google`) and set `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` /
   `HOUSEHOLD_ALLOWED_EMAILS` in `.env.local`, then restart. Browser end‑to‑end test still owed.
