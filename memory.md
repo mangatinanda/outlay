@@ -163,7 +163,10 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
 - **Default currency INR.**
 - **Deployed 2026‑06‑12** under the `mangatinanda` Vercel account (project
   `nanda-kumar-mangatis-projects/outlay`, **git‑connected** → pushes to `main` auto‑deploy).
-  Production: **https://outlay-kappa.vercel.app**. Turso DB `outlay` (aws‑ap‑south‑1).
+  Production: **https://myoutlay.vercel.app** (primary; `outlay-kappa.vercel.app` also works).
+  `outlay.mangatinanda.me` is attached to the project but pending a CNAME
+  (`outlay` → `cname.vercel-dns.com`) at the registrar (IONOS nameservers).
+  Turso DB `outlay` (aws‑ap‑south‑1).
 
 ## Current state & open items
 
