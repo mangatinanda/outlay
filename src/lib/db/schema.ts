@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer, index } from "drizzle-orm/sqlite-core";
 
 export const users = sqliteTable("users", {
   id: text("id").primaryKey(),
@@ -33,7 +33,9 @@ export const householdMembers = sqliteTable("household_members", {
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),
-});
+}, (table) => [
+  index("household_members_household_idx").on(table.householdId),
+]);
 
 export const categories = sqliteTable("categories", {
   id: text("id").primaryKey(),
@@ -47,7 +49,9 @@ export const categories = sqliteTable("categories", {
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),
-});
+}, (table) => [
+  index("categories_household_idx").on(table.householdId),
+]);
 
 export const expenses = sqliteTable("expenses", {
   id: text("id").primaryKey(),
@@ -71,7 +75,12 @@ export const expenses = sqliteTable("expenses", {
   updatedAt: integer("updated_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),
-});
+}, (table) => [
+  // Every dashboard/list query filters by household and usually a date range.
+  index("expenses_household_date_idx").on(table.householdId, table.date),
+  index("expenses_category_idx").on(table.categoryId),
+  index("expenses_member_idx").on(table.memberId),
+]);
 
 // Type exports
 export type User = typeof users.$inferSelect;
