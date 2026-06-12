@@ -2,6 +2,7 @@ import { db } from "./index";
 import { households, householdMembers, categories, expenses } from "./schema";
 import { createId } from "@paralleldrive/cuid2";
 import { DEFAULT_CATEGORIES } from "./default-categories";
+import { toMinorUnits } from "../money";
 
 export async function seed() {
   // Check if already seeded
@@ -71,7 +72,7 @@ export async function seed() {
       householdId,
       categoryId: cat.id,
       memberId,
-      amount: exp.amount,
+      amountMinor: toMinorUnits(exp.amount),
       description: exp.description,
       date: date.toISOString().split("T")[0],
     });

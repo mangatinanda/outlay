@@ -86,7 +86,7 @@ beforeAll(async () => {
       householdId: "hh-a",
       categoryId: "cat-a",
       memberId: "mem-a",
-      amount: 50,
+      amountMinor: 5000,
       description: "A's expense",
       date: "2026-06-01",
     },
@@ -95,7 +95,7 @@ beforeAll(async () => {
       householdId: "hh-b",
       categoryId: "cat-b",
       memberId: "mem-b",
-      amount: 75,
+      amountMinor: 7500,
       description: "B's expense",
       date: "2026-06-01",
     },
@@ -129,6 +129,7 @@ describe("createExpense ownership checks", () => {
       .where(eq(expenses.description, "Test expense"));
     expect(rows).toHaveLength(1);
     expect(rows[0].householdId).toBe("hh-a");
+    expect(rows[0].amountMinor).toBe(1050); // "10.50" stored as integer minor units
   });
 });
 

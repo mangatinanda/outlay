@@ -18,7 +18,7 @@ export async function getMembersWithStats(householdId: string) {
       role: householdMembers.role,
       avatar: householdMembers.avatar,
       expenseCount: sql<number>`count(${expenses.id})`.as("expense_count"),
-      totalSpent: sql<number>`coalesce(sum(${expenses.amount}), 0)`.as("total_spent"),
+      totalSpent: sql<number>`coalesce(sum(${expenses.amountMinor}), 0) / 100.0`.as("total_spent"),
     })
     .from(householdMembers)
     .leftJoin(expenses, eq(householdMembers.id, expenses.memberId))

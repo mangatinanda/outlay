@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { expenses, categories, householdMembers } from "@/lib/db/schema";
 import { expenseSchema } from "@/lib/validators/expense-schema";
 import { getCurrentHousehold } from "@/lib/queries/household-queries";
+import { toMinorUnits } from "@/lib/money";
 import { createId } from "@paralleldrive/cuid2";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
@@ -74,7 +75,7 @@ export const createExpense = safeAction("createExpense", async (formData: FormDa
     householdId: household.id,
     categoryId: parsed.data.categoryId,
     memberId: parsed.data.memberId,
-    amount: parsed.data.amount,
+    amountMinor: toMinorUnits(parsed.data.amount),
     description: parsed.data.description,
     date: parsed.data.date,
     notes: parsed.data.notes || null,
@@ -115,7 +116,7 @@ export const updateExpense = safeAction("updateExpense", async (id: string, form
     .set({
       categoryId: parsed.data.categoryId,
       memberId: parsed.data.memberId,
-      amount: parsed.data.amount,
+      amountMinor: toMinorUnits(parsed.data.amount),
       description: parsed.data.description,
       date: parsed.data.date,
       notes: parsed.data.notes || null,

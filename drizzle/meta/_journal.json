@@ -8,6 +8,13 @@
       "when": 1780837855957,
       "tag": "0000_public_moondragon",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1781236653598,
+      "tag": "0001_money_minor_units",
+      "breakpoints": true
     }
   ]
 }

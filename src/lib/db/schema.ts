@@ -1,4 +1,4 @@
-import { sqliteTable, text, real, integer } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 
 export const users = sqliteTable("users", {
   id: text("id").primaryKey(),
@@ -60,7 +60,8 @@ export const expenses = sqliteTable("expenses", {
   memberId: text("member_id")
     .notNull()
     .references(() => householdMembers.id),
-  amount: real("amount").notNull(),
+  // Integer minor units (fixed scale 100 — see src/lib/money.ts); exact SQL sums.
+  amountMinor: integer("amount_minor").notNull(),
   description: text("description").notNull(),
   date: text("date").notNull(), // ISO date YYYY-MM-DD
   notes: text("notes"),

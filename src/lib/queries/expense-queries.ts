@@ -1,6 +1,10 @@
 import { db } from "@/lib/db";
 import { expenses, categories, householdMembers } from "@/lib/db/schema";
-import { eq, desc, and, gte, lte } from "drizzle-orm";
+import { eq, desc, and, gte, lte, sql } from "drizzle-orm";
+
+// Stored as integer minor units; exposed to the app in major units via a
+// single exact conversion at the query boundary (see src/lib/money.ts).
+const amountMajor = sql<number>`${expenses.amountMinor} / 100.0`;
 
 export async function getExpenses(householdId: string, filters?: {
   categoryId?: string;
@@ -27,7 +31,7 @@ export async function getExpenses(householdId: string, filters?: {
   const result = await db
     .select({
       id: expenses.id,
-      amount: expenses.amount,
+      amount: amountMajor,
       description: expenses.description,
       date: expenses.date,
       notes: expenses.notes,
@@ -54,7 +58,7 @@ export async function getExpenseById(id: string, householdId: string) {
   const result = await db
     .select({
       id: expenses.id,
-      amount: expenses.amount,
+      amount: amountMajor,
       description: expenses.description,
       date: expenses.date,
       notes: expenses.notes,

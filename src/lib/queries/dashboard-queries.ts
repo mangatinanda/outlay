@@ -12,7 +12,7 @@ export async function getDashboardStats(householdId: string) {
 
   const [currentMonth] = await db
     .select({
-      total: sql<number>`coalesce(sum(${expenses.amount}), 0)`,
+      total: sql<number>`coalesce(sum(${expenses.amountMinor}), 0) / 100.0`,
       count: sql<number>`count(${expenses.id})`,
     })
     .from(expenses)
@@ -26,7 +26,7 @@ export async function getDashboardStats(householdId: string) {
 
   const [prevMonth] = await db
     .select({
-      total: sql<number>`coalesce(sum(${expenses.amount}), 0)`,
+      total: sql<number>`coalesce(sum(${expenses.amountMinor}), 0) / 100.0`,
     })
     .from(expenses)
     .where(
@@ -61,7 +61,7 @@ export async function getCategoryBreakdown(householdId: string) {
       name: categories.name,
       color: categories.color,
       icon: categories.icon,
-      total: sql<number>`coalesce(sum(${expenses.amount}), 0)`.as("total"),
+      total: sql<number>`coalesce(sum(${expenses.amountMinor}), 0) / 100.0`.as("total"),
       count: sql<number>`count(${expenses.id})`.as("count"),
     })
     .from(expenses)
@@ -83,7 +83,7 @@ export async function getSpendingByDay(householdId: string, days: number = 30) {
   return db
     .select({
       date: expenses.date,
-      total: sql<number>`coalesce(sum(${expenses.amount}), 0)`.as("total"),
+      total: sql<number>`coalesce(sum(${expenses.amountMinor}), 0) / 100.0`.as("total"),
     })
     .from(expenses)
     .where(
@@ -104,7 +104,7 @@ export async function getMemberSpending(householdId: string) {
   return db
     .select({
       name: householdMembers.name,
-      total: sql<number>`coalesce(sum(${expenses.amount}), 0)`.as("total"),
+      total: sql<number>`coalesce(sum(${expenses.amountMinor}), 0) / 100.0`.as("total"),
       count: sql<number>`count(${expenses.id})`.as("count"),
     })
     .from(expenses)
@@ -124,7 +124,7 @@ export async function getRecentExpenses(householdId: string, limit: number = 5) 
   return db
     .select({
       id: expenses.id,
-      amount: expenses.amount,
+      amount: sql<number>`${expenses.amountMinor} / 100.0`,
       description: expenses.description,
       date: expenses.date,
       categoryName: categories.name,
