@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import { expenses, categories, householdMembers } from "@/lib/db/schema";
 import { eq, and, gte, lte, sql, desc } from "drizzle-orm";
-import { format, subDays, startOfMonth, endOfMonth, subMonths } from "date-fns";
+import { format, subDays, addDays, startOfMonth, endOfMonth, subMonths } from "date-fns";
 
 export async function getDashboardStats(householdId: string) {
   const now = new Date();
@@ -78,9 +78,10 @@ export async function getCategoryBreakdown(householdId: string) {
 }
 
 export async function getSpendingByDay(householdId: string, days: number = 30) {
-  const startDate = format(subDays(new Date(), days), "yyyy-MM-dd");
+  const start = subDays(new Date(), days);
+  const startDate = format(start, "yyyy-MM-dd");
 
-  return db
+  const rows = await db
     .select({
       date: expenses.date,
       total: sql<number>`coalesce(sum(${expenses.amountMinor}), 0) / 100.0`.as("total"),
@@ -94,6 +95,13 @@ export async function getSpendingByDay(householdId: string, days: number = 30) {
     )
     .groupBy(expenses.date)
     .orderBy(expenses.date);
+
+  // Zero-fill: the chart should show a continuous window, not skip quiet days.
+  const totals = new Map(rows.map((r) => [r.date, r.total]));
+  return Array.from({ length: days + 1 }, (_, i) => {
+    const date = format(addDays(start, i), "yyyy-MM-dd");
+    return { date, total: totals.get(date) ?? 0 };
+  });
 }
 
 export async function getMemberSpending(householdId: string) {

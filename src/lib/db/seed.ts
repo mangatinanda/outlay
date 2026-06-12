@@ -74,7 +74,8 @@ export async function seed() {
       memberId,
       amountMinor: toMinorUnits(exp.amount),
       description: exp.description,
-      date: date.toISOString().split("T")[0],
+      // Local calendar date, not UTC (toISOString shifts the day east of UTC).
+      date: date.toLocaleDateString("en-CA"),
     });
   }
 

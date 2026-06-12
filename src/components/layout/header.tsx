@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, Menu, LogOut, Settings } from "lucide-react";
+import { Menu, LogOut, Settings } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -50,9 +50,6 @@ export function Header({ user }: { user: HeaderUser | null }) {
           <div className="hidden md:block">
             <ThemeToggle />
           </div>
-          <Button variant="ghost" size="icon" className="relative">
-            <Bell className="h-5 w-5" />
-          </Button>
           <DropdownMenu>
             <DropdownMenuTrigger className="relative h-9 w-9 rounded-full cursor-pointer">
               <Avatar className="h-9 w-9">

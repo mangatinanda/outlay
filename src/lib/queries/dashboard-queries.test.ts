@@ -19,7 +19,10 @@ import {
   categories,
   expenses,
 } from "@/lib/db/schema";
-import { getDashboardStats } from "@/lib/queries/dashboard-queries";
+import {
+  getDashboardStats,
+  getSpendingByDay,
+} from "@/lib/queries/dashboard-queries";
 import { getExpenses } from "@/lib/queries/expense-queries";
 
 const today = format(new Date(), "yyyy-MM-dd");
@@ -67,5 +70,15 @@ describe("integer money math", () => {
     const rows = await getExpenses("hh");
     const amounts = rows.map((r) => r.amount).sort();
     expect(amounts).toEqual([0.1, 0.2]);
+  });
+});
+
+describe("getSpendingByDay", () => {
+  it("zero-fills days with no spending across the whole window", async () => {
+    const series = await getSpendingByDay("hh", 30);
+    expect(series).toHaveLength(31); // window start + 30 days, today inclusive
+    expect(series[series.length - 1].date).toBe(today);
+    expect(series.find((d) => d.date === today)?.total).toBe(0.3);
+    expect(series.filter((d) => d.total === 0)).toHaveLength(30);
   });
 });

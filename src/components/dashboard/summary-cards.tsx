@@ -22,10 +22,11 @@ export function SummaryCards({ stats }: SummaryCardsProps) {
       title: "This Month",
       value: formatCurrency(stats.monthTotal),
       icon: DollarSign,
-      description: stats.monthChange > 0
-        ? `+${stats.monthChange.toFixed(1)}% from last month`
-        : `${stats.monthChange.toFixed(1)}% from last month`,
-      trend: stats.monthChange,
+      // A 0% change against an empty month is "no baseline", not "flat".
+      description: stats.prevMonthTotal > 0
+        ? `${stats.monthChange > 0 ? "+" : ""}${stats.monthChange.toFixed(1)}% from last month`
+        : "No spending recorded last month",
+      trend: stats.prevMonthTotal > 0 ? stats.monthChange : null,
     },
     {
       title: "Daily Average",
