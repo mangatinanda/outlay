@@ -7,8 +7,9 @@ import { getCurrentHousehold } from "@/lib/queries/household-queries";
 import { createId } from "@paralleldrive/cuid2";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { safeAction } from "./safe-action";
 
-export async function createCategory(formData: FormData) {
+export const createCategory = safeAction("createCategory", async (formData: FormData) => {
   const raw = {
     name: formData.get("name"),
     icon: formData.get("icon"),
@@ -34,9 +35,9 @@ export async function createCategory(formData: FormData) {
   revalidatePath("/categories");
   revalidatePath("/expenses");
   return { success: true };
-}
+});
 
-export async function updateCategory(id: string, formData: FormData) {
+export const updateCategory = safeAction("updateCategory", async (id: string, formData: FormData) => {
   const raw = {
     name: formData.get("name"),
     icon: formData.get("icon"),
@@ -65,9 +66,9 @@ export async function updateCategory(id: string, formData: FormData) {
   revalidatePath("/categories");
   revalidatePath("/expenses");
   return { success: true };
-}
+});
 
-export async function deleteCategory(id: string) {
+export const deleteCategory = safeAction("deleteCategory", async (id: string) => {
   const household = await getCurrentHousehold();
   if (!household) return { error: "No household found" };
 
@@ -92,4 +93,4 @@ export async function deleteCategory(id: string) {
   await db.delete(categories).where(eq(categories.id, id));
   revalidatePath("/categories");
   return { success: true };
-}
+});

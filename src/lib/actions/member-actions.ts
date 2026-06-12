@@ -7,8 +7,9 @@ import { getCurrentHousehold } from "@/lib/queries/household-queries";
 import { createId } from "@paralleldrive/cuid2";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { safeAction } from "./safe-action";
 
-export async function createMember(formData: FormData) {
+export const createMember = safeAction("createMember", async (formData: FormData) => {
   const raw = {
     name: formData.get("name"),
     role: formData.get("role") || "member",
@@ -32,9 +33,9 @@ export async function createMember(formData: FormData) {
   revalidatePath("/members");
   revalidatePath("/expenses");
   return { success: true };
-}
+});
 
-export async function updateMember(id: string, formData: FormData) {
+export const updateMember = safeAction("updateMember", async (id: string, formData: FormData) => {
   const raw = {
     name: formData.get("name"),
     role: formData.get("role") || "member",
@@ -65,9 +66,9 @@ export async function updateMember(id: string, formData: FormData) {
 
   revalidatePath("/members");
   return { success: true };
-}
+});
 
-export async function deleteMember(id: string) {
+export const deleteMember = safeAction("deleteMember", async (id: string) => {
   const household = await getCurrentHousehold();
   if (!household) return { error: "No household found" };
 
@@ -98,4 +99,4 @@ export async function deleteMember(id: string) {
   await db.delete(householdMembers).where(eq(householdMembers.id, id));
   revalidatePath("/members");
   return { success: true };
-}
+});

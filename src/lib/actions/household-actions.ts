@@ -10,6 +10,7 @@ import { createId } from "@paralleldrive/cuid2";
 import { eq } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
+import { safeAction } from "./safe-action";
 
 async function setCurrentHousehold(id: string) {
   (await cookies()).set(HOUSEHOLD_COOKIE, id, {
@@ -26,7 +27,7 @@ function revalidateAll() {
   }
 }
 
-export async function switchHousehold(id: string) {
+export const switchHousehold = safeAction("switchHousehold", async (id: string) => {
   const exists = await db
     .select({ id: households.id })
     .from(households)
@@ -37,9 +38,9 @@ export async function switchHousehold(id: string) {
   await setCurrentHousehold(id);
   revalidateAll();
   return { success: true };
-}
+});
 
-export async function createHousehold(formData: FormData) {
+export const createHousehold = safeAction("createHousehold", async (formData: FormData) => {
   const parsed = householdSchema.safeParse({ name: formData.get("name") });
   if (!parsed.success) return { error: parsed.error.issues[0].message };
 
@@ -71,9 +72,9 @@ export async function createHousehold(formData: FormData) {
   await setCurrentHousehold(householdId); // make the new household active
   revalidateAll();
   return { success: true };
-}
+});
 
-export async function renameHousehold(id: string, formData: FormData) {
+export const renameHousehold = safeAction("renameHousehold", async (id: string, formData: FormData) => {
   const parsed = householdSchema.safeParse({ name: formData.get("name") });
   if (!parsed.success) return { error: parsed.error.issues[0].message };
 
@@ -86,9 +87,9 @@ export async function renameHousehold(id: string, formData: FormData) {
 
   revalidateAll();
   return { success: true };
-}
+});
 
-export async function deleteHousehold(id: string) {
+export const deleteHousehold = safeAction("deleteHousehold", async (id: string) => {
   const all = await listHouseholds();
   if (!all.some((h) => h.id === id)) {
     return { error: "Household not found" };
@@ -114,4 +115,4 @@ export async function deleteHousehold(id: string) {
 
   revalidateAll();
   return { success: true };
-}
+});

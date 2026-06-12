@@ -6,8 +6,9 @@ import { getCurrentHousehold } from "@/lib/queries/household-queries";
 import { currencySchema } from "@/lib/validators/settings-schema";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { safeAction } from "./safe-action";
 
-export async function updateHouseholdCurrency(currency: string) {
+export const updateHouseholdCurrency = safeAction("updateHouseholdCurrency", async (currency: string) => {
   const parsed = currencySchema.safeParse({ currency });
   if (!parsed.success) {
     return { error: parsed.error.issues[0].message };
@@ -26,4 +27,4 @@ export async function updateHouseholdCurrency(currency: string) {
     revalidatePath(path);
   }
   return { success: true };
-}
+});

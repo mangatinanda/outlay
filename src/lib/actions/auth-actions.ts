@@ -9,13 +9,16 @@ import {
   constantTimeEqual,
 } from "@/lib/gate";
 import { signOut } from "@/auth";
+import { safeAction } from "./safe-action";
 
 export type PasscodeState = { error: string } | null;
 
-export async function verifyPasscode(
+// safeAction rethrows the redirect() control-flow error, so a successful
+// unlock still navigates; only real failures become { error }.
+export const verifyPasscode = safeAction("verifyPasscode", async (
   _prev: PasscodeState,
   formData: FormData,
-): Promise<PasscodeState> {
+): Promise<PasscodeState> => {
   const passcode = String(formData.get("passcode") ?? "");
   const expected = process.env.HOUSEHOLD_PASSCODE;
 
@@ -36,9 +39,13 @@ export async function verifyPasscode(
   });
 
   redirect("/dashboard");
-}
+});
 
-/** Sign out of both auth paths: clear the passcode cookie and any Google session. */
+/**
+ * Sign out of both auth paths: clear the passcode cookie and any Google
+ * session. Not wrapped in safeAction: it's used as a bare <form action>,
+ * which requires Promise<void> — and its only outcome is the redirect.
+ */
 export async function logout() {
   const cookieStore = await cookies();
   cookieStore.delete(SESSION_COOKIE);

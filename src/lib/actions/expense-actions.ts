@@ -7,6 +7,7 @@ import { getCurrentHousehold } from "@/lib/queries/household-queries";
 import { createId } from "@paralleldrive/cuid2";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { safeAction } from "./safe-action";
 
 /**
  * Returns an error message unless categoryId AND memberId both belong to the
@@ -43,7 +44,7 @@ async function checkOwnership(
   return null;
 }
 
-export async function createExpense(formData: FormData) {
+export const createExpense = safeAction("createExpense", async (formData: FormData) => {
   const raw = {
     amount: formData.get("amount"),
     description: formData.get("description"),
@@ -82,9 +83,9 @@ export async function createExpense(formData: FormData) {
   revalidatePath("/dashboard");
   revalidatePath("/expenses");
   return { success: true };
-}
+});
 
-export async function updateExpense(id: string, formData: FormData) {
+export const updateExpense = safeAction("updateExpense", async (id: string, formData: FormData) => {
   const raw = {
     amount: formData.get("amount"),
     description: formData.get("description"),
@@ -127,9 +128,9 @@ export async function updateExpense(id: string, formData: FormData) {
   revalidatePath("/dashboard");
   revalidatePath("/expenses");
   return { success: true };
-}
+});
 
-export async function deleteExpense(id: string) {
+export const deleteExpense = safeAction("deleteExpense", async (id: string) => {
   const household = await getCurrentHousehold();
   if (!household) return { error: "No household found" };
 
@@ -142,4 +143,4 @@ export async function deleteExpense(id: string) {
   revalidatePath("/dashboard");
   revalidatePath("/expenses");
   return { success: true };
-}
+});
