@@ -45,9 +45,11 @@ import {
 import { updateCategory, deleteCategory } from "@/lib/actions/category-actions";
 import { updateMember, deleteMember } from "@/lib/actions/member-actions";
 import {
+  createHousehold,
   renameHousehold,
   deleteHousehold,
 } from "@/lib/actions/household-actions";
+import { DEFAULT_CATEGORIES } from "@/lib/db/default-categories";
 
 function form(fields: Record<string, string>) {
   const fd = new FormData();
@@ -237,6 +239,36 @@ describe("household mutations validate the target id", () => {
   it("deleteHousehold refuses an unknown household", async () => {
     const result = await deleteHousehold("nope");
     expect(result.error).toBeTruthy();
+  });
+});
+
+describe("createHousehold", () => {
+  it("creates a fully-seeded household and switches to it", async () => {
+    const result = await createHousehold(
+      form({ name: "Beach House", currency: "EUR" }),
+    );
+    expect(result).toEqual({ success: true });
+
+    const [hh] = await db
+      .select()
+      .from(households)
+      .where(eq(households.name, "Beach House"));
+    expect(hh.currency).toBe("EUR");
+    expect(cookieJar.get(HOUSEHOLD_COOKIE)).toBe(hh.id);
+
+    const members = await db
+      .select()
+      .from(householdMembers)
+      .where(eq(householdMembers.householdId, hh.id));
+    expect(members).toHaveLength(1);
+
+    const cats = await db
+      .select()
+      .from(categories)
+      .where(eq(categories.householdId, hh.id));
+    expect(cats).toHaveLength(DEFAULT_CATEGORIES.length);
+
+    cookieJar.set(HOUSEHOLD_COOKIE, "hh-a"); // restore the fixture household
   });
 });
 

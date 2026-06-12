@@ -50,24 +50,27 @@ export const createHousehold = safeAction("createHousehold", async (formData: Fo
   const currency = currencyParsed.success ? currencyParsed.data.currency : "INR";
 
   const householdId = createId();
-  await db.insert(households).values({ id: householdId, name: parsed.data.name, currency });
-  // Seed a default member + the default categories so the household is usable immediately.
-  await db.insert(householdMembers).values({
-    id: createId(),
-    householdId,
-    name: "Me",
-    role: "admin",
-  });
-  for (const cat of DEFAULT_CATEGORIES) {
-    await db.insert(categories).values({
+  // Seed a default member + the default categories so the household is usable
+  // immediately — atomically, so a mid-failure can't leave it half-seeded.
+  await db.batch([
+    db.insert(households).values({ id: householdId, name: parsed.data.name, currency }),
+    db.insert(householdMembers).values({
       id: createId(),
       householdId,
-      name: cat.name,
-      icon: cat.icon,
-      color: cat.color,
-      isDefault: true,
-    });
-  }
+      name: "Me",
+      role: "admin",
+    }),
+    db.insert(categories).values(
+      DEFAULT_CATEGORIES.map((cat) => ({
+        id: createId(),
+        householdId,
+        name: cat.name,
+        icon: cat.icon,
+        color: cat.color,
+        isDefault: true,
+      })),
+    ),
+  ]);
 
   await setCurrentHousehold(householdId); // make the new household active
   revalidateAll();
