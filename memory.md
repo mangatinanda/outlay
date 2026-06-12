@@ -161,12 +161,25 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
   Model B (user‑owned households, per‑user scoping) is the documented future — and going to B means
   **dropping the passcode** (coexisting passcode + per‑user permissions is a foot‑gun).
 - **Default currency INR.**
-- **Deploy deferred** — and will use a **different Vercel account** than the one currently logged in
-  (`devikrupananda7-8095`); `vercel logout` → login as the other account first.
+- **Deployed 2026‑06‑12** under the `mangatinanda` Vercel account (project
+  `nanda-kumar-mangatis-projects/outlay`, **git‑connected** → pushes to `main` auto‑deploy).
+  Production: **https://outlay-kappa.vercel.app**. Turso DB `outlay` (aws‑ap‑south‑1).
 
 ## Current state & open items
 
 - **The 2026‑06‑11 audit is fully executed (M0–M3 + quick wins); CI green; audit clean.**
+- **DEPLOYED to production** (2026‑06‑12): https://outlay-kappa.vercel.app — Turso migrated
+  (all 3 migrations + indexes verified), 4 env vars set in Vercel (DATABASE_URL,
+  TURSO_AUTH_TOKEN, AUTH_SECRET, HOUSEHOLD_PASSCODE — all freshly generated; passcode is in
+  Vercel env + `/tmp/outlay-passcode.txt` locally, NOT in the repo). Browser‑verified E2E:
+  passcode login → dashboard (Turso reads), created "My Home" (INR) via UI (atomic batch
+  write), zero console errors. No sample seed in prod (real household made via UI).
+- **Google sign‑in in prod still pending:** create the Google Cloud OAuth client (redirect URI
+  `https://outlay-kappa.vercel.app/api/auth/callback/google`), then set `AUTH_GOOGLE_ID` /
+  `AUTH_GOOGLE_SECRET` / `HOUSEHOLD_ALLOWED_EMAILS` in Vercel and redeploy. Until then the
+  Google button errors at runtime (allow‑list correctly fails closed); passcode is unaffected.
+- Cosmetic follow‑up: the dashboard bar chart's Y‑axis tick formatter hardcodes `$` instead of
+  the household currency (`components/dashboard/expense-chart.tsx`).
 - Deliberately kept: `getExpenses` filters param (roadmap filter UI) and the `users` table
   (Model B). Optional future: filter UI, `.claude/agents/`, claude-code-action PR review.
 - **To finish Google login:** user must create a Google Cloud OAuth client (redirect URI
