@@ -48,6 +48,30 @@ TypeScript 6 · Tailwind v4 + shadcn/ui on **Base UI 1.5** · **Turso/libSQL** (
 
 ## Work log
 
+### 2026‑06‑12 (later) — Audit complete: 1.5, 1.6, all of milestone 3 + Claude Code config
+
+- **1.5:** failed passcode attempts log + pay a constant ~1s delay (`FAILED_ATTEMPT_DELAY_MS`).
+- **1.6:** `overrides: postcss >=8.5.10` in `pnpm-workspace.yaml` (needed `pnpm dedupe` —
+  plain `pnpm install` short‑circuits and doesn't apply new overrides). `pnpm audit --prod` clean.
+- **3.1:** five indexes (expenses household+date / category / member; categories household;
+  household_members household) — `drizzle/0002_strong_sphinx.sql`, applied to dev DB.
+- **3.4:** `createHousehold` seeds household+member+categories in one atomic `db.batch`.
+- **3.5/3.6:** removed `maximumScale: 1` (WCAG pinch‑zoom) and the dead Bell button;
+  `getSpendingByDay` zero‑fills the 31‑day window; "This Month" card shows "No spending
+  recorded last month" instead of a bogus 0%; seeder uses local dates (`en-CA`), not UTC.
+- **3.2 dead code:** deleted `hooks/use-mobile.ts`, `ui/input-group.tsx`, the unused
+  `CurrencyDisplay` component (kept `formatCurrency`). **Decisions:** KEEP the unused
+  `getExpenses` filters param (roadmap: filter UI) and the dead `users` table +
+  `household_members.user_id` (Model B will need them).
+- **CI:** checkout/setup-node bumped to v5 + `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24` (Node‑20
+  action runtimes die Sept 2026).
+- **Claude Code standards check** (via claude-code-guide agent against current docs): repo
+  already matches 2026 baseline (root + nested CLAUDE.md, project skill, committed memory.md);
+  added the one gap — committed `.claude/settings.json` (permissions allowlist for
+  lint/test/build/tsc/db + read‑deny for `.env.local` and `data/`). Optional next steps noted
+  in the audit doc: `.claude/agents/`, `.mcp.json`, claude-code-action PR review (v1.0.94+).
+- Tests now **53**. The audit (`docs/2026-06-11-repo-audit.md`) is fully executed: M0–M3 done.
+
 ### 2026‑06‑12 — Audit milestone 2 (committed + pushed)
 
 - **2.4 perf:** `getCurrentHousehold`/`listHouseholds` wrapped in React `cache()` (one DB
@@ -142,13 +166,9 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
 
 ## Current state & open items
 
-- **Audit milestones 0, 1 (top‑5), and 2 are committed and pushed**; CI is green.
-- **Remaining audit items** (see `docs/2026-06-11-repo-audit.md`): 1.5 passcode attempt damping,
-  1.6 postcss override (`pnpm audit` still flags postcss <8.5.10 via next/next-auth), and M3
-  polish — indexes, dead‑code sweep (use-mobile, input-group, CurrencyDisplay, unused
-  `getExpenses` filters, dead `users` table), createHousehold batching, a11y (maximumScale,
-  Bell button), chart zero‑fill, seeder UTC date. Also: bump GH Actions to Node‑24 action
-  majors before 2026‑09 (deprecation warning in CI).
+- **The 2026‑06‑11 audit is fully executed (M0–M3 + quick wins); CI green; audit clean.**
+- Deliberately kept: `getExpenses` filters param (roadmap filter UI) and the `users` table
+  (Model B). Optional future: filter UI, `.claude/agents/`, claude-code-action PR review.
 - **To finish Google login:** user must create a Google Cloud OAuth client (redirect URI
   `http://localhost:3000/api/auth/callback/google`) and set `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` /
   `HOUSEHOLD_ALLOWED_EMAILS` in `.env.local`, then restart. Browser end‑to‑end test still owed.
