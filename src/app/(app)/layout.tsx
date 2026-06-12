@@ -16,9 +16,11 @@ export default async function AppLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const household = await getCurrentHousehold();
-  const householdList = await listHouseholds();
-  const session = await auth();
+  const [household, householdList, session] = await Promise.all([
+    getCurrentHousehold(),
+    listHouseholds(),
+    auth(),
+  ]);
 
   return (
     <HouseholdProvider
