@@ -1,13 +1,16 @@
 import { Plus, Receipt } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
+import { AddExpenseSheet } from "@/components/expenses/add-expense-sheet";
 import { ExpenseList } from "@/components/expenses/expense-list";
 import { EmptyState } from "@/components/shared/empty-state";
 import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getCategories } from "@/lib/queries/category-queries";
 import { getExpenses } from "@/lib/queries/expense-queries";
 import { getCurrentHousehold } from "@/lib/queries/household-queries";
+import { getMembers } from "@/lib/queries/member-queries";
 
 export const metadata = { title: "Expenses" };
 
@@ -15,24 +18,36 @@ async function ExpenseContent() {
   const household = await getCurrentHousehold();
   if (!household) return null;
 
-  const expenses = await getExpenses(household.id);
+  const [expenses, categories, members] = await Promise.all([
+    getExpenses(household.id),
+    getCategories(household.id),
+    getMembers(household.id),
+  ]);
 
   if (expenses.length === 0) {
     return (
-      <EmptyState
-        icon={Receipt}
-        title="No expenses yet"
-        description="Start tracking your spending by adding your first expense."
-        action={
-          <Button nativeButton={false} render={<Link href="/expenses/new" />}>
-            <Plus className="mr-2 h-4 w-4" /> Add Expense
-          </Button>
-        }
-      />
+      <>
+        <EmptyState
+          icon={Receipt}
+          title="No expenses yet"
+          description="Start tracking your spending by adding your first expense."
+          action={
+            <Button nativeButton={false} render={<Link href="/expenses/new" />}>
+              <Plus className="mr-2 h-4 w-4" /> Add Expense
+            </Button>
+          }
+        />
+        <AddExpenseSheet categories={categories} members={members} />
+      </>
     );
   }
 
-  return <ExpenseList expenses={expenses} />;
+  return (
+    <>
+      <ExpenseList expenses={expenses} />
+      <AddExpenseSheet categories={categories} members={members} />
+    </>
+  );
 }
 
 export default function ExpensesPage() {

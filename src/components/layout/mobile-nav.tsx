@@ -24,6 +24,11 @@ const navItems = [
 export function MobileNav() {
   const pathname = usePathname();
   const reduceMotion = useReducedMotion();
+  // The /expenses list mounts an AddExpenseSheet whose FAB owns the shared
+  // `add-fab` layoutId for the FAB->sheet morph. Exactly one element may own
+  // that id at a time, so the nav FAB relinquishes it on that route (the link
+  // still works; it just doesn't claim the shared element there).
+  const navFabOwnsLayout = pathname !== "/expenses";
 
   return (
     <nav
@@ -45,7 +50,9 @@ export function MobileNav() {
                 className="relative -top-3 flex min-h-[44px] min-w-[44px] flex-col items-center justify-center gap-0.5 px-2 text-muted-foreground text-xs"
               >
                 <motion.span
-                  layoutId="add-fab"
+                  layoutId={
+                    navFabOwnsLayout && !reduceMotion ? "add-fab" : undefined
+                  }
                   whileTap={reduceMotion ? undefined : { scale: 0.9 }}
                   transition={{ type: "spring", stiffness: 500, damping: 30 }}
                   className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-float"
