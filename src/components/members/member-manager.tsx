@@ -1,14 +1,16 @@
 "use client";
 
-import { Crown, Edit, Plus, Trash2 } from "lucide-react";
+import { Crown, Edit, Plus, Trash2, Users } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { MotionCard } from "@/components/motion/motion-card";
+import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import { useFormatCurrency } from "@/components/providers/currency-provider";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
+import { EmptyState } from "@/components/shared/empty-state";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -93,68 +95,96 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
 
   return (
     <>
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {members.map((member) => (
-          <Card key={member.id} className="group">
-            <CardContent className="p-4">
-              <div className="mb-3 flex items-start justify-between">
-                <div className="flex items-center gap-3">
-                  <Avatar className="h-10 w-10">
-                    <AvatarFallback className="bg-primary/10 font-medium text-primary text-sm">
-                      {member.name.slice(0, 2).toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <p className="font-medium">{member.name}</p>
-                      {member.role === "admin" && (
-                        <Crown className="h-3.5 w-3.5 text-yellow-500" />
-                      )}
+      {members.length === 0 ? (
+        <EmptyState
+          icon={Users}
+          title="No members yet"
+          description="Add the people in your household so you can track who spent what."
+          action={
+            <Button onClick={openNew}>
+              <Plus className="mr-2 h-4 w-4" /> Add Member
+            </Button>
+          }
+        />
+      ) : (
+        <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {members.map((member) => (
+            <StaggerItem key={member.id}>
+              <MotionCard className="group space-y-3 rounded-2xl bg-card p-4 shadow-card">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-3">
+                    <Avatar className="h-10 w-10">
+                      <AvatarFallback className="bg-primary/10 font-medium text-primary text-sm">
+                        {member.name.slice(0, 2).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <p className="font-display font-medium">
+                          {member.name}
+                        </p>
+                        {member.role === "admin" && (
+                          // Admin Crown: intentional non-token accent (stock amber),
+                          // exempt from token-only rule like the Google brand SVG.
+                          <Crown className="h-3.5 w-3.5 text-amber-500" />
+                        )}
+                      </div>
+                      <Badge variant="secondary" className="mt-0.5 text-xs">
+                        {member.role}
+                      </Badge>
                     </div>
-                    <Badge variant="secondary" className="mt-0.5 text-xs">
-                      {member.role}
-                    </Badge>
+                  </div>
+                  <div className="flex gap-1 opacity-0 transition-opacity focus-within:opacity-100 group-hover:opacity-100">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-9 w-9"
+                      aria-label={`Edit ${member.name}`}
+                      onClick={() => openEdit(member)}
+                    >
+                      <Edit className="h-3.5 w-3.5" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-9 w-9 text-destructive"
+                      aria-label={`Remove ${member.name}`}
+                      onClick={() => setDeleteId(member.id)}
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
                   </div>
                 </div>
-                <div className="flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8"
-                    onClick={() => openEdit(member)}
-                  >
-                    <Edit className="h-3.5 w-3.5" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 text-destructive"
-                    onClick={() => setDeleteId(member.id)}
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </Button>
+                <div className="flex justify-between text-muted-foreground text-sm">
+                  <span>{member.expenseCount} expenses</span>
+                  <span className="font-display font-medium text-foreground tabular-nums">
+                    {formatCurrency(member.totalSpent)}
+                  </span>
                 </div>
-              </div>
-              <div className="flex justify-between text-muted-foreground text-sm">
-                <span>{member.expenseCount} expenses</span>
-                <span className="font-medium text-foreground">
-                  {formatCurrency(member.totalSpent)}
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+              </MotionCard>
+            </StaggerItem>
+          ))}
 
-        <Card
-          className="cursor-pointer border-dashed transition-colors hover:bg-accent/50"
-          onClick={openNew}
-        >
-          <CardContent className="flex h-full min-h-[120px] items-center justify-center gap-2 p-4 text-muted-foreground">
-            <Plus className="h-5 w-5" />
-            <span>Add Member</span>
-          </CardContent>
-        </Card>
-      </div>
+          <StaggerItem>
+            <MotionCard
+              className="flex h-full min-h-[120px] cursor-pointer items-center justify-center gap-2 rounded-2xl border border-border border-dashed bg-card/50 p-4 text-muted-foreground transition-colors hover:bg-accent/50"
+              onClick={openNew}
+              role="button"
+              tabIndex={0}
+              aria-label="Add member"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  openNew();
+                }
+              }}
+            >
+              <Plus className="h-5 w-5" />
+              <span>Add Member</span>
+            </MotionCard>
+          </StaggerItem>
+        </Stagger>
+      )}
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent>
