@@ -48,6 +48,53 @@ TypeScript 6 · Tailwind v4 + shadcn/ui on **Base UI 1.5** · **Turso/libSQL** (
 
 ## Work log
 
+### 2026‑06‑15 (latest) — M5/M6 final verification: isolation e2e + a11y → Lighthouse 100
+
+Closed the redesign (Plan 05 Tasks 9–12) on `redesign/fresh-ledger`. Tasks 1–8
+(grid/login/empty‑state restyles) were already committed; this pass added the
+data‑isolation e2e and the a11y/Lighthouse sweep.
+
+- **Task 9 — switch‑household isolation e2e** (`e2e/switch-household-isolation.spec.ts`,
+  commit `dfa5c9d`). Extended `seed()` in `src/lib/db/seed.ts` with an **e2e‑only**
+  two‑household fixture (`seedE2EIsolationFixture`) guarded on `DATABASE_URL`
+  containing `e2e.db` (dev/prod single‑household seed untouched): House A = 3
+  expenses incl. marker `HOUSEHOLD_A_ONLY_EXPENSE`, House B = 1 → counts differ +
+  marker unique to A. Used `amountMinor`/string `date` (plan’s draft said
+  `amount`/`Date` — wrong vs real schema). Added `data-testid="expense-row"` to the
+  **M4 `ExpenseRow`** root (plan pointed at the old inline `<div>` in
+  `expense-list.tsx`, which M4 refactored away). **Test bug found+fixed:** the
+  draft’s `getByText("Active").first()` is a false pass (the active household
+  already shows “Active”), and clicking switch then immediately `goto`‑ing races
+  the `switchHousehold` `Set‑Cookie`. Rewrote to scope to the House B card, click
+  its switch button, and **wait for B’s card to flip to Active** (gates on the
+  action completing) before reading `/expenses`.
+- **Task 10 — CI e2e job:** VERIFIED already correct (added in M0). Non‑blocking
+  (`continue-on-error`, no `needs`), runs `pnpm test:e2e` with `HOUSEHOLD_PASSCODE`/
+  `DATABASE_URL=file:./data/e2e.db`, uploads report on failure. No `db:init` step —
+  the M4 `webServer.command` owns reset+migrate+seed. No change.
+- **Tasks 11+12 — a11y + mobile Lighthouse** (commit `6a97a7b`, token‑only, 5 files).
+  Mobile Lighthouse (chrome‑devtools) found 4 concrete gaps; all fixed:
+  (a) header `SheetTrigger` menu button had no name → `aria-label="Open menu"`;
+  (b) `recent-expenses` category pill = full category color on a 12.5% tint of
+  itself (contrast **2.04**) → colored dot + `text-muted-foreground` (pie‑legend
+  pattern); (c) `mobile-nav` active label `text-primary` on `bg-primary/10` =
+  **4.4** → `bg-primary/5`; (d) `member-manager` avatar `text-primary`/`bg-primary/10`
+  = **4.47** → solid `bg-primary`/`text-primary-foreground` (matches header avatar);
+  (e) `(auth)/layout` `<div>`→`<main>` for the login landmark. **Mobile A11y after:
+  100** on /dashboard, /categories, /members, /login (was 89/100/96/98); Best
+  Practices/SEO 100. Dashboard mobile CWV under 4× CPU + Slow 4G: **LCP 2.18s**
+  (good), **CLS 0.00** — Performance comfortably ≥90, no lazy‑load forced (charts
+  already small client components). NOTE: `lighthouse_audit` MCP excludes
+  Performance; the score is inferred from the trace CWV.
+- **Gates:** tsc 0, Biome clean, **74 unit tests**, build ✅. e2e: all 4 specs
+  (login, dashboard, add‑expense, switch‑household‑isolation) pass; proven twice.
+  ⚠️ **Local‑only flake:** Playwright’s `webServer` cold‑start readiness probe
+  intermittently hits the 300s timeout on a loaded machine (the build+start itself
+  is ~13s, confirmed manually). NOT a test/code flake — every run where the server
+  comes up passes 4/4 deterministically. Doesn’t affect CI (`reuseExistingServer:
+  false`, fresh server). Clean twice‑run proof obtained via `reuseExistingServer`
+  against a pre‑started prod server (5.3s + 2.7s, 4/4 both).
+
 ### 2026‑06‑15 (later) — M4 expenses redesign: e2e suite made reliably green (`9997fa3`)
 
 Finished milestone M4 by getting `pnpm test:e2e` to pass all 3 specs (login,
