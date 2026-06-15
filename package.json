@@ -10,11 +10,13 @@
     "format": "biome format --write .",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:e2e": "playwright test",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:seed": "tsx scripts/seed.ts",
     "db:init": "pnpm db:migrate && pnpm db:seed",
-    "db:push": "drizzle-kit push"
+    "db:push": "drizzle-kit push",
+    "db:e2e": "DATABASE_URL=file:./data/e2e.db AUTH_SECRET=e2e-secret HOUSEHOLD_PASSCODE=e2e-pass pnpm db:migrate && DATABASE_URL=file:./data/e2e.db AUTH_SECRET=e2e-secret HOUSEHOLD_PASSCODE=e2e-pass pnpm db:seed"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
