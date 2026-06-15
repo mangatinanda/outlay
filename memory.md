@@ -48,6 +48,34 @@ TypeScript 6 · Tailwind v4 + shadcn/ui on **Base UI 1.5** · **Turso/libSQL** (
 
 ## Work log
 
+### 2026‑06‑15 (later) — M4 expenses redesign: e2e suite made reliably green (`9997fa3`)
+
+Finished milestone M4 by getting `pnpm test:e2e` to pass all 3 specs (login,
+dashboard, add‑expense) reliably (verified twice, incl. a cold `.next` run).
+The M4 components/spec were already committed; the failure was entirely in the
+**e2e harness ordering**. Root cause (one bug, two symptoms): **Playwright starts
+`webServer` BEFORE running `globalSetup`** (the webServer plugin's `setup()`
+resolves before any globalSetup hook — confirmed in PW source). The old
+`e2e/global-setup.ts` seeded `data/e2e.db` too late → (a) cold‑start "no such
+table: households" race, and (b) its `rmSync`+recreate moved the file out from
+under the already‑running server's open libSQL connection →
+`SQLITE_READONLY_DBMOVED` on `createExpense`'s INSERT (reads from page cache
+still worked, so only writes failed; the form then left the bottom sheet open,
+failing the spec's `toBeHidden()`).
+
+- **Fix:** moved the whole DB lifecycle into the `webServer.command`
+  (`pnpm db:e2e:reset && pnpm build && pnpm start`) via a new idempotent
+  `scripts/e2e-db.ts` (reset + migrate + seed); deleted `e2e/global-setup.ts`.
+  Schema/seed now exist before the server opens its connection, and the file is
+  never deleted while the server holds it. Bumped webServer timeout 180s→300s
+  (measured cold build is ~10s + ~1.5s reset, so huge headroom). Added
+  `AUTH_URL`/`AUTH_TRUST_HOST` to the webServer env to silence Auth.js
+  `UntrustedHost` logs under `next start`. **Did NOT touch** `expense-actions.ts`,
+  queries, validators, or any M4 component — the form already preselects
+  `categories[0]`/`members[0]`, which was correct.
+- Gates: tsc ✅, Biome lint ✅, 74 unit tests ✅, build ✅. Committed `9997fa3` on
+  `redesign/fresh-ledger`.
+
 ### 2026‑06‑12 (later) — Audit complete: 1.5, 1.6, all of milestone 3 + Claude Code config
 
 - **1.5:** failed passcode attempts log + pay a constant ~1s delay (`FAILED_ATTEMPT_DELAY_MS`).
