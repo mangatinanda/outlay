@@ -40,7 +40,10 @@ export function ExpenseRow({
   }
 
   return (
-    <div className="relative overflow-hidden rounded-2xl">
+    <div
+      data-testid="expense-row"
+      className="relative overflow-hidden rounded-2xl"
+    >
       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center justify-end bg-destructive/10 pr-5 text-destructive">
         <Trash2 className="size-5" />
       </div>

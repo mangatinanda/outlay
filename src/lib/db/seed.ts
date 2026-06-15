@@ -12,6 +12,16 @@ export async function seed() {
     return;
   }
 
+  // e2e isolation fixture: two households with distinct data, so the
+  // switch-household data-isolation spec can prove one household's expenses
+  // never leak into another. Keyed on the dedicated e2e DB file so the normal
+  // dev/prod single-household seed below is untouched.
+  if ((process.env.DATABASE_URL ?? "").includes("e2e.db")) {
+    await seedE2EIsolationFixture();
+    console.log("Seeded e2e isolation fixture (2 households).");
+    return;
+  }
+
   const householdId = createId();
   const memberId = createId();
 
@@ -155,4 +165,57 @@ export async function seed() {
   }
 
   console.log("Database seeded successfully!");
+}
+
+/**
+ * Seeds two households with distinct data for the e2e data-isolation spec.
+ * House A gets the HOUSEHOLD_A_ONLY_EXPENSE marker plus two more rows (3
+ * total); House B gets a single row — so the per-household expense counts
+ * differ and the marker is unique to A. getCurrentHousehold() falls back to
+ * the first household (House A), so A is active on first load.
+ */
+async function seedE2EIsolationFixture() {
+  for (const [idx, name, rows] of [
+    [0, "House A", ["HOUSEHOLD_A_ONLY_EXPENSE", "A Groceries", "A Rent"]],
+    [1, "House B", ["B Coffee"]],
+  ] as const) {
+    const householdId = createId();
+    const memberId = createId();
+
+    await db.insert(households).values({
+      id: householdId,
+      name,
+      currency: "INR",
+    });
+
+    await db.insert(householdMembers).values({
+      id: memberId,
+      householdId,
+      name: idx === 0 ? "Alice" : "Bob",
+      role: "admin",
+    });
+
+    const firstCategory = DEFAULT_CATEGORIES[0];
+    const categoryId = createId();
+    await db.insert(categories).values({
+      id: categoryId,
+      householdId,
+      name: firstCategory.name,
+      icon: firstCategory.icon,
+      color: firstCategory.color,
+      isDefault: true,
+    });
+
+    for (const description of rows) {
+      await db.insert(expenses).values({
+        id: createId(),
+        householdId,
+        categoryId,
+        memberId,
+        amountMinor: toMinorUnits(100),
+        description,
+        date: new Date().toLocaleDateString("en-CA"),
+      });
+    }
+  }
 }
