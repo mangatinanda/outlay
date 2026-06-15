@@ -37,7 +37,7 @@ export function CurrencySwitcher({ current }: { current: string }) {
       onValueChange={(v) => handleChange(v as string)}
       disabled={pending}
     >
-      <SelectTrigger className="w-56">
+      <SelectTrigger className="w-56 rounded-xl">
         <SelectValue placeholder="Select currency" />
       </SelectTrigger>
       <SelectContent>

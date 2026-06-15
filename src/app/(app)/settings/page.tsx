@@ -20,9 +20,9 @@ export default async function SettingsPage() {
     <div className="max-w-2xl space-y-6">
       <PageHeader title="Settings" description="Manage your app preferences" />
 
-      <Card>
+      <Card className="rounded-2xl border-0 bg-card shadow-card">
         <CardHeader>
-          <CardTitle>Household</CardTitle>
+          <CardTitle className="font-display">Household</CardTitle>
           <CardDescription>Your household information</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -31,7 +31,9 @@ export default async function SettingsPage() {
               <Home className="h-6 w-6" />
             </div>
             <div>
-              <p className="font-medium">{household?.name ?? "My Home"}</p>
+              <p className="font-display font-medium">
+                {household?.name ?? "My Home"}
+              </p>
               <p className="text-muted-foreground text-sm">Your household</p>
             </div>
           </div>
@@ -46,9 +48,9 @@ export default async function SettingsPage() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="rounded-2xl border-0 bg-card shadow-card">
         <CardHeader>
-          <CardTitle>About</CardTitle>
+          <CardTitle className="font-display">About</CardTitle>
         </CardHeader>
         <CardContent className="space-y-1 text-muted-foreground text-sm">
           <p>Outlay v0.1.0</p>
