@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { signOut } from "@/auth";
+import { env } from "@/lib/env";
 import {
   constantTimeEqual,
   SESSION_COOKIE,
@@ -23,12 +24,8 @@ export const verifyPasscode = safeAction(
   "verifyPasscode",
   async (_prev: PasscodeState, formData: FormData): Promise<PasscodeState> => {
     const passcode = String(formData.get("passcode") ?? "");
-    const expected = process.env.HOUSEHOLD_PASSCODE;
 
-    if (!expected) {
-      return { error: "Server is missing HOUSEHOLD_PASSCODE." };
-    }
-    if (!constantTimeEqual(passcode, expected)) {
+    if (!constantTimeEqual(passcode, env.HOUSEHOLD_PASSCODE)) {
       console.error("[auth] failed passcode attempt");
       await new Promise((resolve) =>
         setTimeout(resolve, FAILED_ATTEMPT_DELAY_MS),

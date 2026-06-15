@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import { isEmailAllowed } from "@/lib/allow-list";
+import { env } from "@/lib/env";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [Google], // reads AUTH_GOOGLE_ID / AUTH_GOOGLE_SECRET from env
@@ -13,7 +14,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn({ user }) {
       return isEmailAllowed(
         user.email,
-        process.env.HOUSEHOLD_ALLOWED_EMAILS,
+        env.HOUSEHOLD_ALLOWED_EMAILS,
         process.env.NODE_ENV === "production",
       );
     },

@@ -1,3 +1,5 @@
+import { env } from "@/lib/env";
+
 // Shared access-gate helpers. Uses only the Web Crypto API so the same code
 // runs in Edge middleware and in Node Server Actions. No JWT library needed:
 // the session cookie is `v1.<issued-at>.<HMAC-SHA256 signature>`, which an
@@ -13,12 +15,6 @@ const SESSION_VERSION = "v1";
 
 const encoder = new TextEncoder();
 
-function getSecret(): string {
-  const secret = process.env.AUTH_SECRET;
-  if (!secret) throw new Error("AUTH_SECRET is not set");
-  return secret;
-}
-
 function toBase64Url(bytes: ArrayBuffer): string {
   const view = new Uint8Array(bytes);
   let binary = "";
@@ -32,7 +28,7 @@ function toBase64Url(bytes: ArrayBuffer): string {
 async function hmac(data: string): Promise<string> {
   const key = await crypto.subtle.importKey(
     "raw",
-    encoder.encode(getSecret()),
+    encoder.encode(env.AUTH_SECRET),
     { name: "HMAC", hash: "SHA-256" },
     false,
     ["sign"],
