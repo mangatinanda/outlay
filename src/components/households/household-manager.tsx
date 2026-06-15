@@ -3,10 +3,11 @@
 import { Check, Edit, Home, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { MotionCard } from "@/components/motion/motion-card";
+import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -100,27 +101,28 @@ export function HouseholdManager({
 
   return (
     <>
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {households.map((h) => (
-          <Card key={h.id} className="group">
-            <CardContent className="space-y-3 p-4">
+          <StaggerItem key={h.id}>
+            <MotionCard className="group space-y-3 rounded-2xl bg-card p-4 shadow-card">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
                   <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
                     <Home className="h-5 w-5" />
                   </span>
                   <div>
-                    <p className="font-medium">{h.name}</p>
+                    <p className="font-display font-medium">{h.name}</p>
                     <p className="text-muted-foreground text-xs">
                       {h.currency}
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+                <div className="flex gap-1 opacity-0 transition-opacity focus-within:opacity-100 group-hover:opacity-100">
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-8"
+                    className="h-9 w-9"
+                    aria-label={`Rename ${h.name}`}
                     onClick={() => openEdit(h)}
                   >
                     <Edit className="h-3.5 w-3.5" />
@@ -128,7 +130,8 @@ export function HouseholdManager({
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-8 text-destructive"
+                    className="h-9 w-9 text-destructive"
+                    aria-label={`Delete ${h.name}`}
                     onClick={() => setDeleteId(h.id)}
                     disabled={households.length <= 1}
                   >
@@ -150,20 +153,29 @@ export function HouseholdManager({
                   Switch to this household
                 </Button>
               )}
-            </CardContent>
-          </Card>
+            </MotionCard>
+          </StaggerItem>
         ))}
 
-        <Card
-          className="cursor-pointer border-dashed transition-colors hover:bg-accent/50"
-          onClick={openNew}
-        >
-          <CardContent className="flex h-full min-h-[120px] items-center justify-center gap-2 p-4 text-muted-foreground">
+        <StaggerItem>
+          <MotionCard
+            className="flex h-full min-h-[120px] cursor-pointer items-center justify-center gap-2 rounded-2xl border border-border border-dashed bg-card/50 p-4 text-muted-foreground transition-colors hover:bg-accent/50"
+            onClick={openNew}
+            role="button"
+            tabIndex={0}
+            aria-label="New household"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                openNew();
+              }
+            }}
+          >
             <Plus className="h-5 w-5" />
             <span>New household</span>
-          </CardContent>
-        </Card>
-      </div>
+          </MotionCard>
+        </StaggerItem>
+      </Stagger>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent>
