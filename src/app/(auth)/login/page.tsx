@@ -35,17 +35,19 @@ function GoogleIcon() {
 
 export default function LoginPage() {
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md rounded-3xl border-0 bg-card shadow-float">
       <CardHeader className="space-y-4 text-center">
         <div className="flex justify-center">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
+          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-card">
             <Home className="h-8 w-8" />
           </div>
         </div>
         <div>
-          <CardTitle className="text-2xl">Welcome to Outlay</CardTitle>
+          <CardTitle className="font-display text-2xl">
+            Welcome to Outlay
+          </CardTitle>
           <CardDescription className="mt-2">
-            Sign in to continue
+            Track your household spending together
           </CardDescription>
         </div>
       </CardHeader>
@@ -59,7 +61,7 @@ export default function LoginPage() {
           <Button
             type="submit"
             variant="outline"
-            className="h-12 w-full gap-3 text-base"
+            className="h-12 w-full gap-3 rounded-xl text-base"
           >
             <GoogleIcon />
             Continue with Google

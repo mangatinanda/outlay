@@ -19,7 +19,7 @@ export function PasscodeForm() {
         placeholder="Enter household passcode"
         autoFocus
         required
-        className="h-12 text-base"
+        className="h-12 rounded-xl text-base"
         aria-invalid={state?.error ? true : undefined}
       />
       {state?.error && (
@@ -27,7 +27,7 @@ export function PasscodeForm() {
       )}
       <Button
         type="submit"
-        className="h-12 w-full text-base"
+        className="h-12 w-full rounded-xl text-base"
         disabled={pending}
       >
         {pending ? "Checking…" : "Unlock"}
