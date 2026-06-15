@@ -47,28 +47,38 @@ export function RecentExpenses({ expenses }: RecentExpensesProps) {
         </Button>
       </CardHeader>
       <CardContent>
-        <div className="space-y-3">
+        <div className="space-y-1">
           {expenses.map((expense) => (
             <div
               key={expense.id}
-              className="flex items-center justify-between py-2"
+              className="flex items-center justify-between gap-3 rounded-lg px-2 py-2 transition-colors hover:bg-muted/50"
             >
-              <div className="flex items-center gap-3">
+              <div className="flex min-w-0 items-center gap-3">
                 <CategoryIcon
                   icon={expense.categoryIcon}
                   color={expense.categoryColor}
                 />
-                <div>
-                  <p className="font-medium text-sm leading-none">
+                <div className="min-w-0">
+                  <p className="truncate font-medium text-sm leading-none">
                     {expense.description}
                   </p>
-                  <p className="mt-1 text-muted-foreground text-xs">
-                    {expense.categoryName} &middot; {expense.memberName}{" "}
-                    &middot; {format(parseISO(expense.date), "MMM d")}
-                  </p>
+                  <div className="mt-1.5 flex items-center gap-1.5 text-muted-foreground text-xs">
+                    <span
+                      className="rounded-full px-2 py-0.5 font-medium"
+                      style={{
+                        backgroundColor: `${expense.categoryColor}20`,
+                        color: expense.categoryColor,
+                      }}
+                    >
+                      {expense.categoryName}
+                    </span>
+                    <span>{expense.memberName}</span>
+                    <span aria-hidden>&middot;</span>
+                    <span>{format(parseISO(expense.date), "MMM d")}</span>
+                  </div>
                 </div>
               </div>
-              <span className="font-semibold text-sm">
+              <span className="shrink-0 font-semibold text-sm tabular-nums">
                 {formatCurrency(expense.amount)}
               </span>
             </div>
