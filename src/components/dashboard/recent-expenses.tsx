@@ -63,13 +63,12 @@ export function RecentExpenses({ expenses }: RecentExpensesProps) {
                     {expense.description}
                   </p>
                   <div className="mt-1.5 flex items-center gap-1.5 text-muted-foreground text-xs">
-                    <span
-                      className="rounded-full px-2 py-0.5 font-medium"
-                      style={{
-                        backgroundColor: `${expense.categoryColor}20`,
-                        color: expense.categoryColor,
-                      }}
-                    >
+                    <span className="flex items-center gap-1.5 rounded-full bg-muted px-2 py-0.5 font-medium text-muted-foreground">
+                      <span
+                        aria-hidden
+                        className="h-2 w-2 shrink-0 rounded-full"
+                        style={{ backgroundColor: expense.categoryColor }}
+                      />
                       {expense.categoryName}
                     </span>
                     <span>{expense.memberName}</span>

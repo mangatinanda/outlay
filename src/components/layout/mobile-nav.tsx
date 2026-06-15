@@ -83,7 +83,7 @@ export function MobileNav() {
                       ? { duration: 0 }
                       : { type: "spring", stiffness: 500, damping: 35 }
                   }
-                  className="absolute inset-x-1 top-1 bottom-1 -z-10 rounded-xl bg-primary/10"
+                  className="absolute inset-x-1 top-1 bottom-1 -z-10 rounded-xl bg-primary/5"
                 />
               )}
               <item.icon className="h-5 w-5" />

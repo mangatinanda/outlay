@@ -56,7 +56,11 @@ export function Header({
         <div className="flex min-w-0 items-center gap-2">
           <div className="flex items-center gap-2 md:hidden">
             <Sheet>
-              <SheetTrigger render={<Button variant="ghost" size="icon" />}>
+              <SheetTrigger
+                render={
+                  <Button variant="ghost" size="icon" aria-label="Open menu" />
+                }
+              >
                 <Menu className="h-5 w-5" />
               </SheetTrigger>
               <SheetContent side="left" className="w-64 p-0">

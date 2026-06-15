@@ -114,7 +114,7 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
                     <Avatar className="h-10 w-10">
-                      <AvatarFallback className="bg-primary/10 font-medium text-primary text-sm">
+                      <AvatarFallback className="bg-primary font-medium text-primary-foreground text-sm">
                         {member.name.slice(0, 2).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
