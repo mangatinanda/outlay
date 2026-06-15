@@ -1,9 +1,23 @@
 "use client";
 
-import { Bar, BarChart, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip } from "recharts";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useFormatCurrency } from "@/components/providers/currency-provider";
 import { format, parseISO } from "date-fns";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import { useFormatCurrency } from "@/components/providers/currency-provider";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 interface ExpenseChartProps {
   data: { date: string; total: number }[];
@@ -29,12 +43,12 @@ export function ExpenseChart({ data }: ExpenseChartProps) {
               <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
               <XAxis
                 dataKey="label"
-                className="text-xs fill-muted-foreground"
+                className="fill-muted-foreground text-xs"
                 tickLine={false}
                 axisLine={false}
               />
               <YAxis
-                className="text-xs fill-muted-foreground"
+                className="fill-muted-foreground text-xs"
                 tickLine={false}
                 axisLine={false}
                 tickFormatter={(v) =>
@@ -49,10 +63,10 @@ export function ExpenseChart({ data }: ExpenseChartProps) {
                   if (!active || !payload?.length) return null;
                   return (
                     <div className="rounded-lg border bg-card p-2 shadow-sm">
-                      <div className="text-sm font-medium">
+                      <div className="font-medium text-sm">
                         {formatCurrency(Number(payload[0].value))}
                       </div>
-                      <div className="text-xs text-muted-foreground">
+                      <div className="text-muted-foreground text-xs">
                         {payload[0].payload.label}
                       </div>
                     </div>

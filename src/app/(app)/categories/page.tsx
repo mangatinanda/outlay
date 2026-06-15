@@ -1,9 +1,9 @@
 import { Suspense } from "react";
-import { PageHeader } from "@/components/shared/page-header";
 import { CategoryManager } from "@/components/categories/category-manager";
+import { PageHeader } from "@/components/shared/page-header";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getCategoriesWithCount } from "@/lib/queries/category-queries";
 import { getCurrentHousehold } from "@/lib/queries/household-queries";
-import { Skeleton } from "@/components/ui/skeleton";
 
 export const metadata = { title: "Categories" };
 

@@ -1,9 +1,28 @@
 import {
-  ShoppingCart, Zap, Home, Car, Utensils, Film,
-  HeartPulse, ShoppingBag, GraduationCap, Shield,
-  Repeat, MoreHorizontal, Plane, Baby, Dog,
-  Dumbbell, Gift, Wrench, Wifi, Phone,
-  Receipt, PiggyBank, Briefcase, Music,
+  Baby,
+  Briefcase,
+  Car,
+  Dog,
+  Dumbbell,
+  Film,
+  Gift,
+  GraduationCap,
+  HeartPulse,
+  Home,
+  MoreHorizontal,
+  Music,
+  Phone,
+  PiggyBank,
+  Plane,
+  Receipt,
+  Repeat,
+  Shield,
+  ShoppingBag,
+  ShoppingCart,
+  Utensils,
+  Wifi,
+  Wrench,
+  Zap,
 } from "lucide-react";
 
 const iconMap: Record<string, React.ElementType> = {
@@ -46,7 +65,7 @@ export function CategoryIcon({ icon, color, size = "md" }: CategoryIconProps) {
 
   return (
     <div
-      className={`${sizeClasses} rounded-lg flex items-center justify-center`}
+      className={`${sizeClasses} flex items-center justify-center rounded-lg`}
       style={{ backgroundColor: `${color}20` }}
     >
       <IconComponent className={iconSize} style={{ color }} />

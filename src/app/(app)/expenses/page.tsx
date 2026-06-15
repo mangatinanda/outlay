@@ -1,13 +1,13 @@
-import { Suspense } from "react";
-import { ExpenseList } from "@/components/expenses/expense-list";
-import { PageHeader } from "@/components/shared/page-header";
-import { EmptyState } from "@/components/shared/empty-state";
-import { getExpenses } from "@/lib/queries/expense-queries";
-import { getCurrentHousehold } from "@/lib/queries/household-queries";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Plus, Receipt } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
+import { ExpenseList } from "@/components/expenses/expense-list";
+import { EmptyState } from "@/components/shared/empty-state";
+import { PageHeader } from "@/components/shared/page-header";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getExpenses } from "@/lib/queries/expense-queries";
+import { getCurrentHousehold } from "@/lib/queries/household-queries";
 
 export const metadata = { title: "Expenses" };
 

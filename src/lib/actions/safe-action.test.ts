@@ -7,7 +7,10 @@ afterEach(() => {
 
 describe("safeAction", () => {
   it("passes through the wrapped function's result", async () => {
-    const action = safeAction("ok", async (n: number) => ({ success: true as const, n }));
+    const action = safeAction("ok", async (n: number) => ({
+      success: true as const,
+      n,
+    }));
     expect(await action(7)).toEqual({ success: true, n: 7 });
   });
 

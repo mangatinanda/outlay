@@ -1,7 +1,8 @@
 "use client";
 
-import { Menu, LogOut, Settings } from "lucide-react";
+import { LogOut, Menu, Settings } from "lucide-react";
 import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -12,11 +13,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { logout } from "@/lib/actions/auth-actions";
 import { Sidebar } from "./sidebar";
 import { ThemeToggle } from "./theme-toggle";
-import { logout } from "@/lib/actions/auth-actions";
 
 export interface HeaderUser {
   name?: string | null;
@@ -30,8 +30,8 @@ function initials(user: HeaderUser | null) {
 
 export function Header({ user }: { user: HeaderUser | null }) {
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
-      <div className="flex items-center justify-between h-16 px-4 md:px-6">
+    <header className="sticky top-0 z-40 border-border border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
+      <div className="flex h-16 items-center justify-between px-4 md:px-6">
         <div className="flex items-center gap-2 md:hidden">
           <Sheet>
             <SheetTrigger render={<Button variant="ghost" size="icon" />}>
@@ -41,7 +41,7 @@ export function Header({ user }: { user: HeaderUser | null }) {
               <Sidebar inSheet />
             </SheetContent>
           </Sheet>
-          <span className="text-lg font-bold">Outlay</span>
+          <span className="font-bold text-lg">Outlay</span>
         </div>
 
         <div className="hidden md:block" />
@@ -51,9 +51,11 @@ export function Header({ user }: { user: HeaderUser | null }) {
             <ThemeToggle />
           </div>
           <DropdownMenu>
-            <DropdownMenuTrigger className="relative h-9 w-9 rounded-full cursor-pointer">
+            <DropdownMenuTrigger className="relative h-9 w-9 cursor-pointer rounded-full">
               <Avatar className="h-9 w-9">
-                {user?.image && <AvatarImage src={user.image} alt={user.name ?? ""} />}
+                {user?.image && (
+                  <AvatarImage src={user.image} alt={user.name ?? ""} />
+                )}
                 <AvatarFallback className="bg-primary text-primary-foreground text-sm">
                   {initials(user)}
                 </AvatarFallback>
@@ -63,8 +65,10 @@ export function Header({ user }: { user: HeaderUser | null }) {
               <DropdownMenuGroup>
                 <DropdownMenuLabel>
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium">{user?.name ?? "Guest"}</p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="font-medium text-sm">
+                      {user?.name ?? "Guest"}
+                    </p>
+                    <p className="text-muted-foreground text-xs">
                       {user?.email ?? "Signed in with passcode"}
                     </p>
                   </div>
@@ -79,7 +83,7 @@ export function Header({ user }: { user: HeaderUser | null }) {
               <form action={logout}>
                 <button
                   type="submit"
-                  className="flex w-full cursor-default items-center gap-1.5 rounded-md px-1.5 py-1 text-sm text-destructive outline-hidden hover:bg-destructive/10"
+                  className="flex w-full cursor-default items-center gap-1.5 rounded-md px-1.5 py-1 text-destructive text-sm outline-hidden hover:bg-destructive/10"
                 >
                   <LogOut className="h-4 w-4" />
                   Sign out

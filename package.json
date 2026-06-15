@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "biome check .",
+    "format": "biome format --write .",
     "test": "vitest run",
     "test:watch": "vitest",
     "db:generate": "drizzle-kit generate",
@@ -36,6 +37,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.5.0",
     "@serwist/turbopack": "^9.5.11",
     "@tailwindcss/postcss": "^4.3.0",
     "@types/node": "^25.9.1",
@@ -43,8 +45,6 @@
     "@types/react-dom": "^19.2.3",
     "drizzle-kit": "^0.31.10",
     "esbuild": "^0.28.0",
-    "eslint": "^9.39.4",
-    "eslint-config-next": "16.2.7",
     "serwist": "^9.5.11",
     "shadcn": "^4.10.0",
     "tailwindcss": "^4.3.0",

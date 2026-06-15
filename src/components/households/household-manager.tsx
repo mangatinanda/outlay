@@ -1,18 +1,21 @@
 "use client";
 
+import { Check, Edit, Home, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
+import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -20,16 +23,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ConfirmDialog } from "@/components/shared/confirm-dialog";
-import { CURRENCIES } from "@/lib/constants";
 import {
   createHousehold,
-  renameHousehold,
   deleteHousehold,
+  renameHousehold,
   switchHousehold,
 } from "@/lib/actions/household-actions";
-import { Home, Plus, Edit, Trash2, Check } from "lucide-react";
-import { toast } from "sonner";
+import { CURRENCIES } from "@/lib/constants";
 
 interface HouseholdItem {
   id: string;
@@ -103,7 +103,7 @@ export function HouseholdManager({
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {households.map((h) => (
           <Card key={h.id} className="group">
-            <CardContent className="p-4 space-y-3">
+            <CardContent className="space-y-3 p-4">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
                   <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
@@ -111,10 +111,12 @@ export function HouseholdManager({
                   </span>
                   <div>
                     <p className="font-medium">{h.name}</p>
-                    <p className="text-xs text-muted-foreground">{h.currency}</p>
+                    <p className="text-muted-foreground text-xs">
+                      {h.currency}
+                    </p>
                   </div>
                 </div>
-                <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
                   <Button
                     variant="ghost"
                     size="icon"
@@ -153,10 +155,10 @@ export function HouseholdManager({
         ))}
 
         <Card
-          className="border-dashed cursor-pointer hover:bg-accent/50 transition-colors"
+          className="cursor-pointer border-dashed transition-colors hover:bg-accent/50"
           onClick={openNew}
         >
-          <CardContent className="flex items-center justify-center gap-2 p-4 h-full min-h-[120px] text-muted-foreground">
+          <CardContent className="flex h-full min-h-[120px] items-center justify-center gap-2 p-4 text-muted-foreground">
             <Plus className="h-5 w-5" />
             <span>New household</span>
           </CardContent>
@@ -166,7 +168,9 @@ export function HouseholdManager({
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{editing ? "Rename household" : "New household"}</DialogTitle>
+            <DialogTitle>
+              {editing ? "Rename household" : "New household"}
+            </DialogTitle>
           </DialogHeader>
           <form action={handleSubmit} className="space-y-4">
             <div className="space-y-2">
@@ -197,7 +201,11 @@ export function HouseholdManager({
               </div>
             )}
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setDialogOpen(false)}
+              >
                 Cancel
               </Button>
               <Button type="submit" disabled={loading}>

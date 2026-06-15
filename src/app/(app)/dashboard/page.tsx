@@ -1,27 +1,27 @@
-import { Suspense } from "react";
-import { SummaryCards } from "@/components/dashboard/summary-cards";
-import { ExpenseChart } from "@/components/dashboard/expense-chart";
-import { CategoryPieChart } from "@/components/dashboard/category-pie-chart";
-import { RecentExpenses } from "@/components/dashboard/recent-expenses";
-import { PageHeader } from "@/components/shared/page-header";
-import {
-  getDashboardStats,
-  getCategoryBreakdown,
-  getSpendingByDay,
-  getRecentExpenses,
-} from "@/lib/queries/dashboard-queries";
-import { getCurrentHousehold } from "@/lib/queries/household-queries";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
+import { CategoryPieChart } from "@/components/dashboard/category-pie-chart";
+import { ExpenseChart } from "@/components/dashboard/expense-chart";
+import { RecentExpenses } from "@/components/dashboard/recent-expenses";
+import { SummaryCards } from "@/components/dashboard/summary-cards";
+import { PageHeader } from "@/components/shared/page-header";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  getCategoryBreakdown,
+  getDashboardStats,
+  getRecentExpenses,
+  getSpendingByDay,
+} from "@/lib/queries/dashboard-queries";
+import { getCurrentHousehold } from "@/lib/queries/household-queries";
 
 export const metadata = { title: "Dashboard" };
 
 function DashboardSkeleton() {
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {Array.from({ length: 4 }).map((_, i) => (
           <Skeleton key={i} className="h-[120px] rounded-xl" />
         ))}
@@ -36,7 +36,8 @@ function DashboardSkeleton() {
 
 async function DashboardContent() {
   const household = await getCurrentHousehold();
-  if (!household) return <p>No household found. Please set up your home first.</p>;
+  if (!household)
+    return <p>No household found. Please set up your home first.</p>;
 
   const [stats, categoryData, dailyData, recent] = await Promise.all([
     getDashboardStats(household.id),

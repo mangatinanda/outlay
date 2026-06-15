@@ -1,9 +1,9 @@
 import { Suspense } from "react";
-import { PageHeader } from "@/components/shared/page-header";
 import { MemberManager } from "@/components/members/member-manager";
-import { getMembersWithStats } from "@/lib/queries/member-queries";
-import { getCurrentHousehold } from "@/lib/queries/household-queries";
+import { PageHeader } from "@/components/shared/page-header";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getCurrentHousehold } from "@/lib/queries/household-queries";
+import { getMembersWithStats } from "@/lib/queries/member-queries";
 
 export const metadata = { title: "Members" };
 
@@ -18,10 +18,7 @@ async function MemberContent() {
 export default function MembersPage() {
   return (
     <div className="space-y-6">
-      <PageHeader
-        title="Members"
-        description="Manage your household members"
-      />
+      <PageHeader title="Members" description="Manage your household members" />
       <Suspense
         fallback={
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

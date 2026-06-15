@@ -1,5 +1,5 @@
-import { drizzle } from "drizzle-orm/libsql";
 import { createClient } from "@libsql/client";
+import { drizzle } from "drizzle-orm/libsql";
 import * as schema from "./schema";
 
 // One driver for both worlds: a local SQLite file (`file:./data/expense.db`)

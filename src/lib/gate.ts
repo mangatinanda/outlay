@@ -23,7 +23,10 @@ function toBase64Url(bytes: ArrayBuffer): string {
   const view = new Uint8Array(bytes);
   let binary = "";
   for (const b of view) binary += String.fromCharCode(b);
-  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  return btoa(binary)
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
 }
 
 async function hmac(data: string): Promise<string> {

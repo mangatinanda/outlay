@@ -9,9 +9,7 @@ const cookieJar = vi.hoisted(() => {
 vi.mock("next/headers", () => ({
   cookies: async () => ({
     get: (name: string) =>
-      cookieJar.has(name)
-        ? { name, value: cookieJar.get(name)! }
-        : undefined,
+      cookieJar.has(name) ? { name, value: cookieJar.get(name)! } : undefined,
     set: (name: string, value: string) => void cookieJar.set(name, value),
     delete: (name: string) => void cookieJar.delete(name),
   }),

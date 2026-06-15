@@ -1,6 +1,9 @@
-import { PageHeader } from "@/components/shared/page-header";
-import { getCurrentHousehold, listHouseholds } from "@/lib/queries/household-queries";
 import { HouseholdManager } from "@/components/households/household-manager";
+import { PageHeader } from "@/components/shared/page-header";
+import {
+  getCurrentHousehold,
+  listHouseholds,
+} from "@/lib/queries/household-queries";
 
 export const metadata = { title: "Households" };
 

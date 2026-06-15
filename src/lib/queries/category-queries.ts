@@ -1,6 +1,6 @@
+import { eq, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { categories, expenses } from "@/lib/db/schema";
-import { eq, sql } from "drizzle-orm";
 
 export async function getCategories(householdId: string) {
   return db

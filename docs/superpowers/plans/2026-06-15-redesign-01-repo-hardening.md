@@ -55,31 +55,32 @@ This is the M0 foundation change: replace ESLint with Biome and wire an auto-for
 
 ### Task 2: Create biome.json
 
+> **EXECUTION UPDATE (2026-06-15, controller decision).** The first implementer discovered that
+> Biome 2.5.0's `recommended` set is stricter than the removed `eslint-config-next` and flags 13
+> pre-existing, *acceptable* patterns as errors, and that the glob `includes` form below fails Biome's
+> own `useBiomeIgnoreFolder` rule. **Resolution:** this is a lint-tooling *swap*, not a refactor — so
+> adopt Biome's formatter + import-sort + class-sort as enforced, but downgrade the specific
+> opinionated rules that flag intentional pre-existing patterns (keeping the migration
+> behavior-preserving and isolated). Concretely:
+> 1. After creating the file below, run **`pnpm exec biome migrate --write`** to reconcile the config
+>    to the installed 2.5.0 form (this rewrites `includes` to folder form, e.g. `"!.next"`, and clears
+>    any deprecated-field warnings). Accept Biome's rewritten `includes`.
+> 2. Ensure the `linter.rules` and `overrides` match the **corrected config** shown below (keep
+>    `useSortedClasses` at `error`; the downgrades below are intentional and commented).
+
 - [ ] **Step 1: Create the Biome configuration.**
   Files:
   - Create `/Users/nanda/vibe-code/outlay/biome.json`
 
-  Write the complete file. Pin `$schema` to the exact installed version so the schema and the binary never drift (use the version that `pnpm add` resolved in the previous task — `2.5.0` at planning time):
+  Write the complete file (pin `$schema` to the exact installed version — `2.5.0` at planning time; `biome migrate` will keep it aligned):
 
   ```json
   {
     "$schema": "https://biomejs.dev/schemas/2.5.0/schema.json",
-    "vcs": {
-      "enabled": true,
-      "clientKind": "git",
-      "useIgnoreFile": true
-    },
+    "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
     "files": {
       "ignoreUnknown": true,
-      "includes": [
-        "**",
-        "!**/.next/**",
-        "!**/out/**",
-        "!**/build/**",
-        "!**/node_modules/**",
-        "!**/next-env.d.ts",
-        "!**/drizzle/**"
-      ]
+      "includes": ["**", "!.next", "!out", "!build", "!node_modules", "!next-env.d.ts", "!drizzle"]
     },
     "formatter": {
       "enabled": true,
@@ -88,14 +89,7 @@ This is the M0 foundation change: replace ESLint with Biome and wire an auto-for
       "lineWidth": 80,
       "lineEnding": "lf"
     },
-    "assist": {
-      "enabled": true,
-      "actions": {
-        "source": {
-          "organizeImports": "on"
-        }
-      }
-    },
+    "assist": { "enabled": true, "actions": { "source": { "organizeImports": "on" } } },
     "linter": {
       "enabled": true,
       "rules": {
@@ -103,44 +97,62 @@ This is the M0 foundation change: replace ESLint with Biome and wire an auto-for
         "nursery": {
           "useSortedClasses": {
             "level": "error",
-            "options": {
-              "attributes": ["className"],
-              "functions": ["cn", "cva", "clsx"]
-            }
+            "options": { "attributes": ["className"], "functions": ["cn", "cva", "clsx"] }
           }
+        },
+        "suspicious": {
+          "noArrayIndexKey": "off",
+          "noAssignInExpressions": "off"
+        },
+        "a11y": {
+          "noSvgWithoutTitle": "off"
         }
       }
     },
     "javascript": {
-      "formatter": {
-        "quoteStyle": "double",
-        "semicolons": "always",
-        "trailingCommas": "all"
-      }
+      "formatter": { "quoteStyle": "double", "semicolons": "always", "trailingCommas": "all" }
     },
-    "css": {
-      "formatter": {
-        "enabled": false
+    "css": { "formatter": { "enabled": false }, "linter": { "enabled": false } },
+    "overrides": [
+      {
+        "includes": ["**/*.test.ts", "**/*.test.tsx"],
+        "linter": { "rules": { "style": { "noNonNullAssertion": "off" } } }
       },
-      "linter": {
-        "enabled": false
+      {
+        "includes": ["src/components/ui/**"],
+        "linter": { "rules": { "a11y": { "noLabelWithoutControl": "off" } } }
       }
-    }
+    ]
   }
   ```
 
-  Notes:
-  - `useSortedClasses` is the Tailwind class-sorter. It is explicitly enabled here even though it is a non-recommended nursery rule. Its `functions` list is exactly `cn`, `cva`, `clsx` — the three helpers that exist in this repo (`cn` in `src/lib/utils.ts`, `cva` from class-variance-authority, `clsx`). Do **not** add `tw`: there is no `tw` helper in this codebase and the contract specifies only cn/cva/clsx.
-  - The rule level is `"error"`, not `"warn"`. Biome does not fail CI on `warn`-level diagnostics by default, so a `warn` level would leave the rule effectively unenforced. `"error"` makes `biome ci` fail when classes are out of order — which is the intended enforcement.
-  - CSS formatting and linting are disabled so Biome never touches the Tailwind v4 `globals.css` token/`@theme` layer.
-  - `organizeImports` runs via the `assist.actions.source` block (Biome v2 moved import organizing out of the linter into the assist actions API).
+  Rule-downgrade rationale (each is an intentional, behavior-preserving choice for an isolated
+  tooling swap — re-enable later as a deliberate code-quality task if desired):
+  - `useSortedClasses` (`error`): the Tailwind class-sorter — enforced. `functions` is exactly
+    `cn`/`cva`/`clsx` (the helpers in this repo; no `tw`).
+  - `noArrayIndexKey` (`off`): the only current uses are `key={i}` over static `Array.from({length})`
+    skeleton arrays and stable `.map()`s — safe; not worth churning in the migration commit.
+  - `noAssignInExpressions` (`off`): the `(acc[k] ??= []).push()` grouping idiom in
+    `expense-list.tsx` is intentional.
+  - `noSvgWithoutTitle` (`off`): decorative brand/icon SVGs.
+  - `noNonNullAssertion` (`off` in `**/*.test.*` only): deliberate `!` in tests; app code keeps the rule.
+  - `noLabelWithoutControl` (`off` in `src/components/ui/**` only): shadcn primitives; the
+    label↔control association is made by callers via `htmlFor`, and `src/CLAUDE.md` forbids editing
+    `components/ui/*`.
+  - CSS formatting/linting disabled so Biome never touches the Tailwind v4 `globals.css` `@theme` layer.
 
-- [ ] **Step 2: Apply the one-time format + sort pass.**
+- [ ] **Step 2: Reconcile config to the installed version, then apply the one-time format + sort pass.**
   Run:
   ```
+  pnpm exec biome migrate --write
   pnpm exec biome check --write --unsafe .
   ```
-  The `--unsafe` flag is required: the `useSortedClasses` autofix is classified Unsafe, so a plain `biome check --write` would format and organize imports but would **not** sort Tailwind classes — leaving the codebase failing `pnpm lint`. Expected output: Biome reports the files checked and the count it reformatted/sorted (e.g. `Checked N files ... Fixed M files`), exiting 0. This is the one-time reformat + class-sort that justifies the isolated M0 commit. If any error remains that Biome cannot auto-fix even with `--unsafe`, inspect and resolve it (manually) before continuing.
+  `migrate` aligns the config to Biome 2.5.0 (folder-form `includes`, no deprecated fields). The
+  `--unsafe` flag is required because the `useSortedClasses` autofix is classified Unsafe (a plain
+  `--write` formats + organizes imports but does NOT sort classes). Expected output: the second
+  command reformats/sorts the repo and exits **0** with the corrected rule config. If any error
+  remains, it indicates a rule not covered by the downgrades above — re-inspect rather than silently
+  editing source; behavior must not change in this commit.
 
 ### Task 3: Delete the ESLint config file
 

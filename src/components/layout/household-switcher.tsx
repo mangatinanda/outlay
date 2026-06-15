@@ -1,8 +1,10 @@
 "use client";
 
-import { useTransition } from "react";
-import Link from "next/link";
 import { Check, ChevronsUpDown, Home, Settings2 } from "lucide-react";
+import Link from "next/link";
+import { useTransition } from "react";
+import { toast } from "sonner";
+import { useHouseholds } from "@/components/providers/household-provider";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,9 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useHouseholds } from "@/components/providers/household-provider";
 import { switchHousehold } from "@/lib/actions/household-actions";
-import { toast } from "sonner";
 
 export function HouseholdSwitcher() {
   const { households, currentId } = useHouseholds();

@@ -42,9 +42,9 @@ describe("expenseSchema.amount", () => {
   });
 
   it("rejects more than 2 decimal places", () => {
-    expect(
-      expenseSchema.safeParse({ ...base, amount: "10.999" }).success,
-    ).toBe(false);
+    expect(expenseSchema.safeParse({ ...base, amount: "10.999" }).success).toBe(
+      false,
+    );
   });
 
   it("rejects non-numeric input", () => {
@@ -56,9 +56,9 @@ describe("expenseSchema.amount", () => {
 
 describe("expenseSchema.date", () => {
   it("accepts a valid ISO calendar date", () => {
-    expect(expenseSchema.safeParse({ ...base, date: "2026-06-11" }).success).toBe(
-      true,
-    );
+    expect(
+      expenseSchema.safeParse({ ...base, date: "2026-06-11" }).success,
+    ).toBe(true);
   });
 
   it("rejects garbage and non-ISO formats", () => {
@@ -76,8 +76,8 @@ describe("expenseSchema.date", () => {
 
 describe("expenseSchema basics", () => {
   it("requires a description", () => {
-    expect(
-      expenseSchema.safeParse({ ...base, description: "" }).success,
-    ).toBe(false);
+    expect(expenseSchema.safeParse({ ...base, description: "" }).success).toBe(
+      false,
+    );
   });
 });

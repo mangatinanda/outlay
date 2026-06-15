@@ -9,8 +9,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CURRENCIES } from "@/lib/constants";
 import { updateHouseholdCurrency } from "@/lib/actions/settings-actions";
+import { CURRENCIES } from "@/lib/constants";
 
 export function CurrencySwitcher({ current }: { current: string }) {
   const [value, setValue] = useState(current);
@@ -43,7 +43,8 @@ export function CurrencySwitcher({ current }: { current: string }) {
       <SelectContent>
         {CURRENCIES.map((c) => (
           <SelectItem key={c.code} value={c.code}>
-            <span className="text-muted-foreground">{c.symbol}</span> {c.name} ({c.code})
+            <span className="text-muted-foreground">{c.symbol}</span> {c.name} (
+            {c.code})
           </SelectItem>
         ))}
       </SelectContent>

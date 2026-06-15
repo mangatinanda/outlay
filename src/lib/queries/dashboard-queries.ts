@@ -1,7 +1,14 @@
+import {
+  addDays,
+  endOfMonth,
+  format,
+  startOfMonth,
+  subDays,
+  subMonths,
+} from "date-fns";
+import { and, desc, eq, gte, lte, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { expenses, categories, householdMembers } from "@/lib/db/schema";
-import { eq, and, gte, lte, sql, desc } from "drizzle-orm";
-import { format, subDays, addDays, startOfMonth, endOfMonth, subMonths } from "date-fns";
+import { categories, expenses, householdMembers } from "@/lib/db/schema";
 
 export async function getDashboardStats(householdId: string) {
   const now = new Date();
@@ -20,8 +27,8 @@ export async function getDashboardStats(householdId: string) {
       and(
         eq(expenses.householdId, householdId),
         gte(expenses.date, monthStart),
-        lte(expenses.date, monthEnd)
-      )
+        lte(expenses.date, monthEnd),
+      ),
     );
 
   const [prevMonth] = await db
@@ -33,8 +40,8 @@ export async function getDashboardStats(householdId: string) {
       and(
         eq(expenses.householdId, householdId),
         gte(expenses.date, prevMonthStart),
-        lte(expenses.date, prevMonthEnd)
-      )
+        lte(expenses.date, prevMonthEnd),
+      ),
     );
 
   const daysInMonth = now.getDate();
@@ -45,9 +52,10 @@ export async function getDashboardStats(householdId: string) {
     monthCount: currentMonth.count,
     prevMonthTotal: prevMonth.total,
     dailyAverage: dailyAvg,
-    monthChange: prevMonth.total > 0
-      ? ((currentMonth.total - prevMonth.total) / prevMonth.total) * 100
-      : 0,
+    monthChange:
+      prevMonth.total > 0
+        ? ((currentMonth.total - prevMonth.total) / prevMonth.total) * 100
+        : 0,
   };
 }
 
@@ -61,7 +69,9 @@ export async function getCategoryBreakdown(householdId: string) {
       name: categories.name,
       color: categories.color,
       icon: categories.icon,
-      total: sql<number>`coalesce(sum(${expenses.amountMinor}), 0) / 100.0`.as("total"),
+      total: sql<number>`coalesce(sum(${expenses.amountMinor}), 0) / 100.0`.as(
+        "total",
+      ),
       count: sql<number>`count(${expenses.id})`.as("count"),
     })
     .from(expenses)
@@ -70,8 +80,8 @@ export async function getCategoryBreakdown(householdId: string) {
       and(
         eq(expenses.householdId, householdId),
         gte(expenses.date, monthStart),
-        lte(expenses.date, monthEnd)
-      )
+        lte(expenses.date, monthEnd),
+      ),
     )
     .groupBy(categories.id)
     .orderBy(desc(sql`total`));
@@ -84,14 +94,13 @@ export async function getSpendingByDay(householdId: string, days: number = 30) {
   const rows = await db
     .select({
       date: expenses.date,
-      total: sql<number>`coalesce(sum(${expenses.amountMinor}), 0) / 100.0`.as("total"),
+      total: sql<number>`coalesce(sum(${expenses.amountMinor}), 0) / 100.0`.as(
+        "total",
+      ),
     })
     .from(expenses)
     .where(
-      and(
-        eq(expenses.householdId, householdId),
-        gte(expenses.date, startDate)
-      )
+      and(eq(expenses.householdId, householdId), gte(expenses.date, startDate)),
     )
     .groupBy(expenses.date)
     .orderBy(expenses.date);
@@ -112,7 +121,9 @@ export async function getMemberSpending(householdId: string) {
   return db
     .select({
       name: householdMembers.name,
-      total: sql<number>`coalesce(sum(${expenses.amountMinor}), 0) / 100.0`.as("total"),
+      total: sql<number>`coalesce(sum(${expenses.amountMinor}), 0) / 100.0`.as(
+        "total",
+      ),
       count: sql<number>`count(${expenses.id})`.as("count"),
     })
     .from(expenses)
@@ -121,14 +132,17 @@ export async function getMemberSpending(householdId: string) {
       and(
         eq(expenses.householdId, householdId),
         gte(expenses.date, monthStart),
-        lte(expenses.date, monthEnd)
-      )
+        lte(expenses.date, monthEnd),
+      ),
     )
     .groupBy(householdMembers.id)
     .orderBy(desc(sql`total`));
 }
 
-export async function getRecentExpenses(householdId: string, limit: number = 5) {
+export async function getRecentExpenses(
+  householdId: string,
+  limit: number = 5,
+) {
   return db
     .select({
       id: expenses.id,

@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -13,9 +14,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
 import { createExpense, updateExpense } from "@/lib/actions/expense-actions";
-import { toast } from "sonner";
 import type { Category, HouseholdMember } from "@/lib/db/schema";
 
 interface ExpenseFormProps {
@@ -32,7 +32,11 @@ interface ExpenseFormProps {
   };
 }
 
-export function ExpenseForm({ categories, members, expense }: ExpenseFormProps) {
+export function ExpenseForm({
+  categories,
+  members,
+  expense,
+}: ExpenseFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const isEditing = !!expense;
@@ -63,7 +67,7 @@ export function ExpenseForm({ categories, members, expense }: ExpenseFormProps) 
       </CardHeader>
       <CardContent>
         <form action={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="amount">Amount</Label>
               <Input
@@ -83,7 +87,9 @@ export function ExpenseForm({ categories, members, expense }: ExpenseFormProps) 
                 id="date"
                 name="date"
                 type="date"
-                defaultValue={expense?.date || new Date().toLocaleDateString("en-CA")}
+                defaultValue={
+                  expense?.date || new Date().toLocaleDateString("en-CA")
+                }
                 required
               />
             </div>
@@ -100,7 +106,7 @@ export function ExpenseForm({ categories, members, expense }: ExpenseFormProps) 
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="categoryId">Category</Label>
               <Select name="categoryId" defaultValue={expense?.categoryId}>
@@ -118,7 +124,10 @@ export function ExpenseForm({ categories, members, expense }: ExpenseFormProps) 
             </div>
             <div className="space-y-2">
               <Label htmlFor="memberId">Paid by</Label>
-              <Select name="memberId" defaultValue={expense?.memberId || members[0]?.id}>
+              <Select
+                name="memberId"
+                defaultValue={expense?.memberId || members[0]?.id}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select member" />
                 </SelectTrigger>
@@ -146,9 +155,17 @@ export function ExpenseForm({ categories, members, expense }: ExpenseFormProps) 
 
           <div className="flex gap-3 pt-2">
             <Button type="submit" disabled={loading}>
-              {loading ? "Saving..." : isEditing ? "Update Expense" : "Add Expense"}
+              {loading
+                ? "Saving..."
+                : isEditing
+                  ? "Update Expense"
+                  : "Add Expense"}
             </Button>
-            <Button type="button" variant="outline" onClick={() => router.back()}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => router.back()}
+            >
               Cancel
             </Button>
           </div>

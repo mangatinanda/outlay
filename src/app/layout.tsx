@@ -1,6 +1,6 @@
+import { SerwistProvider } from "@serwist/turbopack/react";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { SerwistProvider } from "@serwist/turbopack/react";
 import { Providers } from "@/components/providers";
 import "./globals.css";
 
@@ -19,7 +19,8 @@ export const metadata: Metadata = {
     default: "Outlay - Track Your Household Spending",
     template: "%s | Outlay",
   },
-  description: "A collaborative household expense tracker for all family members",
+  description:
+    "A collaborative household expense tracker for all family members",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,

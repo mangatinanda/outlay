@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, index } from "drizzle-orm/sqlite-core";
+import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const users = sqliteTable("users", {
   id: text("id").primaryKey(),
@@ -19,68 +19,78 @@ export const households = sqliteTable("households", {
     .$defaultFn(() => new Date()),
 });
 
-export const householdMembers = sqliteTable("household_members", {
-  id: text("id").primaryKey(),
-  householdId: text("household_id")
-    .notNull()
-    .references(() => households.id),
-  userId: text("user_id").references(() => users.id),
-  name: text("name").notNull(),
-  avatar: text("avatar"),
-  role: text("role", { enum: ["admin", "member"] })
-    .notNull()
-    .default("member"),
-  createdAt: integer("created_at", { mode: "timestamp" })
-    .notNull()
-    .$defaultFn(() => new Date()),
-}, (table) => [
-  index("household_members_household_idx").on(table.householdId),
-]);
+export const householdMembers = sqliteTable(
+  "household_members",
+  {
+    id: text("id").primaryKey(),
+    householdId: text("household_id")
+      .notNull()
+      .references(() => households.id),
+    userId: text("user_id").references(() => users.id),
+    name: text("name").notNull(),
+    avatar: text("avatar"),
+    role: text("role", { enum: ["admin", "member"] })
+      .notNull()
+      .default("member"),
+    createdAt: integer("created_at", { mode: "timestamp" })
+      .notNull()
+      .$defaultFn(() => new Date()),
+  },
+  (table) => [index("household_members_household_idx").on(table.householdId)],
+);
 
-export const categories = sqliteTable("categories", {
-  id: text("id").primaryKey(),
-  householdId: text("household_id")
-    .notNull()
-    .references(() => households.id),
-  name: text("name").notNull(),
-  icon: text("icon").notNull().default("receipt"),
-  color: text("color").notNull().default("#6366f1"),
-  isDefault: integer("is_default", { mode: "boolean" }).notNull().default(false),
-  createdAt: integer("created_at", { mode: "timestamp" })
-    .notNull()
-    .$defaultFn(() => new Date()),
-}, (table) => [
-  index("categories_household_idx").on(table.householdId),
-]);
+export const categories = sqliteTable(
+  "categories",
+  {
+    id: text("id").primaryKey(),
+    householdId: text("household_id")
+      .notNull()
+      .references(() => households.id),
+    name: text("name").notNull(),
+    icon: text("icon").notNull().default("receipt"),
+    color: text("color").notNull().default("#6366f1"),
+    isDefault: integer("is_default", { mode: "boolean" })
+      .notNull()
+      .default(false),
+    createdAt: integer("created_at", { mode: "timestamp" })
+      .notNull()
+      .$defaultFn(() => new Date()),
+  },
+  (table) => [index("categories_household_idx").on(table.householdId)],
+);
 
-export const expenses = sqliteTable("expenses", {
-  id: text("id").primaryKey(),
-  householdId: text("household_id")
-    .notNull()
-    .references(() => households.id),
-  categoryId: text("category_id")
-    .notNull()
-    .references(() => categories.id),
-  memberId: text("member_id")
-    .notNull()
-    .references(() => householdMembers.id),
-  // Integer minor units (fixed scale 100 — see src/lib/money.ts); exact SQL sums.
-  amountMinor: integer("amount_minor").notNull(),
-  description: text("description").notNull(),
-  date: text("date").notNull(), // ISO date YYYY-MM-DD
-  notes: text("notes"),
-  createdAt: integer("created_at", { mode: "timestamp" })
-    .notNull()
-    .$defaultFn(() => new Date()),
-  updatedAt: integer("updated_at", { mode: "timestamp" })
-    .notNull()
-    .$defaultFn(() => new Date()),
-}, (table) => [
-  // Every dashboard/list query filters by household and usually a date range.
-  index("expenses_household_date_idx").on(table.householdId, table.date),
-  index("expenses_category_idx").on(table.categoryId),
-  index("expenses_member_idx").on(table.memberId),
-]);
+export const expenses = sqliteTable(
+  "expenses",
+  {
+    id: text("id").primaryKey(),
+    householdId: text("household_id")
+      .notNull()
+      .references(() => households.id),
+    categoryId: text("category_id")
+      .notNull()
+      .references(() => categories.id),
+    memberId: text("member_id")
+      .notNull()
+      .references(() => householdMembers.id),
+    // Integer minor units (fixed scale 100 — see src/lib/money.ts); exact SQL sums.
+    amountMinor: integer("amount_minor").notNull(),
+    description: text("description").notNull(),
+    date: text("date").notNull(), // ISO date YYYY-MM-DD
+    notes: text("notes"),
+    createdAt: integer("created_at", { mode: "timestamp" })
+      .notNull()
+      .$defaultFn(() => new Date()),
+    updatedAt: integer("updated_at", { mode: "timestamp" })
+      .notNull()
+      .$defaultFn(() => new Date()),
+  },
+  (table) => [
+    // Every dashboard/list query filters by household and usually a date range.
+    index("expenses_household_date_idx").on(table.householdId, table.date),
+    index("expenses_category_idx").on(table.categoryId),
+    index("expenses_member_idx").on(table.memberId),
+  ],
+);
 
 // Type exports
 export type User = typeof users.$inferSelect;

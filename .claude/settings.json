@@ -6,15 +6,27 @@
       "Bash(pnpm build)",
       "Bash(pnpm exec tsc --noEmit)",
       "Bash(pnpm exec vitest:*)",
+      "Bash(pnpm exec biome:*)",
+      "Bash(pnpm format)",
       "Bash(pnpm db:generate)",
       "Bash(pnpm db:migrate)",
       "Bash(git status)",
       "Bash(git diff:*)",
       "Bash(git log:*)"
     ],
-    "deny": [
-      "Read(./.env.local)",
-      "Read(./data/**)"
+    "deny": ["Read(./.env.local)", "Read(./data/**)"]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/post-edit-check.mjs"
+          }
+        ]
+      }
     ]
   }
 }

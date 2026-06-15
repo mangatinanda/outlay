@@ -1,9 +1,9 @@
 "use client";
 
 import { useActionState } from "react";
-import { verifyPasscode, type PasscodeState } from "@/lib/actions/auth-actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { type PasscodeState, verifyPasscode } from "@/lib/actions/auth-actions";
 
 export function PasscodeForm() {
   const [state, formAction, pending] = useActionState<PasscodeState, FormData>(
@@ -23,9 +23,13 @@ export function PasscodeForm() {
         aria-invalid={state?.error ? true : undefined}
       />
       {state?.error && (
-        <p className="text-sm text-destructive">{state.error}</p>
+        <p className="text-destructive text-sm">{state.error}</p>
       )}
-      <Button type="submit" className="w-full h-12 text-base" disabled={pending}>
+      <Button
+        type="submit"
+        className="h-12 w-full text-base"
+        disabled={pending}
+      >
         {pending ? "Checking…" : "Unlock"}
       </Button>
     </form>

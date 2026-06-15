@@ -1,9 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
 import { format, parseISO } from "date-fns";
-import { Edit, Trash2, MoreVertical } from "lucide-react";
+import { Edit, MoreVertical, Trash2 } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import { toast } from "sonner";
+import { useFormatCurrency } from "@/components/providers/currency-provider";
+import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,11 +14,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { CategoryIcon } from "./category-icon";
-import { useFormatCurrency } from "@/components/providers/currency-provider";
-import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { deleteExpense } from "@/lib/actions/expense-actions";
-import { toast } from "sonner";
+import { CategoryIcon } from "./category-icon";
 
 interface ExpenseItem {
   id: string;
@@ -60,11 +60,11 @@ export function ExpenseList({ expenses }: { expenses: ExpenseItem[] }) {
       <div className="space-y-6">
         {Object.entries(grouped).map(([date, items]) => (
           <div key={date}>
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-medium text-muted-foreground">
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="font-medium text-muted-foreground text-sm">
                 {format(parseISO(date), "EEEE, MMMM d, yyyy")}
               </h3>
-              <span className="text-sm font-medium">
+              <span className="font-medium text-sm">
                 {formatCurrency(items.reduce((sum, e) => sum + e.amount, 0))}
               </span>
             </div>
@@ -72,29 +72,39 @@ export function ExpenseList({ expenses }: { expenses: ExpenseItem[] }) {
               {items.map((expense) => (
                 <div
                   key={expense.id}
-                  className="flex items-center gap-3 p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
+                  className="flex items-center gap-3 rounded-lg border bg-card p-3 transition-colors hover:bg-accent/50"
                 >
                   <CategoryIcon
                     icon={expense.categoryIcon}
                     color={expense.categoryColor}
                   />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate font-medium text-sm">
                       {expense.description}
                     </p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-muted-foreground text-xs">
                       {expense.categoryName} &middot; {expense.memberName}
                     </p>
                   </div>
-                  <span className="text-sm font-semibold whitespace-nowrap">
+                  <span className="whitespace-nowrap font-semibold text-sm">
                     {formatCurrency(expense.amount)}
                   </span>
                   <DropdownMenu>
-                    <DropdownMenuTrigger render={<Button variant="ghost" size="icon" className="h-8 w-8" />}>
+                    <DropdownMenuTrigger
+                      render={
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8"
+                        />
+                      }
+                    >
                       <MoreVertical className="h-4 w-4" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem render={<Link href={`/expenses/${expense.id}/edit`} />}>
+                      <DropdownMenuItem
+                        render={<Link href={`/expenses/${expense.id}/edit`} />}
+                      >
                         <Edit className="mr-2 h-4 w-4" /> Edit
                       </DropdownMenuItem>
                       <DropdownMenuItem

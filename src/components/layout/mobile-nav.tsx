@@ -1,14 +1,14 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
-  Receipt,
   PlusCircle,
+  Receipt,
   Tags,
   Users,
 } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -23,8 +23,8 @@ export function MobileNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
-      <div className="flex items-center justify-around h-16 px-2">
+    <nav className="fixed right-0 bottom-0 left-0 z-50 border-border border-t bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80 md:hidden">
+      <div className="flex h-16 items-center justify-around px-2">
         {navItems.map((item) => {
           const isActive =
             item.href === "/expenses/new"
@@ -39,13 +39,11 @@ export function MobileNav() {
               className={cn(
                 "flex flex-col items-center gap-0.5 px-2 py-1 text-xs transition-colors",
                 isAdd && "relative -top-3",
-                isActive
-                  ? "text-primary"
-                  : "text-muted-foreground"
+                isActive ? "text-primary" : "text-muted-foreground",
               )}
             >
               {isAdd ? (
-                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary text-primary-foreground shadow-lg">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg">
                   <item.icon className="h-6 w-6" />
                 </div>
               ) : (

@@ -1,8 +1,14 @@
 import { Home } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { PasscodeForm } from "@/components/auth/passcode-form";
 import { signIn } from "@/auth";
+import { PasscodeForm } from "@/components/auth/passcode-form";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 function GoogleIcon() {
   return (
@@ -30,15 +36,17 @@ function GoogleIcon() {
 export default function LoginPage() {
   return (
     <Card className="w-full max-w-md">
-      <CardHeader className="text-center space-y-4">
+      <CardHeader className="space-y-4 text-center">
         <div className="flex justify-center">
-          <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-primary text-primary-foreground">
+          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
             <Home className="h-8 w-8" />
           </div>
         </div>
         <div>
           <CardTitle className="text-2xl">Welcome to Outlay</CardTitle>
-          <CardDescription className="mt-2">Sign in to continue</CardDescription>
+          <CardDescription className="mt-2">
+            Sign in to continue
+          </CardDescription>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -51,7 +59,7 @@ export default function LoginPage() {
           <Button
             type="submit"
             variant="outline"
-            className="w-full h-12 text-base gap-3"
+            className="h-12 w-full gap-3 text-base"
           >
             <GoogleIcon />
             Continue with Google

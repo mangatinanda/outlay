@@ -1,12 +1,18 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useFormatCurrency } from "@/components/providers/currency-provider";
 import { format, parseISO } from "date-fns";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { CategoryIcon } from "@/components/expenses/category-icon";
+import { useFormatCurrency } from "@/components/providers/currency-provider";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 interface RecentExpensesProps {
   expenses: {
@@ -31,7 +37,12 @@ export function RecentExpenses({ expenses }: RecentExpensesProps) {
           <CardTitle>Recent Expenses</CardTitle>
           <CardDescription>Your latest transactions</CardDescription>
         </div>
-        <Button variant="ghost" size="sm" nativeButton={false} render={<Link href="/expenses" />}>
+        <Button
+          variant="ghost"
+          size="sm"
+          nativeButton={false}
+          render={<Link href="/expenses" />}
+        >
           View all <ArrowRight className="ml-1 h-4 w-4" />
         </Button>
       </CardHeader>
@@ -43,24 +54,27 @@ export function RecentExpenses({ expenses }: RecentExpensesProps) {
               className="flex items-center justify-between py-2"
             >
               <div className="flex items-center gap-3">
-                <CategoryIcon icon={expense.categoryIcon} color={expense.categoryColor} />
+                <CategoryIcon
+                  icon={expense.categoryIcon}
+                  color={expense.categoryColor}
+                />
                 <div>
-                  <p className="text-sm font-medium leading-none">
+                  <p className="font-medium text-sm leading-none">
                     {expense.description}
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {expense.categoryName} &middot; {expense.memberName} &middot;{" "}
-                    {format(parseISO(expense.date), "MMM d")}
+                  <p className="mt-1 text-muted-foreground text-xs">
+                    {expense.categoryName} &middot; {expense.memberName}{" "}
+                    &middot; {format(parseISO(expense.date), "MMM d")}
                   </p>
                 </div>
               </div>
-              <span className="text-sm font-semibold">
+              <span className="font-semibold text-sm">
                 {formatCurrency(expense.amount)}
               </span>
             </div>
           ))}
           {expenses.length === 0 && (
-            <p className="text-sm text-muted-foreground text-center py-4">
+            <p className="py-4 text-center text-muted-foreground text-sm">
               No expenses yet. Add your first expense!
             </p>
           )}

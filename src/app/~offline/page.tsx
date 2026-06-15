@@ -11,10 +11,10 @@ export default function OfflinePage() {
         <WifiOff className="h-8 w-8" />
       </div>
       <div>
-        <h1 className="text-xl font-semibold">You&apos;re offline</h1>
-        <p className="mt-1 max-w-xs text-sm text-muted-foreground">
-          This page isn&apos;t cached yet. Reconnect to load it, or revisit a page
-          you&apos;ve already opened.
+        <h1 className="font-semibold text-xl">You&apos;re offline</h1>
+        <p className="mt-1 max-w-xs text-muted-foreground text-sm">
+          This page isn&apos;t cached yet. Reconnect to load it, or revisit a
+          page you&apos;ve already opened.
         </p>
       </div>
     </div>

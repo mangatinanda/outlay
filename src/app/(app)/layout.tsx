@@ -1,10 +1,13 @@
-import { Sidebar } from "@/components/layout/sidebar";
+import { auth } from "@/auth";
 import { Header } from "@/components/layout/header";
 import { MobileNav } from "@/components/layout/mobile-nav";
+import { Sidebar } from "@/components/layout/sidebar";
 import { CurrencyProvider } from "@/components/providers/currency-provider";
 import { HouseholdProvider } from "@/components/providers/household-provider";
-import { getCurrentHousehold, listHouseholds } from "@/lib/queries/household-queries";
-import { auth } from "@/auth";
+import {
+  getCurrentHousehold,
+  listHouseholds,
+} from "@/lib/queries/household-queries";
 
 // These pages read from the database per request, so they must render
 // dynamically rather than being statically prerendered at build time (which
@@ -32,7 +35,7 @@ export default async function AppLayout({
           <Sidebar />
           <div className="md:pl-64">
             <Header user={session?.user ?? null} />
-            <main className="p-4 md:p-6 pb-24 md:pb-6">{children}</main>
+            <main className="p-4 pb-24 md:p-6 md:pb-6">{children}</main>
           </div>
           <MobileNav />
         </div>

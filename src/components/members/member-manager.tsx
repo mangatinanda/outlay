@@ -1,17 +1,23 @@
 "use client";
 
+import { Crown, Edit, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { toast } from "sonner";
+import { useFormatCurrency } from "@/components/providers/currency-provider";
+import { ConfirmDialog } from "@/components/shared/confirm-dialog";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -19,13 +25,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { ConfirmDialog } from "@/components/shared/confirm-dialog";
-import { createMember, updateMember, deleteMember } from "@/lib/actions/member-actions";
-import { useFormatCurrency } from "@/components/providers/currency-provider";
-import { Plus, Edit, Trash2, Crown } from "lucide-react";
-import { toast } from "sonner";
+import {
+  createMember,
+  deleteMember,
+  updateMember,
+} from "@/lib/actions/member-actions";
 
 interface MemberItem {
   id: string;
@@ -93,10 +97,10 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
         {members.map((member) => (
           <Card key={member.id} className="group">
             <CardContent className="p-4">
-              <div className="flex items-start justify-between mb-3">
+              <div className="mb-3 flex items-start justify-between">
                 <div className="flex items-center gap-3">
                   <Avatar className="h-10 w-10">
-                    <AvatarFallback className="bg-primary/10 text-primary text-sm font-medium">
+                    <AvatarFallback className="bg-primary/10 font-medium text-primary text-sm">
                       {member.name.slice(0, 2).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
@@ -107,12 +111,12 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
                         <Crown className="h-3.5 w-3.5 text-yellow-500" />
                       )}
                     </div>
-                    <Badge variant="secondary" className="text-xs mt-0.5">
+                    <Badge variant="secondary" className="mt-0.5 text-xs">
                       {member.role}
                     </Badge>
                   </div>
                 </div>
-                <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
                   <Button
                     variant="ghost"
                     size="icon"
@@ -131,7 +135,7 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
                   </Button>
                 </div>
               </div>
-              <div className="flex justify-between text-sm text-muted-foreground">
+              <div className="flex justify-between text-muted-foreground text-sm">
                 <span>{member.expenseCount} expenses</span>
                 <span className="font-medium text-foreground">
                   {formatCurrency(member.totalSpent)}
@@ -142,10 +146,10 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
         ))}
 
         <Card
-          className="border-dashed cursor-pointer hover:bg-accent/50 transition-colors"
+          className="cursor-pointer border-dashed transition-colors hover:bg-accent/50"
           onClick={openNew}
         >
-          <CardContent className="flex items-center justify-center gap-2 p-4 h-full min-h-[120px] text-muted-foreground">
+          <CardContent className="flex h-full min-h-[120px] items-center justify-center gap-2 p-4 text-muted-foreground">
             <Plus className="h-5 w-5" />
             <span>Add Member</span>
           </CardContent>
@@ -155,9 +159,7 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>
-              {editing ? "Edit Member" : "Add Member"}
-            </DialogTitle>
+            <DialogTitle>{editing ? "Edit Member" : "Add Member"}</DialogTitle>
           </DialogHeader>
           <form action={handleSubmit} className="space-y-4">
             <div className="space-y-2">
@@ -183,7 +185,11 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
               </Select>
             </div>
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setDialogOpen(false)}
+              >
                 Cancel
               </Button>
               <Button type="submit" disabled={loading}>

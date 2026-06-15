@@ -1,17 +1,21 @@
 "use client";
 
+import { Edit, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { toast } from "sonner";
+import { CategoryIcon } from "@/components/expenses/category-icon";
+import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -19,12 +23,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CategoryIcon } from "@/components/expenses/category-icon";
-import { ConfirmDialog } from "@/components/shared/confirm-dialog";
-import { createCategory, updateCategory, deleteCategory } from "@/lib/actions/category-actions";
-import { CATEGORY_ICONS, CATEGORY_COLORS } from "@/lib/constants";
-import { Plus, Edit, Trash2 } from "lucide-react";
-import { toast } from "sonner";
+import {
+  createCategory,
+  deleteCategory,
+  updateCategory,
+} from "@/lib/actions/category-actions";
+import { CATEGORY_COLORS, CATEGORY_ICONS } from "@/lib/constants";
 
 interface CategoryItem {
   id: string;
@@ -35,7 +39,11 @@ interface CategoryItem {
   expenseCount: number;
 }
 
-export function CategoryManager({ categories }: { categories: CategoryItem[] }) {
+export function CategoryManager({
+  categories,
+}: {
+  categories: CategoryItem[];
+}) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [editing, setEditing] = useState<CategoryItem | null>(null);
@@ -92,13 +100,13 @@ export function CategoryManager({ categories }: { categories: CategoryItem[] }) 
           <Card key={cat.id} className="group">
             <CardContent className="flex items-center gap-3 p-4">
               <CategoryIcon icon={cat.icon} color={cat.color} />
-              <div className="flex-1 min-w-0">
-                <p className="font-medium truncate">{cat.name}</p>
-                <p className="text-xs text-muted-foreground">
+              <div className="min-w-0 flex-1">
+                <p className="truncate font-medium">{cat.name}</p>
+                <p className="text-muted-foreground text-xs">
                   {cat.expenseCount} expense{cat.expenseCount !== 1 ? "s" : ""}
                 </p>
               </div>
-              <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
                 <Button
                   variant="ghost"
                   size="icon"
@@ -121,10 +129,10 @@ export function CategoryManager({ categories }: { categories: CategoryItem[] }) 
         ))}
 
         <Card
-          className="border-dashed cursor-pointer hover:bg-accent/50 transition-colors"
+          className="cursor-pointer border-dashed transition-colors hover:bg-accent/50"
           onClick={openNew}
         >
-          <CardContent className="flex items-center justify-center gap-2 p-4 h-full text-muted-foreground">
+          <CardContent className="flex h-full items-center justify-center gap-2 p-4 text-muted-foreground">
             <Plus className="h-5 w-5" />
             <span>Add Category</span>
           </CardContent>
@@ -173,11 +181,13 @@ export function CategoryManager({ categories }: { categories: CategoryItem[] }) 
                       type="radio"
                       name="color"
                       value={color}
-                      defaultChecked={editing ? editing.color === color : color === "#6366f1"}
-                      className="sr-only peer"
+                      defaultChecked={
+                        editing ? editing.color === color : color === "#6366f1"
+                      }
+                      className="peer sr-only"
                     />
                     <div
-                      className="w-8 h-8 rounded-full ring-2 ring-transparent peer-checked:ring-foreground peer-checked:ring-offset-2 ring-offset-background transition-all"
+                      className="h-8 w-8 rounded-full ring-2 ring-transparent ring-offset-background transition-all peer-checked:ring-foreground peer-checked:ring-offset-2"
                       style={{ backgroundColor: color }}
                     />
                   </label>
@@ -185,7 +195,11 @@ export function CategoryManager({ categories }: { categories: CategoryItem[] }) 
               </div>
             </div>
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setDialogOpen(false)}
+              >
                 Cancel
               </Button>
               <Button type="submit" disabled={loading}>

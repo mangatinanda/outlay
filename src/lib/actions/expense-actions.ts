@@ -1,13 +1,13 @@
 "use server";
 
-import { db } from "@/lib/db";
-import { expenses, categories, householdMembers } from "@/lib/db/schema";
-import { expenseSchema } from "@/lib/validators/expense-schema";
-import { getCurrentHousehold } from "@/lib/queries/household-queries";
-import { toMinorUnits } from "@/lib/money";
 import { createId } from "@paralleldrive/cuid2";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { db } from "@/lib/db";
+import { categories, expenses, householdMembers } from "@/lib/db/schema";
+import { toMinorUnits } from "@/lib/money";
+import { getCurrentHousehold } from "@/lib/queries/household-queries";
+import { expenseSchema } from "@/lib/validators/expense-schema";
 import { safeAction } from "./safe-action";
 
 /**
@@ -25,7 +25,10 @@ async function checkOwnership(
     .select({ id: categories.id })
     .from(categories)
     .where(
-      and(eq(categories.id, categoryId), eq(categories.householdId, householdId)),
+      and(
+        eq(categories.id, categoryId),
+        eq(categories.householdId, householdId),
+      ),
     )
     .limit(1);
   if (!category) return "Category not found in this household";
@@ -45,91 +48,97 @@ async function checkOwnership(
   return null;
 }
 
-export const createExpense = safeAction("createExpense", async (formData: FormData) => {
-  const raw = {
-    amount: formData.get("amount"),
-    description: formData.get("description"),
-    categoryId: formData.get("categoryId"),
-    memberId: formData.get("memberId"),
-    date: formData.get("date"),
-    notes: formData.get("notes"),
-  };
+export const createExpense = safeAction(
+  "createExpense",
+  async (formData: FormData) => {
+    const raw = {
+      amount: formData.get("amount"),
+      description: formData.get("description"),
+      categoryId: formData.get("categoryId"),
+      memberId: formData.get("memberId"),
+      date: formData.get("date"),
+      notes: formData.get("notes"),
+    };
 
-  const parsed = expenseSchema.safeParse(raw);
-  if (!parsed.success) {
-    return { error: parsed.error.issues[0].message };
-  }
+    const parsed = expenseSchema.safeParse(raw);
+    if (!parsed.success) {
+      return { error: parsed.error.issues[0].message };
+    }
 
-  const household = await getCurrentHousehold();
-  if (!household) return { error: "No household found" };
+    const household = await getCurrentHousehold();
+    if (!household) return { error: "No household found" };
 
-  const ownershipError = await checkOwnership(
-    household.id,
-    parsed.data.categoryId,
-    parsed.data.memberId,
-  );
-  if (ownershipError) return { error: ownershipError };
+    const ownershipError = await checkOwnership(
+      household.id,
+      parsed.data.categoryId,
+      parsed.data.memberId,
+    );
+    if (ownershipError) return { error: ownershipError };
 
-  await db.insert(expenses).values({
-    id: createId(),
-    householdId: household.id,
-    categoryId: parsed.data.categoryId,
-    memberId: parsed.data.memberId,
-    amountMinor: toMinorUnits(parsed.data.amount),
-    description: parsed.data.description,
-    date: parsed.data.date,
-    notes: parsed.data.notes || null,
-  });
-
-  revalidatePath("/dashboard");
-  revalidatePath("/expenses");
-  return { success: true };
-});
-
-export const updateExpense = safeAction("updateExpense", async (id: string, formData: FormData) => {
-  const raw = {
-    amount: formData.get("amount"),
-    description: formData.get("description"),
-    categoryId: formData.get("categoryId"),
-    memberId: formData.get("memberId"),
-    date: formData.get("date"),
-    notes: formData.get("notes"),
-  };
-
-  const parsed = expenseSchema.safeParse(raw);
-  if (!parsed.success) {
-    return { error: parsed.error.issues[0].message };
-  }
-
-  const household = await getCurrentHousehold();
-  if (!household) return { error: "No household found" };
-
-  const ownershipError = await checkOwnership(
-    household.id,
-    parsed.data.categoryId,
-    parsed.data.memberId,
-  );
-  if (ownershipError) return { error: ownershipError };
-
-  const updated = await db
-    .update(expenses)
-    .set({
+    await db.insert(expenses).values({
+      id: createId(),
+      householdId: household.id,
       categoryId: parsed.data.categoryId,
       memberId: parsed.data.memberId,
       amountMinor: toMinorUnits(parsed.data.amount),
       description: parsed.data.description,
       date: parsed.data.date,
       notes: parsed.data.notes || null,
-      updatedAt: new Date(),
-    })
-    .where(and(eq(expenses.id, id), eq(expenses.householdId, household.id)))
-    .returning({ id: expenses.id });
-  if (updated.length === 0) return { error: "Expense not found" };
+    });
 
-  revalidatePath("/dashboard");
-  revalidatePath("/expenses");
-  return { success: true };
-});
+    revalidatePath("/dashboard");
+    revalidatePath("/expenses");
+    return { success: true };
+  },
+);
+
+export const updateExpense = safeAction(
+  "updateExpense",
+  async (id: string, formData: FormData) => {
+    const raw = {
+      amount: formData.get("amount"),
+      description: formData.get("description"),
+      categoryId: formData.get("categoryId"),
+      memberId: formData.get("memberId"),
+      date: formData.get("date"),
+      notes: formData.get("notes"),
+    };
+
+    const parsed = expenseSchema.safeParse(raw);
+    if (!parsed.success) {
+      return { error: parsed.error.issues[0].message };
+    }
+
+    const household = await getCurrentHousehold();
+    if (!household) return { error: "No household found" };
+
+    const ownershipError = await checkOwnership(
+      household.id,
+      parsed.data.categoryId,
+      parsed.data.memberId,
+    );
+    if (ownershipError) return { error: ownershipError };
+
+    const updated = await db
+      .update(expenses)
+      .set({
+        categoryId: parsed.data.categoryId,
+        memberId: parsed.data.memberId,
+        amountMinor: toMinorUnits(parsed.data.amount),
+        description: parsed.data.description,
+        date: parsed.data.date,
+        notes: parsed.data.notes || null,
+        updatedAt: new Date(),
+      })
+      .where(and(eq(expenses.id, id), eq(expenses.householdId, household.id)))
+      .returning({ id: expenses.id });
+    if (updated.length === 0) return { error: "Expense not found" };
+
+    revalidatePath("/dashboard");
+    revalidatePath("/expenses");
+    return { success: true };
+  },
+);
 
 export const deleteExpense = safeAction("deleteExpense", async (id: string) => {
   const household = await getCurrentHousehold();

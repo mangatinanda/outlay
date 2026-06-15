@@ -1,9 +1,5 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import {
-  signSession,
-  verifySession,
-  constantTimeEqual,
-} from "@/lib/gate";
+import { constantTimeEqual, signSession, verifySession } from "@/lib/gate";
 
 const SECRET = "test-secret-for-gate-tests";
 
@@ -33,8 +29,7 @@ describe("signSession / verifySession", () => {
 
   it("rejects a tampered token", async () => {
     const token = await signSession();
-    const flipped =
-      token.slice(0, -1) + (token.endsWith("A") ? "B" : "A");
+    const flipped = token.slice(0, -1) + (token.endsWith("A") ? "B" : "A");
     expect(await verifySession(flipped)).toBe(false);
   });
 

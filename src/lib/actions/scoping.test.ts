@@ -17,9 +17,7 @@ const cookieJar = vi.hoisted(() => {
 vi.mock("next/headers", () => ({
   cookies: async () => ({
     get: (name: string) =>
-      cookieJar.has(name)
-        ? { name, value: cookieJar.get(name)! }
-        : undefined,
+      cookieJar.has(name) ? { name, value: cookieJar.get(name)! } : undefined,
     set: (name: string, value: string) => void cookieJar.set(name, value),
     delete: (name: string) => void cookieJar.delete(name),
   }),
@@ -28,28 +26,28 @@ vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
 
 import { eq } from "drizzle-orm";
 import { migrate } from "drizzle-orm/libsql/migrator";
-import { db } from "@/lib/db";
-import {
-  households,
-  householdMembers,
-  categories,
-  expenses,
-} from "@/lib/db/schema";
-import { HOUSEHOLD_COOKIE } from "@/lib/queries/household-queries";
-import { getExpenseById } from "@/lib/queries/expense-queries";
+import { deleteCategory, updateCategory } from "@/lib/actions/category-actions";
 import {
   createExpense,
-  updateExpense,
   deleteExpense,
+  updateExpense,
 } from "@/lib/actions/expense-actions";
-import { updateCategory, deleteCategory } from "@/lib/actions/category-actions";
-import { updateMember, deleteMember } from "@/lib/actions/member-actions";
 import {
   createHousehold,
-  renameHousehold,
   deleteHousehold,
+  renameHousehold,
 } from "@/lib/actions/household-actions";
+import { deleteMember, updateMember } from "@/lib/actions/member-actions";
+import { db } from "@/lib/db";
 import { DEFAULT_CATEGORIES } from "@/lib/db/default-categories";
+import {
+  categories,
+  expenses,
+  householdMembers,
+  households,
+} from "@/lib/db/schema";
+import { getExpenseById } from "@/lib/queries/expense-queries";
+import { HOUSEHOLD_COOKIE } from "@/lib/queries/household-queries";
 
 function form(fields: Record<string, string>) {
   const fd = new FormData();

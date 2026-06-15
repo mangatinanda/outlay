@@ -3,8 +3,9 @@
  * aggregates must be exact — 0.10 + 0.20 is 0.30, not 0.30000000000000004
  * (which is what summing IEEE-754 REALs produces).
  */
-import { beforeAll, describe, expect, it, vi } from "vitest";
+
 import { format } from "date-fns";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 
 vi.hoisted(() => {
   process.env.DATABASE_URL = ":memory:";
@@ -14,10 +15,10 @@ vi.hoisted(() => {
 import { migrate } from "drizzle-orm/libsql/migrator";
 import { db } from "@/lib/db";
 import {
-  households,
-  householdMembers,
   categories,
   expenses,
+  householdMembers,
+  households,
 } from "@/lib/db/schema";
 import {
   getDashboardStats,

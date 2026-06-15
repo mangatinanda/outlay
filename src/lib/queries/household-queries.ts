@@ -1,8 +1,8 @@
+import { eq } from "drizzle-orm";
+import { cookies } from "next/headers";
 import { cache } from "react";
 import { db } from "@/lib/db";
 import { households } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
-import { cookies } from "next/headers";
 
 export const HOUSEHOLD_COOKIE = "he_household";
 

@@ -1,8 +1,8 @@
 import { ExpenseForm } from "@/components/expenses/expense-form";
-import { getCategories } from "@/lib/queries/category-queries";
-import { getMembers } from "@/lib/queries/member-queries";
-import { getCurrentHousehold } from "@/lib/queries/household-queries";
 import { PageHeader } from "@/components/shared/page-header";
+import { getCategories } from "@/lib/queries/category-queries";
+import { getCurrentHousehold } from "@/lib/queries/household-queries";
+import { getMembers } from "@/lib/queries/member-queries";
 
 export const metadata = { title: "Add Expense" };
 
@@ -16,7 +16,7 @@ export default async function NewExpensePage() {
   ]);
 
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="max-w-2xl space-y-6">
       <PageHeader title="Add Expense" />
       <ExpenseForm categories={categories} members={members} />
     </div>
