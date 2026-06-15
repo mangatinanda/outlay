@@ -92,6 +92,31 @@ TypeScript 6 · Tailwind v4 + shadcn/ui on **Base UI 1.5** · **Turso/libSQL** (
   settings page's disabled "Google coming soon" card; fixed the member‑delete dialog copy.
 - Tests now 49 (added money, dashboard‑exactness, safe‑action suites).
 
+### 2026‑06‑15 — "Fresh Ledger" UI redesign: spec + implementation plan (NOT yet built)
+
+Brainstormed + speced a full visual/interaction redesign and authored the implementation plan.
+**Nothing implemented yet** — the app still looks as deployed.
+
+- **Spec:** `docs/superpowers/specs/2026-06-15-ui-redesign-fresh-ledger-design.md`. Direction
+  "Fresh Ledger" — light‑first warm (cream/white cards/indigo accent), dark parity, **Plus Jakarta
+  Sans** display + Geist body (fixes the self‑referential `--font-sans` bug in globals.css), **Motion**
+  library animations (page transitions, count‑ups, FAB→sheet morph, sliding nav pill; reduced‑motion
+  respected), mobile‑first (bottom‑sheet forms, swipe‑to‑delete, safe‑area, ≥44px). Data/auth layers
+  unchanged.
+- **Best practices ported from `~/ishait/ivm/ivm-pwa`** (user asked): chosen tracks = **Biome**
+  (replace ESLint), **Playwright** mobile e2e, **typed‑env** (zod); plus CVA/token conventions, a
+  design‑system skill + `.claude/rules/ui.md`, dep‑pinning discipline. Declined: Docker, SSO/persona/
+  fixture patterns (IVM‑specific).
+- **Plan:** `docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md` (index + conventions)
+  + 5 milestone files (`-01-repo-hardening` … `-05-grids-login-polish`), ~68 bite‑sized TDD tasks.
+  Authored via a draft+adversarial‑critique workflow. **Execution order is strict M0→M5;** motion
+  primitives + tokens are owned by Plan 02, Playwright scaffold by Plan 01 (later plans consume, not
+  re‑create — banners mark the dedup). Use a single `redesign/fresh-ledger` branch.
+- **Watch‑items in the plan README:** typed‑env must not break the DB‑free build or existing tests
+  (relax during `NEXT_PHASE==='phase-production-build'` + shared vitest setupFiles); the dashboard
+  hero must expose `[data-slot="hero-total"]`; FAB shares `layoutId="add-fab"`; amber‑crown token
+  decision deferred to M1.
+
 ### 2026‑06‑11 — Repo audit + top‑5 hardening pass
 
 **Full audit** written to `docs/2026-06-11-repo-audit.md` (graded B‑; findings cite file:line as of
