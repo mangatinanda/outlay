@@ -20,7 +20,8 @@
     "db:seed": "tsx scripts/seed.ts",
     "db:init": "pnpm db:migrate && pnpm db:seed",
     "db:push": "drizzle-kit push",
-    "db:e2e": "DATABASE_URL=file:./data/e2e.db AUTH_SECRET=e2e-secret HOUSEHOLD_PASSCODE=e2e-pass pnpm db:migrate && DATABASE_URL=file:./data/e2e.db AUTH_SECRET=e2e-secret HOUSEHOLD_PASSCODE=e2e-pass pnpm db:seed"
+    "db:e2e": "DATABASE_URL=file:./data/e2e.db AUTH_SECRET=e2e-secret HOUSEHOLD_PASSCODE=e2e-pass pnpm db:migrate && DATABASE_URL=file:./data/e2e.db AUTH_SECRET=e2e-secret HOUSEHOLD_PASSCODE=e2e-pass pnpm db:seed",
+    "db:e2e:reset": "tsx scripts/e2e-db.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
