@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { Header } from "@/components/layout/header";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { Sidebar } from "@/components/layout/sidebar";
+import { PageTransition } from "@/components/motion/page-transition";
 import { CurrencyProvider } from "@/components/providers/currency-provider";
 import { HouseholdProvider } from "@/components/providers/household-provider";
 import {
@@ -34,8 +35,13 @@ export default async function AppLayout({
         <div className="min-h-screen bg-background">
           <Sidebar />
           <div className="md:pl-64">
-            <Header user={session?.user ?? null} />
-            <main className="p-4 pb-24 md:p-6 md:pb-6">{children}</main>
+            <Header
+              user={session?.user ?? null}
+              householdName={household?.name ?? null}
+            />
+            <main className="p-4 pb-24 md:p-6 md:pb-6">
+              <PageTransition>{children}</PageTransition>
+            </main>
           </div>
           <MobileNav />
         </div>

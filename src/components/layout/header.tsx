@@ -28,23 +28,52 @@ function initials(user: HeaderUser | null) {
   return (user?.name || user?.email || "Guest").slice(0, 2).toUpperCase();
 }
 
-export function Header({ user }: { user: HeaderUser | null }) {
+function greeting(date = new Date()) {
+  const hour = date.getHours();
+  if (hour < 12) return "Good morning";
+  if (hour < 18) return "Good afternoon";
+  return "Good evening";
+}
+
+function firstName(user: HeaderUser | null) {
+  const name = user?.name?.trim();
+  if (name) return name.split(" ")[0];
+  return null;
+}
+
+export function Header({
+  user,
+  householdName,
+}: {
+  user: HeaderUser | null;
+  householdName?: string | null;
+}) {
+  const name = firstName(user);
+
   return (
     <header className="sticky top-0 z-40 border-border border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
-        <div className="flex items-center gap-2 md:hidden">
-          <Sheet>
-            <SheetTrigger render={<Button variant="ghost" size="icon" />}>
-              <Menu className="h-5 w-5" />
-            </SheetTrigger>
-            <SheetContent side="left" className="w-64 p-0">
-              <Sidebar inSheet />
-            </SheetContent>
-          </Sheet>
-          <span className="font-bold text-lg">Outlay</span>
+        <div className="flex min-w-0 items-center gap-2">
+          <div className="flex items-center gap-2 md:hidden">
+            <Sheet>
+              <SheetTrigger render={<Button variant="ghost" size="icon" />}>
+                <Menu className="h-5 w-5" />
+              </SheetTrigger>
+              <SheetContent side="left" className="w-64 p-0">
+                <Sidebar inSheet />
+              </SheetContent>
+            </Sheet>
+          </div>
+          <div className="min-w-0">
+            <p className="truncate font-display font-semibold text-sm leading-tight">
+              {greeting()}
+              {name ? `, ${name}` : ""}
+            </p>
+            <p className="truncate text-muted-foreground text-xs leading-tight">
+              {householdName ?? "Outlay"}
+            </p>
+          </div>
         </div>
-
-        <div className="hidden md:block" />
 
         <div className="flex items-center gap-2">
           <div className="hidden md:block">

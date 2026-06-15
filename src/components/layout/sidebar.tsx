@@ -39,10 +39,12 @@ export function Sidebar({ inSheet = false }: { inSheet?: boolean }) {
       )}
     >
       <div className="flex h-16 items-center gap-2 border-border border-b px-6">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+        <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-card">
           <Home className="h-4 w-4" />
         </div>
-        <span className="font-bold text-lg">Outlay</span>
+        <span className="font-bold font-display text-lg tracking-tight">
+          Outlay
+        </span>
       </div>
 
       <div className="border-border border-b px-3 py-3">
@@ -56,10 +58,11 @@ export function Sidebar({ inSheet = false }: { inSheet?: boolean }) {
             <Link
               key={item.href}
               href={item.href}
+              aria-current={isActive ? "page" : undefined}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2.5 font-medium text-sm transition-colors",
+                "flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-sm transition-colors",
                 isActive
-                  ? "bg-primary text-primary-foreground"
+                  ? "bg-primary/10 text-primary"
                   : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
               )}
             >
