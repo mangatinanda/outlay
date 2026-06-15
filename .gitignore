@@ -44,6 +44,12 @@ yarn-error.log*
 /data/*.db
 /data/*.db-wal
 /data/*.db-shm
+/data/e2e.db*
+
+# playwright e2e
+/playwright-report/
+/test-results/
+/playwright/.cache/
 
 # typescript
 *.tsbuildinfo
