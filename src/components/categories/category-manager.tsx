@@ -1,12 +1,14 @@
 "use client";
 
-import { Edit, Plus, Trash2 } from "lucide-react";
+import { Edit, Plus, Tags, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { CategoryIcon } from "@/components/expenses/category-icon";
+import { MotionCard } from "@/components/motion/motion-card";
+import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
+import { EmptyState } from "@/components/shared/empty-state";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -95,49 +97,76 @@ export function CategoryManager({
 
   return (
     <>
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {categories.map((cat) => (
-          <Card key={cat.id} className="group">
-            <CardContent className="flex items-center gap-3 p-4">
-              <CategoryIcon icon={cat.icon} color={cat.color} />
-              <div className="min-w-0 flex-1">
-                <p className="truncate font-medium">{cat.name}</p>
-                <p className="text-muted-foreground text-xs">
-                  {cat.expenseCount} expense{cat.expenseCount !== 1 ? "s" : ""}
-                </p>
-              </div>
-              <div className="flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8"
-                  onClick={() => openEdit(cat)}
-                >
-                  <Edit className="h-3.5 w-3.5" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 text-destructive"
-                  onClick={() => setDeleteId(cat.id)}
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+      {categories.length === 0 ? (
+        <EmptyState
+          icon={Tags}
+          title="No categories yet"
+          description="Categories group your expenses so you can see where the money goes. Add your first one to get started."
+          action={
+            <Button onClick={openNew}>
+              <Plus className="mr-2 h-4 w-4" /> Add Category
+            </Button>
+          }
+        />
+      ) : (
+        <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {categories.map((cat) => (
+            <StaggerItem key={cat.id}>
+              <MotionCard className="group flex items-center gap-3 rounded-2xl bg-card p-4 shadow-card">
+                <CategoryIcon icon={cat.icon} color={cat.color} />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-display font-medium">
+                    {cat.name}
+                  </p>
+                  <p className="text-muted-foreground text-xs">
+                    {cat.expenseCount} expense
+                    {cat.expenseCount !== 1 ? "s" : ""}
+                  </p>
+                </div>
+                <div className="flex gap-1 opacity-0 transition-opacity focus-within:opacity-100 group-hover:opacity-100">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-9 w-9"
+                    aria-label={`Edit ${cat.name}`}
+                    onClick={() => openEdit(cat)}
+                  >
+                    <Edit className="h-3.5 w-3.5" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-9 w-9 text-destructive"
+                    aria-label={`Delete ${cat.name}`}
+                    onClick={() => setDeleteId(cat.id)}
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
+              </MotionCard>
+            </StaggerItem>
+          ))}
 
-        <Card
-          className="cursor-pointer border-dashed transition-colors hover:bg-accent/50"
-          onClick={openNew}
-        >
-          <CardContent className="flex h-full items-center justify-center gap-2 p-4 text-muted-foreground">
-            <Plus className="h-5 w-5" />
-            <span>Add Category</span>
-          </CardContent>
-        </Card>
-      </div>
+          <StaggerItem>
+            <MotionCard
+              className="flex h-full min-h-[88px] cursor-pointer items-center justify-center gap-2 rounded-2xl border border-border border-dashed bg-card/50 p-4 text-muted-foreground transition-colors hover:bg-accent/50"
+              onClick={openNew}
+              role="button"
+              tabIndex={0}
+              aria-label="Add category"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  openNew();
+                }
+              }}
+            >
+              <Plus className="h-5 w-5" />
+              <span>Add Category</span>
+            </MotionCard>
+          </StaggerItem>
+        </Stagger>
+      )}
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent>
