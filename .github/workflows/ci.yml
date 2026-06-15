@@ -45,3 +45,45 @@ jobs:
           # default file path (the gitignored data/ dir doesn't exist in CI).
           AUTH_SECRET: ci-only-dummy-secret
           DATABASE_URL: ":memory:"
+
+  # Non-blocking: runs in parallel with `ci` (no `needs`) and never fails the
+  # overall check (continue-on-error). e2e is a signal, not a gate, while the
+  # suite is young; promote to blocking later by removing continue-on-error.
+  e2e:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    env:
+      # Match the `ci` job: force remaining Node-20 actions onto Node 24.
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browser
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run e2e tests
+        run: pnpm test:e2e
+        env:
+          CI: "true"
+          DATABASE_URL: file:./data/e2e.db
+          AUTH_SECRET: e2e-secret
+          HOUSEHOLD_PASSCODE: e2e-pass
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
