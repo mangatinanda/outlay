@@ -15,8 +15,15 @@
 Next.js 16.2.7 (App Router, React 19.2, Server Components + Server Actions, Turbopack) ·
 TypeScript 6 · Tailwind v4 + shadcn/ui on **Base UI 1.5** · **Turso/libSQL** (`@libsql/client`)
 + Drizzle ORM (`sqlite-core`) · Zod 4 · Recharts 3 · `@serwist/turbopack` PWA ·
-**next-auth v5** (`5.0.0-beta.31`, Google — Model A) · date-fns 4 · cuid2. ESLint held at **9**
-(Next's bundled eslint plugins cap at 9; do not bump to 10).
+**next-auth v5** (`5.0.0-beta.31`, Google — Model A) · date-fns 4 · cuid2.
+**Biome 2.5** (replaced ESLint; CSS lint/format off, `useSortedClasses` enforced) + a PostToolUse
+auto-format hook · **Playwright** e2e (Pixel-7; seeded `data/e2e.db` via the webServer command) ·
+**motion** (`motion/react`) animation primitives in `src/components/motion/` · typed env in
+`src/lib/env.ts` (zod; build-phase relaxed). UI is the **Fresh Ledger** design system
+(`.claude/skills/design-system` + `.claude/rules/ui.md`): Plus Jakarta Sans display + Geist body,
+warm OKLCH light+dark tokens, `shadow-card`/`shadow-float`/`shadow-pop`, indigo accent.
+`packageManager`/`engines` pinned — `pnpm/action-setup` must NOT also set `version:` (errors on the
+double‑spec; CI reads pnpm from `packageManager`).
 
 ## Architecture & conventions
 
@@ -47,6 +54,23 @@ TypeScript 6 · Tailwind v4 + shadcn/ui on **Base UI 1.5** · **Turso/libSQL** (
 - **Plans** live in `plans/`; design specs in `docs/superpowers/specs/`.
 
 ## Work log
+
+### 2026‑06‑15 (end of day) — Fresh Ledger redesign MERGED to `main` + DEPLOYED to prod
+
+The full UI redesign + repo hardening (spec + plan under `docs/superpowers/{specs,plans}/2026-06-15-…`)
+shipped via subagent‑driven execution across M0–M6 (39 commits): **M0** Biome + typed‑env +
+Playwright + pins; **M1** tokens/fonts/motion primitives + design‑system skill; **M2** app shell
+(sidebar pill, mobile FAB + sliding pill, header greeting); **M3** dashboard (gradient hero w/
+count‑up, area chart, donut, friendly empty states); **M4** expenses list + swipe‑to‑delete +
+FAB→bottom‑sheet morph; **M5/M6** grids/login restyle + a11y (Lighthouse Accessibility **100** on
+all pages). Data/auth behavior unchanged (final review confirmed via whitespace‑ignored diff);
+prior‑audit safety props intact. Fast‑forward‑merged to `main`, feature branch deleted.
+**Live: https://myoutlay.vercel.app** — verified in prod: passcode login → redesigned dashboard,
+empty states polished, dark mode.
+- **CI gotcha fixed (`1c106a2`):** the `packageManager` pin collided with `pnpm/action-setup`'s
+  `version: 11` input → both jobs failed at setup. Removed the input; CI now green (ci + e2e).
+  Vercel deploys independently of GH CI, so the first prod deploy succeeded before the fix landed.
+- Verify cmds now include `pnpm test:e2e` (Playwright). 74 unit tests + 4 e2e specs.
 
 ### 2026‑06‑15 (latest) — M5/M6 final verification: isolation e2e + a11y → Lighthouse 100
 
