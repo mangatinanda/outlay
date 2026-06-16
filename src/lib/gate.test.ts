@@ -1,4 +1,9 @@
-import { beforeAll, describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
+
+vi.hoisted(() => {
+  process.env.AUTH_SECRET ??= "test-secret";
+});
+
 import { constantTimeEqual, signSession, verifySession } from "@/lib/gate";
 
 const SECRET = "test-secret-for-gate-tests";
@@ -83,5 +88,17 @@ describe("constantTimeEqual", () => {
     expect(constantTimeEqual("abc", "abd")).toBe(false);
     expect(constantTimeEqual("abc", "ab")).toBe(false);
     expect(constantTimeEqual("", "")).toBe(true);
+  });
+});
+
+describe("SESSION_VERSION cut", () => {
+  it("accepts a freshly signed (v2) token", async () => {
+    expect(await verifySession(await signSession())).toBe(true);
+  });
+
+  it("rejects a token minted under the old v1 version", async () => {
+    // A v1-prefixed token with any signature must fail (version check or sig).
+    const stale = "v1.1700000000.deadbeef";
+    expect(await verifySession(stale)).toBe(false);
   });
 });

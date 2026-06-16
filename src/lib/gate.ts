@@ -10,8 +10,9 @@ import { env } from "@/lib/env";
 export const SESSION_COOKIE = "he_session";
 export const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 30; // 30 days
 
-// Bump to invalidate every outstanding session without rotating AUTH_SECRET.
-const SESSION_VERSION = "v1";
+// v2: cut at the Model B deploy so every passcode cookie issued under the old
+// shared-access model is invalidated (a stale cookie must NOT become superadmin).
+const SESSION_VERSION = "v2";
 
 const encoder = new TextEncoder();
 
