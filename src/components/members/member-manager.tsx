@@ -27,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { inviteToHousehold } from "@/lib/actions/invite-actions";
 import {
   createMember,
   deleteMember,
@@ -38,6 +39,8 @@ interface MemberItem {
   name: string;
   role: string;
   avatar: string | null;
+  email: string | null;
+  userId: string | null;
   expenseCount: number;
   totalSpent: number;
 }
@@ -48,6 +51,7 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [editing, setEditing] = useState<MemberItem | null>(null);
   const [loading, setLoading] = useState(false);
+  const [inviting, setInviting] = useState(false);
 
   function openNew() {
     setEditing(null);
@@ -93,8 +97,46 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
     }
   }
 
+  async function handleInvite(formData: FormData) {
+    setInviting(true);
+    try {
+      const result = await inviteToHousehold(formData);
+      if (result?.error) {
+        toast.error(result.error);
+        return;
+      }
+      toast.success("Invitation added");
+    } finally {
+      setInviting(false);
+    }
+  }
+
+  function accessBadge(member: MemberItem) {
+    if (member.userId)
+      return { label: "Has access", variant: "default" as const };
+    if (member.email)
+      return { label: "Invited", variant: "secondary" as const };
+    return null;
+  }
+
   return (
     <>
+      <form
+        action={handleInvite}
+        className="flex flex-col gap-2 rounded-2xl bg-card p-4 shadow-card sm:flex-row"
+      >
+        <Input
+          type="email"
+          name="email"
+          placeholder="Invite by email"
+          required
+          aria-label="Invite member by email"
+          className="h-11 flex-1 rounded-xl"
+        />
+        <Button type="submit" disabled={inviting} className="h-11 rounded-xl">
+          {inviting ? "Inviting…" : "Send invite"}
+        </Button>
+      </form>
       {members.length === 0 ? (
         <EmptyState
           icon={Users}
@@ -129,9 +171,19 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
                           <Crown className="h-3.5 w-3.5 text-amber-500" />
                         )}
                       </div>
-                      <Badge variant="secondary" className="mt-0.5 text-xs">
-                        {member.role}
-                      </Badge>
+                      <div className="mt-0.5 flex flex-wrap items-center gap-1">
+                        <Badge variant="secondary" className="text-xs">
+                          {member.role}
+                        </Badge>
+                        {accessBadge(member) && (
+                          <Badge
+                            variant={accessBadge(member)?.variant}
+                            className="text-xs"
+                          >
+                            {accessBadge(member)?.label}
+                          </Badge>
+                        )}
+                      </div>
                     </div>
                   </div>
                   <div className="flex gap-1 opacity-0 transition-opacity focus-within:opacity-100 group-hover:opacity-100">
