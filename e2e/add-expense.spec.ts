@@ -19,8 +19,9 @@ const PASSCODE = "e2e-pass";
 test("add an expense; it appears in the list and updates the dashboard", async ({
   page,
 }) => {
-  // Pass the access gate via the shared passcode (Pixel 7 => mobile sheet path).
-  await page.goto("/login");
+  // Pass the access gate via the superadmin passcode at /admin (Model B route
+  // split — /login is now the Google-only page; /admin is the passcode gate).
+  await page.goto("/admin");
   await page.getByPlaceholder("Enter household passcode").fill(PASSCODE);
   await page.getByRole("button", { name: "Unlock" }).click();
   await page.waitForURL("**/dashboard");

@@ -11,6 +11,8 @@ import { expect, type Page, test } from "@playwright/test";
  * the /households manager must change the visible expense set and drop A's
  * marker entirely.
  *
+ * Login uses the /admin superadmin passcode path (Model B route split —
+ * /login is now the Google-only sign-in page; /admin is the passcode gate).
  * The passcode is hard-coded to "e2e-pass" to match HOUSEHOLD_PASSCODE in
  * playwright.config.ts's webServer.env — the same convention the other specs
  * use. (The value lives in webServer.env, not the test runner's process env,
@@ -22,7 +24,7 @@ import { expect, type Page, test } from "@playwright/test";
 const PASSCODE = "e2e-pass";
 
 async function login(page: Page) {
-  await page.goto("/login");
+  await page.goto("/admin");
   await page.getByPlaceholder("Enter household passcode").fill(PASSCODE);
   await page.getByRole("button", { name: "Unlock" }).click();
   await page.waitForURL("**/dashboard");

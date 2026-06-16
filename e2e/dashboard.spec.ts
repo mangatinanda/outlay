@@ -16,14 +16,11 @@ import { expect, test } from "@playwright/test";
  * it in.
  */
 test("dashboard renders after login", async ({ page }) => {
-  await page.goto("/dashboard");
-
-  // If redirected to the gate, authenticate via the shared passcode.
-  const passcode = page.getByPlaceholder("Enter household passcode");
-  if (await passcode.isVisible().catch(() => false)) {
-    await passcode.fill("e2e-pass");
-    await page.getByRole("button", { name: "Unlock" }).click();
-  }
+  // Authenticate via the superadmin passcode at /admin (Model B route split —
+  // /login is now the Google-only page; /admin is the passcode gate).
+  await page.goto("/admin");
+  await page.getByPlaceholder("Enter household passcode").fill("e2e-pass");
+  await page.getByRole("button", { name: "Unlock" }).click();
 
   await page.waitForURL("**/dashboard");
 

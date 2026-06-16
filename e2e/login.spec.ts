@@ -1,24 +1,26 @@
 import { expect, test } from "@playwright/test";
 
 /**
- * Passcode-only smoke test. Google sign-in needs a real IdP, so the e2e
- * suite exercises the shared-passcode path exclusively. The passcode value
- * matches HOUSEHOLD_PASSCODE in playwright.config.ts's webServer.env.
+ * Superadmin passcode smoke test. Google sign-in needs a real IdP, so the
+ * e2e suite exercises the passcode path exclusively. After the Model B route
+ * split, the passcode gate lives at /admin (superadmin login), not /login
+ * (which is now the Google-only sign-in page). The passcode value matches
+ * HOUSEHOLD_PASSCODE in playwright.config.ts's webServer.env.
  *
  * NOTE: never assert getByRole("alert") here — it collides with the
  * Next.js App Router route announcer (a visually-hidden role="alert"
  * live region). See .claude/rules/playwright.md.
  *
- * NOTE: "Welcome to Outlay" is a CardTitle <div data-slot="card-title">,
+ * NOTE: "Admin access" is a CardTitle <div data-slot="card-title">,
  * NOT a heading — assert it with getByText, never getByRole("heading").
  * The dashboard "Dashboard" title IS a real <h1> (PageHeader).
  */
 test("unlocks with the household passcode and shows the dashboard", async ({
   page,
 }) => {
-  await page.goto("/login");
+  await page.goto("/admin");
 
-  await expect(page.getByText("Welcome to Outlay")).toBeVisible();
+  await expect(page.getByText("Admin access")).toBeVisible();
 
   await page.getByPlaceholder("Enter household passcode").fill("e2e-pass");
   await page.getByRole("button", { name: "Unlock" }).click();
