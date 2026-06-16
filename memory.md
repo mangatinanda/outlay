@@ -70,7 +70,8 @@ Fixed the authorization gap the 2026‑06‑16 audit found (any logged‑in user
 household — `getCurrentHousehold`/`listHouseholds`/`switchHousehold` did no membership check and
 `household_members.user_id` was dead). Executed the spec+plan under
 `docs/superpowers/{specs,plans}/2026-06-16-model-b-user-owned-households*` via subagent‑driven TDD,
-15 tasks. **116 unit tests + 4 e2e + tsc/Biome/build all green.** Not yet merged/deployed.
+15 tasks. **116 unit tests + 4 e2e + tsc/Biome/build all green; final whole-branch review APPROVED.**
+Merged to local `main` (fast-forward, feature branch deleted); **NOT yet pushed/deployed.**
 - **Schema:** `household_members.email` column + unique indexes `(household_id,user_id)` /
   `(household_id,email)` + `email` index (`drizzle/0003_watery_warbound.sql`).
 - **Identity:** `src/lib/auth/{actor,membership,users,callbacks}.ts` — `getCurrentActor()`
@@ -333,8 +334,15 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
 
 ## Current state & open items
 
-- **Model B implemented (2026‑06‑16) on branch `feature/model-b-households` — NOT yet merged/deployed.**
-  All gates green (116 unit + 4 e2e, tsc, Biome, build). **Pending external steps (after merge+deploy):**
+- **Model B implemented (2026‑06‑16), merged to local `main` (branch deleted) — NOT yet pushed/deployed.**
+  Local `main` is **18 commits ahead of `origin/main`**; prod still runs pre‑Model‑B code. All gates
+  green (116 unit + 4 e2e, tsc, Biome, build); final whole‑branch review APPROVED. **Deploy runbook
+  (additive migrations are backward‑compatible, so run them first):** (1) `pnpm db:migrate` + (2)
+  `pnpm db:migrate:model-b` against **prod Turso** (set prod `DATABASE_URL`/`TURSO_AUTH_TOKEN`, e.g.
+  `vercel env pull`); (3) `git push` `main` → Vercel auto‑deploys; (4) the `SESSION_VERSION` v2 cut logs
+  everyone out of the passcode path — owner re‑unlocks `/admin` once, family signs in with Google (must
+  be OAuth test users / app published), owner invites the other two from `/members`. Prod
+  `HOUSEHOLD_PASSCODE` is now the **superadmin** key — keep it owner‑only. **Pending external steps:**
   (1) `pnpm db:migrate` then `pnpm db:migrate:model-b` against prod Turso; (2) the `SESSION_VERSION` v2
   cut logs everyone out of the passcode path — the owner re‑unlocks `/admin` once; family members sign in
   with Google (must be OAuth test users / app published) and the owner invites them to the shared
