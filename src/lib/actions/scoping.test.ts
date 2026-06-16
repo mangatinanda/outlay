@@ -23,6 +23,7 @@ vi.mock("next/headers", () => ({
   }),
 }));
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
+vi.mock("@/auth", () => ({ auth: async () => null }));
 
 import { eq } from "drizzle-orm";
 import { migrate } from "drizzle-orm/libsql/migrator";
@@ -46,6 +47,7 @@ import {
   householdMembers,
   households,
 } from "@/lib/db/schema";
+import { SESSION_COOKIE, signSession } from "@/lib/gate";
 import { getExpenseById } from "@/lib/queries/expense-queries";
 import { HOUSEHOLD_COOKIE } from "@/lib/queries/household-queries";
 
@@ -103,6 +105,9 @@ beforeAll(async () => {
 
   // Household A is the active household for every test.
   cookieJar.set(HOUSEHOLD_COOKIE, "hh-a");
+  // Run every scoping test as a superadmin (valid passcode cookie) so
+  // getCurrentActor resolves and the active household is the cookie's hh-a.
+  cookieJar.set(SESSION_COOKIE, await signSession());
 });
 
 describe("createExpense ownership checks", () => {
