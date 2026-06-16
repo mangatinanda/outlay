@@ -44,9 +44,11 @@ function firstName(user: HeaderUser | null) {
 export function Header({
   user,
   householdName,
+  isSuperadmin = false,
 }: {
   user: HeaderUser | null;
   householdName?: string | null;
+  isSuperadmin?: boolean;
 }) {
   const name = firstName(user);
 
@@ -99,10 +101,13 @@ export function Header({
                 <DropdownMenuLabel>
                   <div className="flex flex-col space-y-1">
                     <p className="font-medium text-sm">
-                      {user?.name ?? "Guest"}
+                      {user?.name ?? (isSuperadmin ? "Superadmin" : "Guest")}
                     </p>
                     <p className="text-muted-foreground text-xs">
-                      {user?.email ?? "Signed in with passcode"}
+                      {user?.email ??
+                        (isSuperadmin
+                          ? "Signed in with passcode"
+                          : "Not signed in")}
                     </p>
                   </div>
                 </DropdownMenuLabel>
