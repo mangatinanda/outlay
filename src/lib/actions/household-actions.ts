@@ -4,6 +4,8 @@ import { createId } from "@paralleldrive/cuid2";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
+import { getCurrentActor } from "@/lib/auth/actor";
+import { isMember } from "@/lib/auth/membership";
 import { db } from "@/lib/db";
 import { DEFAULT_CATEGORIES } from "@/lib/db/default-categories";
 import {
@@ -45,6 +47,12 @@ function revalidateAll() {
 export const switchHousehold = safeAction(
   "switchHousehold",
   async (id: string) => {
+    const actor = await getCurrentActor();
+    if (!actor) return { error: "Household not found" };
+    if (actor.kind === "user" && !(await isMember(actor.userId, id))) {
+      return { error: "Household not found" }; // don't leak existence
+    }
+
     const exists = await db
       .select({ id: households.id })
       .from(households)
@@ -71,6 +79,9 @@ export const createHousehold = safeAction(
       ? currencyParsed.data.currency
       : "INR";
 
+    const actor = await getCurrentActor();
+    if (!actor) return { error: "Not authenticated" };
+
     const householdId = createId();
     // Seed a default member + the default categories so the household is usable
     // immediately — atomically, so a mid-failure can't leave it half-seeded.
@@ -81,6 +92,11 @@ export const createHousehold = safeAction(
       db.insert(householdMembers).values({
         id: createId(),
         householdId,
+        // A user creating a household becomes its admin auth-member; a
+        // superadmin gets a label-only "Me" (they see it via god-mode).
+        ...(actor.kind === "user"
+          ? { userId: actor.userId, email: actor.email }
+          : {}),
         name: "Me",
         role: "admin",
       }),
@@ -107,6 +123,14 @@ export const renameHousehold = safeAction(
   async (id: string, formData: FormData) => {
     const parsed = householdSchema.safeParse({ name: formData.get("name") });
     if (!parsed.success) return { error: parsed.error.issues[0].message };
+
+    const actor = await getCurrentActor();
+    if (
+      !actor ||
+      (actor.kind === "user" && !(await isMember(actor.userId, id)))
+    ) {
+      return { error: "Household not found" };
+    }
 
     const updated = await db
       .update(households)
