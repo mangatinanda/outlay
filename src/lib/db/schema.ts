@@ -1,4 +1,10 @@
-import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import {
+  index,
+  integer,
+  sqliteTable,
+  text,
+  uniqueIndex,
+} from "drizzle-orm/sqlite-core";
 
 export const users = sqliteTable("users", {
   id: text("id").primaryKey(),
@@ -27,6 +33,7 @@ export const householdMembers = sqliteTable(
       .notNull()
       .references(() => households.id),
     userId: text("user_id").references(() => users.id),
+    email: text("email"),
     name: text("name").notNull(),
     avatar: text("avatar"),
     role: text("role", { enum: ["admin", "member"] })
@@ -36,7 +43,18 @@ export const householdMembers = sqliteTable(
       .notNull()
       .$defaultFn(() => new Date()),
   },
-  (table) => [index("household_members_household_idx").on(table.householdId)],
+  (table) => [
+    index("household_members_household_idx").on(table.householdId),
+    uniqueIndex("household_members_household_user_unq").on(
+      table.householdId,
+      table.userId,
+    ),
+    uniqueIndex("household_members_household_email_unq").on(
+      table.householdId,
+      table.email,
+    ),
+    index("household_members_email_idx").on(table.email),
+  ],
 );
 
 export const categories = sqliteTable(
