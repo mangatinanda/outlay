@@ -30,18 +30,27 @@ double‑spec; CI reads pnpm from `packageManager`).
 - **Reads** → `src/lib/queries/*` in Server Components. **Writes** → `src/lib/actions/*` Server
   Actions (Zod‑validate → Drizzle → `revalidatePath`). No REST API except `/api/auth/*` (Auth.js)
   and the Serwist SW route `/serwist/[path]`.
-- **Auth (two coexisting paths):**
-  - **Passcode gate** — `src/proxy.ts` (Next 16 "proxy", the renamed middleware; Node runtime).
-    Verifies a Web Crypto HMAC cookie `he_session` (`src/lib/gate.ts`, signed with `AUTH_SECRET`).
-    Passcode value in `HOUSEHOLD_PASSCODE`.
-  - **Google (Auth.js v5)** — `src/auth.ts` (Google provider, **JWT** sessions, **allow‑list**
-    `signIn` callback via `HOUSEHOLD_ALLOWED_EMAILS`). `proxy.ts` grants access on a Google session
-    **OR** a valid passcode. (Model A = identity layer; households stay shared. Model B = user‑owned,
-    documented for later — would REPLACE the passcode.)
+- **Auth (Model B — per‑user households):** each request resolves to one principal via
+  `getCurrentActor()` (`src/lib/auth/actor.ts`): a **superadmin** (valid `he_session` passcode cookie,
+  entered at **`/admin`** — bypasses scoping, sees all households) or a scoped **user** (Google/Auth.js
+  v5 JWT carrying `session.user.id`). **Passcode‑first** precedence.
+  - **Passcode** — Web Crypto HMAC cookie `he_session` (`src/lib/gate.ts`, `AUTH_SECRET`,
+    `SESSION_VERSION` now **`v2`**). `proxy.ts` (Node runtime) still grants entry on a Google session
+    **OR** a valid passcode; the matcher excludes `/admin` + `/login`. Passcode in `HOUSEHOLD_PASSCODE`.
+  - **Google (Auth.js v5)** — `src/auth.ts` (JWT, no adapter): `signIn`→`canSignIn` (allow‑list OR has
+    a membership/invite), `jwt`→`upsertUserByEmail`+`claimInvites`+`token.userId`, `session`→
+    `session.user.id`. Users persisted in `users` on first sign‑in.
+  - **Membership = the boundary:** `src/lib/auth/membership.ts` (`isMember`, `userHouseholds`,
+    `assertCanAccessHousehold`). A user sees/mutates only households with a `household_members` row
+    carrying their `user_id`. **Invite by email** → `inviteToHousehold` creates a pending row (`email`,
+    null `user_id`), claimed on the invitee's next login.
 - **Multi‑household ("workspaces"):** the active household is the `he_household` cookie, resolved by
-  `getCurrentHousehold()` (`src/lib/queries/household-queries.ts`), falling back to the first. All data
-  (members, categories, expenses, currency) is scoped by `household_id`, so switching isolates data.
-  Manage via the sidebar switcher + `/households`.
+  `getCurrentHousehold()` (`src/lib/queries/household-queries.ts`) **scoped to the actor's memberships**
+  (cookie honored only if a member, else their first membership; superadmin: any/first). `listHouseholds`/
+  `switchHousehold`/`renameHousehold` likewise scoped (non‑member → `"Household not found"`, no leak).
+  All data (members, categories, expenses, currency) is scoped by `household_id`, so switching isolates
+  data. Manage via the sidebar switcher + `/households`; a user with zero households gets a first‑household
+  onboarding screen.
 - **Currency:** per‑household (`households.currency`), **default INR** (en‑IN grouping). `CurrencyProvider`
   + `useFormatCurrency()`; changed via the Settings switcher (`updateHouseholdCurrency`). Reformat‑only,
   no FX conversion.
@@ -54,6 +63,31 @@ double‑spec; CI reads pnpm from `packageManager`).
 - **Plans** live in `plans/`; design specs in `docs/superpowers/specs/`.
 
 ## Work log
+
+### 2026‑06‑16 — Model B: user‑owned households + superadmin passcode (branch `feature/model-b-households`)
+
+Fixed the authorization gap the 2026‑06‑16 audit found (any logged‑in user could read/write ANY
+household — `getCurrentHousehold`/`listHouseholds`/`switchHousehold` did no membership check and
+`household_members.user_id` was dead). Executed the spec+plan under
+`docs/superpowers/{specs,plans}/2026-06-16-model-b-user-owned-households*` via subagent‑driven TDD,
+15 tasks. **116 unit tests + 4 e2e + tsc/Biome/build all green.** Not yet merged/deployed.
+- **Schema:** `household_members.email` column + unique indexes `(household_id,user_id)` /
+  `(household_id,email)` + `email` index (`drizzle/0003_watery_warbound.sql`).
+- **Identity:** `src/lib/auth/{actor,membership,users,callbacks}.ts` — `getCurrentActor()`
+  (passcode‑first → superadmin, else Google user), membership guards, `upsertUserByEmail`/
+  `claimInvites`/`canSignIn`; `auth.ts` callbacks persist the user + expose `session.user.id`
+  (typed via `src/types/next-auth.d.ts`).
+- **Scoping:** the three resolvers + `switch/rename/createHousehold` made actor‑aware; ~20 per‑page
+  call sites fixed transitively. Existing `scoping.test.ts` runs as superadmin (additive change only).
+- **Routes:** `/login` Google‑only; new `/admin` hosts the passcode form; proxy matcher excludes
+  `/admin`. `SESSION_VERSION` `v1`→`v2`.
+- **Invites/onboarding:** `inviteToHousehold` (admin/superadmin, dedup) + `/members` invite UI +
+  access badges; first‑household onboarding for a user with zero households.
+- **Migration:** idempotent `pnpm db:migrate:model-b` (`scripts/migrate-model-b-owner.ts`) backfills
+  owner `mangatinanda@gmail.com` as admin of existing households.
+- **Review catch:** Task 2 `upsertUserByEmail` had an empty‑`.set()` "No values to set" landmine
+  (a re‑auth with no name/image) — caught in quality review, fixed + regression test. e2e: all 4 specs
+  (incl. `dashboard`/`add-expense`) updated to unlock at `/admin`.
 
 ### 2026‑06‑15 (end of day) — Fresh Ledger redesign MERGED to `main` + DEPLOYED to prod
 
@@ -281,9 +315,14 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
 ## Key decisions
 
 - **Stay on Turso/libSQL** — Postgres not required to add auth; revisit only on a real scale/relational trigger.
-- **Auth = Model A now** (Google identity + allow‑list, households stay shared) with the **passcode kept**.
-  Model B (user‑owned households, per‑user scoping) is the documented future — and going to B means
-  **dropping the passcode** (coexisting passcode + per‑user permissions is a foot‑gun).
+- **Auth = Model B (implemented 2026‑06‑16):** households are per‑user (scoped by
+  `household_members.user_id`). The passcode was **repurposed as an explicit superadmin** at `/admin`
+  (NOT dropped, NOT the everyday path) — superseding the old "drop the passcode" plan: an explicit,
+  secret god‑mode key is the owner's deliberate escalation while Google users are scoped. Deploy
+  safety: `SESSION_VERSION` `v1`→`v2` invalidates every stale passcode cookie so none silently becomes
+  superadmin. Sharing = **invite by email** (email‑on‑membership, claimed on login); existing prod data
+  assigned to a **single named owner** (`mangatinanda@gmail.com`). Integration tests cover enforcement;
+  no test‑login provider was added (kept `auth.ts` Google‑only).
 - **Default currency INR.**
 - **Deployed 2026‑06‑12** under the `mangatinanda` Vercel account (project
   `nanda-kumar-mangatis-projects/outlay`, **git‑connected** → pushes to `main` auto‑deploy).
@@ -294,6 +333,13 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
 
 ## Current state & open items
 
+- **Model B implemented (2026‑06‑16) on branch `feature/model-b-households` — NOT yet merged/deployed.**
+  All gates green (116 unit + 4 e2e, tsc, Biome, build). **Pending external steps (after merge+deploy):**
+  (1) `pnpm db:migrate` then `pnpm db:migrate:model-b` against prod Turso; (2) the `SESSION_VERSION` v2
+  cut logs everyone out of the passcode path — the owner re‑unlocks `/admin` once; family members sign in
+  with Google (must be OAuth test users / app published) and the owner invites them to the shared
+  household(s) from `/members`. The prod passcode (`HOUSEHOLD_PASSCODE` in Vercel) is now the **superadmin**
+  key — keep it owner‑only.
 - **The 2026‑06‑11 audit is fully executed (M0–M3 + quick wins); CI green; audit clean.**
 - **DEPLOYED to production** (2026‑06‑12): https://outlay-kappa.vercel.app — Turso migrated
   (all 3 migrations + indexes verified), 4 env vars set in Vercel (DATABASE_URL,

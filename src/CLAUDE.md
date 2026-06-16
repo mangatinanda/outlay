@@ -27,11 +27,19 @@
 5. Build UI components
 6. Create page that composes everything
 
-## Household Context
-- Multiple households are supported as shared "workspaces" behind the access gate
-  (Google sign-in OR shared passcode — see `src/proxy.ts`)
-- `getCurrentHousehold()` (`lib/queries/household-queries.ts`) resolves the active household
-  from the `he_household` cookie, falling back to the first household (React `cache()`d)
-- All mutations are scoped to the active household and return `{ error }` for foreign ids
-- Manage/create/switch via the sidebar switcher and `/households`; per-user ownership and
-  permissions await Model B (see `plans/2026-06-09-google-login.md`)
+## Household Context (Model B — per-user)
+- Households are **per-user**, not shared. Each request resolves a principal via
+  `getCurrentActor()` (`lib/auth/actor.ts`): a **superadmin** (shared passcode at `/admin`) or a
+  scoped **user** (Google session). `lib/auth/membership.ts` holds the guards
+  (`isMember`, `userHouseholds`, `assertCanAccessHousehold`).
+- `getCurrentHousehold()` (`lib/queries/household-queries.ts`, React `cache()`d) returns the
+  `he_household` cookie's household ONLY if the actor may access it, else the user's first
+  membership (superadmin: any). `listHouseholds()` is likewise scoped.
+- `switchHousehold`/`renameHousehold` enforce membership (return `"Household not found"` for a
+  non-member — no existence leak); `deleteHousehold` gates on the now-scoped `listHouseholds()`;
+  `createHousehold` adds the creating user as an admin auth-member.
+- `household_members` rows are one of: **auth membership** (`user_id` set → access), **pending
+  invite** (`email` set, `user_id` null → access on next login via `claimInvites`), or
+  **attribution-only** (name only). Invite via `inviteToHousehold` (`lib/actions/invite-actions.ts`).
+- All mutations remain scoped to the active household and return `{ error }` for foreign ids.
+- Design/plan: `docs/superpowers/{specs,plans}/2026-06-16-model-b-user-owned-households*`.
