@@ -21,10 +21,3 @@ export const getCurrentActor = cache(async (): Promise<Actor | null> => {
 
   return null;
 });
-
-/** Throwing variant for server actions that must have a principal. */
-export async function requireActor(): Promise<Actor> {
-  const actor = await getCurrentActor();
-  if (!actor) throw new Error("Not authenticated");
-  return actor;
-}
