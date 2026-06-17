@@ -17,9 +17,11 @@
 
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import pngToIco from "png-to-ico";
 import sharp from "sharp";
 
 const ICONS_DIR = path.resolve("public/icons");
+const APP_DIR = path.resolve("src/app");
 const ICON_SVG = path.join(ICONS_DIR, "icon.svg");
 
 const baseSvg = await readFile(ICON_SVG, "utf8");
@@ -50,15 +52,27 @@ await rasterize(baseSvg, 180, "apple-touch-icon.png");
 await rasterize(baseSvg, 32, "favicon-32.png");
 await rasterize(baseSvg, 16, "favicon-16.png");
 
-// favicon.ico — bundle 16+32 into a single ICO using sharp + manual ICO header
-// is fiddly; ship a 32×32 .ico (sharp emits PNG-in-ICO via .toFormat("ico")).
-await sharp(Buffer.from(baseSvg), { density: 96 })
-  .resize(32, 32, { fit: "contain" })
-  .toFormat("png")
-  .toFile(path.join(ICONS_DIR, "favicon.png"));
-console.log("  ✓ favicon.png  (32×32 — modern browsers use this)");
+// Real multi-resolution favicon.ico (16 + 32 + 48 PNGs bundled), written to
+// src/app/favicon.ico so Next.js auto-serves it at /favicon.ico — overriding
+// the placeholder Next.js triangle that ships with create-next-app.
+const icoPngs = await Promise.all(
+  [16, 32, 48].map((s) =>
+    sharp(Buffer.from(baseSvg), { density: Math.round((s / 512) * 384) })
+      .resize(s, s, { fit: "contain" })
+      .png()
+      .toBuffer(),
+  ),
+);
+const icoBuffer = await pngToIco(icoPngs);
+await writeFile(path.join(APP_DIR, "favicon.ico"), icoBuffer);
+console.log("  ✓ src/app/favicon.ico  (16+32+48 multi-res)");
 
-console.log("\nDone. Commit the regenerated PNGs.");
+// Also drop the SVG into src/app/ so Next.js metadata auto-discovers it for
+// the <link rel="icon" type="image/svg+xml"> tag at /icon.svg.
+await writeFile(path.join(APP_DIR, "icon.svg"), baseSvg);
+console.log("  ✓ src/app/icon.svg");
+
+console.log("\nDone. Commit the regenerated assets.");
 
 // Tiny prelude so a CI bot can grep for completion
 await writeFile(

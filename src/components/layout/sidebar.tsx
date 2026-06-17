@@ -2,7 +2,6 @@
 
 import {
   Building2,
-  Home,
   LayoutDashboard,
   Receipt,
   Settings,
@@ -11,6 +10,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { AppLogo } from "@/components/brand/app-logo";
 import { cn } from "@/lib/utils";
 import { HouseholdSwitcher } from "./household-switcher";
 import { ThemeToggle } from "./theme-toggle";
@@ -38,10 +38,8 @@ export function Sidebar({ inSheet = false }: { inSheet?: boolean }) {
             "hidden border-border border-r md:fixed md:inset-y-0 md:flex md:w-64",
       )}
     >
-      <div className="flex h-16 items-center gap-2 border-border border-b px-6">
-        <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-card">
-          <Home className="h-4 w-4" />
-        </div>
+      <div className="flex h-16 items-center gap-2.5 border-border border-b px-6">
+        <AppLogo size={32} className="rounded-lg shadow-card" />
         <span className="font-bold font-display text-lg tracking-tight">
           Outlay
         </span>
