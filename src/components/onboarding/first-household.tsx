@@ -1,8 +1,8 @@
 "use client";
 
-import { Home } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { AppLogo } from "@/components/brand/app-logo";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -35,9 +35,7 @@ export function FirstHousehold() {
       <Card className="w-full max-w-md rounded-3xl border-0 bg-card shadow-float">
         <CardHeader className="space-y-4 text-center">
           <div className="flex justify-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-card">
-              <Home className="h-8 w-8" />
-            </div>
+            <AppLogo size={72} className="rounded-2xl shadow-card" />
           </div>
           <div>
             <CardTitle className="font-display text-2xl">

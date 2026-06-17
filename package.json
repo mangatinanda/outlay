@@ -23,6 +23,7 @@
     "db:e2e": "DATABASE_URL=file:./data/e2e.db AUTH_SECRET=e2e-secret HOUSEHOLD_PASSCODE=e2e-pass pnpm db:migrate && DATABASE_URL=file:./data/e2e.db AUTH_SECRET=e2e-secret HOUSEHOLD_PASSCODE=e2e-pass pnpm db:seed",
     "db:e2e:reset": "tsx scripts/e2e-db.ts",
     "db:migrate:model-b": "tsx scripts/migrate-model-b-owner.ts",
+    "gen:icons": "node scripts/generate-icons.mjs",
     "prepare": "husky"
   },
   "dependencies": {
@@ -66,6 +67,7 @@
     "lint-staged": "^17.0.7",
     "serwist": "^9.5.11",
     "shadcn": "^4.10.0",
+    "sharp": "^0.35.1",
     "tailwindcss": "^4.3.0",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3",

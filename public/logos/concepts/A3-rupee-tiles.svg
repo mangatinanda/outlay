@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Concept A3 — Mosaic O with Rupee + Parapet Tiles
+  ────────────────────────────────────────────────
+  Best-of-both: bold rupee at center (expense-tracker signal) plus the
+  four saffron parapet-rhythm tiles around the O (the home reference).
+  Most "this is OUR app" of the variants — carries the home's identity
+  AND the money symbol.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="108" fill="#f7eecf"/>
+  <circle cx="256" cy="256" r="160" fill="none" stroke="#d97da2" stroke-width="64"/>
+  <!-- Parapet-rhythm tiles at compass points -->
+  <g fill="#f4c542">
+    <rect x="240" y="60"  width="32" height="32" rx="3"/>
+    <rect x="240" y="420" width="32" height="32" rx="3"/>
+    <rect x="60"  y="240" width="32" height="32" rx="3"/>
+    <rect x="420" y="240" width="32" height="32" rx="3"/>
+  </g>
+  <!-- Bold rupee centered in the ring -->
+  <text x="256" y="256" text-anchor="middle" dy="0.35em"
+        font-family="Inter, 'SF Pro Display', 'Plus Jakarta Sans', system-ui, sans-serif"
+        font-weight="900" font-size="220" fill="#1a1a1a">₹</text>
+</svg>

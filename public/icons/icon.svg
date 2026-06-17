@@ -1,8 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="108" fill="#0a0a0a"/>
-  <g transform="translate(256,256)">
-    <path d="M-80,-60 L-80,80 L80,80 L80,-60 L40,-100 L-40,-100 Z" fill="none" stroke="#fff" stroke-width="24" stroke-linejoin="round"/>
-    <path d="M-40,-100 L0,-140 L40,-100" fill="none" stroke="#fff" stroke-width="24" stroke-linejoin="round"/>
-    <text y="30" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="80" font-weight="700">$</text>
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Outlay app icon — A1 "Mosaic O · Clean"
+  ───────────────────────────────────────
+  Rose ring (the "O" of Outlay) on a cream tile, with the Indian Rupee
+  glyph at the center. Uses the Lucide IndianRupee path so the icon is
+  font-independent and consistent with the rest of the app's iconography.
+
+  Source palette pulled from the home photos:
+    cream  #f7eecf  · background tile
+    rose   #d97da2  · O ring (parapet trim)
+    ink    #1a1a1a  · rupee glyph
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Outlay">
+  <rect width="512" height="512" rx="108" fill="#f7eecf"/>
+  <circle cx="256" cy="256" r="160" fill="none" stroke="#d97da2" stroke-width="64"/>
+  <g transform="translate(136 136) scale(10)" fill="none" stroke="#1a1a1a"
+     stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 3h12"/>
+    <path d="M6 8h12"/>
+    <path d="m6 13 8.5 8"/>
+    <path d="M6 13h3"/>
+    <path d="M9 13c6.667 0 6.667-10 0-10"/>
   </g>
 </svg>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Concept A2 — Mosaic O with Rupee + Dollar
+  ─────────────────────────────────────────
+  Multi-currency hint: rupee dominant on top, dollar smaller below.
+  Signals that Outlay supports multiple currencies (which it does —
+  households pick their own, INR is just the default).
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="108" fill="#f7eecf"/>
+  <circle cx="256" cy="256" r="160" fill="none" stroke="#d97da2" stroke-width="64"/>
+  <!-- Rupee (dominant, top) -->
+  <text x="256" y="232" text-anchor="middle" dy="0.35em"
+        font-family="Inter, 'SF Pro Display', 'Plus Jakarta Sans', system-ui, sans-serif"
+        font-weight="900" font-size="160" fill="#1a1a1a">₹</text>
+  <!-- Dollar (smaller, below — saffron accent so they read as distinct currencies) -->
+  <text x="256" y="332" text-anchor="middle" dy="0.35em"
+        font-family="Inter, 'SF Pro Display', 'Plus Jakarta Sans', system-ui, sans-serif"
+        font-weight="900" font-size="100" fill="#d97da2">$</text>
+</svg>

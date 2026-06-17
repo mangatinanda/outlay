@@ -10,7 +10,8 @@
       "!build",
       "!node_modules",
       "!next-env.d.ts",
-      "!drizzle"
+      "!drizzle",
+      "!public"
     ]
   },
   "formatter": {

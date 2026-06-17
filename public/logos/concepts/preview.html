@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Outlay — Mosaic O variants (with currency)</title>
+  <!-- Load Inter so the ₹/$ glyphs render consistently across browsers -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f7f7f5;
+      --card: #ffffff;
+      --ink: #1a1a1a;
+      --muted: #6b6b6b;
+      --border: #e4e4e4;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0e0e10;
+        --card: #18181b;
+        --ink: #f5f5f4;
+        --muted: #a1a1a1;
+        --border: #2a2a2c;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      padding: 2rem 1.5rem 4rem;
+      max-width: 1280px;
+      margin-inline: auto;
+    }
+    h1 { font-size: 1.5rem; margin: 0 0 0.5rem; letter-spacing: -0.01em; }
+    .lede { color: var(--muted); margin: 0 0 2.5rem; max-width: 65ch; line-height: 1.5; }
+    .grid { display: grid; gap: 1.5rem; grid-template-columns: 1fr; }
+    @media (min-width: 900px) { .grid { grid-template-columns: 1fr 1fr 1fr; } }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.5rem;
+    }
+    .card h2 { font-size: 1.1rem; margin: 0 0 0.25rem; }
+    .card .tag { color: var(--muted); font-size: 0.85rem; margin: 0 0 1.25rem; line-height: 1.4; }
+    .scales { display: flex; align-items: end; gap: 1.25rem; flex-wrap: wrap; }
+    .scales figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 0.4rem; }
+    .scales figcaption { color: var(--muted); font-size: 0.7rem; font-variant-numeric: tabular-nums; }
+    .scales img { display: block; }
+
+    .phone-row {
+      margin-top: 1.25rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      background: linear-gradient(180deg, #4d6ad1 0%, #b075d6 100%);
+    }
+    .phone-row.dark {
+      background: linear-gradient(180deg, #1a2547 0%, #2a1e3d 100%);
+    }
+    .phone-row .tile { text-align: center; color: white; font-size: 0.65rem; }
+    .phone-row img { width: 100%; aspect-ratio: 1; border-radius: 22%; display: block; margin-bottom: 0.25rem; }
+
+    .baseline {
+      margin-top: 2.5rem;
+      padding: 1rem 1.25rem;
+      border: 1px dashed var(--border);
+      border-radius: 0.75rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+    .baseline strong { color: var(--ink); }
+    .baseline-row { display: flex; gap: 1rem; align-items: center; margin-top: 0.75rem; }
+    .baseline-row img { display: block; }
+    code { background: rgba(127,127,127,0.12); padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.85em; }
+  </style>
+</head>
+<body>
+  <h1>Outlay — Mosaic O with Currency (3 variants)</h1>
+  <p class="lede">
+    All three keep the rose ring "O" + cream tile background from the original
+    Mosaic O direction. The difference is how the expense-tracker signal is
+    placed: a single dominant rupee, multi-currency (₹ + $), or rupee plus the
+    home's four parapet-rhythm tiles.
+  </p>
+
+  <div class="grid">
+
+    <!-- ============ A1 ============ -->
+    <section class="card">
+      <h2>A1 — Rupee, clean</h2>
+      <p class="tag">Bold ₹ centered in the ring. No other decoration. Reads
+      cleanest at small sizes.</p>
+      <div class="scales">
+        <figure><img src="A1-rupee.svg" width="16"  height="16"  alt=""/><figcaption>16</figcaption></figure>
+        <figure><img src="A1-rupee.svg" width="32"  height="32"  alt=""/><figcaption>32</figcaption></figure>
+        <figure><img src="A1-rupee.svg" width="64"  height="64"  alt=""/><figcaption>64</figcaption></figure>
+        <figure><img src="A1-rupee.svg" width="128" height="128" alt=""/><figcaption>128</figcaption></figure>
+        <figure><img src="A1-rupee.svg" width="192" height="192" alt=""/><figcaption>192</figcaption></figure>
+      </div>
+      <div class="phone-row">
+        <div class="tile"><img src="A1-rupee.svg" alt=""/>Outlay</div>
+        <div class="tile"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/IOS_Mail_icon.png/120px-IOS_Mail_icon.png" alt=""/>Mail</div>
+        <div class="tile"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Music_icon_iOS_15.png/120px-Music_icon_iOS_15.png" alt=""/>Music</div>
+        <div class="tile"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/IOS_Calendar_Icon.png/120px-IOS_Calendar_Icon.png" alt=""/>Calendar</div>
+      </div>
+      <div class="phone-row dark">
+        <div class="tile"><img src="A1-rupee.svg" alt=""/>Outlay</div>
+        <div class="tile"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/IOS_Mail_icon.png/120px-IOS_Mail_icon.png" alt=""/>Mail</div>
+        <div class="tile"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Music_icon_iOS_15.png/120px-Music_icon_iOS_15.png" alt=""/>Music</div>
+        <div class="tile"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/IOS_Calendar_Icon.png/120px-IOS_Calendar_Icon.png" alt=""/>Calendar</div>
+      </div>
+    </section>
+
+    <!-- ============ A2 ============ -->
+    <section class="card">
+      <h2>A2 — Rupee + Dollar</h2>
+      <p class="tag">₹ dominant on top, $ smaller below in rose. Signals
+      multi-currency support.</p>
+      <div class="scales">
+        <figure><img src="A2-rupee-dollar.svg" width="16"  height="16"  alt=""/><figcaption>16</figcaption></figure>
+        <figure><img src="A2-rupee-dollar.svg" width="32"  height="32"  alt=""/><figcaption>32</figcaption></figure>
+        <figure><img src="A2-rupee-dollar.svg" width="64"  height="64"  alt=""/><figcaption>64</figcaption></figure>
+        <figure><img src="A2-rupee-dollar.svg" width="128" height="128" alt=""/><figcaption>128</figcaption></figure>
+        <figure><img src="A2-rupee-dollar.svg" width="192" height="192" alt=""/><figcaption>192</figcaption></figure>
+      </div>
+      <div class="phone-row">
+        <div class="tile"><img src="A2-rupee-dollar.svg" alt=""/>Outlay</div>
+        <div class="tile"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/IOS_Mail_icon.png/120px-IOS_Mail_icon.png" alt=""/>Mail</div>
+        <div class="tile"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Music_icon_iOS_15.png/120px-Music_icon_iOS_15.png" alt=""/>Music</div>
+        <div class="tile"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/IOS_Calendar_Icon.png/120px-IOS_Calendar_Icon.png" alt=""/>Calendar</div>
+      </div>
+      <div class="phone-row dark">
+        <div class="tile"><img src="A2-rupee-dollar.svg" alt=""/>Outlay</div>
+        <div class="tile"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/IOS_Mail_icon.png/120px-IOS_Mail_icon.png" alt=""/>Mail</div>
+        <div class="tile"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Music_icon_iOS_15.png/120px-Music_icon_iOS_15.png" alt=""/>Music</div>
+        <div class="tile"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/IOS_Calendar_Icon.png/120px-IOS_Calendar_Icon.png" alt=""/>Calendar</div>
+      </div>
+    </section>
+
+    <!-- ============ A3 ============ -->
+    <section class="card">
+      <h2>A3 — Rupee + parapet tiles</h2>
+      <p class="tag">₹ centered + four saffron tiles at compass points —
+      the home's parapet rhythm. Most "OUR app".</p>
+      <div class="scales">
+        <figure><img src="A3-rupee-tiles.svg" width="16"  height="16"  alt=""/><figcaption>16</figcaption></figure>
+        <figure><img src="A3-rupee-tiles.svg" width="32"  height="32"  alt=""/><figcaption>32</figcaption></figure>
+        <figure><img src="A3-rupee-tiles.svg" width="64"  height="64"  alt=""/><figcaption>64</figcaption></figure>
+        <figure><img src="A3-rupee-tiles.svg" width="128" height="128" alt=""/><figcaption>128</figcaption></figure>
+        <figure><img src="A3-rupee-tiles.svg" width="192" height="192" alt=""/><figcaption>192</figcaption></figure>
+      </div>
+      <div class="phone-row">
+        <div class="tile"><img src="A3-rupee-tiles.svg" alt=""/>Outlay</div>
+        <div class="tile"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/IOS_Mail_icon.png/120px-IOS_Mail_icon.png" alt=""/>Mail</div>
+        <div class="tile"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Music_icon_iOS_15.png/120px-Music_icon_iOS_15.png" alt=""/>Music</div>
+        <div class="tile"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/IOS_Calendar_Icon.png/120px-IOS_Calendar_Icon.png" alt=""/>Calendar</div>
+      </div>
+      <div class="phone-row dark">
+        <div class="tile"><img src="A3-rupee-tiles.svg" alt=""/>Outlay</div>
+        <div class="tile"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/IOS_Mail_icon.png/120px-IOS_Mail_icon.png" alt=""/>Mail</div>
+        <div class="tile"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Music_icon_iOS_15.png/120px-Music_icon_iOS_15.png" alt=""/>Music</div>
+        <div class="tile"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/IOS_Calendar_Icon.png/120px-IOS_Calendar_Icon.png" alt=""/>Calendar</div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="baseline">
+    <strong>For reference</strong> — the original three concepts (no currency):
+    <div class="baseline-row">
+      <figure style="margin:0; text-align:center;">
+        <img src="A-mosaic-o.svg" width="64" height="64" alt="">
+        <figcaption style="font-size:0.7rem; color:var(--muted); margin-top:4px;">A · O + tiles</figcaption>
+      </figure>
+      <figure style="margin:0; text-align:center;">
+        <img src="B-tricolor-house.svg" width="64" height="64" alt="">
+        <figcaption style="font-size:0.7rem; color:var(--muted); margin-top:4px;">B · house</figcaption>
+      </figure>
+      <figure style="margin:0; text-align:center;">
+        <img src="C-mosaic-tile.svg" width="64" height="64" alt="">
+        <figcaption style="font-size:0.7rem; color:var(--muted); margin-top:4px;">C · pinwheel</figcaption>
+      </figure>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Concept A1 — Mosaic O with Rupee
+  ────────────────────────────────
+  Cleanest variant: rose ring O with a bold rupee glyph centered inside.
+  No parapet tiles — the symbol does the talking. Reads as "Outlay
+  (the O) for tracking money (the ₹)" at any size.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="108" fill="#f7eecf"/>
+  <circle cx="256" cy="256" r="160" fill="none" stroke="#d97da2" stroke-width="64"/>
+  <text x="256" y="256" text-anchor="middle" dy="0.35em"
+        font-family="Inter, 'SF Pro Display', 'Plus Jakarta Sans', system-ui, sans-serif"
+        font-weight="900" font-size="220" fill="#1a1a1a">₹</text>
+</svg>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Concept B — Tricolor House
+  ──────────────────────────
+  An abstract two-tier silhouette of the home's actual profile: pink
+  parapet band, cream main body, asymmetric raised "tower" on the right
+  flying a small saffron-orange flag triangle. More literal — reads
+  immediately as "this house, simplified".
+
+  Palette: rose-pink (trim bands) · cream (body) · saffron-orange (flag)
+  Reads at: ≥48px (the flag mast loses fidelity below that).
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Cream background tile -->
+  <rect width="512" height="512" rx="108" fill="#f7eecf"/>
+
+  <!-- Asymmetric "tower" on the right — taller block (cream with rose top band) -->
+  <rect x="320" y="148" width="100" height="240" rx="8" fill="#f7eecf" stroke="#1a1a1a" stroke-width="12"/>
+  <rect x="320" y="148" width="100" height="36"  fill="#d97da2" stroke="#1a1a1a" stroke-width="12"/>
+
+  <!-- Main house body (cream) with pink parapet top + pink base band -->
+  <rect x="92"  y="200" width="240" height="188" rx="8" fill="#f7eecf" stroke="#1a1a1a" stroke-width="12"/>
+  <!-- Top pink parapet band -->
+  <rect x="92"  y="200" width="240" height="38"  fill="#d97da2" stroke="#1a1a1a" stroke-width="12"/>
+  <!-- Bottom pink base band -->
+  <rect x="92"  y="350" width="240" height="38"  fill="#d97da2" stroke="#1a1a1a" stroke-width="12"/>
+
+  <!-- Saffron tile accents along the top band — the parapet's rhythm -->
+  <g fill="#f4c542">
+    <rect x="120" y="212" width="14" height="14" rx="2"/>
+    <rect x="172" y="212" width="14" height="14" rx="2"/>
+    <rect x="224" y="212" width="14" height="14" rx="2"/>
+    <rect x="276" y="212" width="14" height="14" rx="2"/>
+  </g>
+
+  <!-- Flag mast + tricolor triangle (saffron) on the tower -->
+  <line x1="370" y1="148" x2="370" y2="92" stroke="#1a1a1a" stroke-width="6" stroke-linecap="round"/>
+  <path d="M 370 100 L 412 112 L 370 132 Z" fill="#ff9933"/>
+</svg>

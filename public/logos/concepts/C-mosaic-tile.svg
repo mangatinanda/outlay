@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Concept C — Mosaic Tile
+  ───────────────────────
+  Pure geometric mark — a single decorative tile abstracted from the
+  zigzag mosaic on the home's corner. Four triangle wedges in
+  rose / cream / saffron / ink form a pinwheel. No letterforms, no
+  literal references — works as a favicon at 16px.
+
+  Palette: rose-pink + cream + saffron + ink
+  Reads at: any size, including 16px favicon.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Cream background tile -->
+  <rect width="512" height="512" rx="108" fill="#f7eecf"/>
+
+  <!-- Pinwheel — 4 triangle wedges meeting at center, each a different palette color -->
+  <!-- Top wedge: rose -->
+  <path d="M 96 96 L 416 96 L 256 256 Z" fill="#d97da2"/>
+  <!-- Right wedge: saffron -->
+  <path d="M 416 96 L 416 416 L 256 256 Z" fill="#f4c542"/>
+  <!-- Bottom wedge: ink — anchors the mark, gives weight -->
+  <path d="M 416 416 L 96 416 L 256 256 Z" fill="#1a1a1a"/>
+  <!-- Left wedge: deeper rose — visible against the cream background -->
+  <path d="M 96 416 L 96 96 L 256 256 Z" fill="#b85a82"/>
+
+  <!-- Small saffron-orange center dot — the flag accent -->
+  <circle cx="256" cy="256" r="20" fill="#ff9933"/>
+</svg>
