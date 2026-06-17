@@ -22,6 +22,7 @@ export default async function HouseholdsPage() {
           id: h.id,
           name: h.name,
           currency: h.currency,
+          accent: h.accent,
         }))}
         currentId={current?.id ?? null}
       />

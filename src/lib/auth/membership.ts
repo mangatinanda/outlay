@@ -28,6 +28,7 @@ export async function userHouseholds(userId: string) {
       id: households.id,
       name: households.name,
       currency: households.currency,
+      accent: households.accent,
       createdAt: households.createdAt,
     })
     .from(households)

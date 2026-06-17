@@ -11,6 +11,7 @@ import {
   getCurrentHousehold,
   listHouseholds,
 } from "@/lib/queries/household-queries";
+import { resolveAccent } from "@/lib/theme/palette";
 
 // These pages read from the database per request, so they must render
 // dynamically rather than being statically prerendered at build time (which
@@ -35,13 +36,23 @@ export default async function AppLayout({
     return <FirstHousehold />;
   }
 
+  // Per-household accent: overrides --primary + --primary-foreground for this
+  // subtree (both light and dark mode), no-op if accent is null.
+  const accent = resolveAccent(household?.accent);
+  const accentStyle = accent
+    ? ({
+        "--primary": accent.primary,
+        "--primary-foreground": accent.primaryForeground,
+      } as React.CSSProperties)
+    : undefined;
+
   return (
     <HouseholdProvider
       households={householdList.map((h) => ({ id: h.id, name: h.name }))}
       currentId={household?.id ?? null}
     >
       <CurrencyProvider currency={household?.currency ?? "INR"}>
-        <div className="min-h-screen bg-background">
+        <div className="min-h-screen bg-background" style={accentStyle}>
           <Sidebar />
           <div className="md:pl-64">
             <Header

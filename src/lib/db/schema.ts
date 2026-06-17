@@ -20,6 +20,8 @@ export const households = sqliteTable("households", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   currency: text("currency").notNull().default("INR"),
+  // One of the keys in src/lib/theme/palette.ts (or null = Fresh Ledger default).
+  accent: text("accent"),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),

@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { updateHouseholdAccent } from "@/lib/actions/accent-actions";
 import {
   createHousehold,
   deleteHousehold,
@@ -31,11 +32,14 @@ import {
   switchHousehold,
 } from "@/lib/actions/household-actions";
 import { CURRENCIES } from "@/lib/constants";
+import { ACCENT_KEYS, ACCENTS, type AccentKey } from "@/lib/theme/palette";
+import { cn } from "@/lib/utils";
 
 interface HouseholdItem {
   id: string;
   name: string;
   currency: string;
+  accent: string | null;
 }
 
 export function HouseholdManager({
@@ -99,6 +103,11 @@ export function HouseholdManager({
     if (result?.error) toast.error(result.error);
   }
 
+  async function handleAccent(id: string, accent: AccentKey | null) {
+    const result = await updateHouseholdAccent(id, accent);
+    if (result?.error) toast.error(result.error);
+  }
+
   return (
     <>
       <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -139,6 +148,50 @@ export function HouseholdManager({
                   </Button>
                 </div>
               </div>
+              <fieldset className="flex items-center gap-1.5">
+                <legend className="sr-only">Accent color for {h.name}</legend>
+                {ACCENT_KEYS.map((key) => {
+                  const selected = h.accent === key;
+                  return (
+                    <label
+                      key={key}
+                      className={cn(
+                        "flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border-2 transition-colors focus-within:ring-2 focus-within:ring-ring",
+                        selected
+                          ? "border-foreground"
+                          : "border-transparent hover:border-border",
+                      )}
+                      style={{ backgroundColor: ACCENTS[key].primary }}
+                    >
+                      <input
+                        type="radio"
+                        name={`accent-${h.id}`}
+                        value={key}
+                        checked={selected}
+                        onChange={() => handleAccent(h.id, key)}
+                        className="sr-only"
+                        aria-label={ACCENTS[key].label}
+                      />
+                      {selected && (
+                        <Check
+                          className="h-3.5 w-3.5"
+                          style={{ color: ACCENTS[key].primaryForeground }}
+                        />
+                      )}
+                    </label>
+                  );
+                })}
+                {h.accent && (
+                  <button
+                    type="button"
+                    onClick={() => handleAccent(h.id, null)}
+                    className="ml-1 text-muted-foreground text-xs hover:text-foreground"
+                    aria-label={`Reset accent for ${h.name}`}
+                  >
+                    Reset
+                  </button>
+                )}
+              </fieldset>
               {h.id === currentId ? (
                 <Badge variant="secondary" className="gap-1">
                   <Check className="h-3 w-3" /> Active
