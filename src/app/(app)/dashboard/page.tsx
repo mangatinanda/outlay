@@ -5,6 +5,7 @@ import { CategoryPieChart } from "@/components/dashboard/category-pie-chart";
 import { ExpenseChart } from "@/components/dashboard/expense-chart";
 import { RecentExpenses } from "@/components/dashboard/recent-expenses";
 import { SummaryCards } from "@/components/dashboard/summary-cards";
+import { InstallPrompt } from "@/components/pwa/install-prompt";
 import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -54,6 +55,7 @@ async function DashboardContent() {
         <CategoryPieChart data={categoryData} />
       </div>
       <RecentExpenses expenses={recent} />
+      <InstallPrompt />
     </div>
   );
 }
