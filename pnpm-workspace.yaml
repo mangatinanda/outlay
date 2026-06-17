@@ -13,3 +13,4 @@ allowBuilds:
   '@swc/core': false
   better-sqlite3: false
   msw: false
+  core-js: false  # postinstall is a console ad — no build artifact needed

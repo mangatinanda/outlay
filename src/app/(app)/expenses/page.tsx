@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { AddExpenseSheet } from "@/components/expenses/add-expense-sheet";
 import { ExpenseList } from "@/components/expenses/expense-list";
+import { ExportButton } from "@/components/expenses/export-button";
 import { EmptyState } from "@/components/shared/empty-state";
 import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
@@ -44,6 +45,19 @@ async function ExpenseContent() {
 
   return (
     <>
+      <div className="-mt-2 flex justify-end">
+        <ExportButton
+          records={expenses.map((e) => ({
+            date: e.date,
+            description: e.description,
+            categoryName: e.categoryName,
+            memberName: e.memberName,
+            amount: e.amount,
+            notes: e.notes,
+          }))}
+          householdName={household.name}
+        />
+      </div>
       <ExpenseList expenses={expenses} />
       <AddExpenseSheet categories={categories} members={members} />
     </>
