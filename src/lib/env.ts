@@ -19,6 +19,23 @@ export const envSchema = z.object({
   AUTH_GOOGLE_SECRET: optionalString,
   HOUSEHOLD_ALLOWED_EMAILS: optionalString,
   TURSO_AUTH_TOKEN: optionalString,
+
+  // Optional abuse guardrails for open sign-up (HOUSEHOLD_ALLOWED_EMAILS=*).
+  // Parsed/validated in src/lib/limits.ts, which applies sane defaults.
+  MAX_USERS: optionalString,
+  MAX_HOUSEHOLDS_PER_USER: optionalString,
+  MAX_EXPENSES_PER_HOUSEHOLD: optionalString,
+
+  // Optional rate-limit overrides (src/lib/rate-limit.ts). RATE_LIMIT_DISABLED
+  // ("1"/"true") turns the whole layer off.
+  RATE_LIMIT_DISABLED: optionalString,
+  RATE_LIMIT_EXPENSES_PER_MIN: optionalString,
+  RATE_LIMIT_HOUSEHOLDS_PER_HOUR: optionalString,
+  RATE_LIMIT_IMPORTS_PER_HOUR: optionalString,
+
+  // Cron-cleanup auth + retention (src/app/api/cron/cleanup/route.ts).
+  CRON_SECRET: optionalString,
+  CLEANUP_RETENTION_DAYS: optionalString,
 });
 
 export type Env = z.infer<typeof envSchema>;

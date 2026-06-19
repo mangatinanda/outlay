@@ -43,4 +43,17 @@ describe("isEmailAllowed", () => {
   it("stays open in development when the list is empty (local convenience)", () => {
     expect(isEmailAllowed("anyone@example.com", undefined, false)).toBe(true);
   });
+
+  it("allows ANY Google account when the list contains a wildcard", () => {
+    expect(isEmailAllowed("anyone@example.com", "*", true)).toBe(true);
+    expect(isEmailAllowed("anyone@example.com", "you@x.com, *", true)).toBe(
+      true,
+    );
+    expect(isEmailAllowed("anyone@example.com", "*", false)).toBe(true);
+  });
+
+  it("still denies a missing email under a wildcard", () => {
+    expect(isEmailAllowed(null, "*", true)).toBe(false);
+    expect(isEmailAllowed(undefined, "*", true)).toBe(false);
+  });
 });

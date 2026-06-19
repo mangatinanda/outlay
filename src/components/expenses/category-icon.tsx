@@ -19,6 +19,7 @@ import {
   Shield,
   ShoppingBag,
   ShoppingCart,
+  Sprout,
   Utensils,
   Wifi,
   Wrench,
@@ -50,6 +51,7 @@ const iconMap: Record<string, React.ElementType> = {
   "piggy-bank": PiggyBank,
   briefcase: Briefcase,
   music: Music,
+  sprout: Sprout,
 };
 
 interface CategoryIconProps {

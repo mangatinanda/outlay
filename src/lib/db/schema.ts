@@ -112,6 +112,16 @@ export const expenses = sqliteTable(
   ],
 );
 
+// Fixed-window rate-limit counters, shared across serverless instances (an
+// in-memory limiter is unreliable on distributed/ephemeral functions). One row
+// per limiter key; `window_start` is the unix-second start of the current
+// window. See src/lib/rate-limit.ts.
+export const rateLimits = sqliteTable("rate_limits", {
+  key: text("key").primaryKey(),
+  count: integer("count").notNull(),
+  windowStart: integer("window_start").notNull(),
+});
+
 // Type exports
 export type User = typeof users.$inferSelect;
 export type Household = typeof households.$inferSelect;

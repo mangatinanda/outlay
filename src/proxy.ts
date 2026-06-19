@@ -15,6 +15,8 @@ export const proxy = auth(async (req) => {
 
 export const config = {
   // Protect every route except /login, the Auth.js API (OAuth round-trip must be
-  // reachable), the offline fallback, Next internals, and any file with an extension.
-  matcher: ["/((?!login|admin|api/auth|~offline|_next|.*\\..*).*)"],
+  // reachable), the cron API (authorized by its own CRON_SECRET bearer token,
+  // not a session), the offline fallback, Next internals, and any file with an
+  // extension.
+  matcher: ["/((?!login|admin|api/auth|api/cron|~offline|_next|.*\\..*).*)"],
 };

@@ -1,4 +1,4 @@
-import { Plus, Receipt } from "lucide-react";
+import { Plus, Receipt, Upload } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import { AddExpenseSheet } from "@/components/expenses/add-expense-sheet";
@@ -71,9 +71,18 @@ export default function ExpensesPage() {
         title="Expenses"
         description="All your household expenses"
         action={
-          <Button nativeButton={false} render={<Link href="/expenses/new" />}>
-            <Plus className="mr-2 h-4 w-4" /> Add Expense
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              nativeButton={false}
+              render={<Link href="/expenses/import" />}
+            >
+              <Upload className="mr-2 h-4 w-4" /> Import
+            </Button>
+            <Button nativeButton={false} render={<Link href="/expenses/new" />}>
+              <Plus className="mr-2 h-4 w-4" /> Add Expense
+            </Button>
+          </div>
         }
       />
       <Suspense

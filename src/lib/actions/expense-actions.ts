@@ -1,12 +1,14 @@
 "use server";
 
 import { createId } from "@paralleldrive/cuid2";
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { categories, expenses, householdMembers } from "@/lib/db/schema";
+import { LIMITS } from "@/lib/limits";
 import { toMinorUnits } from "@/lib/money";
 import { getCurrentHousehold } from "@/lib/queries/household-queries";
+import { RATE_LIMITED_MESSAGE, RATE_LIMITS, rateLimit } from "@/lib/rate-limit";
 import { expenseSchema } from "@/lib/validators/expense-schema";
 import { safeAction } from "./safe-action";
 
@@ -68,12 +70,30 @@ export const createExpense = safeAction(
     const household = await getCurrentHousehold();
     if (!household) return { error: "No household found" };
 
+    // Throttle write bursts per household (bounds rate, not just total).
+    const rl = await rateLimit(`expense:${household.id}`, {
+      limit: RATE_LIMITS.expenseWritesPerMinute,
+      windowSec: 60,
+    });
+    if (rl.limited) return { error: RATE_LIMITED_MESSAGE };
+
     const ownershipError = await checkOwnership(
       household.id,
       parsed.data.categoryId,
       parsed.data.memberId,
     );
     if (ownershipError) return { error: ownershipError };
+
+    // Bound how many expenses a single household can accumulate.
+    const [{ n }] = await db
+      .select({ n: sql<number>`count(*)` })
+      .from(expenses)
+      .where(eq(expenses.householdId, household.id));
+    if (n >= LIMITS.maxExpensesPerHousehold) {
+      return {
+        error: `This household has reached the limit of ${LIMITS.maxExpensesPerHousehold} expenses.`,
+      };
+    }
 
     await db.insert(expenses).values({
       id: createId(),

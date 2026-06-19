@@ -1,7 +1,7 @@
 "use server";
 
 import { createId } from "@paralleldrive/cuid2";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { getCurrentActor } from "@/lib/auth/actor";
@@ -14,10 +14,12 @@ import {
   householdMembers,
   households,
 } from "@/lib/db/schema";
+import { LIMITS } from "@/lib/limits";
 import {
   HOUSEHOLD_COOKIE,
   listHouseholds,
 } from "@/lib/queries/household-queries";
+import { RATE_LIMITED_MESSAGE, RATE_LIMITS, rateLimit } from "@/lib/rate-limit";
 import { householdSchema } from "@/lib/validators/household-schema";
 import { currencySchema } from "@/lib/validators/settings-schema";
 import { safeAction } from "./safe-action";
@@ -81,6 +83,26 @@ export const createHousehold = safeAction(
 
     const actor = await getCurrentActor();
     if (!actor) return { error: "Not authenticated" };
+
+    // Bound how many households one user can create + how fast (superadmin is
+    // exempt from both — it's the operator, not a self-service account).
+    if (actor.kind === "user") {
+      const rl = await rateLimit(`household:${actor.userId}`, {
+        limit: RATE_LIMITS.householdCreatesPerHour,
+        windowSec: 3600,
+      });
+      if (rl.limited) return { error: RATE_LIMITED_MESSAGE };
+
+      const [{ n }] = await db
+        .select({ n: sql<number>`count(*)` })
+        .from(householdMembers)
+        .where(eq(householdMembers.userId, actor.userId));
+      if (n >= LIMITS.maxHouseholdsPerUser) {
+        return {
+          error: `You've reached the limit of ${LIMITS.maxHouseholdsPerUser} households.`,
+        };
+      }
+    }
 
     const householdId = createId();
     // Seed a default member + the default categories so the household is usable
