@@ -1,5 +1,7 @@
 # Outlay
 
+[![CI](https://github.com/mangatinanda/outlay/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mangatinanda/outlay/actions/workflows/ci.yml)
+
 A collaborative household expense‑tracking **Progressive Web App**. Every member of a home
 logs shared expenses, organizes them by category and person, and sees where the money goes on
 a charts‑driven dashboard — installable to a phone home screen and usable offline.

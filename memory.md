@@ -100,7 +100,7 @@ count‑up, area chart, donut, friendly empty states); **M4** expenses list + sw
 FAB→bottom‑sheet morph; **M5/M6** grids/login restyle + a11y (Lighthouse Accessibility **100** on
 all pages). Data/auth behavior unchanged (final review confirmed via whitespace‑ignored diff);
 prior‑audit safety props intact. Fast‑forward‑merged to `main`, feature branch deleted.
-**Live: https://myoutlay.vercel.app** — verified in prod: passcode login → redesigned dashboard,
+**Live: https://outlay.mangatinanda.me** — verified in prod: passcode login → redesigned dashboard,
 empty states polished, dark mode.
 - **CI gotcha fixed (`1c106a2`):** the `packageManager` pin collided with `pnpm/action-setup`'s
   `version: 11` input → both jobs failed at setup. Removed the input; CI now green (ci + e2e).
@@ -327,9 +327,9 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
 - **Default currency INR.**
 - **Deployed 2026‑06‑12** under the `mangatinanda` Vercel account (project
   `nanda-kumar-mangatis-projects/outlay`, **git‑connected** → pushes to `main` auto‑deploy).
-  Production: **https://myoutlay.vercel.app** (primary; `outlay-kappa.vercel.app` also works).
-  `outlay.mangatinanda.me` is attached to the project but pending a CNAME
-  (`outlay` → `cname.vercel-dns.com`) at the registrar (IONOS nameservers).
+  Production: **https://outlay.mangatinanda.me** (custom domain, now LIVE — the CNAME
+  `outlay` → `cname.vercel-dns.com` at IONOS has resolved; Vercel serves it over HTTPS). The
+  Vercel URLs `myoutlay.vercel.app` / `outlay-kappa.vercel.app` still resolve as aliases.
   Turso DB `outlay` (aws‑ap‑south‑1).
 
 ## Current state & open items
@@ -362,6 +362,9 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
   correct client + callback. NOTE: the consent screen is in "Testing" mode — family members
   must be added as test users in Google Cloud Console (or publish the app). For local dev,
   the same three vars go in `.env.local`.
+  **TODO (custom domain go‑live):** add `https://outlay.mangatinanda.me` to the OAuth client's
+  Authorized JavaScript origins and `https://outlay.mangatinanda.me/api/auth/callback/google`
+  to its Authorized redirect URIs, or Google sign‑in 400s on the new domain.
 - Deliberately kept: `getExpenses` filters param (roadmap filter UI) and the `users` table
   (Model B). Optional future: filter UI, `.claude/agents/`, claude-code-action PR review.
 - **To finish Google login:** user must create a Google Cloud OAuth client (redirect URI
