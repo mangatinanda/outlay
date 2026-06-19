@@ -1,4 +1,6 @@
 import { SerwistProvider } from "@serwist/turbopack/react";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import { Providers } from "@/components/providers";
@@ -69,6 +71,8 @@ export default function RootLayout({
         <SerwistProvider swUrl="/serwist/sw.js">
           <Providers>{children}</Providers>
         </SerwistProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
