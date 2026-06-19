@@ -1,6 +1,7 @@
 "use client";
 
 import { Download, Share, X } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -45,6 +46,7 @@ export function InstallPrompt() {
   );
   const [showIosHint, setShowIosHint] = useState(false);
   const [dismissed, setDismissed] = useState(true); // start hidden; hydrate after mount
+  const reduce = useReducedMotion();
 
   useEffect(() => {
     if (isStandalone()) return;
@@ -90,18 +92,18 @@ export function InstallPrompt() {
   if (dismissed) return null;
   if (!deferred && !showIosHint) return null;
 
-  return (
-    <div className="relative rounded-2xl border border-border bg-card p-4 shadow-card">
+  const card = (
+    <>
       <button
         type="button"
         onClick={dismiss}
         aria-label="Dismiss install prompt"
-        className="absolute top-3 right-3 inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+        className="absolute top-2 right-2 inline-flex h-11 w-11 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
       >
         <X className="h-4 w-4" />
       </button>
 
-      <div className="flex items-start gap-3 pr-10">
+      <div className="flex items-start gap-3 pr-12">
         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground">
           {deferred ? (
             <Download className="h-5 w-5" />
@@ -130,6 +132,29 @@ export function InstallPrompt() {
           )}
         </div>
       </div>
+    </>
+  );
+
+  // Floating, dismissible toast pinned just below the sticky header (h-16),
+  // aligned to the content column on desktop (sidebar is md:w-64). The
+  // positioning layer is click-through; only the card captures pointer events.
+  const cardClassName =
+    "pointer-events-auto relative w-full max-w-md rounded-2xl border border-border bg-card p-4 shadow-float";
+
+  return (
+    <div className="pointer-events-none fixed inset-x-0 top-20 z-50 flex justify-center px-4 md:pl-64">
+      {reduce ? (
+        <div className={cardClassName}>{card}</div>
+      ) : (
+        <motion.div
+          className={cardClassName}
+          initial={{ opacity: 0, y: -16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {card}
+        </motion.div>
+      )}
     </div>
   );
 }
