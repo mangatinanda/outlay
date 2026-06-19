@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { CategoryPieChart } from "@/components/dashboard/category-pie-chart";
 import { ExpenseChart } from "@/components/dashboard/expense-chart";
+import { MemberBarChart } from "@/components/dashboard/member-bar-chart";
 import { RecentExpenses } from "@/components/dashboard/recent-expenses";
 import { SummaryCards } from "@/components/dashboard/summary-cards";
 import { InstallPrompt } from "@/components/pwa/install-prompt";
@@ -12,6 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import {
   getCategoryBreakdown,
   getDashboardStats,
+  getMemberSpending,
   getRecentExpenses,
   getSpendingByDay,
 } from "@/lib/queries/dashboard-queries";
@@ -40,12 +42,14 @@ async function DashboardContent() {
   if (!household)
     return <p>No household found. Please set up your home first.</p>;
 
-  const [stats, categoryData, dailyData, recent] = await Promise.all([
-    getDashboardStats(household.id),
-    getCategoryBreakdown(household.id),
-    getSpendingByDay(household.id, 30),
-    getRecentExpenses(household.id, 5),
-  ]);
+  const [stats, categoryData, dailyData, memberData, recent] =
+    await Promise.all([
+      getDashboardStats(household.id),
+      getCategoryBreakdown(household.id),
+      getSpendingByDay(household.id, 30),
+      getMemberSpending(household.id),
+      getRecentExpenses(household.id, 5),
+    ]);
 
   return (
     <div className="space-y-6">
@@ -54,6 +58,7 @@ async function DashboardContent() {
         <ExpenseChart data={dailyData} />
         <CategoryPieChart data={categoryData} />
       </div>
+      <MemberBarChart data={memberData} />
       <RecentExpenses expenses={recent} />
       <InstallPrompt />
     </div>

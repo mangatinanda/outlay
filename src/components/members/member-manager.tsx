@@ -255,6 +255,20 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
               />
             </div>
             <div className="space-y-2">
+              <Label htmlFor="member-email">Email (optional)</Label>
+              <Input
+                id="member-email"
+                name="email"
+                type="email"
+                defaultValue={editing?.email ?? ""}
+                placeholder="member@example.com"
+              />
+              <p className="text-muted-foreground text-xs">
+                Adding an email lets this person sign in to the household. Leave
+                blank for an attribution-only member.
+              </p>
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="role">Role</Label>
               <Select name="role" defaultValue={editing?.role || "member"}>
                 <SelectTrigger>

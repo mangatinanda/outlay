@@ -113,11 +113,9 @@ export async function getSpendingByDay(householdId: string, days: number = 30) {
   });
 }
 
+/** All-time spending per member for a household, highest first. Powers the
+ *  dashboard "By Member" bar chart. */
 export async function getMemberSpending(householdId: string) {
-  const now = new Date();
-  const monthStart = format(startOfMonth(now), "yyyy-MM-dd");
-  const monthEnd = format(endOfMonth(now), "yyyy-MM-dd");
-
   return db
     .select({
       name: householdMembers.name,
@@ -128,13 +126,7 @@ export async function getMemberSpending(householdId: string) {
     })
     .from(expenses)
     .innerJoin(householdMembers, eq(expenses.memberId, householdMembers.id))
-    .where(
-      and(
-        eq(expenses.householdId, householdId),
-        gte(expenses.date, monthStart),
-        lte(expenses.date, monthEnd),
-      ),
-    )
+    .where(eq(expenses.householdId, householdId))
     .groupBy(householdMembers.id)
     .orderBy(desc(sql`total`));
 }

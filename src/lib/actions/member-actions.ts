@@ -14,6 +14,7 @@ export const createMember = safeAction(
   async (formData: FormData) => {
     const raw = {
       name: formData.get("name"),
+      email: formData.get("email"),
       role: formData.get("role") || "member",
     };
 
@@ -25,10 +26,28 @@ export const createMember = safeAction(
     const household = await getCurrentHousehold();
     if (!household) return { error: "No household found" };
 
+    const email = parsed.data.email?.trim().toLowerCase() ?? null;
+    if (email) {
+      // A member's email is unique within a household (and is treated as a
+      // sign-in invite), so reject a duplicate with a clear message.
+      const [dupe] = await db
+        .select({ id: householdMembers.id })
+        .from(householdMembers)
+        .where(
+          and(
+            eq(householdMembers.householdId, household.id),
+            eq(householdMembers.email, email),
+          ),
+        )
+        .limit(1);
+      if (dupe) return { error: "A member with that email already exists." };
+    }
+
     await db.insert(householdMembers).values({
       id: createId(),
       householdId: household.id,
       name: parsed.data.name,
+      email,
       role: parsed.data.role,
     });
 
@@ -43,6 +62,7 @@ export const updateMember = safeAction(
   async (id: string, formData: FormData) => {
     const raw = {
       name: formData.get("name"),
+      email: formData.get("email"),
       role: formData.get("role") || "member",
     };
 
@@ -54,10 +74,28 @@ export const updateMember = safeAction(
     const household = await getCurrentHousehold();
     if (!household) return { error: "No household found" };
 
+    const email = parsed.data.email?.trim().toLowerCase() ?? null;
+    if (email) {
+      // Reject the email if a DIFFERENT member in this household already uses it.
+      const sameEmail = await db
+        .select({ id: householdMembers.id })
+        .from(householdMembers)
+        .where(
+          and(
+            eq(householdMembers.householdId, household.id),
+            eq(householdMembers.email, email),
+          ),
+        );
+      if (sameEmail.some((m) => m.id !== id)) {
+        return { error: "A member with that email already exists." };
+      }
+    }
+
     const updated = await db
       .update(householdMembers)
       .set({
         name: parsed.data.name,
+        email,
         role: parsed.data.role,
       })
       .where(
