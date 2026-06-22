@@ -19,6 +19,7 @@ export async function getMembersWithStats(householdId: string) {
       avatar: householdMembers.avatar,
       email: householdMembers.email,
       userId: householdMembers.userId,
+      includeInSettleUp: householdMembers.includeInSettleUp,
       expenseCount: sql<number>`count(${expenses.id})`.as("expense_count"),
       totalSpent:
         sql<number>`coalesce(sum(${expenses.amountMinor}), 0) / 100.0`.as(

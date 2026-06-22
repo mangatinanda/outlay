@@ -1,6 +1,6 @@
 "use client";
 
-import { Crown, Edit, Plus, Trash2, Users } from "lucide-react";
+import { Crown, Edit, Plus, Scale, Trash2, Users } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { MotionCard } from "@/components/motion/motion-card";
@@ -27,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { inviteToHousehold } from "@/lib/actions/invite-actions";
 import {
   createMember,
@@ -41,6 +42,7 @@ interface MemberItem {
   avatar: string | null;
   email: string | null;
   userId: string | null;
+  includeInSettleUp: boolean;
   expenseCount: number;
   totalSpent: number;
 }
@@ -52,14 +54,17 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
   const [editing, setEditing] = useState<MemberItem | null>(null);
   const [loading, setLoading] = useState(false);
   const [inviting, setInviting] = useState(false);
+  const [includeInSettleUp, setIncludeInSettleUp] = useState(true);
 
   function openNew() {
     setEditing(null);
+    setIncludeInSettleUp(true);
     setDialogOpen(true);
   }
 
   function openEdit(member: MemberItem) {
     setEditing(member);
+    setIncludeInSettleUp(member.includeInSettleUp);
     setDialogOpen(true);
   }
 
@@ -183,6 +188,12 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
                             {accessBadge(member)?.label}
                           </Badge>
                         )}
+                        {!member.includeInSettleUp && (
+                          <Badge variant="secondary" className="text-xs">
+                            <Scale className="mr-1 h-3 w-3" />
+                            Not in settle-up
+                          </Badge>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -279,6 +290,24 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
                   <SelectItem value="member">Member</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+            <div className="flex items-center justify-between gap-3 rounded-xl border border-border p-3">
+              <div className="space-y-0.5">
+                <Label htmlFor="include-settle">Include in settle-up</Label>
+                <p className="text-muted-foreground text-xs">
+                  Off = attribution-only (won't owe or be owed).
+                </p>
+              </div>
+              <input
+                type="hidden"
+                name="includeInSettleUp"
+                value={includeInSettleUp ? "true" : "false"}
+              />
+              <Switch
+                id="include-settle"
+                checked={includeInSettleUp}
+                onCheckedChange={setIncludeInSettleUp}
+              />
             </div>
             <DialogFooter>
               <Button

@@ -1,10 +1,10 @@
 "use server";
 
 import { createId } from "@paralleldrive/cuid2";
-import { and, eq } from "drizzle-orm";
+import { and, eq, or } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
-import { expenses, householdMembers } from "@/lib/db/schema";
+import { expenses, householdMembers, settlements } from "@/lib/db/schema";
 import { getCurrentHousehold } from "@/lib/queries/household-queries";
 import { memberSchema } from "@/lib/validators/member-schema";
 import { safeAction } from "./safe-action";
@@ -16,6 +16,7 @@ export const createMember = safeAction(
       name: formData.get("name"),
       email: formData.get("email"),
       role: formData.get("role") || "member",
+      includeInSettleUp: formData.get("includeInSettleUp"),
     };
 
     const parsed = memberSchema.safeParse(raw);
@@ -49,6 +50,7 @@ export const createMember = safeAction(
       name: parsed.data.name,
       email,
       role: parsed.data.role,
+      includeInSettleUp: parsed.data.includeInSettleUp,
     });
 
     revalidatePath("/members");
@@ -64,6 +66,7 @@ export const updateMember = safeAction(
       name: formData.get("name"),
       email: formData.get("email"),
       role: formData.get("role") || "member",
+      includeInSettleUp: formData.get("includeInSettleUp"),
     };
 
     const parsed = memberSchema.safeParse(raw);
@@ -97,6 +100,7 @@ export const updateMember = safeAction(
         name: parsed.data.name,
         email,
         role: parsed.data.role,
+        includeInSettleUp: parsed.data.includeInSettleUp,
       })
       .where(
         and(
@@ -140,6 +144,18 @@ export const deleteMember = safeAction("deleteMember", async (id: string) => {
     return {
       error:
         "Cannot delete a member with existing expenses. Reassign their expenses first.",
+    };
+  }
+
+  const linkedSettlements = await db
+    .select({ id: settlements.id })
+    .from(settlements)
+    .where(or(eq(settlements.fromMemberId, id), eq(settlements.toMemberId, id)))
+    .limit(1);
+  if (linkedSettlements.length > 0) {
+    return {
+      error:
+        "Cannot delete a member referenced by a settlement. Delete those settlements first.",
     };
   }
 
