@@ -41,6 +41,9 @@ export const householdMembers = sqliteTable(
     role: text("role", { enum: ["admin", "member"] })
       .notNull()
       .default("member"),
+    includeInSettleUp: integer("include_in_settle_up", { mode: "boolean" })
+      .notNull()
+      .default(true),
     createdAt: integer("created_at", { mode: "timestamp" })
       .notNull()
       .$defaultFn(() => new Date()),
@@ -122,6 +125,59 @@ export const rateLimits = sqliteTable("rate_limits", {
   windowStart: integer("window_start").notNull(),
 });
 
+// A recorded payback (from_member paid to_member). Kept separate from expenses
+// so settlements never appear in spending charts/reports.
+export const settlements = sqliteTable(
+  "settlements",
+  {
+    id: text("id").primaryKey(),
+    householdId: text("household_id")
+      .notNull()
+      .references(() => households.id),
+    fromMemberId: text("from_member_id")
+      .notNull()
+      .references(() => householdMembers.id),
+    toMemberId: text("to_member_id")
+      .notNull()
+      .references(() => householdMembers.id),
+    amountMinor: integer("amount_minor").notNull(),
+    date: text("date").notNull(), // ISO YYYY-MM-DD
+    note: text("note"),
+    createdAt: integer("created_at", { mode: "timestamp" })
+      .notNull()
+      .$defaultFn(() => new Date()),
+  },
+  (table) => [
+    index("settlements_household_date_idx").on(table.householdId, table.date),
+  ],
+);
+
+// Append-only household audit feed. actor_label + summary are denormalized so
+// the feed renders after referenced rows are edited/deleted (see spec).
+export const activity = sqliteTable(
+  "activity",
+  {
+    id: text("id").primaryKey(),
+    householdId: text("household_id")
+      .notNull()
+      .references(() => households.id),
+    actorUserId: text("actor_user_id").references(() => users.id),
+    actorLabel: text("actor_label").notNull(),
+    action: text("action").notNull(),
+    summary: text("summary").notNull(),
+    metadata: text("metadata"), // optional JSON string
+    createdAt: integer("created_at", { mode: "timestamp" })
+      .notNull()
+      .$defaultFn(() => new Date()),
+  },
+  (table) => [
+    index("activity_household_created_idx").on(
+      table.householdId,
+      table.createdAt,
+    ),
+  ],
+);
+
 // Type exports
 export type User = typeof users.$inferSelect;
 export type Household = typeof households.$inferSelect;
@@ -131,3 +187,7 @@ export type Expense = typeof expenses.$inferSelect;
 export type NewExpense = typeof expenses.$inferInsert;
 export type NewCategory = typeof categories.$inferInsert;
 export type NewHouseholdMember = typeof householdMembers.$inferInsert;
+export type Settlement = typeof settlements.$inferSelect;
+export type NewSettlement = typeof settlements.$inferInsert;
+export type Activity = typeof activity.$inferSelect;
+export type NewActivity = typeof activity.$inferInsert;
