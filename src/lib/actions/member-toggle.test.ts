@@ -24,7 +24,11 @@ vi.mock("@/lib/auth/actor", () => ({
 
 import { eq } from "drizzle-orm";
 import { migrate } from "drizzle-orm/libsql/migrator";
-import { createMember, deleteMember } from "@/lib/actions/member-actions";
+import {
+  createMember,
+  deleteMember,
+  updateMember,
+} from "@/lib/actions/member-actions";
 import { db } from "@/lib/db";
 import { householdMembers, households, settlements } from "@/lib/db/schema";
 import { HOUSEHOLD_COOKIE } from "@/lib/queries/household-queries";
@@ -62,10 +66,12 @@ describe("member include_in_settle_up", () => {
   it("blocks deleting a member referenced by a settlement", async () => {
     await createMember(form({ name: "Payer", role: "member" }));
     await createMember(form({ name: "Payee", role: "member" }));
-    const [payer, payee] = await db
+    const all = await db
       .select()
       .from(householdMembers)
       .where(eq(householdMembers.householdId, "h1"));
+    const payer = all.find((m) => m.name === "Payer")!;
+    const payee = all.find((m) => m.name === "Payee")!;
     await db.insert(settlements).values({
       id: "s1",
       householdId: "h1",
@@ -76,5 +82,24 @@ describe("member include_in_settle_up", () => {
     });
     const res = await deleteMember(payer.id);
     expect(res.error).toMatch(/settlement/i);
+  });
+
+  it("updateMember persists a toggled-off includeInSettleUp", async () => {
+    await createMember(form({ name: "Editable", role: "member" }));
+    const [m] = await db
+      .select()
+      .from(householdMembers)
+      .where(eq(householdMembers.name, "Editable"));
+    expect(m.includeInSettleUp).toBe(true); // default in
+    const res = await updateMember(
+      m.id,
+      form({ name: "Editable", role: "member", includeInSettleUp: "false" }),
+    );
+    expect(res).toEqual({ success: true });
+    const [after] = await db
+      .select()
+      .from(householdMembers)
+      .where(eq(householdMembers.id, m.id));
+    expect(after.includeInSettleUp).toBe(false);
   });
 });
