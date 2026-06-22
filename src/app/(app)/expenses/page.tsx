@@ -76,7 +76,7 @@ export default async function ExpensesPage() {
     <div className="space-y-6">
       <PageHeader
         title="Expenses"
-        description="All your household expenses"
+        description={household ? "All your household expenses" : undefined}
         action={
           household ? (
             <div className="flex gap-2">

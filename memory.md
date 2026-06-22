@@ -88,10 +88,17 @@ see a friendly empty state on every menu.
   multi‑agent review (completeness / correctness / design‑a11y, each finding verified): **1 real finding** — the
   new switcher `Link` lacked a focus‑visible ring (WCAG 2.4.7 regression vs the Base‑UI trigger it replaced) →
   fixed by adding the project's standard `outline-none focus-visible:border-ring focus-visible:ring-3
-  focus-visible:ring-ring/50`; 4 findings dismissed as subjective/non‑defects. **NOT committed, NOT deployed.**
-  Note: the zero‑household *Google* state can't be reproduced in local dev (passcode = superadmin always has a
-  household; Google needs real OAuth), so the empty‑state path is verified via gates + code review, not a live
-  session.
+  focus-visible:ring-ring/50`; 4 findings dismissed as subjective/non‑defects.
+- **Then `/code-review` (high, 8 finder angles → verify) caught a real miss:** `/settings` was **not** guarded —
+  a zero‑household user saw a "My Home" fallback + an interactive `CurrencySwitcher` that fails with "No household
+  found" on use. Fixed: the household card is now swapped for `<NoHousehold>` when `household` is null (the static
+  About card stays). Also fixed two minor follow‑ups from that review: switcher touch targets bumped to `min-h-11`
+  (44px, per `.claude/rules/ui.md`) on **both** states, and dashboard/expenses header descriptions made conditional
+  (no household‑implying copy above the empty state). Everything re‑verified green (tsc/Biome/167 tests/build).
+- **Shipped as PR #1** (`feat/no-forced-household` → `main`): https://github.com/mangatinanda/outlay/pull/1 — **not
+  merged, not deployed.** Note: the zero‑household *Google* state can't be reproduced in local dev (passcode =
+  superadmin always has a household; Google needs real OAuth), so the empty‑state path is verified via gates +
+  code review, not a live session.
 
 ### 2026‑06‑16 — Model B: user‑owned households + superadmin passcode (branch `feature/model-b-households`)
 
@@ -363,9 +370,11 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
 
 ## Current state & open items
 
-- **Uncommitted (2026‑06‑22): forced first‑household onboarding removed** — new members enter the app with
-  `<NoHousehold>` empty states instead of a create‑household wall (see the 2026‑06‑22 work‑log entry). Working
-  tree only; **not committed, not deployed.** Gates green (tsc/Biome/167 tests/build) + adversarial review clean.
+- **PR #1 open (2026‑06‑22): forced first‑household onboarding removed** — new members enter the app with
+  `<NoHousehold>` empty states instead of a create‑household wall (see the 2026‑06‑22 work‑log entry).
+  `feat/no-forced-household` → `main` (https://github.com/mangatinanda/outlay/pull/1); **not merged, not
+  deployed.** Gates green (tsc/Biome/167 tests/build); two review rounds (adversarial + `/code-review`) applied,
+  incl. the `/settings` no‑household guard.
 - **Model B implemented (2026‑06‑16), merged to local `main` (branch deleted) — NOT yet pushed/deployed.**
   Local `main` is **18 commits ahead of `origin/main`**; prod still runs pre‑Model‑B code. All gates
   green (116 unit + 4 e2e, tsc, Biome, build); final whole‑branch review APPROVED. **Deploy runbook

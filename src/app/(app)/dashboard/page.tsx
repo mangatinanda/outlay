@@ -74,7 +74,9 @@ export default async function DashboardPage() {
     <div className="space-y-6">
       <PageHeader
         title="Dashboard"
-        description="Overview of your household spending"
+        description={
+          household ? "Overview of your household spending" : undefined
+        }
         action={
           household ? (
             <Button nativeButton={false} render={<Link href="/expenses/new" />}>

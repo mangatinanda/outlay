@@ -35,7 +35,7 @@ export function HouseholdSwitcher() {
     return (
       <Link
         href="/households"
-        className="flex w-full items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none transition-colors hover:bg-accent focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+        className="flex min-h-11 w-full items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none transition-colors hover:bg-accent focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
       >
         <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
           <Plus className="h-3.5 w-3.5" />
@@ -51,7 +51,7 @@ export function HouseholdSwitcher() {
     <DropdownMenu>
       <DropdownMenuTrigger
         disabled={pending}
-        className="flex w-full items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm transition-colors hover:bg-accent disabled:opacity-50"
+        className="flex min-h-11 w-full items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm transition-colors hover:bg-accent disabled:opacity-50"
       >
         <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
           <Home className="h-3.5 w-3.5" />
