@@ -13,7 +13,7 @@ vi.mock("@/lib/auth/actor", () => ({
 import { migrate } from "drizzle-orm/libsql/migrator";
 import { logActivity } from "@/lib/activity";
 import { db } from "@/lib/db";
-import { householdMembers, households, users } from "@/lib/db/schema";
+import { activity, householdMembers, households, users } from "@/lib/db/schema";
 import { getActivity } from "@/lib/queries/activity-queries";
 
 beforeAll(async () => {
@@ -63,5 +63,43 @@ describe("logActivity + getActivity", () => {
         summary: "x",
       }),
     ).resolves.toBeUndefined();
+  });
+
+  it("falls back to users.name when the user is not a household member", async () => {
+    await db
+      .insert(users)
+      .values({ id: "u2", name: "Standalone", email: "s@x.com" });
+    actorState.actor = { kind: "user", userId: "u2", email: "s@x.com" };
+    await logActivity({
+      householdId: "h1",
+      action: "expense.create",
+      summary: "x",
+    });
+    const rows = await getActivity("h1");
+    expect(rows[0].actorLabel).toBe("Standalone"); // newest first
+  });
+
+  it("applies the `before` cursor (returns only older rows)", async () => {
+    await db.insert(households).values({ id: "h2", name: "Cursor" });
+    await db.insert(activity).values([
+      {
+        id: "a-old",
+        householdId: "h2",
+        actorLabel: "Admin",
+        action: "expense.create",
+        summary: "old",
+        createdAt: new Date(1000),
+      },
+      {
+        id: "a-new",
+        householdId: "h2",
+        actorLabel: "Admin",
+        action: "expense.create",
+        summary: "new",
+        createdAt: new Date(5000),
+      },
+    ]);
+    const rows = await getActivity("h2", { before: 3000 });
+    expect(rows.map((r) => r.id)).toEqual(["a-old"]);
   });
 });
