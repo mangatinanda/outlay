@@ -1,7 +1,9 @@
 "use client";
 
 import {
+  Activity,
   Building2,
+  HandCoins,
   LayoutDashboard,
   Receipt,
   Settings,
@@ -20,6 +22,8 @@ const navItems = [
   { href: "/expenses", label: "Expenses", icon: Receipt },
   { href: "/categories", label: "Categories", icon: Tags },
   { href: "/members", label: "Members", icon: Users },
+  { href: "/settle-up", label: "Settle up", icon: HandCoins },
+  { href: "/activity", label: "Activity", icon: Activity },
   { href: "/households", label: "Households", icon: Building2 },
   { href: "/settings", label: "Settings", icon: Settings },
 ];

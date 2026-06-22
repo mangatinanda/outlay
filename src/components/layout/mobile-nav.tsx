@@ -1,10 +1,10 @@
 "use client";
 
 import {
+  HandCoins,
   LayoutDashboard,
   PlusCircle,
   Receipt,
-  Tags,
   Users,
 } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
@@ -17,7 +17,7 @@ const navItems = [
   { href: "/dashboard", label: "Home", icon: LayoutDashboard },
   { href: "/expenses", label: "Expenses", icon: Receipt },
   { href: "/expenses/new", label: "Add", icon: PlusCircle },
-  { href: "/categories", label: "Categories", icon: Tags },
+  { href: "/settle-up", label: "Settle up", icon: HandCoins },
   { href: "/members", label: "Members", icon: Users },
 ];
 
