@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, ChevronsUpDown, Home, Settings2 } from "lucide-react";
+import { Check, ChevronsUpDown, Home, Plus, Settings2 } from "lucide-react";
 import Link from "next/link";
 import { useTransition } from "react";
 import { toast } from "sonner";
@@ -29,11 +29,29 @@ export function HouseholdSwitcher() {
     });
   }
 
+  // No household yet: there's nothing to switch between, so offer a direct
+  // path to create one instead of a dead, disabled dropdown.
+  if (households.length === 0) {
+    return (
+      <Link
+        href="/households"
+        className="flex min-h-11 w-full items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none transition-colors hover:bg-accent focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+      >
+        <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
+          <Plus className="h-3.5 w-3.5" />
+        </span>
+        <span className="flex-1 truncate text-left font-medium">
+          Create household
+        </span>
+      </Link>
+    );
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        disabled={pending || households.length === 0}
-        className="flex w-full items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm transition-colors hover:bg-accent disabled:opacity-50"
+        disabled={pending}
+        className="flex min-h-11 w-full items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm transition-colors hover:bg-accent disabled:opacity-50"
       >
         <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
           <Home className="h-3.5 w-3.5" />

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { ExpenseForm } from "@/components/expenses/expense-form";
+import { NoHousehold } from "@/components/shared/no-household";
 import { PageHeader } from "@/components/shared/page-header";
 import { getCategories } from "@/lib/queries/category-queries";
 import { getExpenseById } from "@/lib/queries/expense-queries";
@@ -15,7 +16,13 @@ export default async function EditExpensePage({
 }) {
   const { id } = await params;
   const household = await getCurrentHousehold();
-  if (!household) return <p>No household found.</p>;
+  if (!household)
+    return (
+      <div className="max-w-2xl space-y-6">
+        <PageHeader title="Edit Expense" />
+        <NoHousehold description="Create a household before adding expenses." />
+      </div>
+    );
 
   // Scoped to the active household: a foreign expense id 404s instead of
   // rendering against this household's categories/members.

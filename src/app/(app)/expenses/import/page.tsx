@@ -1,6 +1,7 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { ImportExpenses } from "@/components/expenses/import-expenses";
+import { NoHousehold } from "@/components/shared/no-household";
 import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
 import { getCategories } from "@/lib/queries/category-queries";
@@ -14,7 +15,13 @@ export const dynamic = "force-dynamic";
 
 export default async function ImportExpensesPage() {
   const household = await getCurrentHousehold();
-  if (!household) return null;
+  if (!household)
+    return (
+      <div className="max-w-3xl space-y-6">
+        <PageHeader title="Import expenses" />
+        <NoHousehold description="Create a household before importing expenses." />
+      </div>
+    );
 
   const [categories, members] = await Promise.all([
     getCategories(household.id),

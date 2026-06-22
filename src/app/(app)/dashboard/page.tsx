@@ -7,6 +7,7 @@ import { MemberBarChart } from "@/components/dashboard/member-bar-chart";
 import { RecentExpenses } from "@/components/dashboard/recent-expenses";
 import { SummaryCards } from "@/components/dashboard/summary-cards";
 import { InstallPrompt } from "@/components/pwa/install-prompt";
+import { NoHousehold } from "@/components/shared/no-household";
 import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -39,8 +40,7 @@ function DashboardSkeleton() {
 
 async function DashboardContent() {
   const household = await getCurrentHousehold();
-  if (!household)
-    return <p>No household found. Please set up your home first.</p>;
+  if (!household) return <NoHousehold />;
 
   const [stats, categoryData, dailyData, memberData, recent] =
     await Promise.all([
@@ -65,16 +65,24 @@ async function DashboardContent() {
   );
 }
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  // Hide the "Add Expense" header action until there's a household to add to;
+  // the body renders <NoHousehold /> with a "Create household" CTA instead.
+  const household = await getCurrentHousehold();
+
   return (
     <div className="space-y-6">
       <PageHeader
         title="Dashboard"
-        description="Overview of your household spending"
+        description={
+          household ? "Overview of your household spending" : undefined
+        }
         action={
-          <Button nativeButton={false} render={<Link href="/expenses/new" />}>
-            <Plus className="mr-2 h-4 w-4" /> Add Expense
-          </Button>
+          household ? (
+            <Button nativeButton={false} render={<Link href="/expenses/new" />}>
+              <Plus className="mr-2 h-4 w-4" /> Add Expense
+            </Button>
+          ) : undefined
         }
       />
       <Suspense fallback={<DashboardSkeleton />}>

@@ -49,8 +49,9 @@ double‑spec; CI reads pnpm from `packageManager`).
   (cookie honored only if a member, else their first membership; superadmin: any/first). `listHouseholds`/
   `switchHousehold`/`renameHousehold` likewise scoped (non‑member → `"Household not found"`, no leak).
   All data (members, categories, expenses, currency) is scoped by `household_id`, so switching isolates
-  data. Manage via the sidebar switcher + `/households`; a user with zero households gets a first‑household
-  onboarding screen.
+  data. Manage via the sidebar switcher + `/households`; a user with zero households still enters the app
+  shell and sees a friendly `<NoHousehold>` empty state on each menu (CTA → `/households`) — no forced
+  onboarding (the `FirstHousehold` gate was removed 2026‑06‑22).
 - **Currency:** per‑household (`households.currency`), **default INR** (en‑IN grouping). `CurrencyProvider`
   + `useFormatCurrency()`; changed via the Settings switcher (`updateHouseholdCurrency`). Reformat‑only,
   no FX conversion.
@@ -63,6 +64,41 @@ double‑spec; CI reads pnpm from `packageManager`).
 - **Plans** live in `plans/`; design specs in `docs/superpowers/specs/`.
 
 ## Work log
+
+### 2026‑06‑22 — Drop the forced first‑household onboarding (empty states instead)
+
+A new member no longer hits a full‑screen "Create your first household" wall. Removed the gate in
+`src/app/(app)/layout.tsx` (`if (actor.kind === "user" && householdList.length === 0) return <FirstHousehold/>`)
+and **deleted** `src/components/onboarding/first-household.tsx`. New members enter the app shell freely and
+see a friendly empty state on every menu.
+
+- **New shared component** `src/components/shared/no-household.tsx` (`<NoHousehold>`) — composes the existing
+  `EmptyState` + a `Button`‑as‑`Link` to `/households` (where the create form already lives — chosen over an
+  inline dialog). Default title "Welcome to Outlay"; each page passes a context‑specific `description`.
+- **Pages now render `<NoHousehold>` when `getCurrentHousehold()` is null** (were `<p>No household…</p>` /
+  `return null`): dashboard, expenses, categories, members, and the expenses **new/edit/import** sub‑pages.
+- **`dashboard` + `expenses` pages made `async`** to **hide** their header "Add Expense"/"Import" actions while
+  there's no household (the body's `<NoHousehold>` carries the only CTA). `getCurrentHousehold` is React
+  `cache()`d so the extra page‑level await is free (deduped with the Suspense child + the layout).
+- **`household-switcher.tsx`:** a zero‑household member now gets a working **"Create household"** `Link` →
+  `/households` (visually twins the dropdown trigger) instead of a **disabled** dead control. Header
+  (`householdName ?? "Outlay"`) + Sidebar were already null‑safe.
+- **Stale comments fixed:** `app-logo.tsx` and `allow-list.ts` no longer reference the deleted onboarding splash.
+- **Verification:** tsc + Biome + **167 unit tests** + production build all green. Ran a 3‑dimension adversarial
+  multi‑agent review (completeness / correctness / design‑a11y, each finding verified): **1 real finding** — the
+  new switcher `Link` lacked a focus‑visible ring (WCAG 2.4.7 regression vs the Base‑UI trigger it replaced) →
+  fixed by adding the project's standard `outline-none focus-visible:border-ring focus-visible:ring-3
+  focus-visible:ring-ring/50`; 4 findings dismissed as subjective/non‑defects.
+- **Then `/code-review` (high, 8 finder angles → verify) caught a real miss:** `/settings` was **not** guarded —
+  a zero‑household user saw a "My Home" fallback + an interactive `CurrencySwitcher` that fails with "No household
+  found" on use. Fixed: the household card is now swapped for `<NoHousehold>` when `household` is null (the static
+  About card stays). Also fixed two minor follow‑ups from that review: switcher touch targets bumped to `min-h-11`
+  (44px, per `.claude/rules/ui.md`) on **both** states, and dashboard/expenses header descriptions made conditional
+  (no household‑implying copy above the empty state). Everything re‑verified green (tsc/Biome/167 tests/build).
+- **Shipped as PR #1** (`feat/no-forced-household` → `main`): https://github.com/mangatinanda/outlay/pull/1 — **not
+  merged, not deployed.** Note: the zero‑household *Google* state can't be reproduced in local dev (passcode =
+  superadmin always has a household; Google needs real OAuth), so the empty‑state path is verified via gates +
+  code review, not a live session.
 
 ### 2026‑06‑16 — Model B: user‑owned households + superadmin passcode (branch `feature/model-b-households`)
 
@@ -334,6 +370,11 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
 
 ## Current state & open items
 
+- **PR #1 open (2026‑06‑22): forced first‑household onboarding removed** — new members enter the app with
+  `<NoHousehold>` empty states instead of a create‑household wall (see the 2026‑06‑22 work‑log entry).
+  `feat/no-forced-household` → `main` (https://github.com/mangatinanda/outlay/pull/1); **not merged, not
+  deployed.** Gates green (tsc/Biome/167 tests/build); two review rounds (adversarial + `/code-review`) applied,
+  incl. the `/settings` no‑household guard.
 - **Model B implemented (2026‑06‑16), merged to local `main` (branch deleted) — NOT yet pushed/deployed.**
   Local `main` is **18 commits ahead of `origin/main`**; prod still runs pre‑Model‑B code. All gates
   green (116 unit + 4 e2e, tsc, Biome, build); final whole‑branch review APPROVED. **Deploy runbook
