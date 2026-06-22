@@ -3,6 +3,7 @@
 import { createId } from "@paralleldrive/cuid2";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { logActivity } from "@/lib/activity";
 import { db } from "@/lib/db";
 import { categories, expenses, householdMembers } from "@/lib/db/schema";
 import { categoryPreset } from "@/lib/import/parse";
@@ -227,6 +228,11 @@ export const importExpenses = safeAction(
       await db.insert(expenses).values(toInsert.slice(i, i + 100));
     }
 
+    await logActivity({
+      householdId: hid,
+      action: "expense.import",
+      summary: `imported ${result.imported} expense${result.imported === 1 ? "" : "s"}`,
+    });
     revalidatePath("/dashboard");
     revalidatePath("/expenses");
     revalidatePath("/categories");

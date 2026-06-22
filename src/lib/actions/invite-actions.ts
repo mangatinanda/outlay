@@ -3,6 +3,7 @@
 import { createId } from "@paralleldrive/cuid2";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { logActivity } from "@/lib/activity";
 import { getCurrentActor } from "@/lib/auth/actor";
 import { db } from "@/lib/db";
 import { householdMembers } from "@/lib/db/schema";
@@ -59,6 +60,11 @@ export const inviteToHousehold = safeAction(
       role: "member",
     });
 
+    await logActivity({
+      householdId: household.id,
+      action: "member.create",
+      summary: `invited ${email}`,
+    });
     revalidatePath("/members");
     return { success: true };
   },

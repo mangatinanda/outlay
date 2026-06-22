@@ -4,6 +4,7 @@ import { createId } from "@paralleldrive/cuid2";
 import { eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
+import { logActivity } from "@/lib/activity";
 import { getCurrentActor } from "@/lib/auth/actor";
 import { isMember } from "@/lib/auth/membership";
 import { db } from "@/lib/db";
@@ -134,6 +135,11 @@ export const createHousehold = safeAction(
       ),
     ]);
 
+    await logActivity({
+      householdId,
+      action: "household.create",
+      summary: `created household "${parsed.data.name}"`,
+    });
     await setCurrentHousehold(householdId); // make the new household active
     revalidateAll();
     return { success: true };
@@ -161,6 +167,11 @@ export const renameHousehold = safeAction(
       .returning({ id: households.id });
     if (updated.length === 0) return { error: "Household not found" };
 
+    await logActivity({
+      householdId: id,
+      action: "household.rename",
+      summary: `renamed the household to "${parsed.data.name}"`,
+    });
     revalidateAll();
     return { success: true };
   },

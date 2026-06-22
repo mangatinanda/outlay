@@ -3,6 +3,7 @@
 import { createId } from "@paralleldrive/cuid2";
 import { and, eq, or } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { logActivity } from "@/lib/activity";
 import { db } from "@/lib/db";
 import { expenses, householdMembers, settlements } from "@/lib/db/schema";
 import { getCurrentHousehold } from "@/lib/queries/household-queries";
@@ -53,6 +54,11 @@ export const createMember = safeAction(
       includeInSettleUp: parsed.data.includeInSettleUp,
     });
 
+    await logActivity({
+      householdId: household.id,
+      action: "member.create",
+      summary: `added member "${parsed.data.name}"`,
+    });
     revalidatePath("/members");
     revalidatePath("/expenses");
     return { success: true };
@@ -111,6 +117,11 @@ export const updateMember = safeAction(
       .returning({ id: householdMembers.id });
     if (updated.length === 0) return { error: "Member not found" };
 
+    await logActivity({
+      householdId: household.id,
+      action: "member.update",
+      summary: `updated member "${parsed.data.name}"`,
+    });
     revalidatePath("/members");
     return { success: true };
   },
@@ -160,6 +171,11 @@ export const deleteMember = safeAction("deleteMember", async (id: string) => {
   }
 
   await db.delete(householdMembers).where(eq(householdMembers.id, id));
+  await logActivity({
+    householdId: household.id,
+    action: "member.delete",
+    summary: "removed a member",
+  });
   revalidatePath("/members");
   return { success: true };
 });

@@ -3,6 +3,7 @@
 import { createId } from "@paralleldrive/cuid2";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { logActivity } from "@/lib/activity";
 import { db } from "@/lib/db";
 import { categories, expenses } from "@/lib/db/schema";
 import { getCurrentHousehold } from "@/lib/queries/household-queries";
@@ -34,6 +35,11 @@ export const createCategory = safeAction(
       color: parsed.data.color,
     });
 
+    await logActivity({
+      householdId: household.id,
+      action: "category.create",
+      summary: `added category "${parsed.data.name}"`,
+    });
     revalidatePath("/categories");
     revalidatePath("/expenses");
     return { success: true };
@@ -70,6 +76,11 @@ export const updateCategory = safeAction(
       .returning({ id: categories.id });
     if (updated.length === 0) return { error: "Category not found" };
 
+    await logActivity({
+      householdId: household.id,
+      action: "category.update",
+      summary: `renamed a category to "${parsed.data.name}"`,
+    });
     revalidatePath("/categories");
     revalidatePath("/expenses");
     return { success: true };
@@ -106,6 +117,12 @@ export const deleteCategory = safeAction(
     }
 
     await db.delete(categories).where(eq(categories.id, id));
+
+    await logActivity({
+      householdId: household.id,
+      action: "category.delete",
+      summary: "deleted a category",
+    });
     revalidatePath("/categories");
     return { success: true };
   },

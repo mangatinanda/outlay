@@ -3,6 +3,7 @@
 import { createId } from "@paralleldrive/cuid2";
 import { and, eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { logActivity } from "@/lib/activity";
 import { db } from "@/lib/db";
 import { categories, expenses, householdMembers } from "@/lib/db/schema";
 import { LIMITS } from "@/lib/limits";
@@ -106,8 +107,14 @@ export const createExpense = safeAction(
       notes: parsed.data.notes || null,
     });
 
+    await logActivity({
+      householdId: household.id,
+      action: "expense.create",
+      summary: `added "${parsed.data.description}" ₹${parsed.data.amount}`,
+    });
     revalidatePath("/dashboard");
     revalidatePath("/expenses");
+    revalidatePath("/activity");
     return { success: true };
   },
 );
@@ -154,8 +161,14 @@ export const updateExpense = safeAction(
       .returning({ id: expenses.id });
     if (updated.length === 0) return { error: "Expense not found" };
 
+    await logActivity({
+      householdId: household.id,
+      action: "expense.update",
+      summary: `edited "${parsed.data.description}"`,
+    });
     revalidatePath("/dashboard");
     revalidatePath("/expenses");
+    revalidatePath("/activity");
     return { success: true };
   },
 );
@@ -170,7 +183,13 @@ export const deleteExpense = safeAction("deleteExpense", async (id: string) => {
     .returning({ id: expenses.id });
   if (deleted.length === 0) return { error: "Expense not found" };
 
+  await logActivity({
+    householdId: household.id,
+    action: "expense.delete",
+    summary: "deleted an expense",
+  });
   revalidatePath("/dashboard");
   revalidatePath("/expenses");
+  revalidatePath("/activity");
   return { success: true };
 });
