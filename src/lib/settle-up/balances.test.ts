@@ -82,15 +82,11 @@ describe("simplifyDebts", () => {
       { memberId: "c", netMinor: -1000 },
     ]);
     expect(transfers.length).toBeLessThanOrEqual(2);
-    const net = (id: string) =>
-      transfers.reduce(
-        (s, t) =>
-          s +
-          (t.toMemberId === id ? t.amountMinor : 0) -
-          (t.fromMemberId === id ? t.amountMinor : 0),
-        0,
-      );
-    expect(net("c")).toBe(1000); // c pays out 1000 total
+    const paidBy = (id: string) =>
+      transfers
+        .filter((t) => t.fromMemberId === id)
+        .reduce((s, t) => s + t.amountMinor, 0);
+    expect(paidBy("c")).toBe(1000); // c (the sole debtor) pays out 1000 total
   });
   it("returns nothing when all settled", () => {
     expect(
