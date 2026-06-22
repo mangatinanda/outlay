@@ -1,4 +1,4 @@
-import { eq, sql } from "drizzle-orm";
+import { and, eq, inArray, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { expenses, householdMembers, settlements } from "@/lib/db/schema";
 import { computeNetBalances, simplifyDebts } from "@/lib/settle-up/balances";
@@ -18,15 +18,24 @@ export async function getSettleUp(householdId: string) {
   const participants = members.filter((m) => m.includeInSettleUp);
   const participantIds = participants.map((m) => m.id);
 
-  // Raw minor-unit sums (NOT /100 — math runs in minor units).
-  const paidRows = await db
-    .select({
-      memberId: expenses.memberId,
-      paidMinor: sql<number>`coalesce(sum(${expenses.amountMinor}), 0)`,
-    })
-    .from(expenses)
-    .where(eq(expenses.householdId, householdId))
-    .groupBy(expenses.memberId);
+  // Only participants' expenses are settleable. Skip entirely when there are
+  // no participants (inArray with an empty array is a SQL footgun).
+  const paidRows =
+    participantIds.length === 0
+      ? []
+      : await db
+          .select({
+            memberId: expenses.memberId,
+            paidMinor: sql<number>`coalesce(sum(${expenses.amountMinor}), 0)`,
+          })
+          .from(expenses)
+          .where(
+            and(
+              eq(expenses.householdId, householdId),
+              inArray(expenses.memberId, participantIds),
+            ),
+          )
+          .groupBy(expenses.memberId);
 
   const settlementRows = await db
     .select({

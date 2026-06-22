@@ -14,7 +14,7 @@ import {
   households,
   settlements,
 } from "@/lib/db/schema";
-import { getSettleUp } from "@/lib/queries/settle-up-queries";
+import { getSettlements, getSettleUp } from "@/lib/queries/settle-up-queries";
 
 beforeAll(async () => {
   await migrate(db, { migrationsFolder: "drizzle" });
@@ -84,5 +84,31 @@ describe("getSettleUp", () => {
     const res = await getSettleUp("h1");
     expect(res.settledUp).toBe(true);
     expect(res.suggestions).toEqual([]);
+  });
+
+  it("getSettlements lists history with names + major amounts", async () => {
+    await db.insert(households).values({ id: "h9", name: "Hist" });
+    await db.insert(householdMembers).values([
+      { id: "p1", householdId: "h9", name: "P1", role: "admin" },
+      { id: "p2", householdId: "h9", name: "P2", role: "member" },
+    ]);
+    await db.insert(settlements).values({
+      id: "set9",
+      householdId: "h9",
+      fromMemberId: "p2",
+      toMemberId: "p1",
+      amountMinor: 45000,
+      date: "2026-06-03",
+      note: "UPI",
+    });
+    const rows = await getSettlements("h9");
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({
+      fromName: "P2",
+      toName: "P1",
+      amount: 450,
+      date: "2026-06-03",
+      note: "UPI",
+    });
   });
 });
