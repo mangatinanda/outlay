@@ -224,9 +224,35 @@ Matches existing Vitest patterns (in-memory libSQL via `vi.hoisted`; mocked
   against prod Turso (creds are Sensitive in Vercel, so run with Turso CLI creds).
 - Update `CLAUDE.md` "Tables:" list to include `settlements`, `activity`.
 
+## Future extension: per-expense custom splits (not MVP)
+
+The MVP is deliberately a stepping stone to per-expense custom splits. Adding
+them later is **additive and non-breaking**:
+
+- **New table `expense_splits`** (`id`, `expense_id → expenses.id`,
+  `member_id → household_members.id`, `weight` or `share_minor`). An expense's
+  split is the set of its rows.
+- **Equal split becomes the default, not a separate model:** an expense with
+  **no** `expense_splits` rows keeps today's behavior — equal among the current
+  opted-in participants. Only expenses with explicit rows use custom shares ⇒
+  **no backfill**; all existing/imported expenses stay equal-split automatically.
+- **Localized math change:** only `share(p)` changes — from the global `T/n` to
+  "sum over expenses of p's share, where an expense with no split rows
+  contributes its equal share." The `net = paid − share + out − in` formula, the
+  participant toggle, settlements, suggestions, and the activity feed are all
+  **unchanged**.
+- **UI:** add an optional "Split" control (equal / exact amounts / shares) to the
+  add/edit expense form; default equal.
+- **Enabled by Approach 1:** because balances are computed on read (never
+  materialized), swapping the share rule needs no migration of stored balances.
+
+This is why we chose compute-on-read + "no split = equal" for the MVP: the
+"equal now, overridable later" path stays open at low cost.
+
 ## Out of scope (YAGNI)
 
-- Per-expense custom splits (unequal shares / per-expense participants).
+- Per-expense custom splits — **deferred, not abandoned**; see *Future extension*
+  above for the additive, non-breaking path.
 - Multi-currency settle-up (single household ⇒ single currency).
 - Owed-balance notifications / reminders.
 - **Editing** settlements (create + delete only in MVP).
