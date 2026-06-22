@@ -198,7 +198,7 @@ export function SettleUpView({
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-9 w-9 text-destructive"
+                  className="h-11 w-11 text-destructive"
                   aria-label="Delete settlement"
                   onClick={() => handleDelete(h.id)}
                 >
@@ -215,7 +215,11 @@ export function SettleUpView({
           <DialogHeader>
             <DialogTitle>Record a payment</DialogTitle>
           </DialogHeader>
-          <form action={handleRecord} className="space-y-4">
+          <form
+            action={handleRecord}
+            key={`${prefill.fromId}-${prefill.toId}-${prefill.amount}`}
+            className="space-y-4"
+          >
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="fromMemberId">From</Label>
