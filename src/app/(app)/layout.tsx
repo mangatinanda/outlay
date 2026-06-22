@@ -3,7 +3,6 @@ import { Header } from "@/components/layout/header";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { Sidebar } from "@/components/layout/sidebar";
 import { PageTransition } from "@/components/motion/page-transition";
-import { FirstHousehold } from "@/components/onboarding/first-household";
 import { CurrencyProvider } from "@/components/providers/currency-provider";
 import { HouseholdProvider } from "@/components/providers/household-provider";
 import { getCurrentActor } from "@/lib/auth/actor";
@@ -30,11 +29,9 @@ export default async function AppLayout({
     getCurrentActor(),
   ]);
 
-  // A signed-in user who belongs to no household sees an onboarding screen
-  // instead of the empty app shell. Superadmin always has households.
-  if (actor?.kind === "user" && householdList.length === 0) {
-    return <FirstHousehold />;
-  }
+  // A signed-in user with no household still enters the app shell; each menu
+  // renders a friendly empty state (see <NoHousehold />) that nudges them to
+  // create their first household when they're ready — no forced onboarding.
 
   // Per-household accent: overrides --primary + --primary-foreground for this
   // subtree (both light and dark mode), no-op if accent is null.

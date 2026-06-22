@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { CategoryManager } from "@/components/categories/category-manager";
+import { NoHousehold } from "@/components/shared/no-household";
 import { PageHeader } from "@/components/shared/page-header";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getCategoriesWithCount } from "@/lib/queries/category-queries";
@@ -9,7 +10,10 @@ export const metadata = { title: "Categories" };
 
 async function CategoryContent() {
   const household = await getCurrentHousehold();
-  if (!household) return null;
+  if (!household)
+    return (
+      <NoHousehold description="Create a household to organize your spending into categories." />
+    );
 
   const categories = await getCategoriesWithCount(household.id);
   return <CategoryManager categories={categories} />;

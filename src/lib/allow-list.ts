@@ -14,8 +14,9 @@ export function parseAllowList(raw: string | undefined): string[] {
  * would silently open the shared households to any Google account.
  *
  * A literal "*" entry opts INTO open sign-up: any Google account may enter
- * (each new user lands on the first-household onboarding and gets their own
- * private household — Model B). This is explicit, not the empty-list default.
+ * (a new user lands in the app with empty states and can create their own
+ * private household when ready — Model B). This is explicit, not the empty-list
+ * default.
  */
 export function isEmailAllowed(
   email: string | null | undefined,

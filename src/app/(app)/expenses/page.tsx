@@ -5,6 +5,7 @@ import { AddExpenseSheet } from "@/components/expenses/add-expense-sheet";
 import { ExpenseList } from "@/components/expenses/expense-list";
 import { ExportButton } from "@/components/expenses/export-button";
 import { EmptyState } from "@/components/shared/empty-state";
+import { NoHousehold } from "@/components/shared/no-household";
 import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -17,7 +18,10 @@ export const metadata = { title: "Expenses" };
 
 async function ExpenseContent() {
   const household = await getCurrentHousehold();
-  if (!household) return null;
+  if (!household)
+    return (
+      <NoHousehold description="Create a household to start tracking your shared expenses." />
+    );
 
   const [expenses, categories, members] = await Promise.all([
     getExpenses(household.id),
@@ -64,25 +68,33 @@ async function ExpenseContent() {
   );
 }
 
-export default function ExpensesPage() {
+export default async function ExpensesPage() {
+  // No household yet → hide Import/Add actions; the body shows a create CTA.
+  const household = await getCurrentHousehold();
+
   return (
     <div className="space-y-6">
       <PageHeader
         title="Expenses"
         description="All your household expenses"
         action={
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              nativeButton={false}
-              render={<Link href="/expenses/import" />}
-            >
-              <Upload className="mr-2 h-4 w-4" /> Import
-            </Button>
-            <Button nativeButton={false} render={<Link href="/expenses/new" />}>
-              <Plus className="mr-2 h-4 w-4" /> Add Expense
-            </Button>
-          </div>
+          household ? (
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                nativeButton={false}
+                render={<Link href="/expenses/import" />}
+              >
+                <Upload className="mr-2 h-4 w-4" /> Import
+              </Button>
+              <Button
+                nativeButton={false}
+                render={<Link href="/expenses/new" />}
+              >
+                <Plus className="mr-2 h-4 w-4" /> Add Expense
+              </Button>
+            </div>
+          ) : undefined
         }
       />
       <Suspense

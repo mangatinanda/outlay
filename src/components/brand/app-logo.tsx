@@ -2,8 +2,8 @@ import type { ComponentProps } from "react";
 
 /**
  * Outlay brand mark — the "rich" variant (Mosaic O with rupee + parapet tiles).
- * Used at large sizes: login card header, first-household onboarding splash,
- * any place where there's room for the four saffron accent tiles to read.
+ * Used at large sizes: login card header, any place where there's room for the
+ * four saffron accent tiles to read.
  *
  * For favicon / PWA tile / small UI, the small-bleed icon at /icons/icon.svg
  * is used directly via the Next.js metadata.icons config — not this component.

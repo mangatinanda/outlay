@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { MemberManager } from "@/components/members/member-manager";
+import { NoHousehold } from "@/components/shared/no-household";
 import { PageHeader } from "@/components/shared/page-header";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getCurrentHousehold } from "@/lib/queries/household-queries";
@@ -9,7 +10,10 @@ export const metadata = { title: "Members" };
 
 async function MemberContent() {
   const household = await getCurrentHousehold();
-  if (!household) return null;
+  if (!household)
+    return (
+      <NoHousehold description="Create a household, then add the people you share expenses with." />
+    );
 
   const members = await getMembersWithStats(household.id);
   return <MemberManager members={members} />;
