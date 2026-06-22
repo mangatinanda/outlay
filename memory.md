@@ -65,6 +65,35 @@ double‑spec; CI reads pnpm from `packageManager`).
 
 ## Work log
 
+### 2026‑06‑22 — Settle-up + Activity Log: balances, settlements, audit trail
+
+Implemented the full settle-up feature and an append-only activity audit feed for expense tracking households.
+Branch: `feat/settle-up-and-activity-log` (10 tasks, all green). Schema migration `0006` + two new tables + UI routes.
+
+- **Schema & migration** (`drizzle/0006_*.sql`): new `settlements` table (household-scoped, per-member balance
+  snapshots with optional manual payment records) and `activity` table (append-only audit log: action type,
+  actor, affected entity, timestamp). Both carry `household_id` for isolation. Member model extended with
+  `include_in_settle_up` boolean toggle (default `true` — excludes a member's expenses from settle-up math when
+  `false`).
+- **Balance math** (`src/lib/settle-up/balance.ts`): pure functions for equal-split settlement over included members
+  (who owe/are owed). Queries respect the toggle. Minimal-payment graph solver computes the fewest transfers to
+  zero out balances.
+- **Activity logging** (`src/lib/actions/activity.ts`, `logActivity` helper): best-effort async logger that records
+  mutations (expense create/update/delete, category edit, member invite, household rename, etc.). Keyed on action
+  type + household + actor email. Fetch via `getActivity` (`src/lib/queries/activity-queries.ts`). Does not block
+  mutations if logging fails.
+- **Settlement mutations** (`src/lib/actions/settlement-actions.ts`): `recordSettlement` (admin/superadmin-only, marks
+  a payment between two members); `clearSettlements` (zero out all balances, recorded as a single settlement entry).
+  Instrumented with activity logging.
+- **Member toggle** (`src/lib/actions/member-actions.ts`): `updateMemberSettleUpStatus` toggles `include_in_settle_up`;
+  also logged.
+- **Pages & routes:** `/settle-up` (household settlement dashboard — current balances, minimal-payment suggestions,
+  record-payment form), `/activity` (audit feed — paginated, filterable by member). Both fully scoped by household.
+- **Deferred:** per-expense-split tracking (unequal split across specific members; design spec at
+  `docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md` marked as "future"). Current path
+  assumes equal split only (proportional to included-member count).
+- **Verification:** tsc ✅, Biome ✅, 167+ unit tests ✅, production build + routes visible ✅.
+
 ### 2026‑06‑22 — Drop the forced first‑household onboarding (empty states instead)
 
 A new member no longer hits a full‑screen "Create your first household" wall. Removed the gate in
@@ -370,11 +399,19 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
 
 ## Current state & open items
 
-- **PR #1 open (2026‑06‑22): forced first‑household onboarding removed** — new members enter the app with
+- **PR #1 MERGED (2026‑06‑22): forced first‑household onboarding removed** — new members enter the app with
   `<NoHousehold>` empty states instead of a create‑household wall (see the 2026‑06‑22 work‑log entry).
-  `feat/no-forced-household` → `main` (https://github.com/mangatinanda/outlay/pull/1); **not merged, not
-  deployed.** Gates green (tsc/Biome/167 tests/build); two review rounds (adversarial + `/code-review`) applied,
-  incl. the `/settings` no‑household guard.
+  Squash‑merged to `main` as `42a4990`; **prod auto‑deploy succeeded — Ready, live (HTTP 200 at
+  outlay.mangatinanda.me).** UI‑only change: no migration, no new env vars. Gates green (tsc/Biome/167 tests/
+  build); two review rounds (adversarial + `/code-review`) applied, incl. the `/settings` no‑household guard.
+- **⚠️ Vercel PREVIEW deployments fail (pre‑existing infra gap, surfaced by PR #1):** the preview build dies at
+  "Collecting page data for `/api/auth/[...nextauth]`" with `LibsqlError: URL_INVALID: The URL 'undefined'` —
+  the libSQL client (`src/lib/db/index.ts`, connects **eagerly at import**) sees `DATABASE_URL=undefined` because
+  the **Preview** environment has no env vars set (only **Production** does, which is why prod deploys + the live
+  site are fine). CI's `ci`/`e2e` jobs pass (they set `DATABASE_URL`). **Fix options (not done — needs owner
+  decision):** (a) set `DATABASE_URL`/`TURSO_AUTH_TOKEN`/`AUTH_SECRET` for the Vercel Preview env (separate
+  preview Turso DB, or reuse prod — a real data decision), or (b) make the libSQL client lazy / build‑phase‑safe
+  so `next build` never connects. Until then, **PR preview deploys will keep failing**; merge on green `ci`/`e2e`.
 - **Model B implemented (2026‑06‑16), merged to local `main` (branch deleted) — NOT yet pushed/deployed.**
   Local `main` is **18 commits ahead of `origin/main`**; prod still runs pre‑Model‑B code. All gates
   green (116 unit + 4 e2e, tsc, Biome, build); final whole‑branch review APPROVED. **Deploy runbook

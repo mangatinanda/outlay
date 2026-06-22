@@ -27,7 +27,9 @@ src/
 │   │   ├── expenses/       # CRUD expense pages
 │   │   ├── categories/     # Category management
 │   │   ├── members/        # Household member management
-│   │   └── settings/       # App settings
+│   │   ├── settings/       # App settings
+│   │   ├── settle-up/      # Settlement balances, split logic, minimal payments
+│   │   └── activity/       # Append-only activity audit feed
 │   └── layout.tsx          # Root layout with providers
 ├── components/
 │   ├── ui/                 # shadcn/ui primitives (DO NOT edit manually)
@@ -56,7 +58,7 @@ src/
 ### Database
 - libSQL via `@libsql/client`: a local SQLite file `data/expense.db` (gitignored) in dev, a Turso cloud DB in prod
 - Schema managed by Drizzle migrations (`pnpm db:migrate`); seeded on demand with `pnpm db:seed` (not auto-seeded)
-- Tables: users, households, household_members, categories, expenses
+- Tables: users, households, household_members, categories, expenses, settlements, activity
 - Multi-household: the active household is resolved from the `he_household` cookie via `getCurrentHousehold()`, scoped to the current actor's memberships (superadmin sees all; a user only their `household_members` rows)
 - IDs are cuid2 strings
 - Timestamps stored as integer (unix epoch) via Drizzle `mode: "timestamp"`
