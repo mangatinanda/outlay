@@ -55,3 +55,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .superpowers/
+
+# features-doc refresh cache (local; see .claude/hooks/refresh-features.mjs)
+.claude/.features-fingerprint
