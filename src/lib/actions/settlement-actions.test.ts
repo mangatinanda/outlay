@@ -89,7 +89,7 @@ describe("createSettlement", () => {
     expect(log).toHaveLength(1);
   });
 
-  it("rejects from==to", async () => {
+  it("rejects from==to and inserts no row", async () => {
     const res = await createSettlement(
       form({
         fromMemberId: "ma",
@@ -98,10 +98,17 @@ describe("createSettlement", () => {
         date: "2026-06-02",
       }),
     );
-    expect(res.error).toBeTruthy();
+    expect(res.error).toMatch(/themselves|settle with/i);
+    // No row inserted (only the happy-path settlement exists).
+    expect(
+      await db
+        .select()
+        .from(settlements)
+        .where(eq(settlements.householdId, "h1")),
+    ).toHaveLength(1);
   });
 
-  it("rejects a non-participant member", async () => {
+  it("rejects a non-participant member and inserts no row", async () => {
     const res = await createSettlement(
       form({
         fromMemberId: "mx",
@@ -111,6 +118,12 @@ describe("createSettlement", () => {
       }),
     );
     expect(res.error).toMatch(/settle-up/i);
+    expect(
+      await db
+        .select()
+        .from(settlements)
+        .where(eq(settlements.householdId, "h1")),
+    ).toHaveLength(1);
   });
 });
 
