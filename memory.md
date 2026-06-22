@@ -67,32 +67,35 @@ double‑spec; CI reads pnpm from `packageManager`).
 
 ### 2026‑06‑22 — Settle-up + Activity Log: balances, settlements, audit trail
 
-Implemented the full settle-up feature and an append-only activity audit feed for expense tracking households.
+Implemented the full settle-up feature and an append-only activity audit feed.
 Branch: `feat/settle-up-and-activity-log` (10 tasks, all green). Schema migration `0006` + two new tables + UI routes.
 
-- **Schema & migration** (`drizzle/0006_*.sql`): new `settlements` table (household-scoped, per-member balance
-  snapshots with optional manual payment records) and `activity` table (append-only audit log: action type,
-  actor, affected entity, timestamp). Both carry `household_id` for isolation. Member model extended with
-  `include_in_settle_up` boolean toggle (default `true` — excludes a member's expenses from settle-up math when
-  `false`).
-- **Balance math** (`src/lib/settle-up/balance.ts`): pure functions for equal-split settlement over included members
-  (who owe/are owed). Queries respect the toggle. Minimal-payment graph solver computes the fewest transfers to
-  zero out balances.
-- **Activity logging** (`src/lib/actions/activity.ts`, `logActivity` helper): best-effort async logger that records
-  mutations (expense create/update/delete, category edit, member invite, household rename, etc.). Keyed on action
-  type + household + actor email. Fetch via `getActivity` (`src/lib/queries/activity-queries.ts`). Does not block
-  mutations if logging fails.
-- **Settlement mutations** (`src/lib/actions/settlement-actions.ts`): `recordSettlement` (admin/superadmin-only, marks
-  a payment between two members); `clearSettlements` (zero out all balances, recorded as a single settlement entry).
-  Instrumented with activity logging.
-- **Member toggle** (`src/lib/actions/member-actions.ts`): `updateMemberSettleUpStatus` toggles `include_in_settle_up`;
-  also logged.
-- **Pages & routes:** `/settle-up` (household settlement dashboard — current balances, minimal-payment suggestions,
-  record-payment form), `/activity` (audit feed — paginated, filterable by member). Both fully scoped by household.
-- **Deferred:** per-expense-split tracking (unequal split across specific members; design spec at
-  `docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md` marked as "future"). Current path
-  assumes equal split only (proportional to included-member count).
-- **Verification:** tsc ✅, Biome ✅, 167+ unit tests ✅, production build + routes visible ✅.
+- **Schema & migration** (`drizzle/0006_*.sql`): additive (no backfill) — new `settlements` + `activity` tables
+  (both `household_id`-scoped), plus `household_members.include_in_settle_up` boolean (default `true`).
+- **Balance math** (`src/lib/settle-up/balances.ts`): pure functions `computeShares`, `computeNetBalances`,
+  `simplifyDebts`. Integer minor units; equal split over opted-in participants; balances sum to zero; greedy
+  debt-simplification produces the suggested payments.
+- **Settle-up reads** (`src/lib/queries/settle-up-queries.ts`): `getSettleUp` (balances + suggestions +
+  settledUp flag) and `getSettlements` (settlement history).
+- **Settlement writes** (`src/lib/actions/settlement-actions.ts`): `createSettlement` and `deleteSettlement`;
+  validator `src/lib/validators/settlement-schema.ts`. No "clear all / zero-out" action.
+- **Activity** (`src/lib/activity.ts` `logActivity` — best-effort, never throws; query
+  `src/lib/queries/activity-queries.ts` `getActivity` newest-first with `before` cursor; action
+  `src/lib/actions/activity-actions.ts` `loadMoreActivity` powers "Show more"). Instrumented: expense
+  create/update/delete, category create/update/delete, member create/update/delete, household create + rename,
+  invite, import, and both settlement actions.
+- **Member toggle**: `include_in_settle_up` persisted via the existing `createMember`/`updateMember` (not a
+  separate action); exposed as a `Switch` in the member dialog. `deleteMember` now blocks when the member is
+  referenced by a settlement. **Known edge (v1 accepted):** toggling a member out after a settlement involving
+  them can make displayed balances not sum to zero — the toggle is retroactive by design.
+- **Pages**: `/settle-up` (`src/app/(app)/settle-up/page.tsx` + `src/components/settle-up/settle-up-view.tsx`)
+  — balances, suggested payments with one-tap "Settle up", record dialog, history with delete. `/activity`
+  (`src/app/(app)/activity/page.tsx` + `src/components/activity/activity-feed.tsx`) — day-grouped feed
+  (Today/Yesterday/date) with "Show more". No member filter on the feed.
+- **Nav**: sidebar gains Settle up + Activity; mobile-nav swaps Categories → Settle up.
+- **Deferred:** per-expense custom splits (design spec at
+  `docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md`).
+- **Verification:** tsc ✅, Biome ✅, 192 unit tests ✅, production build + routes visible ✅.
 
 ### 2026‑06‑22 — Drop the forced first‑household onboarding (empty states instead)
 

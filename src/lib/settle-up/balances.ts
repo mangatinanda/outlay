@@ -65,6 +65,9 @@ export function computeNetBalances(input: {
   const shares = computeShares(total, input.participantIds);
   const out = new Map<string, number>();
   const inn = new Map<string, number>();
+  // Edge: if a member is toggled out of settle-up AFTER a settlement involving them, only the
+  // remaining participant's side is counted, so balances may not sum to zero.
+  // Accepted for v1 (the toggle is retroactive by design).
   for (const s of input.settlements) {
     if (participants.has(s.fromMemberId)) {
       out.set(s.fromMemberId, (out.get(s.fromMemberId) ?? 0) + s.amountMinor);
