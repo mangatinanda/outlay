@@ -20,6 +20,7 @@ import {
   createSettlement,
   deleteSettlement,
 } from "@/lib/actions/settlement-actions";
+import { withProgress } from "@/lib/progress";
 import { cn } from "@/lib/utils";
 
 interface Balance {
@@ -86,7 +87,7 @@ export function SettleUpView({
   async function handleRecord(formData: FormData) {
     setLoading(true);
     try {
-      const res = await createSettlement(formData);
+      const res = await withProgress(() => createSettlement(formData));
       if (res.error) {
         toast.error(res.error);
         return;
@@ -100,7 +101,7 @@ export function SettleUpView({
   }
 
   async function handleDelete(id: string) {
-    const res = await deleteSettlement(id);
+    const res = await withProgress(() => deleteSettlement(id));
     if (res.error) {
       toast.error(res.error);
       return;

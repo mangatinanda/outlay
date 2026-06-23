@@ -28,7 +28,15 @@ const navItems = [
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
-export function Sidebar({ inSheet = false }: { inSheet?: boolean }) {
+export function Sidebar({
+  inSheet = false,
+  onNavigate,
+}: {
+  inSheet?: boolean;
+  // Called when a navigation is triggered from inside the sidebar; the mobile
+  // drawer passes a handler that closes the sheet so it doesn't linger.
+  onNavigate?: () => void;
+}) {
   const pathname = usePathname();
 
   return (
@@ -50,7 +58,7 @@ export function Sidebar({ inSheet = false }: { inSheet?: boolean }) {
       </div>
 
       <div className="border-border border-b px-3 py-3">
-        <HouseholdSwitcher />
+        <HouseholdSwitcher onNavigate={onNavigate} />
       </div>
 
       <nav className="flex-1 space-y-1 px-3 py-4">
@@ -60,6 +68,7 @@ export function Sidebar({ inSheet = false }: { inSheet?: boolean }) {
             <Link
               key={item.href}
               href={item.href}
+              onClick={onNavigate}
               aria-current={isActive ? "page" : undefined}
               className={cn(
                 "flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-sm transition-colors",

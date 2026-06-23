@@ -34,6 +34,7 @@ import {
   deleteMember,
   updateMember,
 } from "@/lib/actions/member-actions";
+import { withProgress } from "@/lib/progress";
 
 interface MemberItem {
   id: string;
@@ -71,9 +72,9 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
   async function handleSubmit(formData: FormData) {
     setLoading(true);
     try {
-      const result = editing
-        ? await updateMember(editing.id, formData)
-        : await createMember(formData);
+      const result = await withProgress(() =>
+        editing ? updateMember(editing.id, formData) : createMember(formData),
+      );
 
       if (result.error) {
         toast.error(result.error);
@@ -90,7 +91,7 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
     if (!deleteId) return;
     setLoading(true);
     try {
-      const result = await deleteMember(deleteId);
+      const result = await withProgress(() => deleteMember(deleteId));
       if (result.error) {
         toast.error(result.error);
         return;
@@ -105,7 +106,7 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
   async function handleInvite(formData: FormData) {
     setInviting(true);
     try {
-      const result = await inviteToHousehold(formData);
+      const result = await withProgress(() => inviteToHousehold(formData));
       if (result?.error) {
         toast.error(result.error);
         return;

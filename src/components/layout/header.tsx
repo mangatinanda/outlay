@@ -2,6 +2,8 @@
 
 import { LogOut, Menu, Settings } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -51,13 +53,26 @@ export function Header({
   isSuperadmin?: boolean;
 }) {
   const name = firstName(user);
+  const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const lastPath = useRef(pathname);
+
+  // Auto-close the mobile drawer on navigation. The sidebar links also close it
+  // immediately via onNavigate (below); this effect is the safety net for any
+  // other in-drawer navigation (e.g. the household switcher's links). pathname
+  // is compared in the body so the lint autofixer keeps it as a real dep.
+  useEffect(() => {
+    if (lastPath.current === pathname) return;
+    lastPath.current = pathname;
+    setMenuOpen(false);
+  }, [pathname]);
 
   return (
     <header className="sticky top-0 z-40 border-border border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
         <div className="flex min-w-0 items-center gap-2">
           <div className="flex items-center gap-2 md:hidden">
-            <Sheet>
+            <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
               <SheetTrigger
                 render={
                   <Button variant="ghost" size="icon" aria-label="Open menu" />
@@ -66,7 +81,7 @@ export function Header({
                 <Menu className="h-5 w-5" />
               </SheetTrigger>
               <SheetContent side="left" className="w-64 p-0">
-                <Sidebar inSheet />
+                <Sidebar inSheet onNavigate={() => setMenuOpen(false)} />
               </SheetContent>
             </Sheet>
           </div>

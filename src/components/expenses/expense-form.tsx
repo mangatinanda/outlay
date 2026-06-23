@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { createExpense, updateExpense } from "@/lib/actions/expense-actions";
 import type { Category, HouseholdMember } from "@/lib/db/schema";
+import { withProgress } from "@/lib/progress";
 import { cn } from "@/lib/utils";
 
 interface ExpenseFormProps {
@@ -50,9 +51,11 @@ export function ExpenseForm({
   async function handleSubmit(formData: FormData) {
     setLoading(true);
     try {
-      const result = isEditing
-        ? await updateExpense(expense.id, formData)
-        : await createExpense(formData);
+      const result = await withProgress(() =>
+        isEditing
+          ? updateExpense(expense.id, formData)
+          : createExpense(formData),
+      );
 
       if (result.error) {
         toast.error(result.error);

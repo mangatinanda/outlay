@@ -3,6 +3,8 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import { Suspense } from "react";
+import { TopProgressBar } from "@/components/feedback/top-progress-bar";
 import { Providers } from "@/components/providers";
 import "./globals.css";
 
@@ -68,6 +70,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${plusJakarta.variable} antialiased`}
       >
+        <Suspense fallback={null}>
+          <TopProgressBar />
+        </Suspense>
         <SerwistProvider swUrl="/serwist/sw.js">
           <Providers>{children}</Providers>
         </SerwistProvider>

@@ -65,6 +65,50 @@ double‑spec; CI reads pnpm from `packageManager`).
 
 ## Work log
 
+### 2026‑06‑23 — Mobile drawer auto-close + app-level loader (top bar + skeletons)
+
+Two UX fixes (UI/interaction only; no data/query/action logic changed). **Uncommitted** on `main`.
+
+- **Mobile drawer auto-close:** the left-pane drawer is the Base UI `Sheet` in `header.tsx` wrapping
+  the shared `<Sidebar inSheet>`; nothing closed it on nav. Now the `Sheet` is **controlled**
+  (`open`/`onOpenChange`) and `Sidebar` takes an `onNavigate` callback wired to every nav `Link`
+  **and** the `HouseholdSwitcher` (switch + create + manage), so a tap closes it immediately. A
+  `usePathname`‑ref effect in the header is the safety net for any future in‑drawer link.
+- **App‑level loader (user picked: slim top bar + skeletons, on nav AND saves):**
+  - `src/lib/progress.ts` — tiny external store (`navInFlight` ‖ `actionCount`) + `withProgress(fn)`
+    (balanced start/end in `finally`, survives throw/`redirect()`). `src/components/feedback/top-progress-bar.tsx`
+    — slim indigo bar (token‑only, motion/react, no‑ops under reduced motion) mounted app‑wide in
+    `layout.tsx` inside `<Suspense>` (it reads `useSearchParams`). Nav START = capture‑phase internal
+    `<a>` click; FINISH = committed route‑key change; 4s safety timeout + a **mount‑time
+    `setNavInFlight(false)`** so an errored nav that remounts the tree can’t leave it stuck.
+  - **Skeletons:** `page-skeleton.tsx` + per‑route `loading.tsx` for the 4 pages that had **zero**
+    loading UI (activity, households, settings, settle‑up). Deliberately NOT a catch‑all `(app)/loading.tsx`
+    — that double‑skeletoned against the 4 pages (dashboard/expenses/categories/members) which already
+    have in‑page `<Suspense>` skeletons.
+  - `globals.css` — added the canonical `prefers-reduced-motion` reset (near‑zero, not removed) so CSS
+    `animate-pulse` skeletons (and all CSS anim/transition) honor the OS setting; Base‑UI `data-ending-style`
+    closes still fire `transitionend`.
+  - **Saves wired through `withProgress` (12 actions):** expense create/update/delete, settlement
+    create/delete, category + member CRUD, invite, import, `switchHousehold`, `updateHouseholdCurrency`,
+    and **household‑manager** create/rename/delete/switch/accent. Export is pure client‑side blob gen
+    (no server wait) — intentionally excluded.
+- **⚠️ Biome footgun (cost two real bugs, caught in review):** the PostToolUse Biome auto‑format runs
+  **after every edit**. (1) `organizeImports` **strips an import added before its first usage** — so add
+  the import in the SAME or a LATER edit than the usage. (2) `useExhaustiveDependencies` **strips a
+  dependency‑only effect dep** (a value listed in `[deps]` but not read in the effect body) and renames
+  the now‑unused var to `_x` → my pathname/searchParams effects silently became `[]` and never re‑ran
+  (top bar hung ~8s every nav; header safety‑net was dead). **Fix: read the value in the effect body**
+  (route‑key/last‑path ref comparison) so it stays a real dep.
+- **Verification:** tsc / Biome / **194 unit tests** / production build all green. Ran a 3‑dimension
+  adversarial multi‑agent review (correctness / design‑a11y / completeness, each finding verified) →
+  **7 real findings, 0 dismissed**, all fixed (the two empty‑deps bugs, the household‑manager gap, the
+  double‑skeleton, the 8s→4s timeout). Then **live browser verify** (chrome‑devtools, passcode login,
+  seeded DB): deterministic opacity probe shows the bar appears at **t+69ms** and clears at **t+802ms**
+  (`last:0`, not stuck); mobile drawer auto‑closes on a menu tap; no console errors.
+- **Note:** local dev DB (`data/expense.db`) was **stale** — missing `household_members.include_in_settle_up`
+  (migration `0006`), so `/expenses` 500’d until `pnpm db:migrate`. Unrelated to this change; flagged here
+  because a stale local DB will 500 any members‑querying page.
+
 ### 2026‑06‑22 — Settle-up + Activity Log: balances, settlements, audit trail
 
 Implemented the full settle-up feature and an append-only activity audit feed.
@@ -444,9 +488,6 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
   correct client + callback. NOTE: the consent screen is in "Testing" mode — family members
   must be added as test users in Google Cloud Console (or publish the app). For local dev,
   the same three vars go in `.env.local`.
-  **TODO (custom domain go‑live):** add `https://outlay.mangatinanda.me` to the OAuth client's
-  Authorized JavaScript origins and `https://outlay.mangatinanda.me/api/auth/callback/google`
-  to its Authorized redirect URIs, or Google sign‑in 400s on the new domain.
 - Deliberately kept: `getExpenses` filters param (roadmap filter UI) and the `users` table
   (Model B). Optional future: filter UI, `.claude/agents/`, claude-code-action PR review.
 - **To finish Google login:** user must create a Google Cloud OAuth client (redirect URI

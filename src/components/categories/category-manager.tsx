@@ -31,6 +31,7 @@ import {
   updateCategory,
 } from "@/lib/actions/category-actions";
 import { CATEGORY_COLORS, CATEGORY_ICONS } from "@/lib/constants";
+import { withProgress } from "@/lib/progress";
 
 interface CategoryItem {
   id: string;
@@ -64,9 +65,11 @@ export function CategoryManager({
   async function handleSubmit(formData: FormData) {
     setLoading(true);
     try {
-      const result = editing
-        ? await updateCategory(editing.id, formData)
-        : await createCategory(formData);
+      const result = await withProgress(() =>
+        editing
+          ? updateCategory(editing.id, formData)
+          : createCategory(formData),
+      );
 
       if (result.error) {
         toast.error(result.error);
@@ -83,7 +86,7 @@ export function CategoryManager({
     if (!deleteId) return;
     setLoading(true);
     try {
-      const result = await deleteCategory(deleteId);
+      const result = await withProgress(() => deleteCategory(deleteId));
       if (result.error) {
         toast.error(result.error);
         return;

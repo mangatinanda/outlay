@@ -15,16 +15,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { switchHousehold } from "@/lib/actions/household-actions";
+import { withProgress } from "@/lib/progress";
 
-export function HouseholdSwitcher() {
+export function HouseholdSwitcher({ onNavigate }: { onNavigate?: () => void }) {
   const { households, currentId } = useHouseholds();
   const [pending, startTransition] = useTransition();
   const current = households.find((h) => h.id === currentId) ?? households[0];
 
   function onSwitch(id: string) {
     if (id === current?.id) return;
+    onNavigate?.();
     startTransition(async () => {
-      const result = await switchHousehold(id);
+      const result = await withProgress(() => switchHousehold(id));
       if (result?.error) toast.error(result.error);
     });
   }
@@ -35,6 +37,7 @@ export function HouseholdSwitcher() {
     return (
       <Link
         href="/households"
+        onClick={onNavigate}
         className="flex min-h-11 w-full items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none transition-colors hover:bg-accent focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
       >
         <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
@@ -74,7 +77,10 @@ export function HouseholdSwitcher() {
           </DropdownMenuItem>
         ))}
         <DropdownMenuSeparator />
-        <DropdownMenuItem render={<Link href="/households" />}>
+        <DropdownMenuItem
+          onClick={onNavigate}
+          render={<Link href="/households" />}
+        >
           <Settings2 className="h-4 w-4" />
           Manage households
         </DropdownMenuItem>

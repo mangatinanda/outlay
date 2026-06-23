@@ -143,3 +143,21 @@
     letter-spacing: -0.02em;
   }
 }
+
+/*
+ * Respect the OS "reduce motion" setting app-wide: neutralize CSS animations
+ * (e.g. skeleton `animate-pulse`) and transitions so they no longer move.
+ * Motion-library animations already opt out via `useReducedMotion()`; this
+ * covers the CSS-only ones. Durations are near-zero (not removed) so any
+ * `transitionend`/`animationend` listeners still fire.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

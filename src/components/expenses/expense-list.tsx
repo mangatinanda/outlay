@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { useFormatCurrency } from "@/components/providers/currency-provider";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { deleteExpense } from "@/lib/actions/expense-actions";
+import { withProgress } from "@/lib/progress";
 import { ExpenseRow } from "./expense-row";
 
 interface ExpenseItem {
@@ -28,7 +29,7 @@ export function ExpenseList({ expenses }: { expenses: ExpenseItem[] }) {
     if (!deleteId) return;
     setLoading(true);
     try {
-      const result = await deleteExpense(deleteId);
+      const result = await withProgress(() => deleteExpense(deleteId));
       if (result.error) {
         toast.error(result.error);
       } else {

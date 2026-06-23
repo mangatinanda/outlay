@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select";
 import { updateHouseholdCurrency } from "@/lib/actions/settings-actions";
 import { CURRENCIES } from "@/lib/constants";
+import { withProgress } from "@/lib/progress";
 
 export function CurrencySwitcher({ current }: { current: string }) {
   const [value, setValue] = useState(current);
@@ -21,7 +22,7 @@ export function CurrencySwitcher({ current }: { current: string }) {
     const previous = value;
     setValue(next); // optimistic
     startTransition(async () => {
-      const result = await updateHouseholdCurrency(next);
+      const result = await withProgress(() => updateHouseholdCurrency(next));
       if (result?.error) {
         setValue(previous); // revert on failure
         toast.error(result.error);

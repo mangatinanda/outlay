@@ -32,6 +32,7 @@ import {
   switchHousehold,
 } from "@/lib/actions/household-actions";
 import { CURRENCIES } from "@/lib/constants";
+import { withProgress } from "@/lib/progress";
 import { ACCENT_KEYS, ACCENTS, type AccentKey } from "@/lib/theme/palette";
 import { cn } from "@/lib/utils";
 
@@ -67,9 +68,11 @@ export function HouseholdManager({
   async function handleSubmit(formData: FormData) {
     setLoading(true);
     try {
-      const result = editing
-        ? await renameHousehold(editing.id, formData)
-        : await createHousehold(formData);
+      const result = await withProgress(() =>
+        editing
+          ? renameHousehold(editing.id, formData)
+          : createHousehold(formData),
+      );
       if (result.error) {
         toast.error(result.error);
         return;
@@ -85,7 +88,7 @@ export function HouseholdManager({
     if (!deleteId) return;
     setLoading(true);
     try {
-      const result = await deleteHousehold(deleteId);
+      const result = await withProgress(() => deleteHousehold(deleteId));
       if (result.error) {
         toast.error(result.error);
         return;
@@ -99,12 +102,12 @@ export function HouseholdManager({
 
   async function handleSwitch(id: string) {
     if (id === currentId) return;
-    const result = await switchHousehold(id);
+    const result = await withProgress(() => switchHousehold(id));
     if (result?.error) toast.error(result.error);
   }
 
   async function handleAccent(id: string, accent: AccentKey | null) {
-    const result = await updateHouseholdAccent(id, accent);
+    const result = await withProgress(() => updateHouseholdAccent(id, accent));
     if (result?.error) toast.error(result.error);
   }
 

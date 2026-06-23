@@ -27,6 +27,7 @@ import {
   humanizeEmail,
   parseDmyToIso,
 } from "@/lib/import/parse";
+import { withProgress } from "@/lib/progress";
 import { cn } from "@/lib/utils";
 
 const ALL_KEY = "__all__"; // member key for rows with no email column/value
@@ -198,7 +199,9 @@ export function ImportExpenses({
 
     setImporting(true);
     try {
-      const res = await importExpenses({ rows, memberResolutions });
+      const res = await withProgress(() =>
+        importExpenses({ rows, memberResolutions }),
+      );
       if ("error" in res) {
         toast.error(res.error);
         return;
