@@ -50,3 +50,21 @@ export async function assertCanAccessHousehold(
   if (await isMember(actor.userId, householdId)) return;
   throw new Error("Forbidden");
 }
+
+/** The user's role in a household, or null when not a linked member. */
+export async function memberRole(
+  userId: string,
+  householdId: string,
+): Promise<"admin" | "member" | null> {
+  const [row] = await db
+    .select({ role: householdMembers.role })
+    .from(householdMembers)
+    .where(
+      and(
+        eq(householdMembers.userId, userId),
+        eq(householdMembers.householdId, householdId),
+      ),
+    )
+    .limit(1);
+  return row?.role ?? null;
+}
