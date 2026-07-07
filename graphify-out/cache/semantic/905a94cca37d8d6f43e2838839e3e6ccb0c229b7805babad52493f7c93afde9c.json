@@ -1,0 +1,147 @@
+{
+  "nodes": [
+    {
+      "id": "concepts_a_mosaic_o",
+      "label": "Concept A \u2014 Mosaic O (Outlay logo concept)",
+      "file_type": "image",
+      "source_file": "public/logos/concepts/A-mosaic-o.svg",
+      "source_location": "lines 12-26",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_a_mosaic_o_design_rationale",
+      "label": "Mosaic O design rationale (rose/cream/saffron palette, reads 16px favicon to 512px PWA tile)",
+      "file_type": "rationale",
+      "source_file": "public/logos/concepts/A-mosaic-o.svg",
+      "source_location": "lines 2-11",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_a_mosaic_o_cream_tile_background",
+      "label": "Cream tile background (rounded square, #f7eecf)",
+      "file_type": "concept",
+      "source_file": "public/logos/concepts/A-mosaic-o.svg",
+      "source_location": "line 14",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_a_mosaic_o_rose_ring",
+      "label": "Rose ring letter O (Outlay's leading letter, #d97da2 stroke)",
+      "file_type": "concept",
+      "source_file": "public/logos/concepts/A-mosaic-o.svg",
+      "source_location": "line 17",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_a_mosaic_o_saffron_tiles",
+      "label": "Four saffron tile accents at compass points (#f4c542)",
+      "file_type": "concept",
+      "source_file": "public/logos/concepts/A-mosaic-o.svg",
+      "source_location": "lines 20-25",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_a_mosaic_o_parapet_band_motif",
+      "label": "Home parapet band motif (rhythmic yellow squares)",
+      "file_type": "concept",
+      "source_file": "public/logos/concepts/A-mosaic-o.svg",
+      "source_location": "lines 5-7",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "concepts_a_mosaic_o",
+      "target": "concepts_a_mosaic_o_cream_tile_background",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/A-mosaic-o.svg",
+      "source_location": "line 14",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_a_mosaic_o",
+      "target": "concepts_a_mosaic_o_rose_ring",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/A-mosaic-o.svg",
+      "source_location": "line 17",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_a_mosaic_o",
+      "target": "concepts_a_mosaic_o_saffron_tiles",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/A-mosaic-o.svg",
+      "source_location": "lines 20-25",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_a_mosaic_o_design_rationale",
+      "target": "concepts_a_mosaic_o",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/A-mosaic-o.svg",
+      "source_location": "lines 2-11",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_a_mosaic_o_saffron_tiles",
+      "target": "concepts_a_mosaic_o_parapet_band_motif",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/A-mosaic-o.svg",
+      "source_location": "lines 5-7, 19",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_a_mosaic_o_parapet_band_motif",
+      "target": "concepts_a_mosaic_o_design_rationale",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "public/logos/concepts/A-mosaic-o.svg",
+      "source_location": "lines 2-11",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "mosaic_o_palette_composition",
+      "label": "Mosaic O mark composition (cream body + rose trim + saffron accents)",
+      "nodes": [
+        "concepts_a_mosaic_o_cream_tile_background",
+        "concepts_a_mosaic_o_rose_ring",
+        "concepts_a_mosaic_o_saffron_tiles"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/A-mosaic-o.svg"
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "nodes": [
+    {
+      "id": "icons_favicon_16",
+      "label": "favicon-16.png (16px Outlay favicon: dark rupee glyph inside a pink ring on a cream background)",
+      "file_type": "image",
+      "source_file": "public/icons/favicon-16.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "outlay_brand_mark",
+      "label": "Outlay Brand Mark (currency glyph in a circle)",
+      "file_type": "concept",
+      "source_file": "public/icons/favicon-16.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pwa_icon_set",
+      "label": "Outlay PWA Icon Set (public/icons)",
+      "file_type": "concept",
+      "source_file": "public/icons/favicon-16.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "rupee_currency_symbol",
+      "label": "Indian Rupee Symbol (INR currency focus)",
+      "file_type": "concept",
+      "source_file": "public/icons/favicon-16.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "icons_favicon_16",
+      "target": "outlay_brand_mark",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/icons/favicon-16.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "icons_favicon_16",
+      "target": "pwa_icon_set",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "public/icons/favicon-16.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_brand_mark",
+      "target": "rupee_currency_symbol",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "public/icons/favicon-16.png",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

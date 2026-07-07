@@ -1,0 +1,285 @@
+{
+  "nodes": [
+    {
+      "id": "memory_project_memory",
+      "label": "Outlay Project Memory (work log)",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "memory_fresh_ledger",
+      "label": "Fresh Ledger UI Redesign (shipped)",
+      "file_type": "concept",
+      "source_file": "memory.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "memory_biome_footgun",
+      "label": "Biome Auto-Format Footgun",
+      "file_type": "rationale",
+      "source_file": "memory.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "The PostToolUse Biome auto-format runs after every edit: organizeImports strips an import added before its first usage, and useExhaustiveDependencies strips dependency-only effect deps (renaming the now-unused var), silently turning effects into [] deps. Fix: add imports in the same/later edit as their usage, and read dep values inside the effect body so they stay real deps."
+    },
+    {
+      "id": "memory_progress_loader",
+      "label": "App-Level Progress Bar + Route Skeletons",
+      "file_type": "concept",
+      "source_file": "memory.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Deliberately NOT a catch-all (app)/loading.tsx \u2014 that double-skeletoned against pages that already have in-page Suspense skeletons; per-route loading.tsx was added only for the 4 pages with zero loading UI. Nav finish is a committed route-key change with a 4s safety timeout plus a mount-time reset so an errored nav can't leave the bar stuck."
+    },
+    {
+      "id": "memory_settle_up_feature",
+      "label": "Settle-Up & Balances Feature",
+      "file_type": "concept",
+      "source_file": "memory.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Integer minor units, equal split over opted-in participants, balances sum to zero, greedy debt simplification for suggested payments. Known accepted edge: toggling a member out after a settlement involving them can make displayed balances not sum to zero \u2014 the include_in_settle_up toggle is retroactive by design."
+    },
+    {
+      "id": "memory_activity_log",
+      "label": "Append-Only Activity Audit Feed",
+      "file_type": "concept",
+      "source_file": "memory.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "logActivity is best-effort and never throws so audit logging can never break a mutation; the feed is newest-first with a before cursor and day grouping."
+    },
+    {
+      "id": "memory_session_version_cut",
+      "label": "SESSION_VERSION v1\u2192v2 Invalidation",
+      "file_type": "rationale",
+      "source_file": "memory.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Bumping SESSION_VERSION mass-invalidates every pre-Model-B passcode cookie at deploy so no stale cookie silently becomes a superadmin session; the owner re-unlocks /admin once and family members re-auth via Google."
+    },
+    {
+      "id": "memory_stay_on_turso",
+      "label": "Decision: Stay on Turso/libSQL",
+      "file_type": "rationale",
+      "source_file": "memory.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Postgres is not required to add auth (Auth.js's Drizzle adapter supports libSQL); revisit only on a real scale/relational trigger."
+    },
+    {
+      "id": "memory_e2e_webserver_ordering",
+      "label": "Playwright webServer-before-globalSetup Fix",
+      "file_type": "rationale",
+      "source_file": "memory.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Playwright starts webServer BEFORE globalSetup runs, so seeding the e2e DB in global-setup raced the already-running server ('no such table: households', SQLITE_READONLY_DBMOVED after rmSync moved the file under the open libSQL connection). Fix: move the entire DB lifecycle (reset+migrate+seed) into the webServer.command so schema and seed exist before the server opens its connection."
+    },
+    {
+      "id": "memory_lazy_libsql_build",
+      "label": "Lazy libSQL Client During next build",
+      "file_type": "rationale",
+      "source_file": "memory.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "The libSQL client connected eagerly at import, so env-less Vercel preview builds died with LibsqlError URL_INVALID. During NEXT_PHASE='phase-production-build' db is a Proxy constructing the real client only on first use \u2014 which force-dynamic pages never trigger at build; at runtime and in tests db stays the real eager client."
+    }
+  ],
+  "edges": [
+    {
+      "source": "memory_project_memory",
+      "target": "repo_memory_skill_memory",
+      "relation": "cites",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "memory.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "memory_fresh_ledger",
+      "target": "design_system_skill_fresh_ledger",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "memory.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "memory_fresh_ledger",
+      "target": "rules_ui_token_only_styling",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "memory.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "memory_progress_loader",
+      "target": "lib_progress_withprogress",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "memory.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "memory_progress_loader",
+      "target": "actions_settings_actions_updatehouseholdcurrency",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "memory.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "memory_biome_footgun",
+      "target": "memory_progress_loader",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "memory.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "memory_settle_up_feature",
+      "target": "settle_up_balances_simplifydebts",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "memory.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "memory_activity_log",
+      "target": "lib_activity_logactivity",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "memory.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "memory_session_version_cut",
+      "target": "claude_model_b_auth",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "memory.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "memory_stay_on_turso",
+      "target": "plans_2026_06_09_google_login_plan",
+      "relation": "cites",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "memory.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "memory_project_memory",
+      "target": "pnpm_workspace_postcss_override",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "memory.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "memory_project_memory",
+      "target": "pnpm_workspace_allowbuilds",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "memory.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "memory_e2e_webserver_ordering",
+      "target": "workflows_ci_e2e_job",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "memory.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "memory_lazy_libsql_build",
+      "target": "readme_force_dynamic_build",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "memory.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "lib_allow_list_isemailallowed",
+      "target": "plans_2026_06_09_google_login_plan",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "memory.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "queries_household_queries_getcurrenthousehold",
+      "target": "auth_actor_getcurrentactor",
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "memory.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

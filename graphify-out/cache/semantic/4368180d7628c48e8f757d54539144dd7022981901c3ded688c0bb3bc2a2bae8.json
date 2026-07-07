@@ -1,0 +1,17 @@
+{
+  "nodes": [
+    {
+      "id": "lib_allow_list_isemailallowed",
+      "label": "isEmailAllowed",
+      "file_type": "code",
+      "source_file": "src/lib/allow-list.ts",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [],
+  "hyperedges": []
+}

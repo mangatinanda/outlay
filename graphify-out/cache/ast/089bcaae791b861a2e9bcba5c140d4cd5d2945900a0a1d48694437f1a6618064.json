@@ -1,0 +1,45 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_vercel_json",
+      "label": "vercel.json",
+      "file_type": "code",
+      "source_file": "vercel.json",
+      "source_location": "L1"
+    },
+    {
+      "id": "outlay_vercel_schema",
+      "label": "$schema",
+      "file_type": "code",
+      "source_file": "vercel.json",
+      "source_location": "L2"
+    },
+    {
+      "id": "outlay_vercel_crons",
+      "label": "crons",
+      "file_type": "code",
+      "source_file": "vercel.json",
+      "source_location": "L3"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_vercel_json",
+      "target": "outlay_vercel_schema",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "vercel.json",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "users_nanda_vibe_code_outlay_vercel_json",
+      "target": "outlay_vercel_crons",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "vercel.json",
+      "source_location": "L3",
+      "weight": 1.0
+    }
+  ]
+}

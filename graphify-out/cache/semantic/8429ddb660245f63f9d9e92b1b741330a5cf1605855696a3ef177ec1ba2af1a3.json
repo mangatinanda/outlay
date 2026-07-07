@@ -1,0 +1,168 @@
+{
+  "nodes": [
+    {
+      "id": "specs_2026_06_15_ui_redesign_fresh_ledger_design",
+      "label": "Spec \u2014 Fresh Ledger UI Redesign + Repo Hardening",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-06-15-ui-redesign-fresh-ledger-design.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "specs_2026_06_15_ui_redesign_fresh_ledger_design_fresh_ledger",
+      "label": "Fresh Ledger Design Direction",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-15-ui-redesign-fresh-ledger-design.md",
+      "source_location": "\u00a73",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Replace the flat, monochrome, serif-by-accident look with a warm, light-first family-app feel: floating white cards on a soft cream canvas, one indigo action accent, Plus Jakarta Sans display type, and a dark theme that is a tuned mirror on warm near-black rather than an afterthought."
+    },
+    {
+      "id": "specs_2026_06_15_ui_redesign_fresh_ledger_design_motion_system",
+      "label": "Motion System (reduced-motion-first)",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-15-ui-redesign-fresh-ledger-design.md",
+      "source_location": "\u00a74",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Motion is centralized in reusable primitives under src/components/motion/ rather than scattered; prefers-reduced-motion is a hard requirement \u2014 every primitive degrades to instant/opacity-only and no motion is load-bearing for usability."
+    },
+    {
+      "id": "specs_2026_06_15_ui_redesign_fresh_ledger_design_token_only_styling",
+      "label": "Token-only Styling Convention",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-15-ui-redesign-fresh-ledger-design.md",
+      "source_location": "\u00a77",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "No hardcoded hex/rgb/radius/shadow in components \u2014 only Tailwind utilities resolving to @theme tokens. Token-only styling makes dark-mode parity mostly free and keeps every restyle consistent; a new value means adding a token in globals.css first."
+    },
+    {
+      "id": "specs_2026_06_15_ui_redesign_fresh_ledger_design_font_bug",
+      "label": "Self-referential --font-sans Bug",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/specs/2026-06-15-ui-redesign-fresh-ledger-design.md",
+      "source_location": "\u00a72",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "globals.css declared --font-sans: var(--font-sans) (self-reference resolving to nothing) while the Geist loader used --font-geist-sans, so headings/body fell back to serif on the live app."
+    },
+    {
+      "id": "specs_2026_06_15_ui_redesign_fresh_ledger_design_repo_hardening_tracks",
+      "label": "Repo Hardening Tracks (Biome, Playwright e2e, typed-env)",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-15-ui-redesign-fresh-ledger-design.md",
+      "source_location": "\u00a78",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Adopt the mature engineering practices from ivm-pwa that fit Outlay (Biome replacing ESLint, mobile-first Playwright e2e, zod typed env, exact-pin dependency discipline) before any visual churn, so the redesign lands on a hardened base."
+    }
+  ],
+  "edges": [
+    {
+      "source": "specs_2026_06_15_ui_redesign_fresh_ledger_design",
+      "target": "specs_2026_06_15_ui_redesign_fresh_ledger_design_fresh_ledger",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-15-ui-redesign-fresh-ledger-design.md",
+      "source_location": "\u00a73",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_15_ui_redesign_fresh_ledger_design",
+      "target": "specs_2026_06_15_ui_redesign_fresh_ledger_design_motion_system",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-15-ui-redesign-fresh-ledger-design.md",
+      "source_location": "\u00a74",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_15_ui_redesign_fresh_ledger_design",
+      "target": "specs_2026_06_15_ui_redesign_fresh_ledger_design_token_only_styling",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-15-ui-redesign-fresh-ledger-design.md",
+      "source_location": "\u00a77",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_15_ui_redesign_fresh_ledger_design",
+      "target": "specs_2026_06_15_ui_redesign_fresh_ledger_design_font_bug",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-15-ui-redesign-fresh-ledger-design.md",
+      "source_location": "\u00a72",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_15_ui_redesign_fresh_ledger_design",
+      "target": "specs_2026_06_15_ui_redesign_fresh_ledger_design_repo_hardening_tracks",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-15-ui-redesign-fresh-ledger-design.md",
+      "source_location": "\u00a78",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_route_announcer_rule",
+      "target": "specs_2026_06_15_ui_redesign_fresh_ledger_design_repo_hardening_tracks",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-15-ui-redesign-fresh-ledger-design.md",
+      "source_location": "\u00a78.2 gotcha",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_sliding_nav_pill",
+      "target": "specs_2026_06_15_ui_redesign_fresh_ledger_design_motion_system",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-15-ui-redesign-fresh-ledger-design.md",
+      "source_location": "\u00a74 signature interactions",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_04_expenses_and_forms_swipe_to_delete",
+      "target": "specs_2026_06_15_ui_redesign_fresh_ledger_design_motion_system",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-15-ui-redesign-fresh-ledger-design.md",
+      "source_location": "\u00a75 Expenses",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_04_expenses_and_forms_fab_sheet_morph",
+      "target": "specs_2026_06_15_ui_redesign_fresh_ledger_design_motion_system",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-15-ui-redesign-fresh-ledger-design.md",
+      "source_location": "\u00a74 signature interactions",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

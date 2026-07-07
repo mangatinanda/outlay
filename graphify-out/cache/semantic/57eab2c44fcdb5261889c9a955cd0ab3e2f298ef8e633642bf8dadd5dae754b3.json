@@ -1,0 +1,39 @@
+{
+  "nodes": [
+    {
+      "id": "concepts_preview_mosaic_o_logo",
+      "label": "Mosaic O Logo Concepts (rupee currency variants)",
+      "file_type": "concept",
+      "source_file": "public/logos/concepts/preview.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Three variants keep the rose ring 'O' + cream tile background and differ in the expense-tracker signal: a single dominant rupee (cleanest at small sizes), rupee + dollar (signals multi-currency), or rupee + four saffron parapet-rhythm tiles (most personal to the home)."
+    }
+  ],
+  "edges": [
+    {
+      "source": "concepts_preview_mosaic_o_logo",
+      "target": "claude_outlay",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "public/logos/concepts/preview.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_preview_mosaic_o_logo",
+      "target": "plans_2026_06_07_currency_switcher_plan",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.65,
+      "source_file": "public/logos/concepts/preview.html",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

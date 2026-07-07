@@ -1,0 +1,114 @@
+{
+  "nodes": [
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard",
+      "label": "Redesign M2+M3 \u2014 App Shell & Dashboard",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_sliding_nav_pill",
+      "label": "Sliding Mobile-Nav Pill (layoutId mobile-nav-pill)",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "Task 5",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "The active bottom-nav item renders a shared-layoutId pill behind it so the indicator slides between items; the elevated indigo FAB uses whileTap spring, and everything degrades under reduced motion with safe-area padding and >=44px targets."
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_isnavitemactive",
+      "label": "isNavItemActive Pure Helper",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "Task 4",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "The Add item (/expenses/new) matches only exactly so it is not lit while browsing the list; every other item prefix-matches. Extracted to a pure helper and TDD'd because the sliding pill renders inside whichever item is active."
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_hero_total_selector",
+      "label": "hero-total Stable e2e Selector Contract",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "Conventions",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "The dashboard hero must expose [data-slot=\"hero-total\"] as a stable selector because Plan 04's add-expense e2e asserts the dashboard total against it \u2014 a cross-plan contract locked in the README."
+    }
+  ],
+  "edges": [
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard",
+      "target": "specs_2026_06_15_ui_redesign_fresh_ledger_design",
+      "relation": "cites",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_sliding_nav_pill",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_isnavitemactive",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_hero_total_selector",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_sliding_nav_pill",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_isnavitemactive",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "Task 4",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard",
+      "target": "plans_2026_06_15_redesign_02_design_foundation_motion_primitives",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "Task 2 (PageTransition)",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

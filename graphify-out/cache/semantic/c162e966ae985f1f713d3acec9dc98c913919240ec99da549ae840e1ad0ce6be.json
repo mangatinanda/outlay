@@ -1,0 +1,17 @@
+{
+  "nodes": [
+    {
+      "id": "expenses_category_icon",
+      "label": "Category Icon Component (lucide-react icon mapping)",
+      "file_type": "code",
+      "source_file": "src/components/expenses/category-icon.tsx",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [],
+  "hyperedges": []
+}

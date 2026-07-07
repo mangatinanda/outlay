@@ -1,0 +1,96 @@
+{
+  "nodes": [
+    {
+      "id": "src_claude_household_context",
+      "label": "Household Membership Row Taxonomy",
+      "file_type": "concept",
+      "source_file": "src/CLAUDE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "One household_members table serves three roles: auth membership (user_id set \u2192 access), pending invite (email set, user_id null \u2192 access claimed on next login), and attribution-only rows (name only) so people who don't use the app can still be tracked."
+    },
+    {
+      "id": "src_claude_server_client_split",
+      "label": "Server vs Client Component Rules",
+      "file_type": "concept",
+      "source_file": "src/CLAUDE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "src_claude_household_context",
+      "target": "auth_actor_getcurrentactor",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "src_claude_household_context",
+      "target": "auth_membership_assertcanaccesshousehold",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "src_claude_household_context",
+      "target": "queries_household_queries_getcurrenthousehold",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "src_claude_household_context",
+      "target": "actions_invite_actions_invitetohousehold",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "src_claude_server_client_split",
+      "target": "claude_data_flow_pattern",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "src/CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "household_scoping_boundary",
+      "label": "Household Data-Isolation Boundary",
+      "nodes": [
+        "queries_household_queries_getcurrenthousehold",
+        "queries_household_queries_listhouseholds",
+        "auth_membership_assertcanaccesshousehold",
+        "src_claude_household_context",
+        "plans_2026_06_07_household_ui_multi_workspace_plan"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/CLAUDE.md"
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "nodes": [
+    {
+      "id": "docs_2026_06_11_repo_audit",
+      "label": "Repo Audit & Improvement Plan (2026-06-11)",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_fail_open_allow_list",
+      "label": "Fail-open Google Allow-list (S1)",
+      "file_type": "rationale",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "Security S1",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "One forgotten env var (empty HOUSEHOLD_ALLOWED_EMAILS) silently opens full read/write/delete access to any Google account; the fix is a fail-closed allow-list in production."
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_constant_passcode_token",
+      "label": "Constant Eternal Passcode Session Token (S2)",
+      "file_type": "rationale",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "Security S2",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Cookie = HMAC(AUTH_SECRET, 'authed') is identical for every device, never expires, and is unrevocable except by rotating AUTH_SECRET; fixed by an expiring versioned payload v1.<issuedAt>.<sig>."
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_household_unscoped_mutations",
+      "label": "Household-unscoped Mutations (S4)",
+      "file_type": "rationale",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "Security S4",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Every id-parameterized update/delete operated on the raw id, allowing cross-household data corruption. Authorization must live in the data layer (SQL where clause), not the deploy checklist; scoping mutations is the structural unblock for Model B."
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_integer_minor_units",
+      "label": "Money as Integer Minor Units",
+      "file_type": "rationale",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "D1 / Task 2.1",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Money stored as IEEE-754 real poisons aggregates ('1e308'/'Infinity' pass validation). Migrating to integer minor units is cheap now (one user, one local DB) and painful later \u2014 make invalid states unrepresentable while the dataset is trivially migratable."
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_zero_tests_zero_ci",
+      "label": "Zero Tests, Zero CI (T1/O1)",
+      "file_type": "rationale",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "Testing T1",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "A codebase with an aggressive refactor cadence and three late-caught bugs had no safety net; the remedy is to codify the checks already run by hand (lint, tsc, build, unit tests over gate/money/guards) \u2014 no ceremony beyond them."
+    }
+  ],
+  "edges": [
+    {
+      "source": "docs_2026_06_11_repo_audit",
+      "target": "docs_2026_06_11_repo_audit_fail_open_allow_list",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "S1",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit",
+      "target": "docs_2026_06_11_repo_audit_constant_passcode_token",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "S2",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit",
+      "target": "docs_2026_06_11_repo_audit_household_unscoped_mutations",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "S4",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit",
+      "target": "docs_2026_06_11_repo_audit_integer_minor_units",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "2.1",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit",
+      "target": "docs_2026_06_11_repo_audit_zero_tests_zero_ci",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "T1",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit",
+      "target": "specs_2026_06_05_deployable_serverless_pwa_design_turso_libsql",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "Explicitly NOT recommended",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_household_unscoped_mutations",
+      "target": "specs_2026_06_16_model_b_user_owned_households_design_membership_boundary",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "S4: structural blocker for Model B",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_constant_passcode_token",
+      "target": "specs_2026_06_16_model_b_user_owned_households_design_session_version_bump",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "Task 1.2 versioned token",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_constant_passcode_token",
+      "target": "specs_2026_06_05_deployable_serverless_pwa_design_passcode_gate",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "S2 cites gate.ts",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

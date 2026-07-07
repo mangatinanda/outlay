@@ -1,0 +1,158 @@
+{
+  "nodes": [
+    {
+      "id": "concepts_a3_rupee_tiles_concept_a3_logo",
+      "label": "Concept A3 - Mosaic O with Rupee + Parapet Tiles (logo concept)",
+      "file_type": "image",
+      "source_file": "public/logos/concepts/A3-rupee-tiles.svg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_a3_rupee_tiles_mosaic_o_ring",
+      "label": "Mosaic O Ring (pink #d97da2 circle stroke)",
+      "file_type": "concept",
+      "source_file": "public/logos/concepts/A3-rupee-tiles.svg",
+      "source_location": "line 12",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_a3_rupee_tiles_parapet_tiles",
+      "label": "Saffron Parapet-Rhythm Tiles at Compass Points (#f4c542)",
+      "file_type": "concept",
+      "source_file": "public/logos/concepts/A3-rupee-tiles.svg",
+      "source_location": "lines 13-19",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_a3_rupee_tiles_rupee_glyph",
+      "label": "Bold Centered Rupee Glyph (\u20b9, weight 900)",
+      "file_type": "concept",
+      "source_file": "public/logos/concepts/A3-rupee-tiles.svg",
+      "source_location": "lines 20-23",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_a3_rupee_tiles_expense_tracker_signal",
+      "label": "Expense-Tracker Signal (money-symbol brand cue)",
+      "file_type": "rationale",
+      "source_file": "public/logos/concepts/A3-rupee-tiles.svg",
+      "source_location": "comment lines 2-9",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_a3_rupee_tiles_home_identity",
+      "label": "Home Identity Reference (household parapet motif)",
+      "file_type": "rationale",
+      "source_file": "public/logos/concepts/A3-rupee-tiles.svg",
+      "source_location": "comment lines 2-9",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_a3_rupee_tiles",
+      "label": "A3 Rupee + Parapet Tiles Logo Concept",
+      "file_type": "image",
+      "source_file": "public/logos/concepts/A3-rupee-tiles.svg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "concepts_a3_rupee_tiles_concept_a3_logo",
+      "target": "concepts_a3_rupee_tiles_mosaic_o_ring",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/A3-rupee-tiles.svg",
+      "source_location": "line 12",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_a3_rupee_tiles_concept_a3_logo",
+      "target": "concepts_a3_rupee_tiles_parapet_tiles",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/A3-rupee-tiles.svg",
+      "source_location": "lines 13-19",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_a3_rupee_tiles_concept_a3_logo",
+      "target": "concepts_a3_rupee_tiles_rupee_glyph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/A3-rupee-tiles.svg",
+      "source_location": "lines 20-23",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_a3_rupee_tiles_rupee_glyph",
+      "target": "concepts_a3_rupee_tiles_expense_tracker_signal",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/A3-rupee-tiles.svg",
+      "source_location": "comment line 5: 'bold rupee at center (expense-tracker signal)'",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_a3_rupee_tiles_parapet_tiles",
+      "target": "concepts_a3_rupee_tiles_home_identity",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/A3-rupee-tiles.svg",
+      "source_location": "comment line 6: 'parapet-rhythm tiles around the O (the home reference)'",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_a3_rupee_tiles_expense_tracker_signal",
+      "target": "concepts_a3_rupee_tiles_home_identity",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/A3-rupee-tiles.svg",
+      "source_location": "comment lines 4-8: 'Best-of-both ... carries the home's identity AND the money symbol'",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "concept_a3_logo_composition",
+      "label": "Concept A3 Logo Composition (ring + tiles + rupee form the best-of-both mark)",
+      "nodes": [
+        "concepts_a3_rupee_tiles_mosaic_o_ring",
+        "concepts_a3_rupee_tiles_parapet_tiles",
+        "concepts_a3_rupee_tiles_rupee_glyph"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/A3-rupee-tiles.svg"
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "nodes": [
+    {
+      "id": "plans_2026_06_15_redesign_05_grids_login_polish",
+      "label": "Redesign M5+M6 \u2014 Grids, Login, Empty States, e2e & a11y",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "plans_2026_06_15_redesign_05_grids_login_polish_household_isolation_e2e",
+      "label": "Switch-Household Isolation e2e",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "e2e task",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "A Playwright spec proving that switching the active household flips the visible expense set (data isolation), running against Plan 01's seeded e2e DB; the seed fixture keys on the e2e DB filename."
+    },
+    {
+      "id": "plans_2026_06_15_redesign_05_grids_login_polish_a11y_lighthouse_pass",
+      "label": "a11y / Reduced-motion / Lighthouse Pass",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "final sweep",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "The closing sweep verifies reduced-motion behavior, AA contrast, focus rings, and mobile Lighthouse Performance/Accessibility >= 90 on the dashboard \u2014 the redesign's definition of done."
+    }
+  ],
+  "edges": [
+    {
+      "source": "plans_2026_06_15_redesign_05_grids_login_polish",
+      "target": "specs_2026_06_15_ui_redesign_fresh_ledger_design",
+      "relation": "cites",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_05_grids_login_polish",
+      "target": "plans_2026_06_15_redesign_05_grids_login_polish_household_isolation_e2e",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_05_grids_login_polish",
+      "target": "plans_2026_06_15_redesign_05_grids_login_polish_a11y_lighthouse_pass",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_05_grids_login_polish_household_isolation_e2e",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_playwright_scaffold",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "hard dependencies",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_05_grids_login_polish",
+      "target": "plans_2026_06_15_redesign_02_design_foundation_motion_primitives",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "Task 1 (MotionCard/Stagger)",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

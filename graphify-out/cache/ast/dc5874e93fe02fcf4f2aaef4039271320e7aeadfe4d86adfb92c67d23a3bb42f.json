@@ -1,0 +1,881 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_biome_json",
+      "label": "biome.json",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L1"
+    },
+    {
+      "id": "outlay_biome_schema",
+      "label": "$schema",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L2"
+    },
+    {
+      "id": "outlay_biome_vcs",
+      "label": "vcs",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L3"
+    },
+    {
+      "id": "outlay_biome_vcs_enabled",
+      "label": "enabled",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L3"
+    },
+    {
+      "id": "outlay_biome_vcs_clientkind",
+      "label": "clientKind",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L3"
+    },
+    {
+      "id": "outlay_biome_vcs_useignorefile",
+      "label": "useIgnoreFile",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L3"
+    },
+    {
+      "id": "outlay_biome_files",
+      "label": "files",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L4"
+    },
+    {
+      "id": "outlay_biome_files_ignoreunknown",
+      "label": "ignoreUnknown",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L5"
+    },
+    {
+      "id": "outlay_biome_files_includes",
+      "label": "includes",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L6"
+    },
+    {
+      "id": "outlay_biome_formatter",
+      "label": "formatter",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L18"
+    },
+    {
+      "id": "outlay_biome_formatter_enabled",
+      "label": "enabled",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L19"
+    },
+    {
+      "id": "outlay_biome_formatter_indentstyle",
+      "label": "indentStyle",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L20"
+    },
+    {
+      "id": "outlay_biome_formatter_indentwidth",
+      "label": "indentWidth",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L21"
+    },
+    {
+      "id": "outlay_biome_formatter_linewidth",
+      "label": "lineWidth",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L22"
+    },
+    {
+      "id": "outlay_biome_formatter_lineending",
+      "label": "lineEnding",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L23"
+    },
+    {
+      "id": "outlay_biome_assist",
+      "label": "assist",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L25"
+    },
+    {
+      "id": "outlay_biome_assist_enabled",
+      "label": "enabled",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L26"
+    },
+    {
+      "id": "outlay_biome_assist_actions",
+      "label": "actions",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L27"
+    },
+    {
+      "id": "outlay_biome_actions_source",
+      "label": "source",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L27"
+    },
+    {
+      "id": "outlay_biome_source_organizeimports",
+      "label": "organizeImports",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L27"
+    },
+    {
+      "id": "outlay_biome_linter",
+      "label": "linter",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L29"
+    },
+    {
+      "id": "outlay_biome_linter_enabled",
+      "label": "enabled",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L30"
+    },
+    {
+      "id": "outlay_biome_linter_rules",
+      "label": "rules",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L31"
+    },
+    {
+      "id": "outlay_biome_rules_preset",
+      "label": "preset",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L32"
+    },
+    {
+      "id": "outlay_biome_rules_nursery",
+      "label": "nursery",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L33"
+    },
+    {
+      "id": "outlay_biome_nursery_usesortedclasses",
+      "label": "useSortedClasses",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L34"
+    },
+    {
+      "id": "outlay_biome_usesortedclasses_level",
+      "label": "level",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L35"
+    },
+    {
+      "id": "outlay_biome_usesortedclasses_options",
+      "label": "options",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L36"
+    },
+    {
+      "id": "outlay_biome_options_attributes",
+      "label": "attributes",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L37"
+    },
+    {
+      "id": "outlay_biome_options_functions",
+      "label": "functions",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L38"
+    },
+    {
+      "id": "outlay_biome_rules_suspicious",
+      "label": "suspicious",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L42"
+    },
+    {
+      "id": "outlay_biome_suspicious_noarrayindexkey",
+      "label": "noArrayIndexKey",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L43"
+    },
+    {
+      "id": "outlay_biome_suspicious_noassigninexpressions",
+      "label": "noAssignInExpressions",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L44"
+    },
+    {
+      "id": "outlay_biome_rules_a11y",
+      "label": "a11y",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L46"
+    },
+    {
+      "id": "outlay_biome_a11y_nosvgwithouttitle",
+      "label": "noSvgWithoutTitle",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L47"
+    },
+    {
+      "id": "outlay_biome_javascript",
+      "label": "javascript",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L51"
+    },
+    {
+      "id": "outlay_biome_javascript_formatter",
+      "label": "formatter",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L52"
+    },
+    {
+      "id": "outlay_biome_formatter_quotestyle",
+      "label": "quoteStyle",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L53"
+    },
+    {
+      "id": "outlay_biome_formatter_semicolons",
+      "label": "semicolons",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L54"
+    },
+    {
+      "id": "outlay_biome_formatter_trailingcommas",
+      "label": "trailingCommas",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L55"
+    },
+    {
+      "id": "outlay_biome_css",
+      "label": "css",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L58"
+    },
+    {
+      "id": "outlay_biome_css_parser",
+      "label": "parser",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L59"
+    },
+    {
+      "id": "outlay_biome_parser_tailwinddirectives",
+      "label": "tailwindDirectives",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L59"
+    },
+    {
+      "id": "outlay_biome_css_formatter",
+      "label": "formatter",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L60"
+    },
+    {
+      "id": "outlay_biome_css_linter",
+      "label": "linter",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L61"
+    },
+    {
+      "id": "outlay_biome_overrides",
+      "label": "overrides",
+      "file_type": "code",
+      "source_file": "biome.json",
+      "source_location": "L63"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_biome_json",
+      "target": "outlay_biome_schema",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "users_nanda_vibe_code_outlay_biome_json",
+      "target": "outlay_biome_vcs",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_vcs",
+      "target": "outlay_biome_vcs_enabled",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_vcs",
+      "target": "outlay_biome_vcs_clientkind",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_vcs",
+      "target": "outlay_biome_vcs_useignorefile",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "users_nanda_vibe_code_outlay_biome_json",
+      "target": "outlay_biome_files",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_files",
+      "target": "outlay_biome_files_ignoreunknown",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_files",
+      "target": "outlay_biome_files_includes",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_files_includes",
+      "target": "ref",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "outlay_biome_files_includes",
+      "target": "ref_next",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "outlay_biome_files_includes",
+      "target": "ref_out",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "outlay_biome_files_includes",
+      "target": "ref_build",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "outlay_biome_files_includes",
+      "target": "ref_node_modules",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "outlay_biome_files_includes",
+      "target": "ref_next_env_d_ts",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "outlay_biome_files_includes",
+      "target": "ref_drizzle",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "outlay_biome_files_includes",
+      "target": "ref_public",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "outlay_biome_files_includes",
+      "target": "ref_svg",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "users_nanda_vibe_code_outlay_biome_json",
+      "target": "outlay_biome_formatter",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_formatter",
+      "target": "outlay_biome_formatter_enabled",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_formatter",
+      "target": "outlay_biome_formatter_indentstyle",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_formatter",
+      "target": "outlay_biome_formatter_indentwidth",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_formatter",
+      "target": "outlay_biome_formatter_linewidth",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L22",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_formatter",
+      "target": "outlay_biome_formatter_lineending",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "users_nanda_vibe_code_outlay_biome_json",
+      "target": "outlay_biome_assist",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_assist",
+      "target": "outlay_biome_assist_enabled",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_assist",
+      "target": "outlay_biome_assist_actions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L27",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_assist_actions",
+      "target": "outlay_biome_actions_source",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L27",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_actions_source",
+      "target": "outlay_biome_source_organizeimports",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L27",
+      "weight": 1.0
+    },
+    {
+      "source": "users_nanda_vibe_code_outlay_biome_json",
+      "target": "outlay_biome_linter",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_linter",
+      "target": "outlay_biome_linter_enabled",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_linter",
+      "target": "outlay_biome_linter_rules",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_linter_rules",
+      "target": "outlay_biome_rules_preset",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_linter_rules",
+      "target": "outlay_biome_rules_nursery",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_rules_nursery",
+      "target": "outlay_biome_nursery_usesortedclasses",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_nursery_usesortedclasses",
+      "target": "outlay_biome_usesortedclasses_level",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_nursery_usesortedclasses",
+      "target": "outlay_biome_usesortedclasses_options",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_usesortedclasses_options",
+      "target": "outlay_biome_options_attributes",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L37",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_options_attributes",
+      "target": "ref_classname",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L37",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "outlay_biome_usesortedclasses_options",
+      "target": "outlay_biome_options_functions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L38",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_options_functions",
+      "target": "ref_cn",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L38",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "outlay_biome_options_functions",
+      "target": "ref_cva",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L38",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "outlay_biome_options_functions",
+      "target": "ref_clsx",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L38",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "outlay_biome_linter_rules",
+      "target": "outlay_biome_rules_suspicious",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L42",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_rules_suspicious",
+      "target": "outlay_biome_suspicious_noarrayindexkey",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L43",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_rules_suspicious",
+      "target": "outlay_biome_suspicious_noassigninexpressions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L44",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_linter_rules",
+      "target": "outlay_biome_rules_a11y",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L46",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_rules_a11y",
+      "target": "outlay_biome_a11y_nosvgwithouttitle",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L47",
+      "weight": 1.0
+    },
+    {
+      "source": "users_nanda_vibe_code_outlay_biome_json",
+      "target": "outlay_biome_javascript",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L51",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_javascript",
+      "target": "outlay_biome_javascript_formatter",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L52",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_javascript_formatter",
+      "target": "outlay_biome_formatter_quotestyle",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L53",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_javascript_formatter",
+      "target": "outlay_biome_formatter_semicolons",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L54",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_javascript_formatter",
+      "target": "outlay_biome_formatter_trailingcommas",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L55",
+      "weight": 1.0
+    },
+    {
+      "source": "users_nanda_vibe_code_outlay_biome_json",
+      "target": "outlay_biome_css",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L58",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_css",
+      "target": "outlay_biome_css_parser",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L59",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_css_parser",
+      "target": "outlay_biome_parser_tailwinddirectives",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L59",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_css",
+      "target": "outlay_biome_css_formatter",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L60",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_css_formatter",
+      "target": "outlay_biome_formatter_enabled",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L60",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_css",
+      "target": "outlay_biome_css_linter",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L61",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_biome_css_linter",
+      "target": "outlay_biome_linter_enabled",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L61",
+      "weight": 1.0
+    },
+    {
+      "source": "users_nanda_vibe_code_outlay_biome_json",
+      "target": "outlay_biome_overrides",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "biome.json",
+      "source_location": "L63",
+      "weight": 1.0
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "nodes": [
+    {
+      "id": "concepts_c_mosaic_tile",
+      "label": "Logo Concept C \u2014 Mosaic Tile (SVG)",
+      "file_type": "image",
+      "source_file": "public/logos/concepts/C-mosaic-tile.svg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_c_mosaic_tile_pinwheel_mark",
+      "label": "Pinwheel Mark (four triangle wedges meeting at center)",
+      "file_type": "concept",
+      "source_file": "public/logos/concepts/C-mosaic-tile.svg",
+      "source_location": "lines 17-25",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_c_mosaic_tile_palette",
+      "label": "Brand Palette: rose-pink / cream / saffron / ink",
+      "file_type": "concept",
+      "source_file": "public/logos/concepts/C-mosaic-tile.svg",
+      "source_location": "line 10; fills #d97da2 #f7eecf #f4c542 #1a1a1a #b85a82",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_c_mosaic_tile_zigzag_mosaic",
+      "label": "Zigzag Mosaic on Home's Corner (source motif)",
+      "file_type": "concept",
+      "source_file": "public/logos/concepts/C-mosaic-tile.svg",
+      "source_location": "lines 5-6 (header comment)",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_c_mosaic_tile_favicon_legibility",
+      "label": "Favicon Legibility at 16px (design constraint)",
+      "file_type": "rationale",
+      "source_file": "public/logos/concepts/C-mosaic-tile.svg",
+      "source_location": "lines 7-8, 11",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_c_mosaic_tile_flag_accent",
+      "label": "Saffron-Orange Center Dot (flag accent)",
+      "file_type": "concept",
+      "source_file": "public/logos/concepts/C-mosaic-tile.svg",
+      "source_location": "lines 27-28",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "concepts_c_mosaic_tile",
+      "target": "concepts_c_mosaic_tile_pinwheel_mark",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/C-mosaic-tile.svg",
+      "source_location": "lines 17-25",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_c_mosaic_tile_pinwheel_mark",
+      "target": "concepts_c_mosaic_tile_palette",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/C-mosaic-tile.svg",
+      "source_location": "lines 10, 19-25 (each wedge assigned one palette color)",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_c_mosaic_tile",
+      "target": "concepts_c_mosaic_tile_zigzag_mosaic",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/C-mosaic-tile.svg",
+      "source_location": "lines 5-6: tile 'abstracted from the zigzag mosaic on the home's corner'",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_c_mosaic_tile_zigzag_mosaic",
+      "target": "concepts_c_mosaic_tile_pinwheel_mark",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/C-mosaic-tile.svg",
+      "source_location": "lines 5-8 (header comment explains derivation of the mark)",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_c_mosaic_tile_favicon_legibility",
+      "target": "concepts_c_mosaic_tile_pinwheel_mark",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/C-mosaic-tile.svg",
+      "source_location": "lines 7-8: 'No letterforms, no literal references \u2014 works as a favicon at 16px'",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_c_mosaic_tile",
+      "target": "concepts_c_mosaic_tile_flag_accent",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/C-mosaic-tile.svg",
+      "source_location": "lines 27-28 (circle cx=256 cy=256 r=20 fill=#ff9933)",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_c_mosaic_tile_flag_accent",
+      "target": "concepts_c_mosaic_tile_palette",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "public/logos/concepts/C-mosaic-tile.svg",
+      "source_location": "line 28: #ff9933 saffron-orange echoes the palette's saffron but is a distinct accent hue",
+      "weight": 0.85
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "mosaic_tile_mark_composition",
+      "label": "Mosaic Tile Mark Composition (cream tile + 4-wedge pinwheel + flag-accent dot in brand palette)",
+      "nodes": [
+        "concepts_c_mosaic_tile",
+        "concepts_c_mosaic_tile_pinwheel_mark",
+        "concepts_c_mosaic_tile_palette",
+        "concepts_c_mosaic_tile_flag_accent"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/C-mosaic-tile.svg"
+    }
+  ]
+}

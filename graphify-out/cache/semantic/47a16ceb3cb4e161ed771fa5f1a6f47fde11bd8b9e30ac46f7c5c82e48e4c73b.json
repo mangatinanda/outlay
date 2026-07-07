@@ -1,0 +1,49 @@
+{
+  "nodes": [
+    {
+      "id": "icons_icon_192",
+      "label": "PWA App Icon 192px (Rupee Coin Mark)",
+      "file_type": "image",
+      "source_file": "public/icons/icon-192.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "icons_icon_192_rupee_symbol",
+      "label": "Indian Rupee (\u20b9) Symbol Motif",
+      "file_type": "concept",
+      "source_file": "public/icons/icon-192.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "icons_icon_192",
+      "target": "icons_icon_192_rupee_symbol",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/icons/icon-192.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "icons_icon_192_rupee_symbol",
+      "target": "shared_currency_display",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.65,
+      "source_file": "public/icons/icon-192.png",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

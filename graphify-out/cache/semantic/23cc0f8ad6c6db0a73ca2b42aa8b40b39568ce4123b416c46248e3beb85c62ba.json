@@ -1,0 +1,216 @@
+{
+  "nodes": [
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design",
+      "label": "Design \u2014 Settle-up Balances + Household Activity Log",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": "Nanda + Claude",
+      "contributor": null
+    },
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design_compute_on_read",
+      "label": "Compute Balances on Read (Approach 1)",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "Decisions",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Balances are never materialized \u2014 computed on read from expenses plus settlements in integer minor units so they sum to exactly zero. Chosen so the future per-expense-splits model needs no migration of stored balances: only the share rule changes."
+    },
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design_equal_split",
+      "label": "Equal Split over Opted-in Members (retroactive toggle)",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "Balance math",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "No per-expense split is stored, so the current include_in_settle_up participant set applies retroactively to the entire history \u2014 accepted because in a family household the toggle means 'who shares costs', not a historical record. Remainder minor units are distributed deterministically by member id so shares sum exactly to the total."
+    },
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design_settlements_table",
+      "label": "settlements Table (recorded paybacks)",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "Data model B",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "A recorded payback (from_member paid to_member) in minor units, kept separate from expenses so settlements never appear in spending charts or reports."
+    },
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design_activity_table",
+      "label": "Append-only activity Table (audit feed)",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "Data model C",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "actor_label and summary are denormalized so the feed still reads correctly after the referenced expense/member is edited or deleted, and renders cheaply with no joins; metadata is optional JSON headroom for future linking."
+    },
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design_debt_simplification",
+      "label": "Greedy Debt Simplification (max n-1 transfers)",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "Balance math",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Split members into creditors and debtors, greedily match the largest debtor to the largest creditor, transfer min(|debtor|, creditor), drop whoever reaches zero \u2014 producing at most n-1 transfers as a pure, unit-tested function."
+    },
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design_logactivity",
+      "label": "Best-effort logActivity Helper",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "Activity logging",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Called after each successful mutation inside every instrumented server action; wrapped so a logging failure is console.error'd but never fails the user's mutation \u2014 an audit feed missing a line is acceptable, a blocked save is not."
+    }
+  ],
+  "edges": [
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_compute_on_read",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "Decisions",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_equal_split",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "Balance math",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_settlements_table",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "Data model B",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_activity_table",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "Data model C",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_debt_simplification",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "Balance math",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_logactivity",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "Activity logging",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design",
+      "target": "specs_2026_06_05_deployable_serverless_pwa_design_deletemember_guard",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "Member toggle",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design_compute_on_read",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_settlements_table",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "Decisions",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design_logactivity",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_activity_table",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "Activity logging",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design_logactivity",
+      "target": "specs_2026_06_16_model_b_user_owned_households_design_actor_model",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "resolves actor from getCurrentActor()",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design_compute_on_read",
+      "target": "docs_2026_06_11_repo_audit_integer_minor_units",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "minor-unit zero-sum math",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "settle_up_balance_pipeline",
+      "label": "Settle-up Balance Pipeline (equal split, compute-on-read, settlements, debt simplification)",
+      "nodes": [
+        "specs_2026_06_22_settle_up_and_activity_log_design_equal_split",
+        "specs_2026_06_22_settle_up_and_activity_log_design_compute_on_read",
+        "specs_2026_06_22_settle_up_and_activity_log_design_settlements_table",
+        "specs_2026_06_22_settle_up_and_activity_log_design_debt_simplification",
+        "plans_2026_06_22_settle_up_and_activity_log_balance_math"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "nodes": [
+    {
+      "id": "rules_ui_token_only_styling",
+      "label": "Token-Only Styling Rule",
+      "file_type": "concept",
+      "source_file": ".claude/rules/ui.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "No hardcoded colors, literal radii, or inline shadows \u2014 only semantic tokens (bg-card, rounded-2xl, shadow-card) so dark mode reaches parity through tokens and restyles never touch data fetching, Server Actions, validators, or query logic."
+    },
+    {
+      "id": "rules_ui_reduced_motion",
+      "label": "Reduced-Motion No-Op Rule",
+      "file_type": "concept",
+      "source_file": ".claude/rules/ui.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "rules_ui_touch_targets",
+      "label": "44px Minimum Touch Targets",
+      "file_type": "concept",
+      "source_file": ".claude/rules/ui.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "rules_ui_token_only_styling",
+      "target": "design_system_skill_fresh_ledger",
+      "relation": "cites",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/rules/ui.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "rules_ui_reduced_motion",
+      "target": "design_system_skill_motion_primitives",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".claude/rules/ui.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "rules_ui_touch_targets",
+      "target": "design_system_skill_fresh_ledger",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".claude/rules/ui.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

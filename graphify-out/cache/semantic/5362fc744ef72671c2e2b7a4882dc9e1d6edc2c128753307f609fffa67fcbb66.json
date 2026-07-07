@@ -1,0 +1,168 @@
+{
+  "nodes": [
+    {
+      "id": "icons_icon_outlay_app_icon",
+      "label": "Outlay App Icon (A1 \"Mosaic O \u00b7 Clean\")",
+      "file_type": "image",
+      "source_file": "public/icons/icon.svg",
+      "source_location": "svg root (viewBox 0 0 512 512, aria-label=\"Outlay\")",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "icons_icon_cream_tile",
+      "label": "Cream Background Tile (#f7eecf, rounded rect rx=108)",
+      "file_type": "concept",
+      "source_file": "public/icons/icon.svg",
+      "source_location": "line 15 <rect>",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "icons_icon_rose_ring_o",
+      "label": "Rose Ring \u2014 the \"O\" of Outlay (#d97da2, stroke-width 64)",
+      "file_type": "concept",
+      "source_file": "public/icons/icon.svg",
+      "source_location": "line 16 <circle>",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "icons_icon_rupee_glyph",
+      "label": "Indian Rupee Glyph (ink #1a1a1a, centered in ring)",
+      "file_type": "concept",
+      "source_file": "public/icons/icon.svg",
+      "source_location": "lines 17-24 <g> path group",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "icons_icon_lucide_indianrupee_path",
+      "label": "Lucide IndianRupee Icon Path",
+      "file_type": "concept",
+      "source_file": "public/icons/icon.svg",
+      "source_location": "header comment + path data lines 19-23",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "icons_icon_home_photo_palette",
+      "label": "Source Palette from Home Photos (cream #f7eecf, rose #d97da2, ink #1a1a1a)",
+      "file_type": "rationale",
+      "source_file": "public/icons/icon.svg",
+      "source_location": "header comment lines 9-12",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "icons_icon_font_independence_rationale",
+      "label": "Rationale: use Lucide path so icon is font-independent and consistent with app iconography",
+      "file_type": "rationale",
+      "source_file": "public/icons/icon.svg",
+      "source_location": "header comment lines 5-7",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "icons_icon_outlay_app_icon",
+      "target": "icons_icon_lucide_indianrupee_path",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/icons/icon.svg",
+      "source_location": "header comment: \"Uses the Lucide IndianRupee path\"",
+      "weight": 1.0
+    },
+    {
+      "source": "icons_icon_rupee_glyph",
+      "target": "icons_icon_lucide_indianrupee_path",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/icons/icon.svg",
+      "source_location": "lines 19-23: glyph path data is the Lucide IndianRupee path",
+      "weight": 1.0
+    },
+    {
+      "source": "icons_icon_cream_tile",
+      "target": "icons_icon_outlay_app_icon",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/icons/icon.svg",
+      "source_location": "line 15",
+      "weight": 1.0
+    },
+    {
+      "source": "icons_icon_rose_ring_o",
+      "target": "icons_icon_outlay_app_icon",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/icons/icon.svg",
+      "source_location": "line 16",
+      "weight": 1.0
+    },
+    {
+      "source": "icons_icon_rupee_glyph",
+      "target": "icons_icon_outlay_app_icon",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/icons/icon.svg",
+      "source_location": "lines 17-24",
+      "weight": 1.0
+    },
+    {
+      "source": "icons_icon_home_photo_palette",
+      "target": "icons_icon_outlay_app_icon",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/icons/icon.svg",
+      "source_location": "header comment: \"Source palette pulled from the home photos\"",
+      "weight": 1.0
+    },
+    {
+      "source": "icons_icon_font_independence_rationale",
+      "target": "icons_icon_outlay_app_icon",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/icons/icon.svg",
+      "source_location": "header comment lines 5-7",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "icons_icon_mosaic_o_composition",
+      "label": "Mosaic O Icon Composition (tile + ring + rupee glyph)",
+      "nodes": [
+        "icons_icon_cream_tile",
+        "icons_icon_rose_ring_o",
+        "icons_icon_rupee_glyph"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/icons/icon.svg"
+    }
+  ]
+}

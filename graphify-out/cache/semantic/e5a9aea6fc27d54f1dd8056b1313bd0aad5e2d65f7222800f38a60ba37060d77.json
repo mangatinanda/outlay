@@ -1,0 +1,101 @@
+{
+  "nodes": [
+    {
+      "id": "concepts_a2_rupee_dollar",
+      "label": "Logo Concept A2 \u2014 Mosaic O with Rupee + Dollar",
+      "file_type": "image",
+      "source_file": "public/logos/concepts/A2-rupee-dollar.svg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_a2_rupee_dollar_mosaic_o_motif",
+      "label": "Mosaic O Brand Motif",
+      "file_type": "concept",
+      "source_file": "public/logos/concepts/A2-rupee-dollar.svg",
+      "source_location": "line 3 (title comment) and line 11 (ring circle)",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_a2_rupee_dollar_multi_currency_support",
+      "label": "Outlay Multi-Currency Support (per-household currency, INR default)",
+      "file_type": "concept",
+      "source_file": "public/logos/concepts/A2-rupee-dollar.svg",
+      "source_location": "lines 5-7 (header comment)",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_a2_rupee_dollar_rupee_dominant_hierarchy",
+      "label": "Rupee-Dominant Currency Hierarchy (large black \u20b9 above smaller accent $)",
+      "file_type": "rationale",
+      "source_file": "public/logos/concepts/A2-rupee-dollar.svg",
+      "source_location": "lines 12-19 (rupee text 160px #1a1a1a, dollar text 100px #d97da2)",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "concepts_a2_rupee_dollar",
+      "target": "concepts_a2_rupee_dollar_mosaic_o_motif",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/A2-rupee-dollar.svg",
+      "source_location": "line 3 comment 'Concept A2 \u2014 Mosaic O with Rupee + Dollar'; line 11 ring",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_a2_rupee_dollar",
+      "target": "concepts_a2_rupee_dollar_multi_currency_support",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/A2-rupee-dollar.svg",
+      "source_location": "lines 5-7 comment: 'Signals that Outlay supports multiple currencies (which it does \u2014 households pick their own, INR is just the default)'",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_a2_rupee_dollar_rupee_dominant_hierarchy",
+      "target": "concepts_a2_rupee_dollar_multi_currency_support",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/A2-rupee-dollar.svg",
+      "source_location": "line 5 'Multi-currency hint: rupee dominant on top, dollar smaller below' and line 16 'saffron accent so they read as distinct currencies'",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_a2_rupee_dollar",
+      "target": "concepts_a2_rupee_dollar_rupee_dominant_hierarchy",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/A2-rupee-dollar.svg",
+      "source_location": "lines 12-19: rupee at font-size 160 fill #1a1a1a above dollar at font-size 100 fill #d97da2",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_a2_rupee_dollar_rupee_dominant_hierarchy",
+      "target": "concepts_a2_rupee_dollar",
+      "relation": "conceptually_related_to",
+      "confidence": "AMBIGUOUS",
+      "confidence_score": 0.2,
+      "source_file": "public/logos/concepts/A2-rupee-dollar.svg",
+      "source_location": "line 16 comment calls the dollar's fill a 'saffron accent' but the actual fill #d97da2 is pink (same as the ring), so the stated color rationale does not match the rendered artwork \u2014 flagged for review",
+      "weight": 0.5
+    }
+  ],
+  "hyperedges": []
+}

@@ -1,0 +1,81 @@
+{
+  "nodes": [
+    {
+      "id": "lib_claude_action_pattern",
+      "label": "safeAction Server-Action Pattern",
+      "file_type": "concept",
+      "source_file": "src/lib/CLAUDE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Every action: wrap in safeAction (throws logged and returned as { error }, redirect() passes through), validate with Zod, resolve the household, scope updates/deletes with and(eq(id), eq(householdId)) checking .returning() emptiness, convert money with toMinorUnits, then revalidatePath."
+    },
+    {
+      "id": "lib_claude_integration_tests",
+      "label": "In-Memory libSQL Integration Tests",
+      "file_type": "concept",
+      "source_file": "src/lib/CLAUDE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Integration tests run real Server Actions against an in-memory libSQL DB (DATABASE_URL=':memory:' via vi.hoisted) with the actual migrations; only next/headers cookies and next/cache are mocked."
+    }
+  ],
+  "edges": [
+    {
+      "source": "claude_data_flow_pattern",
+      "target": "lib_claude_action_pattern",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "src/lib/CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "lib_claude_action_pattern",
+      "target": "actions_safe_action_safeaction",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/lib/CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "lib_claude_action_pattern",
+      "target": "lib_money_tominorunits",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/lib/CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "lib_claude_action_pattern",
+      "target": "queries_household_queries_getcurrenthousehold",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/lib/CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "lib_claude_integration_tests",
+      "target": "lib_claude_action_pattern",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/lib/CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

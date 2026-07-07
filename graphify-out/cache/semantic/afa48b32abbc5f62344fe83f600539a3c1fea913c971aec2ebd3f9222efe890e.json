@@ -1,0 +1,102 @@
+{
+  "nodes": [
+    {
+      "id": "plans_2026_06_15_redesign_04_expenses_and_forms",
+      "label": "Redesign M4 \u2014 Expenses List & Add/Edit Flow",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "plans_2026_06_15_redesign_04_expenses_and_forms_swipe_to_delete",
+      "label": "Swipe-to-Delete (shouldRevealDelete threshold)",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "Task 2",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Motion drag reveals delete past a 72px leftward threshold (pure TDD'd shouldRevealDelete helper), but a visible delete button always renders so reduced-motion and desktop users can delete without swiping."
+    },
+    {
+      "id": "plans_2026_06_15_redesign_04_expenses_and_forms_fab_sheet_morph",
+      "label": "FAB to Bottom-Sheet Shared-Element Morph (layoutId add-fab)",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "Architecture",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "On mobile the nav FAB morphs into the add/edit bottom Sheet via shared layoutId=\"add-fab\" (exactly one element may own the id at a time); desktop keeps the page route and Server Actions are untouched."
+    }
+  ],
+  "edges": [
+    {
+      "source": "plans_2026_06_15_redesign_04_expenses_and_forms",
+      "target": "specs_2026_06_15_ui_redesign_fresh_ledger_design",
+      "relation": "cites",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_04_expenses_and_forms",
+      "target": "plans_2026_06_15_redesign_04_expenses_and_forms_swipe_to_delete",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_04_expenses_and_forms",
+      "target": "plans_2026_06_15_redesign_04_expenses_and_forms_fab_sheet_morph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_04_expenses_and_forms",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_hero_total_selector",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "Sequencing",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_04_expenses_and_forms",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_playwright_scaffold",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "Sequencing",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_04_expenses_and_forms_swipe_to_delete",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_isnavitemactive",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "extract-pure-helper-for-TDD pattern",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

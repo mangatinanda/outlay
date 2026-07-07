@@ -1,0 +1,136 @@
+{
+  "nodes": [
+    {
+      "id": "app_icon",
+      "label": "Outlay App Icon (icon.svg)",
+      "file_type": "image",
+      "source_file": "src/app/icon.svg",
+      "source_location": "lines 14-25",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "app_icon_mosaic_o_clean",
+      "label": "A1 \"Mosaic O \u00b7 Clean\" Icon Design",
+      "file_type": "rationale",
+      "source_file": "src/app/icon.svg",
+      "source_location": "lines 2-13",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "app_icon_rose_ring_o",
+      "label": "Rose Ring \"O\" of Outlay (parapet-trim ring)",
+      "file_type": "concept",
+      "source_file": "src/app/icon.svg",
+      "source_location": "line 16",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "app_icon_indian_rupee_glyph",
+      "label": "Indian Rupee Glyph (Lucide IndianRupee path)",
+      "file_type": "concept",
+      "source_file": "src/app/icon.svg",
+      "source_location": "lines 17-24",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "app_icon_home_photo_palette",
+      "label": "Home-Photo Source Palette (cream #f7eecf / rose #d97da2 / ink #1a1a1a)",
+      "file_type": "rationale",
+      "source_file": "src/app/icon.svg",
+      "source_location": "lines 9-12",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "app_icon_mosaic_o_clean",
+      "target": "app_icon",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/app/icon.svg",
+      "source_location": "lines 2-13",
+      "weight": 1.0
+    },
+    {
+      "source": "app_icon_home_photo_palette",
+      "target": "app_icon",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/app/icon.svg",
+      "source_location": "lines 9-12",
+      "weight": 1.0
+    },
+    {
+      "source": "app_icon",
+      "target": "app_icon_indian_rupee_glyph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/app/icon.svg",
+      "source_location": "lines 5-7, 17-24",
+      "weight": 1.0
+    },
+    {
+      "source": "app_icon",
+      "target": "app_icon_rose_ring_o",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/app/icon.svg",
+      "source_location": "line 16",
+      "weight": 1.0
+    },
+    {
+      "source": "app_icon_rose_ring_o",
+      "target": "app_icon_mosaic_o_clean",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/app/icon.svg",
+      "source_location": "lines 4-5",
+      "weight": 1.0
+    },
+    {
+      "source": "app_icon",
+      "target": "expenses_category_icon",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "src/app/icon.svg",
+      "source_location": "lines 6-7",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "mosaic_o_clean_composition",
+      "label": "Mosaic O Clean icon composition (cream tile + rose ring + ink rupee)",
+      "nodes": [
+        "app_icon_rose_ring_o",
+        "app_icon_indian_rupee_glyph",
+        "app_icon_home_photo_palette"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/app/icon.svg"
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "nodes": [
+    {
+      "id": "design_system_skill_fresh_ledger",
+      "label": "Fresh Ledger Design System",
+      "file_type": "concept",
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Light-first warm palette (cream --background, white --card, indigo --primary) with dark parity reached through tokens rather than per-component overrides; Plus Jakarta Sans display + Geist body; friendly-housemate voice; every rule documents only what actually exists in globals.css and src/components/motion/."
+    },
+    {
+      "id": "design_system_skill_elevation_tokens",
+      "label": "Named Elevation Tokens (shadow-card/float/pop)",
+      "file_type": "concept",
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "design_system_skill_motion_primitives",
+      "label": "Motion Primitives (PageTransition, Stagger, MotionCard, AnimatedNumber)",
+      "file_type": "concept",
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Every primitive already no-ops under useReducedMotion(); shell chrome (FAB, active-tab pill) may use inline motion for layoutId shared-element transitions, everywhere else reuse the primitives instead of hand-rolling motion.div variants."
+    },
+    {
+      "id": "design_system_skill_voice",
+      "label": "Fresh Ledger Voice (friendly housemate)",
+      "file_type": "concept",
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "design_system_skill_elevation_tokens",
+      "target": "design_system_skill_fresh_ledger",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "design_system_skill_motion_primitives",
+      "target": "design_system_skill_fresh_ledger",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "design_system_skill_voice",
+      "target": "design_system_skill_fresh_ledger",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "fresh_ledger_design_system",
+      "label": "Fresh Ledger Design System",
+      "nodes": [
+        "design_system_skill_fresh_ledger",
+        "design_system_skill_elevation_tokens",
+        "design_system_skill_motion_primitives",
+        "design_system_skill_voice",
+        "rules_ui_token_only_styling",
+        "rules_ui_reduced_motion",
+        "rules_ui_touch_targets",
+        "memory_fresh_ledger"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/design-system/SKILL.md"
+    }
+  ]
+}

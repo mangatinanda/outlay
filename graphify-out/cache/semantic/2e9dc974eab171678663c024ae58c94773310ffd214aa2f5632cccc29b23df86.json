@@ -1,0 +1,70 @@
+{
+  "nodes": [
+    {
+      "id": "plans_2026_06_22_settle_up_and_activity_log",
+      "label": "Settle-up Balances + Activity Log Implementation Plan",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-22-settle-up-and-activity-log.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "plans_2026_06_22_settle_up_and_activity_log_balance_math",
+      "label": "Pure Balance-Math Functions (computeShares / computeNetBalances / simplifyDebts)",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-06-22-settle-up-and-activity-log.md",
+      "source_location": "Task 2",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "TDD'd pure functions in src/lib/settle-up/balances.ts: shares distribute the remainder one minor unit at a time by id order, nets equal paid minus share adjusted by settlements and sum to zero, and simplifyDebts zeroes everyone out in at most n-1 transfers."
+    }
+  ],
+  "edges": [
+    {
+      "source": "plans_2026_06_22_settle_up_and_activity_log",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design",
+      "relation": "cites",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-22-settle-up-and-activity-log.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_22_settle_up_and_activity_log",
+      "target": "plans_2026_06_22_settle_up_and_activity_log_balance_math",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-22-settle-up-and-activity-log.md",
+      "source_location": "Task 2",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_22_settle_up_and_activity_log_balance_math",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_equal_split",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-22-settle-up-and-activity-log.md",
+      "source_location": "Task 2 computeShares/computeNetBalances",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_22_settle_up_and_activity_log_balance_math",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_debt_simplification",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-22-settle-up-and-activity-log.md",
+      "source_location": "Task 2 simplifyDebts",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

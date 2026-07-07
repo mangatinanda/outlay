@@ -1,0 +1,166 @@
+{
+  "nodes": [
+    {
+      "id": "plans_2026_06_15_redesign_02_design_foundation",
+      "label": "Redesign M1 \u2014 Design Foundation (fonts, tokens, motion, DS skill)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-02-design-foundation.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "plans_2026_06_15_redesign_02_design_foundation_motion_primitives",
+      "label": "Motion Primitives (PageTransition, AnimatedNumber, Stagger, MotionCard)",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-02-design-foundation.md",
+      "source_location": "Tasks 5-9",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Four reduced-motion-aware primitives created once in M1 with a barrel export so later milestones import from @/components/motion instead of hand-rolling motion.div variants; AnimatedNumber is TDD'd under a per-file happy-dom pragma while all other suites stay node-env."
+    },
+    {
+      "id": "plans_2026_06_15_redesign_02_design_foundation_fresh_ledger_tokens",
+      "label": "Fresh Ledger OKLCH Token Palette + Shadow Tokens",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-02-design-foundation.md",
+      "source_location": "Task 2",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Warm cream light palette and warm near-black dark palette in OKLCH, indigo primary, shadow-card/float/pop tokens and a friendlier radius base \u2014 all defined in globals.css @theme so components stay token-only."
+    },
+    {
+      "id": "plans_2026_06_15_redesign_02_design_foundation_font_wiring_fix",
+      "label": "Font Wiring Fix (distinct loader variables)",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-02-design-foundation.md",
+      "source_location": "Task 1",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "A next/font loader variable must never share the name of the Tailwind token it feeds: each loader gets a distinct variable (--font-geist-sans/--font-geist-mono/--font-jakarta) and @theme inline maps --font-sans/--font-mono/--font-display onto them, ending the serif fallback and adding Plus Jakarta Sans for headings."
+    },
+    {
+      "id": "plans_2026_06_15_redesign_02_design_foundation_design_system_skill",
+      "label": "Design-System Skill + Path-scoped UI Rules",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-02-design-foundation.md",
+      "source_location": "Tasks 10-11",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": ".claude/skills/design-system/SKILL.md codifies tokens, type scale, motion rules and voice so future agent restyle work stays on-brand; .claude/rules/ui.md auto-applies the invariants to src/components/** and src/app/**."
+    }
+  ],
+  "edges": [
+    {
+      "source": "plans_2026_06_15_redesign_02_design_foundation",
+      "target": "specs_2026_06_15_ui_redesign_fresh_ledger_design",
+      "relation": "cites",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-02-design-foundation.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_02_design_foundation",
+      "target": "plans_2026_06_15_redesign_02_design_foundation_motion_primitives",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-02-design-foundation.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_02_design_foundation",
+      "target": "plans_2026_06_15_redesign_02_design_foundation_fresh_ledger_tokens",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-02-design-foundation.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_02_design_foundation",
+      "target": "plans_2026_06_15_redesign_02_design_foundation_font_wiring_fix",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-02-design-foundation.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_02_design_foundation",
+      "target": "plans_2026_06_15_redesign_02_design_foundation_design_system_skill",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-02-design-foundation.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_02_design_foundation_font_wiring_fix",
+      "target": "specs_2026_06_15_ui_redesign_fresh_ledger_design_font_bug",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-02-design-foundation.md",
+      "source_location": "Task 1",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_02_design_foundation_fresh_ledger_tokens",
+      "target": "specs_2026_06_15_ui_redesign_fresh_ledger_design_fresh_ledger",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-02-design-foundation.md",
+      "source_location": "Task 2",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_02_design_foundation_motion_primitives",
+      "target": "specs_2026_06_15_ui_redesign_fresh_ledger_design_motion_system",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-02-design-foundation.md",
+      "source_location": "Tasks 5-9",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_02_design_foundation_design_system_skill",
+      "target": "specs_2026_06_15_ui_redesign_fresh_ledger_design_token_only_styling",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-02-design-foundation.md",
+      "source_location": "Task 10",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_02_design_foundation_design_system_skill",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_route_announcer_rule",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.65,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-02-design-foundation.md",
+      "source_location": "both are persistent .claude agent guardrails",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

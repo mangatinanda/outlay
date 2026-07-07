@@ -1,0 +1,58 @@
+{
+  "nodes": [
+    {
+      "id": "plans_2026_06_16_model_b_user_owned_households",
+      "label": "Model B \u2014 User-Owned Households Implementation Plan",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-16-model-b-user-owned-households.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "plans_2026_06_16_model_b_user_owned_households",
+      "target": "specs_2026_06_16_model_b_user_owned_households_design",
+      "relation": "cites",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-16-model-b-user-owned-households.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_16_model_b_user_owned_households",
+      "target": "specs_2026_06_16_model_b_user_owned_households_design_actor_model",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-16-model-b-user-owned-households.md",
+      "source_location": "Architecture",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_16_model_b_user_owned_households",
+      "target": "specs_2026_06_16_model_b_user_owned_households_design_membership_boundary",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-16-model-b-user-owned-households.md",
+      "source_location": "Architecture",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_16_model_b_user_owned_households",
+      "target": "specs_2026_06_16_model_b_user_owned_households_design_invite_by_email",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-16-model-b-user-owned-households.md",
+      "source_location": "Milestone 1",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

@@ -1,0 +1,72 @@
+{
+  "nodes": [
+    {
+      "id": "plans_2026_06_09_google_login_plan",
+      "label": "Sign in with Google Plan (Model A)",
+      "file_type": "concept",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Auth.js v5 with the Google provider, JWT sessions (stateless, keeps proxy.ts simple, no DB writes per request), no DB migration (users not persisted until Model B), and an allow-list signIn callback as the security crux since Google sign-in is otherwise open to any Google account."
+    },
+    {
+      "id": "plans_2026_06_09_google_login_model_a",
+      "label": "Model A Identity Layer",
+      "file_type": "rationale",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Passcode + Google coexistence is safe only because Model A applies no per-user access scoping \u2014 a passcode user and a Google user get the same access to the shared households. The 'passcode + Google = foot-gun' warning only applies once households become per-user (Model B), at which point the plan said the passcode must be removed (it was later repurposed as an explicit superadmin instead)."
+    },
+    {
+      "id": "plans_2026_06_09_google_login",
+      "label": "Google Login Plan (2026-06-09)",
+      "file_type": "document",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "plans_2026_06_09_google_login_plan",
+      "target": "plans_2026_06_07_household_ui_multi_workspace_rename_technique",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_09_google_login_model_a",
+      "target": "plans_2026_06_09_google_login_plan",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_09_google_login_plan",
+      "target": "claude_model_b_auth",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

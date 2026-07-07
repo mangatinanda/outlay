@@ -1,0 +1,81 @@
+{
+  "nodes": [
+    {
+      "id": "plans_2026_06_07_household_ui_multi_workspace_plan",
+      "label": "Multi-Household Workspaces Plan",
+      "file_type": "concept",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Workspace model (like Slack/Notion) behind the single shared passcode; per-user ownership deferred to the real-auth milestone. The he_household cookie holds the active household id, validated server-side, and is deliberately unsigned because it is not a security boundary. Because all data is already scoped by household_id, once getCurrentHousehold() resolves the active household every view isolates automatically."
+    },
+    {
+      "id": "plans_2026_06_07_household_ui_multi_workspace_rename_technique",
+      "label": "Rename-to-Force-Compile-Errors Technique",
+      "file_type": "rationale",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Remove the old exported resolver (getDefaultHousehold) and rename it so the type-checker lists every one of the 12 call sites as errors until updated \u2014 guaranteeing completeness, since a missed resolution site would leak data across households."
+    }
+  ],
+  "edges": [
+    {
+      "source": "plans_2026_06_07_household_ui_multi_workspace_plan",
+      "target": "queries_household_queries_getcurrenthousehold",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_household_ui_multi_workspace_plan",
+      "target": "queries_household_queries_listhouseholds",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_household_ui_multi_workspace_plan",
+      "target": "providers_currency_provider_currencyprovider",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_household_ui_multi_workspace_plan",
+      "target": "plans_2026_06_07_currency_switcher_plan",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_household_ui_multi_workspace_rename_technique",
+      "target": "plans_2026_06_07_household_ui_multi_workspace_plan",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

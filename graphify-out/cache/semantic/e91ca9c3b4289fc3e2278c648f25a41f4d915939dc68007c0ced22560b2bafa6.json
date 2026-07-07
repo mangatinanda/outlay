@@ -1,0 +1,102 @@
+{
+  "nodes": [
+    {
+      "id": "concepts_a1_rupee",
+      "label": "Logo Concept A1 \u2014 Mosaic O with Rupee",
+      "file_type": "image",
+      "source_file": "public/logos/concepts/A1-rupee.svg",
+      "source_location": "lines 9-15",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_a1_rupee_rose_ring_o",
+      "label": "Rose Ring O Mark (Outlay 'O')",
+      "file_type": "concept",
+      "source_file": "public/logos/concepts/A1-rupee.svg",
+      "source_location": "line 11",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_a1_rupee_rupee_glyph",
+      "label": "Bold Rupee Glyph (\u20b9) \u2014 Money Tracking Symbol",
+      "file_type": "concept",
+      "source_file": "public/logos/concepts/A1-rupee.svg",
+      "source_location": "lines 12-14",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_a1_rupee_design_rationale",
+      "label": "A1 Design Rationale: cleanest variant, no parapet tiles, symbol does the talking, legible at any size",
+      "file_type": "rationale",
+      "source_file": "public/logos/concepts/A1-rupee.svg",
+      "source_location": "lines 2-8",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_a1_rupee",
+      "label": "Plain A1 Rupee Icon (small sizes: favicon, PWA tile)",
+      "file_type": "image",
+      "source_file": "public/logos/concepts/A1-rupee.svg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "concepts_a1_rupee",
+      "target": "concepts_a1_rupee_rose_ring_o",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/A1-rupee.svg",
+      "source_location": "line 11",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_a1_rupee",
+      "target": "concepts_a1_rupee_rupee_glyph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/A1-rupee.svg",
+      "source_location": "lines 12-14",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_a1_rupee_design_rationale",
+      "target": "concepts_a1_rupee",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/A1-rupee.svg",
+      "source_location": "lines 2-8",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_a1_rupee_rose_ring_o",
+      "target": "concepts_a1_rupee_rupee_glyph",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/A1-rupee.svg",
+      "source_location": "lines 5-7 (comment: 'rose ring O with a bold rupee glyph centered inside' reads as 'Outlay (the O) for tracking money (the \u20b9)')",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

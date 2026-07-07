@@ -1,0 +1,105 @@
+{
+  "nodes": [
+    {
+      "id": "specs_2026_06_05_deployable_serverless_pwa_design",
+      "label": "Design \u2014 Deployable Serverless PWA (Turso, gate, Serwist)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-06-05-deployable-serverless-pwa-design.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": "Claude + Nanda",
+      "contributor": null
+    },
+    {
+      "id": "specs_2026_06_05_deployable_serverless_pwa_design_turso_libsql",
+      "label": "Turso/libSQL Driver Migration",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-05-deployable-serverless-pwa-design.md",
+      "source_location": "\u00a74A",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "One driver (drizzle-orm/libsql) works for both local file: SQLite and cloud libsql:// Turso; the existing sqlite-core schema is reused unchanged, and better-sqlite3's filesystem assumptions do not work on serverless."
+    },
+    {
+      "id": "specs_2026_06_05_deployable_serverless_pwa_design_passcode_gate",
+      "label": "Shared Passcode Gate (Web Crypto HMAC he_session)",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-05-deployable-serverless-pwa-design.md",
+      "source_location": "\u00a74C",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Single-tenant app: a shared passcode stops public read/write without the cost of full OAuth. Web Crypto (crypto.subtle HMAC-SHA256) is both Edge- and Node-safe so the same gate helper serves middleware and Server Actions with no JWT library."
+    },
+    {
+      "id": "specs_2026_06_05_deployable_serverless_pwa_design_serwist_pwa",
+      "label": "Serwist PWA / Offline Fallback",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/specs/2026-06-05-deployable-serverless-pwa-design.md",
+      "source_location": "\u00a74D",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "specs_2026_06_05_deployable_serverless_pwa_design_deletemember_guard",
+      "label": "deleteMember Orphan-Records Guard",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/specs/2026-06-05-deployable-serverless-pwa-design.md",
+      "source_location": "\u00a74E",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Deleting a member with existing expenses orphaned expenses.member_id; the guard mirrors the existing deleteCategory pattern and blocks deletion with an error instead."
+    }
+  ],
+  "edges": [
+    {
+      "source": "specs_2026_06_05_deployable_serverless_pwa_design",
+      "target": "specs_2026_06_05_deployable_serverless_pwa_design_turso_libsql",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-05-deployable-serverless-pwa-design.md",
+      "source_location": "\u00a74A",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_05_deployable_serverless_pwa_design",
+      "target": "specs_2026_06_05_deployable_serverless_pwa_design_passcode_gate",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-05-deployable-serverless-pwa-design.md",
+      "source_location": "\u00a74C",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_05_deployable_serverless_pwa_design",
+      "target": "specs_2026_06_05_deployable_serverless_pwa_design_serwist_pwa",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-05-deployable-serverless-pwa-design.md",
+      "source_location": "\u00a74D",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_05_deployable_serverless_pwa_design",
+      "target": "specs_2026_06_05_deployable_serverless_pwa_design_deletemember_guard",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-05-deployable-serverless-pwa-design.md",
+      "source_location": "\u00a74E",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

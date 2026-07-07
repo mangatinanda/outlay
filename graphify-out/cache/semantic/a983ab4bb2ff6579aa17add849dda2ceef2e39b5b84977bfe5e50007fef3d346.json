@@ -1,0 +1,29 @@
+{
+  "nodes": [
+    {
+      "id": "features_doc_skill_generator",
+      "label": "FEATURES.md Generator Skill",
+      "file_type": "concept",
+      "source_file": ".claude/skills/features-doc/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Grounds the end-user doc in the app's actual routes, server actions, and schema so it never drifts from reality; writes for end users with no file/framework jargon; never commits \u2014 the SessionEnd hook regenerates the file but leaves it as a working-tree change for human review."
+    }
+  ],
+  "edges": [
+    {
+      "source": "features_doc_skill_generator",
+      "target": "features_end_user_overview",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/features-doc/SKILL.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

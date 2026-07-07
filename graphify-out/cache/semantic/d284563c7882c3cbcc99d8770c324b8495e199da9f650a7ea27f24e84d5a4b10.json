@@ -1,0 +1,203 @@
+{
+  "nodes": [
+    {
+      "id": "claude_outlay",
+      "label": "Outlay \u2014 Household Expense Tracker PWA",
+      "file_type": "concept",
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "claude_model_b_auth",
+      "label": "Model B Per-User Household Auth",
+      "file_type": "rationale",
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Households are per-user, scoped by household_members.user_id. The shared passcode was repurposed as an explicit superadmin escalation at /admin rather than dropped (superseding the earlier 'drop the passcode' plan): an explicit secret god-mode key is the owner's deliberate escalation while Google users are scoped. Sign-in fails closed in prod (empty allow-list denies all) unless the email already has a membership/invite."
+    },
+    {
+      "id": "claude_data_flow_pattern",
+      "label": "Reads-via-Queries / Writes-via-Server-Actions Pattern",
+      "file_type": "rationale",
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "No REST API is needed for CRUD: Server Components call lib/queries for reads and Client Components call Zod-validated, household-scoped Server Actions for writes, so validation and household scoping live at one boundary and every mutation returns { error } for foreign ids."
+    },
+    {
+      "id": "claude_money_minor_units",
+      "label": "Money as Integer Minor Units",
+      "file_type": "rationale",
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Amounts are stored as integer minor units (expenses.amount_minor, fixed scale 100) so SQL sums are exact over integers; queries convert back with a single /100.0 at the boundary so components always see major units."
+    },
+    {
+      "id": "claude_superadmin_passcode",
+      "label": "Superadmin Passcode Gate (he_session)",
+      "file_type": "concept",
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "claude_outlay",
+      "target": "claude_model_b_auth",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "claude_outlay",
+      "target": "claude_data_flow_pattern",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "claude_outlay",
+      "target": "claude_money_minor_units",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "claude_model_b_auth",
+      "target": "auth_actor_getcurrentactor",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "claude_model_b_auth",
+      "target": "auth_membership_assertcanaccesshousehold",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "claude_model_b_auth",
+      "target": "auth_users_upsertuserbyemail",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "claude_model_b_auth",
+      "target": "actions_invite_actions_invitetohousehold",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "claude_model_b_auth",
+      "target": "shared_no_household_nohousehold",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "claude_model_b_auth",
+      "target": "lib_allow_list_isemailallowed",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "claude_superadmin_passcode",
+      "target": "lib_gate_verifysession",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "claude_data_flow_pattern",
+      "target": "actions_safe_action_safeaction",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "claude_money_minor_units",
+      "target": "lib_money_tominorunits",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "model_b_auth_flow",
+      "label": "Model B Authentication & Membership Flow",
+      "nodes": [
+        "claude_model_b_auth",
+        "auth_actor_getcurrentactor",
+        "auth_membership_assertcanaccesshousehold",
+        "auth_users_upsertuserbyemail",
+        "actions_invite_actions_invitetohousehold",
+        "lib_allow_list_isemailallowed",
+        "lib_gate_verifysession"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md"
+    }
+  ]
+}

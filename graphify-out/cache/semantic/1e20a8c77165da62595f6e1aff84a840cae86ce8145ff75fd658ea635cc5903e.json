@@ -1,0 +1,51 @@
+{
+  "nodes": [
+    {
+      "id": "rules_playwright_no_role_alert",
+      "label": "Never Assert getByRole('alert') in e2e",
+      "file_type": "rationale",
+      "source_file": ".claude/rules/playwright.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "The Next.js App Router renders a visually-hidden role='alert' route announcer on every navigation, so asserting on getByRole('alert') matches or races the announcer, producing flaky, misleading results \u2014 target the specific rendered text or element instead."
+    },
+    {
+      "id": "rules_playwright_passcode_only_e2e",
+      "label": "Passcode-Only Auth in e2e",
+      "file_type": "rationale",
+      "source_file": ".claude/rules/playwright.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Google sign-in requires a real IdP and is out of scope for e2e; tests use the shared-passcode path with HOUSEHOLD_PASSCODE=e2e-pass from playwright.config.ts's webServer.env."
+    }
+  ],
+  "edges": [
+    {
+      "source": "rules_playwright_no_role_alert",
+      "target": "workflows_ci_e2e_job",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": ".claude/rules/playwright.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "rules_playwright_passcode_only_e2e",
+      "target": "claude_superadmin_passcode",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".claude/rules/playwright.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

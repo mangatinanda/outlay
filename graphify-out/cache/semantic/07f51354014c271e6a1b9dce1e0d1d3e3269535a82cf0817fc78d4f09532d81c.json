@@ -1,0 +1,164 @@
+{
+  "nodes": [
+    {
+      "id": "readme_passcode_gate",
+      "label": "HMAC Passcode Access Gate",
+      "file_type": "rationale",
+      "source_file": "README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Cookie format v1.<issued-at>.<HMAC-SHA256 signature> signed with the Web Crypto API and expiring server-side after 30 days \u2014 deliberately no JWT library; the same helper runs in proxy.ts and the verifyPasscode Server Action."
+    },
+    {
+      "id": "readme_force_dynamic_build",
+      "label": "DB-Free Production Build via force-dynamic",
+      "file_type": "rationale",
+      "source_file": "README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "DB-backed pages export dynamic='force-dynamic' via the (app) layout so the production build never touches the database, renders per request against Turso at runtime, and works in CI without a pre-seeded DB."
+    },
+    {
+      "id": "readme_data_model",
+      "label": "Outlay Data Model (expenses hub)",
+      "file_type": "concept",
+      "source_file": "README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_multi_household",
+      "label": "Multi-Household Workspaces",
+      "file_type": "concept",
+      "source_file": "README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_pwa_offline",
+      "label": "Serwist PWA / Offline Support",
+      "file_type": "concept",
+      "source_file": "README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "claude_outlay",
+      "target": "readme_pwa_offline",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "claude_outlay",
+      "target": "workflows_ci_ci_job",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "readme_passcode_gate",
+      "target": "lib_gate_verifysession",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "readme_passcode_gate",
+      "target": "actions_auth_actions_verifypasscode",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "readme_passcode_gate",
+      "target": "claude_superadmin_passcode",
+      "relation": "shares_data_with",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "readme_multi_household",
+      "target": "queries_household_queries_getcurrenthousehold",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "readme_multi_household",
+      "target": "queries_household_queries_listhouseholds",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "readme_data_model",
+      "target": "claude_money_minor_units",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "readme_multi_household",
+      "target": "plans_2026_06_07_household_ui_multi_workspace_plan",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "actions_auth_actions_verifypasscode",
+      "target": "lib_gate_verifysession",
+      "relation": "shares_data_with",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "README.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

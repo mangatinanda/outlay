@@ -1,0 +1,17 @@
+{
+  "nodes": [
+    {
+      "id": "actions_invite_actions_invitetohousehold",
+      "label": "inviteToHousehold",
+      "file_type": "code",
+      "source_file": "src/lib/actions/invite-actions.ts",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [],
+  "hyperedges": []
+}

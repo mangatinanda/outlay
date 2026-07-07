@@ -1,0 +1,51 @@
+{
+  "nodes": [
+    {
+      "id": "workflows_ci_ci_job",
+      "label": "CI Job (lint / typecheck / test / build)",
+      "file_type": "concept",
+      "source_file": ".github/workflows/ci.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "The build step runs with a dummy AUTH_SECRET and DATABASE_URL=':memory:' because force-dynamic pages run no queries at build time, but the libSQL client still opens its connection eagerly at import and the gitignored data/ dir doesn't exist in CI."
+    },
+    {
+      "id": "workflows_ci_e2e_job",
+      "label": "Non-Blocking e2e CI Job",
+      "file_type": "rationale",
+      "source_file": ".github/workflows/ci.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Runs in parallel with no `needs` and continue-on-error because e2e is a signal, not a gate, while the suite is young; promote to blocking later by removing continue-on-error. Uploads the Playwright report only on failure."
+    }
+  ],
+  "edges": [
+    {
+      "source": "workflows_ci_ci_job",
+      "target": "readme_force_dynamic_build",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/ci.yml",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "workflows_ci_e2e_job",
+      "target": "rules_playwright_passcode_only_e2e",
+      "relation": "shares_data_with",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".github/workflows/ci.yml",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

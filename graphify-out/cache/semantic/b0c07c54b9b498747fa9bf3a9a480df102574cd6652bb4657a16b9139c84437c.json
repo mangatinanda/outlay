@@ -1,0 +1,106 @@
+{
+  "nodes": [
+    {
+      "id": "plans_2026_06_15_fresh_ledger_redesign_readme",
+      "label": "Fresh Ledger Redesign \u2014 Plan Index & Conventions",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "plans_2026_06_15_fresh_ledger_redesign_readme",
+      "target": "specs_2026_06_15_ui_redesign_fresh_ledger_design",
+      "relation": "cites",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_fresh_ledger_redesign_readme",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_fresh_ledger_redesign_readme",
+      "target": "plans_2026_06_15_redesign_02_design_foundation",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_fresh_ledger_redesign_readme",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_fresh_ledger_redesign_readme",
+      "target": "plans_2026_06_15_redesign_04_expenses_and_forms",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_fresh_ledger_redesign_readme",
+      "target": "plans_2026_06_15_redesign_05_grids_login_polish",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_04_expenses_and_forms_fab_sheet_morph",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md",
+      "source_location": "Watch-item 3: layoutId add-fab",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "fresh_ledger_redesign_program",
+      "label": "Fresh Ledger Redesign Program (spec + strictly-ordered M0-M6 plans)",
+      "nodes": [
+        "specs_2026_06_15_ui_redesign_fresh_ledger_design",
+        "plans_2026_06_15_fresh_ledger_redesign_readme",
+        "plans_2026_06_15_redesign_01_repo_hardening",
+        "plans_2026_06_15_redesign_02_design_foundation",
+        "plans_2026_06_15_redesign_03_shell_and_dashboard",
+        "plans_2026_06_15_redesign_04_expenses_and_forms",
+        "plans_2026_06_15_redesign_05_grids_login_polish"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md"
+    }
+  ]
+}

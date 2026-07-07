@@ -1,0 +1,204 @@
+{
+  "nodes": [
+    {
+      "id": "specs_2026_06_16_model_b_user_owned_households_design",
+      "label": "Design \u2014 Model B User-Owned Households + Superadmin Passcode",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-06-16-model-b-user-owned-households-design.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "specs_2026_06_16_model_b_user_owned_households_design_actor_model",
+      "label": "Two-Principal Actor Model (getCurrentActor)",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-16-model-b-user-owned-households-design.md",
+      "source_location": "\u00a74",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "A single cache()d getCurrentActor() resolves every request to exactly one principal \u2014 superadmin (valid passcode cookie, checked first) or scoped user (Google JWT with session.user.id) \u2014 so authorization has one entry point instead of scattered checks."
+    },
+    {
+      "id": "specs_2026_06_16_model_b_user_owned_households_design_membership_boundary",
+      "label": "household_members as Authorization Boundary",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-16-model-b-user-owned-households-design.md",
+      "source_location": "\u00a77",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Everything funnels through three central resolvers (getCurrentHousehold/listHouseholds/switchHousehold) plus two id-taking household actions, so making only those actor-aware makes ~20 per-household call sites transitively safe \u2014 no per-call changes needed. Denied switches return generic 'Household not found' to avoid existence leakage."
+    },
+    {
+      "id": "specs_2026_06_16_model_b_user_owned_households_design_invite_by_email",
+      "label": "Invite-by-Email, Claim-on-Login",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-16-model-b-user-owned-households-design.md",
+      "source_location": "\u00a75, \u00a79",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Invites are just an email column on household_members claimed on the invitee's next sign-in (UPDATE ... SET user_id WHERE email = ? AND user_id IS NULL) \u2014 no tokens, no extra table, no email delivery; a membership row is one of auth-membership, pending invite, or attribution-only."
+    },
+    {
+      "id": "specs_2026_06_16_model_b_user_owned_households_design_superadmin_passcode",
+      "label": "Passcode as Superadmin (/admin gate)",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-16-model-b-user-owned-households-design.md",
+      "source_location": "\u00a73, \u00a78",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "The owner wants a do-everything master key, so the shared passcode moves to /admin as a deliberate elevation (checked before the Google session) that bypasses all membership scoping, while Google users become the everyday, scoped path. Superadmin is anonymous \u2014 accepted for a family app."
+    },
+    {
+      "id": "specs_2026_06_16_model_b_user_owned_households_design_session_version_bump",
+      "label": "SESSION_VERSION Bump v1 to v2",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-16-model-b-user-owned-households-design.md",
+      "source_location": "decision #8",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Bumping the token version invalidates every outstanding passcode cookie on deploy so family members' existing cookies do not silently become superadmin \u2014 only a fresh /admin unlock elevates."
+    }
+  ],
+  "edges": [
+    {
+      "source": "specs_2026_06_16_model_b_user_owned_households_design",
+      "target": "plans_2026_06_09_google_login",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-16-model-b-user-owned-households-design.md",
+      "source_location": "Supersedes header",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_16_model_b_user_owned_households_design",
+      "target": "specs_2026_06_16_model_b_user_owned_households_design_actor_model",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-16-model-b-user-owned-households-design.md",
+      "source_location": "\u00a74",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_16_model_b_user_owned_households_design",
+      "target": "specs_2026_06_16_model_b_user_owned_households_design_membership_boundary",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-16-model-b-user-owned-households-design.md",
+      "source_location": "\u00a77",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_16_model_b_user_owned_households_design",
+      "target": "specs_2026_06_16_model_b_user_owned_households_design_invite_by_email",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-16-model-b-user-owned-households-design.md",
+      "source_location": "\u00a79",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_16_model_b_user_owned_households_design",
+      "target": "specs_2026_06_16_model_b_user_owned_households_design_superadmin_passcode",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-16-model-b-user-owned-households-design.md",
+      "source_location": "\u00a78",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_16_model_b_user_owned_households_design",
+      "target": "specs_2026_06_16_model_b_user_owned_households_design_session_version_bump",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-16-model-b-user-owned-households-design.md",
+      "source_location": "decision #8",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_16_model_b_user_owned_households_design_superadmin_passcode",
+      "target": "specs_2026_06_16_model_b_user_owned_households_design_actor_model",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-16-model-b-user-owned-households-design.md",
+      "source_location": "\u00a74",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_16_model_b_user_owned_households_design_invite_by_email",
+      "target": "specs_2026_06_16_model_b_user_owned_households_design_membership_boundary",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-16-model-b-user-owned-households-design.md",
+      "source_location": "\u00a75",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_16_model_b_user_owned_households_design_session_version_bump",
+      "target": "specs_2026_06_16_model_b_user_owned_households_design_superadmin_passcode",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-16-model-b-user-owned-households-design.md",
+      "source_location": "decision #8",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_16_model_b_user_owned_households_design_superadmin_passcode",
+      "target": "specs_2026_06_05_deployable_serverless_pwa_design_passcode_gate",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "docs/superpowers/specs/2026-06-16-model-b-user-owned-households-design.md",
+      "source_location": "he_session cookie reuse",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_16_model_b_user_owned_households_design_invite_by_email",
+      "target": "docs_2026_06_11_repo_audit_fail_open_allow_list",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "docs/superpowers/specs/2026-06-16-model-b-user-owned-households-design.md",
+      "source_location": "\u00a76 canSignIn = allow-list OR membership",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "model_b_authorization_model",
+      "label": "Model B Authorization Model (actor, membership boundary, invites, superadmin, session cut)",
+      "nodes": [
+        "specs_2026_06_16_model_b_user_owned_households_design_actor_model",
+        "specs_2026_06_16_model_b_user_owned_households_design_membership_boundary",
+        "specs_2026_06_16_model_b_user_owned_households_design_invite_by_email",
+        "specs_2026_06_16_model_b_user_owned_households_design_superadmin_passcode",
+        "specs_2026_06_16_model_b_user_owned_households_design_session_version_bump"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-16-model-b-user-owned-households-design.md"
+    }
+  ]
+}

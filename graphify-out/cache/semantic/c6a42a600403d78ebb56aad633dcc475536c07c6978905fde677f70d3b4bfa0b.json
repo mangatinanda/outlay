@@ -1,0 +1,168 @@
+{
+  "nodes": [
+    {
+      "id": "concepts_b_tricolor_house",
+      "label": "Concept B \u2014 Tricolor House Logo",
+      "file_type": "image",
+      "source_file": "public/logos/concepts/B-tricolor-house.svg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_b_tricolor_house_house_silhouette",
+      "label": "Two-Tier House Silhouette (main body + right tower)",
+      "file_type": "concept",
+      "source_file": "public/logos/concepts/B-tricolor-house.svg",
+      "source_location": "lines 17-26",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_b_tricolor_house_tricolor_palette",
+      "label": "Tricolor Palette (rose-pink trim, cream body, saffron-orange flag)",
+      "file_type": "concept",
+      "source_file": "public/logos/concepts/B-tricolor-house.svg",
+      "source_location": "line 10",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_b_tricolor_house_saffron_flag",
+      "label": "Saffron Flag Triangle on Tower Mast",
+      "file_type": "concept",
+      "source_file": "public/logos/concepts/B-tricolor-house.svg",
+      "source_location": "lines 36-38",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_b_tricolor_house_parapet_tile_accents",
+      "label": "Saffron Tile Accents on Pink Parapet Band",
+      "file_type": "concept",
+      "source_file": "public/logos/concepts/B-tricolor-house.svg",
+      "source_location": "lines 28-34",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concepts_b_tricolor_house_legibility_floor",
+      "label": "Legibility Floor: reads at >=48px (flag mast loses fidelity below)",
+      "file_type": "rationale",
+      "source_file": "public/logos/concepts/B-tricolor-house.svg",
+      "source_location": "line 11",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "concepts_b_tricolor_house",
+      "target": "concepts_b_tricolor_house_house_silhouette",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/B-tricolor-house.svg",
+      "source_location": "lines 5-8, 17-26",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_b_tricolor_house",
+      "target": "concepts_b_tricolor_house_tricolor_palette",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/B-tricolor-house.svg",
+      "source_location": "line 10",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_b_tricolor_house",
+      "target": "concepts_b_tricolor_house_saffron_flag",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/B-tricolor-house.svg",
+      "source_location": "lines 36-38",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_b_tricolor_house",
+      "target": "concepts_b_tricolor_house_parapet_tile_accents",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/B-tricolor-house.svg",
+      "source_location": "lines 28-34",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_b_tricolor_house_saffron_flag",
+      "target": "concepts_b_tricolor_house_house_silhouette",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/B-tricolor-house.svg",
+      "source_location": "lines 36-38 (flag mast anchored to tower rect at x=370, y=148)",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_b_tricolor_house_saffron_flag",
+      "target": "concepts_b_tricolor_house_tricolor_palette",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/B-tricolor-house.svg",
+      "source_location": "line 38 (fill #ff9933 saffron-orange)",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_b_tricolor_house_legibility_floor",
+      "target": "concepts_b_tricolor_house",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/B-tricolor-house.svg",
+      "source_location": "line 11",
+      "weight": 1.0
+    },
+    {
+      "source": "concepts_b_tricolor_house_house_silhouette",
+      "target": "concepts_b_tricolor_house_legibility_floor",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "public/logos/concepts/B-tricolor-house.svg",
+      "source_location": "lines 5-11",
+      "weight": 0.75
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "tricolor_house_logo_composition",
+      "label": "Tricolor House Logo Composition",
+      "nodes": [
+        "concepts_b_tricolor_house_house_silhouette",
+        "concepts_b_tricolor_house_saffron_flag",
+        "concepts_b_tricolor_house_parapet_tile_accents",
+        "concepts_b_tricolor_house_tricolor_palette"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/concepts/B-tricolor-house.svg"
+    }
+  ]
+}

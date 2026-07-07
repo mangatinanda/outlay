@@ -1,0 +1,166 @@
+{
+  "nodes": [
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening",
+      "label": "Redesign M0 \u2014 Repo Hardening (Biome, typed-env, Playwright)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_biome_migration",
+      "label": "Biome Migration (ESLint replacement)",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "Tasks 1-9",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Landed as one isolated commit before the redesign so the one-time reformat/class-sort never pollutes later diffs. useSortedClasses is a nursery rule with an Unsafe autofix, so the rule level is set to error and --write --unsafe is required for sorting to actually apply; opinionated recommended rules that flag intentional pre-existing patterns are deliberately downgraded to keep the swap behavior-preserving."
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_typed_env_module",
+      "label": "Typed Env Module (zod, build-phase relaxed)",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "Tasks 10-11",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "src/lib/env.ts is parsed once at import and transitively imported by the whole build graph, while the CI build sets only AUTH_SECRET + DATABASE_URL. Validation is therefore relaxed during NEXT_PHASE=phase-production-build (partial parse) and enforced fail-fast at runtime; empty strings map to undefined for optional vars because Vercel injects unset vars as ''."
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_playwright_scaffold",
+      "label": "Playwright e2e Scaffold (Pixel 7, seeded e2e.db)",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "Tasks 12-20",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Mobile-first single Pixel 7 project; globalSetup rebuilds a clean seeded file:./data/e2e.db by redirecting DATABASE_URL, and auth uses the passcode path only because Google sign-in needs a real IdP. The CI e2e job is parallel and non-blocking (continue-on-error) while the suite is young \u2014 a signal, not a gate."
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_route_announcer_rule",
+      "label": "Route-Announcer e2e Rule (never getByRole alert)",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "Task 18",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "The Next.js App Router renders a visually-hidden role=alert route announcer on every navigation, so asserting getByRole('alert') matches or races the announcer and produces flaky results; a persistent .claude/rules file prevents reintroduction."
+    }
+  ],
+  "edges": [
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening",
+      "target": "specs_2026_06_15_ui_redesign_fresh_ledger_design",
+      "relation": "cites",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_biome_migration",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_typed_env_module",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_playwright_scaffold",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_route_announcer_rule",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "Task 18",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_biome_migration",
+      "target": "specs_2026_06_15_ui_redesign_fresh_ledger_design_repo_hardening_tracks",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "\u00a78.1",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_typed_env_module",
+      "target": "specs_2026_06_15_ui_redesign_fresh_ledger_design_repo_hardening_tracks",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "\u00a78.3",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_playwright_scaffold",
+      "target": "specs_2026_06_15_ui_redesign_fresh_ledger_design_repo_hardening_tracks",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "\u00a78.2",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_typed_env_module",
+      "target": "docs_2026_06_11_repo_audit_fail_open_allow_list",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "both address env-var trust boundary",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_playwright_scaffold",
+      "target": "docs_2026_06_11_repo_audit_zero_tests_zero_ci",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "safety-net theme; audit had deferred e2e",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

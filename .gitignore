@@ -58,3 +58,7 @@ next-env.d.ts
 
 # features-doc refresh cache (local; see .claude/hooks/refresh-features.mjs)
 .claude/.features-fingerprint
+
+# graphify machine-local state (regenerated per machine)
+graphify-out/.graphify_python
+graphify-out/.graphify_root

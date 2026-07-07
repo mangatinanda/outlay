@@ -1,0 +1,29 @@
+{
+  "nodes": [
+    {
+      "id": "pnpm_workspace_postcss_override",
+      "label": "postcss >=8.5.10 Security Override",
+      "file_type": "rationale",
+      "source_file": "pnpm-workspace.yaml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Forces the patched postcss everywhere (GHSA-qx2v-qp2m-jg93: XSS in stringified output <8.5.10) because next and next-auth's transitive next still pin older; applying it required pnpm dedupe since plain pnpm install short-circuits and doesn't apply new overrides."
+    },
+    {
+      "id": "pnpm_workspace_allowbuilds",
+      "label": "Dependency Build-Script Allowlist",
+      "file_type": "concept",
+      "source_file": "pnpm-workspace.yaml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [],
+  "hyperedges": []
+}

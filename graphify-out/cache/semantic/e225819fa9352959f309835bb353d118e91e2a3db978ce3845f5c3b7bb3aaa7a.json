@@ -1,0 +1,168 @@
+{
+  "nodes": [
+    {
+      "id": "logos_logo_rich",
+      "label": "Outlay Rich Logo (A3 Mosaic O \u00b7 Rupee + Parapet Tiles)",
+      "file_type": "image",
+      "source_file": "public/logos/logo-rich.svg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "logos_logo_rich_rupee_glyph",
+      "label": "Ink Rupee Glyph (\u20b9 strokes centered in the O)",
+      "file_type": "concept",
+      "source_file": "public/logos/logo-rich.svg",
+      "source_location": "lines 26-33",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "logos_logo_rich_parapet_tiles",
+      "label": "Saffron Parapet Tile Accents (four compass-point squares)",
+      "file_type": "concept",
+      "source_file": "public/logos/logo-rich.svg",
+      "source_location": "lines 20-25",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "logos_logo_rich_palette",
+      "label": "CLSN Home Source Palette (cream #f7eecf, rose #d97da2, ink #1a1a1a, saffron #f4c542)",
+      "file_type": "rationale",
+      "source_file": "public/logos/logo-rich.svg",
+      "source_location": "lines 11-15",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "clsn_home_parapet",
+      "label": "CLSN Home Parapet (real-world design inspiration)",
+      "file_type": "concept",
+      "source_file": "public/logos/logo-rich.svg",
+      "source_location": "lines 5-7",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "lucide_indian_rupee_icon",
+      "label": "lucide IndianRupee Icon Path Data",
+      "file_type": "concept",
+      "source_file": "public/logos/logo-rich.svg",
+      "source_location": "lines 28-32",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "logos_logo_rich",
+      "target": "concepts_a3_rupee_tiles",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/logo-rich.svg",
+      "source_location": "line 3 (title names the A3 concept)",
+      "weight": 1.0
+    },
+    {
+      "source": "logos_logo_rich",
+      "target": "concepts_a1_rupee",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/logo-rich.svg",
+      "source_location": "lines 8-9 (comment: plain A1 icon used for small sizes)",
+      "weight": 1.0
+    },
+    {
+      "source": "logos_logo_rich_rupee_glyph",
+      "target": "logos_logo_rich",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/logo-rich.svg",
+      "source_location": "lines 26-33",
+      "weight": 1.0
+    },
+    {
+      "source": "logos_logo_rich_parapet_tiles",
+      "target": "logos_logo_rich",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/logo-rich.svg",
+      "source_location": "lines 20-25",
+      "weight": 1.0
+    },
+    {
+      "source": "logos_logo_rich_palette",
+      "target": "logos_logo_rich",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/logo-rich.svg",
+      "source_location": "lines 11-15 (source palette pulled from the home photos)",
+      "weight": 1.0
+    },
+    {
+      "source": "logos_logo_rich_parapet_tiles",
+      "target": "clsn_home_parapet",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/logo-rich.svg",
+      "source_location": "lines 5-7 (echoing yellow squares along the CLSN Home parapet)",
+      "weight": 1.0
+    },
+    {
+      "source": "logos_logo_rich_palette",
+      "target": "clsn_home_parapet",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/logo-rich.svg",
+      "source_location": "lines 11-15 (rose noted as parapet trim, saffron as parapet tile accents)",
+      "weight": 1.0
+    },
+    {
+      "source": "logos_logo_rich_rupee_glyph",
+      "target": "lucide_indian_rupee_icon",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "public/logos/logo-rich.svg",
+      "source_location": "lines 28-32 (path data matches lucide indian-rupee on a 24x24 grid, scaled x10)",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "rich_logo_composition",
+      "label": "Rich Logo Composition (cream tile + rose O ring + saffron tiles + ink rupee)",
+      "nodes": [
+        "logos_logo_rich",
+        "logos_logo_rich_rupee_glyph",
+        "logos_logo_rich_parapet_tiles",
+        "logos_logo_rich_palette"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/logos/logo-rich.svg"
+    }
+  ]
+}

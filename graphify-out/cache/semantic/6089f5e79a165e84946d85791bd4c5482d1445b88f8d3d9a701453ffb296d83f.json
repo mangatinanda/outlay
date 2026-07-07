@@ -1,0 +1,49 @@
+{
+  "nodes": [
+    {
+      "id": "plans_2026_06_07_currency_switcher_plan",
+      "label": "Per-Household Currency Switcher Plan",
+      "file_type": "concept",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Reformat-only (no FX conversion) \u2014 amounts are unchanged numbers, only symbol + grouping change. Currency lives per household on households.currency because the data model already has a household tenant; React Context (CurrencyProvider) avoids prop-drilling and preserves the formatCurrency(amount) call shape. Default INR with the en-IN locale for correct lakh/crore grouping (\u20b91,50,000.00)."
+    }
+  ],
+  "edges": [
+    {
+      "source": "plans_2026_06_07_currency_switcher_plan",
+      "target": "providers_currency_provider_currencyprovider",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_currency_switcher_plan",
+      "target": "providers_currency_provider_useformatcurrency",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_currency_switcher_plan",
+      "target": "actions_settings_actions_updatehouseholdcurrency",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}
