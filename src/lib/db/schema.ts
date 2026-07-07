@@ -22,6 +22,8 @@ export const households = sqliteTable("households", {
   currency: text("currency").notNull().default("INR"),
   // One of the keys in src/lib/theme/palette.ts (or null = Fresh Ledger default).
   accent: text("accent"),
+  // Notify members about expenses ≥ this many minor units (null/0 = off).
+  notifyExpenseOverMinor: integer("notify_expense_over_minor"),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),
@@ -59,6 +61,38 @@ export const householdMembers = sqliteTable(
       table.email,
     ),
     index("household_members_email_idx").on(table.email),
+  ],
+);
+
+// Per-user, cross-household notification feed. Denormalized like `activity`:
+// no FKs except user_id — the payload snapshots everything needed to render
+// (householdName, labels, amountMinor+currency) so rows outlive their sources.
+export const notifications = sqliteTable(
+  "notifications",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id),
+    type: text("type", {
+      enum: [
+        "invite.received",
+        "invite.accepted",
+        "invite.declined",
+        "settlement.recorded",
+        "expense.large",
+      ],
+    }).notNull(),
+    householdId: text("household_id"), // context only — deliberately no FK
+    payload: text("payload").notNull(), // JSON snapshot, type-specific
+    readAt: integer("read_at", { mode: "timestamp" }),
+    createdAt: integer("created_at", { mode: "timestamp" })
+      .notNull()
+      .$defaultFn(() => new Date()),
+  },
+  (table) => [
+    index("notifications_user_created_idx").on(table.userId, table.createdAt),
+    index("notifications_user_unread_idx").on(table.userId, table.readAt),
   ],
 );
 
@@ -191,3 +225,5 @@ export type Settlement = typeof settlements.$inferSelect;
 export type NewSettlement = typeof settlements.$inferInsert;
 export type Activity = typeof activity.$inferSelect;
 export type NewActivity = typeof activity.$inferInsert;
+export type Notification = typeof notifications.$inferSelect;
+export type NewNotification = typeof notifications.$inferInsert;
