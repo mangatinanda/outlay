@@ -24,7 +24,12 @@ import { and, eq } from "drizzle-orm";
 import { migrate } from "drizzle-orm/libsql/migrator";
 import { inviteToHousehold } from "@/lib/actions/invite-actions";
 import { db } from "@/lib/db";
-import { householdMembers, households, users } from "@/lib/db/schema";
+import {
+  householdMembers,
+  households,
+  notifications,
+  users,
+} from "@/lib/db/schema";
 import { HOUSEHOLD_COOKIE } from "@/lib/queries/household-queries";
 
 const ADMIN = { kind: "user", userId: "u1", email: "admin@x.com" } as const;
@@ -102,5 +107,38 @@ describe("inviteToHousehold", () => {
     actorState.actor = { kind: "user", userId: "u2", email: "member@x.com" };
     const result = await inviteToHousehold(form("x@example.com"));
     expect(result.error).toMatch(/admin/i);
+  });
+});
+
+describe("inviteToHousehold → invite.received notification", () => {
+  it("notifies an invited email that has an account", async () => {
+    await db
+      .insert(users)
+      .values({ id: "u3", name: "Cara", email: "cara@x.com" });
+    const result = await inviteToHousehold(form("cara@x.com"));
+    expect(result).toEqual({ success: true });
+    const rows = await db
+      .select()
+      .from(notifications)
+      .where(eq(notifications.userId, "u3"));
+    expect(rows).toHaveLength(1);
+    expect(rows[0].type).toBe("invite.received");
+    expect(rows[0].householdId).toBe("h1");
+    const payload = JSON.parse(rows[0].payload);
+    expect(payload.householdName).toBe("Home");
+    expect(payload.invitedBy).toBe("Admin");
+    // memberId points at the pending invite row
+    const [invite] = await db
+      .select()
+      .from(householdMembers)
+      .where(eq(householdMembers.id, payload.memberId));
+    expect(invite.email).toBe("cara@x.com");
+    expect(invite.userId).toBeNull();
+  });
+
+  it("creates no notification for an unknown email", async () => {
+    const before = (await db.select().from(notifications)).length;
+    await inviteToHousehold(form("nobody@x.com"));
+    expect((await db.select().from(notifications)).length).toBe(before);
   });
 });
