@@ -73,7 +73,7 @@ Spec: `docs/superpowers/specs/2026-07-07-in-app-notifications-design.md`; plan:
 
 - **Schema & migration** (`drizzle/0007_*.sql`): new `notifications` table (`household_id`,
   `user_id`, `type`, `payload`, `read_at`, `created_at`) plus `households.notify_expense_over_minor`
-  (nullable integer minor‑units threshold — `null`/`0` = "notify on every expense" per household).
+  (nullable integer minor‑units threshold — `null`/`0` = "expense notifications OFF" per household).
 - **`notify()` fan‑out helper** (`src/lib/notifications.ts` or similar) — best‑effort (never throws,
   mirrors `logActivity`'s pattern), fans a single event out to every relevant household member's
   `user_id`, and **prunes each recipient to their most‑recent 100** notifications on every write so
@@ -104,8 +104,7 @@ Spec: `docs/superpowers/specs/2026-07-07-in-app-notifications-design.md`; plan:
   (`src/lib/auth/membership.ts:32`) was not selecting `notifyExpenseOverMinor` — the expense emitter
   needs it on the household row it already fetches, so it's now included in that query's column
   list; (2) `createExpense` (`src/lib/actions/expense-actions.ts:119`) treats a `null` threshold as
-  `0` (`household.notifyExpenseOverMinor ?? 0`) so "no threshold set" notifies on every expense
-  rather than silently notifying on none.
+  `0` (`household.notifyExpenseOverMinor ?? 0`) so "no threshold set" means expense notifications OFF (only notify if `threshold > 0`).
 - **Web Push is explicitly v2**, hooked at the `notify()` call site (not built — in‑app only for v1).
 - **e2e guard** (`e2e/dashboard.spec.ts`): the existing passcode/superadmin dashboard smoke test now
   asserts `getByRole("button", { name: /^Notifications/ })` has count 0 — locks in "superadmin sees

@@ -74,7 +74,10 @@ export const acceptInvite = safeAction(
     } catch (err) {
       // (householdId, userId) unique index: already a member — the pending
       // row is redundant; drop it and treat as success.
-      const causeMsg = (err as any)?.cause?.message ?? "";
+      const causeMsg =
+        err instanceof Error && err.cause instanceof Error
+          ? err.cause.message
+          : "";
       if (
         err instanceof Error &&
         (/UNIQUE/i.test(err.message) || /UNIQUE/i.test(causeMsg))

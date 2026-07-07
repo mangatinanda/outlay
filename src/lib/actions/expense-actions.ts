@@ -160,7 +160,7 @@ export const updateExpense = safeAction(
       categoryId: formData.get("categoryId"),
       memberId: formData.get("memberId"),
       date: formData.get("date"),
-      notes: formData.get("notes"),
+      notes: formData.get("notes") || undefined,
     };
 
     const parsed = expenseSchema.safeParse(raw);
