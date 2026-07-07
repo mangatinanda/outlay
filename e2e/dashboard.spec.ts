@@ -37,4 +37,9 @@ test("dashboard renders after login", async ({ page }) => {
   // The other core dashboard surfaces.
   await expect(page.getByText("Daily Spending")).toBeVisible();
   await expect(page.getByText("Recent Expenses")).toBeVisible();
+
+  // Superadmin (passcode auth) has no userId → the notification bell is hidden.
+  await expect(
+    page.getByRole("button", { name: /^Notifications/ }),
+  ).toHaveCount(0);
 });

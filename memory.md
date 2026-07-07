@@ -65,6 +65,60 @@ double‑spec; CI reads pnpm from `packageManager`).
 
 ## Work log
 
+### 2026‑07‑07 — In-app notifications (branch `feat/in-app-notifications`)
+
+Implemented full in‑app notifications end‑to‑end via subagent‑driven TDD (12 tasks, all green).
+Spec: `docs/superpowers/specs/2026-07-07-in-app-notifications-design.md`; plan:
+`docs/superpowers/plans/2026-07-07-in-app-notifications.md`.
+
+- **Schema & migration** (`drizzle/0007_*.sql`): new `notifications` table (`household_id`,
+  `user_id`, `type`, `payload`, `read_at`, `created_at`) plus `households.notify_expense_over_minor`
+  (nullable integer minor‑units threshold — `null`/`0` = "notify on every expense" per household).
+- **`notify()` fan‑out helper** (`src/lib/notifications.ts` or similar) — best‑effort (never throws,
+  mirrors `logActivity`'s pattern), fans a single event out to every relevant household member's
+  `user_id`, and **prunes each recipient to their most‑recent 100** notifications on every write so
+  the table can't grow unbounded.
+- **Emitters wired into existing actions:** `invite.received` (on `inviteToHousehold`, only to
+  already‑registered users — a pending invite with no `user_id` yet has nothing to notify),
+  `invite.accepted` / `invite.declined` (back to the inviter), `settlement.recorded` (on
+  `createSettlement`, to the other party), `expense.large` (on `createExpense`, fan‑out to household
+  members when the expense's `amountMinor` exceeds the household's `notifyExpenseOverMinor`
+  threshold — `null` treated as always‑notify).
+- **In‑app invite accept/decline without re‑login:** `acceptInvite`/`declineInvite`
+  (`src/lib/actions/notification-actions.ts`) let a signed‑in user claim a pending
+  `household_members` invite row directly from the notification UI; the existing login‑time
+  `claimInvites` (Auth.js `jwt` callback) remains the fallback for invites accepted before the user
+  ever signs in. Also: `markAllNotificationsRead`, `loadNotifications` (paginated).
+- **Reads:** notification queries (unread count + list, newest‑first) scoped to
+  `(household_id, user_id)` — **superadmin gets nothing** (no `userId` on that actor, by design:
+  notifications are a per‑user‑household concept, not a superadmin/god‑mode one).
+  `GET /api/notifications/count` powers a 60s client poll.
+- **UI:** `NotificationItem` (shared render for both the dropdown and the full page, with inline
+  Accept/Decline buttons for invite‑type rows), `NotificationBell` in the header (badge shows
+  unread count, dropdown lists recent, "Mark all read"), `/notifications` page (paginated history).
+  Bell renders `null`/is absent entirely for the superadmin actor.
+- **Threshold setting:** Settings UI (admin‑only) to set/clear the per‑household
+  `notifyExpenseOverMinor`; a small `memberRole` helper resolves whether the current actor is an
+  admin of the active household to gate the control.
+- **Two drive‑by fixes caught during implementation:** (1) `userHouseholds()`
+  (`src/lib/auth/membership.ts:32`) was not selecting `notifyExpenseOverMinor` — the expense emitter
+  needs it on the household row it already fetches, so it's now included in that query's column
+  list; (2) `createExpense` (`src/lib/actions/expense-actions.ts:119`) treats a `null` threshold as
+  `0` (`household.notifyExpenseOverMinor ?? 0`) so "no threshold set" notifies on every expense
+  rather than silently notifying on none.
+- **Web Push is explicitly v2**, hooked at the `notify()` call site (not built — in‑app only for v1).
+- **e2e guard** (`e2e/dashboard.spec.ts`): the existing passcode/superadmin dashboard smoke test now
+  asserts `getByRole("button", { name: /^Notifications/ })` has count 0 — locks in "superadmin sees
+  no bell" as a regression‑proof contract.
+- **Out of scope (deliberately not built):** Web Push, digests, per‑user notification preferences,
+  `invited_by` attribution, expense‑update/import emitters, a sidebar nav link to `/notifications`
+  (reached via the bell only).
+- **Verification:** Biome lint ✅ (3 pre‑existing warnings only — 2 graphify‑out file‑size, 1
+  `noExplicitAny` in `notification-actions.ts` predating this task's e2e/memory work), tsc ✅,
+  **227 unit tests** ✅, production build ✅ (routes incl. `/notifications` and
+  `/api/notifications/count` present), **`pnpm test:e2e` 4/4 specs green** (dashboard, login,
+  add‑expense, switch‑household‑isolation) including the new bell‑absence assertion.
+
 ### 2026‑06‑23 — Mobile drawer auto-close + app-level loader (top bar + skeletons)
 
 Two UX fixes (UI/interaction only; no data/query/action logic changed). **Uncommitted** on `main`.
