@@ -10,6 +10,7 @@ import {
   getCurrentHousehold,
   listHouseholds,
 } from "@/lib/queries/household-queries";
+import { getUnreadCount } from "@/lib/queries/notification-queries";
 import { resolveAccent } from "@/lib/theme/palette";
 
 // These pages read from the database per request, so they must render
@@ -22,12 +23,14 @@ export default async function AppLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [household, householdList, session, actor] = await Promise.all([
-    getCurrentHousehold(),
-    listHouseholds(),
-    auth(),
-    getCurrentActor(),
-  ]);
+  const [household, householdList, session, actor, unreadCount] =
+    await Promise.all([
+      getCurrentHousehold(),
+      listHouseholds(),
+      auth(),
+      getCurrentActor(),
+      getUnreadCount(),
+    ]);
 
   // A signed-in user with no household still enters the app shell; each menu
   // renders a friendly empty state (see <NoHousehold />) that nudges them to
@@ -56,6 +59,7 @@ export default async function AppLayout({
               user={session?.user ?? null}
               householdName={household?.name ?? null}
               isSuperadmin={actor?.kind === "superadmin"}
+              unreadCount={actor?.kind === "user" ? unreadCount : null}
             />
             <main className="p-4 pb-24 md:p-6 md:pb-6">
               <PageTransition>{children}</PageTransition>
