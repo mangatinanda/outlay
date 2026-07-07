@@ -29,6 +29,7 @@ export async function userHouseholds(userId: string) {
       name: households.name,
       currency: households.currency,
       accent: households.accent,
+      notifyExpenseOverMinor: households.notifyExpenseOverMinor,
       createdAt: households.createdAt,
     })
     .from(households)
