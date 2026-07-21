@@ -173,7 +173,7 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
                         </p>
                         {member.role === "admin" && (
                           // Admin Crown: intentional non-token accent (stock amber),
-                          // exempt from token-only rule like the Google brand SVG.
+                          // exempt from token-only rule like the Google brand SVG. ui-lint-ignore
                           <Crown className="h-3.5 w-3.5 text-amber-500" />
                         )}
                       </div>

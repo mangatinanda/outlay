@@ -11,6 +11,7 @@
     "build": "node scripts/migrate-if-prod.mjs && next build",
     "start": "next start",
     "lint": "biome check .",
+    "check:styles": "node scripts/check-styles.mjs",
     "format": "biome format --write .",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -82,6 +83,9 @@
     ],
     "*.{ts,tsx}": [
       "bash -c 'pnpm exec tsc --noEmit'"
+    ],
+    "src/{components,app}/**/*.{ts,tsx}": [
+      "node scripts/check-styles.mjs"
     ]
   }
 }

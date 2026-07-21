@@ -51,3 +51,13 @@ For the full system (tokens, type scale, voice, workflow) see the
 ## Styling only
 - These rules govern presentation. Do not change data fetching, Server Actions,
   validators, or query logic while restyling.
+
+## Enforcement
+- The token-only rules above (no hardcoded colors, no color literals in Tailwind
+  arbitrary values / inline `style`, no literal radii, no custom shadows, no raw
+  palette shades like `text-red-500`, no direct `clsx`) are checked by
+  `scripts/check-styles.mjs` (`pnpm check:styles`) in CI and pre-commit.
+- It scans authored code (`src/components/**` + `src/app/**`), skipping generated
+  `src/components/ui/**`. For a deliberate, documented exception (e.g. a brand
+  color with no token), add a `ui-lint-ignore` comment on or directly above the
+  offending line — see the admin-crown amber in `members/member-manager.tsx`.

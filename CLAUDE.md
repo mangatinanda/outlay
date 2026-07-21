@@ -71,7 +71,8 @@ Uses **pnpm** (not npm/yarn). Always use `pnpm` commands.
 ```bash
 pnpm dev             # Start dev server
 pnpm build           # Production build
-pnpm lint            # Run ESLint
+pnpm lint            # Run Biome (lint + format check + import sort)
+pnpm check:styles    # Enforce ui.md token-only styling rules (also in CI)
 pnpm test            # Run Vitest (also in CI)
 pnpm db:init         # Initialize and seed database
 pnpm db:generate     # Generate Drizzle migrations
@@ -87,6 +88,7 @@ pnpm dlx <cmd>       # Run a one-off command (replaces npx)
 - shadcn/ui components are in `src/components/ui/` - add new ones via `npx shadcn@latest add <component>`
 - Category icons use lucide-react icon names mapped in `components/expenses/category-icon.tsx`
 - Currency formatting uses `Intl.NumberFormat` via `components/shared/currency-display.tsx`
+- UI is token-only (Fresh Ledger): no hardcoded colors/radii/shadows or raw Tailwind palette shades (`text-red-500`) in `src/components/**`/`src/app/**`. Rules live in `.claude/rules/ui.md`, enforced by `pnpm check:styles` (CI + pre-commit); mark a deliberate exception with a `ui-lint-ignore` comment on/above the line
 
 ## Auth Status
 - **Implemented (Model B — user-owned households)**: each request resolves to one principal via `getCurrentActor()` (`src/lib/auth/actor.ts`): a **superadmin** (shared passcode, entered at `/admin`, god-mode across all households) or a scoped **user** (Google/Auth.js v5 JWT). A user can only read/write households they belong to (`household_members.user_id`); the passcode is NOT the everyday path. Users are persisted on first sign-in (`upsertUserByEmail`, `src/lib/auth/users.ts`); invites are email rows on `household_members` claimed on next login (`inviteToHousehold` + `claimInvites`). A user with no households still enters the app shell freely and sees a friendly empty state on each menu (`<NoHousehold>`, `src/components/shared/no-household.tsx`) with a "Create household" CTA → `/households` — no forced onboarding (the old `FirstHousehold` gate was removed 2026-06-22). Design/plan: `docs/superpowers/{specs,plans}/2026-06-16-model-b-*`.

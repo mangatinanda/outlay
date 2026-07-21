@@ -29,6 +29,9 @@ jobs:
       - name: Lint (Biome)
         run: pnpm exec biome ci .
 
+      - name: Style rules (ui.md)
+        run: pnpm check:styles
+
       - name: Typecheck
         run: pnpm exec tsc --noEmit
 

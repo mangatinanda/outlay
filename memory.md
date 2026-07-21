@@ -497,7 +497,21 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
 - Stray empty `/Users/nanda/vibe-code/home-expense/.next` left over from the folder rename (harmless;
   can be deleted).
 
+## 2026-07-21 — ui.md styling rules are now enforced (lint)
+
+Prompted by Boris Cherny's "promote a repeat review comment to a lint rule" thread.
+- `scripts/check-styles.mjs` (`pnpm check:styles`) mechanizes the token-only rules from
+  `.claude/rules/ui.md`: no hardcoded colors, no color literals in Tailwind arbitrary values or
+  inline `style`, no literal radii / custom shadows, no raw palette shades (`text-red-500`), no
+  direct `clsx`. Scans `src/components/**` + `src/app/**`; skips generated `src/components/ui/**`
+  and tests. Wired into CI (a "Style rules (ui.md)" step, blocking) and pre-commit (lint-staged).
+- Escape hatch: a `ui-lint-ignore` comment on or directly above the line. Only current exception:
+  the admin-crown `text-amber-500` in `members/member-manager.tsx` (design system has no amber token).
+- Also fixed a CLAUDE.md drift: `pnpm lint` runs **Biome**, not ESLint (memory already noted the
+  ESLint→Biome switch; CLAUDE.md hadn't caught up).
+
 ## Commands
 
-`pnpm dev` · `pnpm build` · `pnpm lint` · `pnpm test` (vitest) · `pnpm exec tsc --noEmit` ·
+`pnpm dev` · `pnpm build` · `pnpm lint` (Biome) · `pnpm check:styles` (ui.md rules) ·
+`pnpm test` (vitest) · `pnpm exec tsc --noEmit` ·
 `pnpm db:migrate` · `pnpm db:seed` · `pnpm db:init` (migrate + seed).
