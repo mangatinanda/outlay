@@ -46,6 +46,11 @@ export const householdMembers = sqliteTable(
     includeInSettleUp: integer("include_in_settle_up", { mode: "boolean" })
       .notNull()
       .default(true),
+    // Off = never offered as a payer in the expense form / import picker.
+    // History, stats and settle-up are unaffected (admin's choice per member).
+    showInPaidBy: integer("show_in_paid_by", { mode: "boolean" })
+      .notNull()
+      .default(true),
     createdAt: integer("created_at", { mode: "timestamp" })
       .notNull()
       .$defaultFn(() => new Date()),

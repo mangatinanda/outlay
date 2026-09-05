@@ -103,3 +103,49 @@ describe("member include_in_settle_up", () => {
     expect(after.includeInSettleUp).toBe(false);
   });
 });
+
+describe("member show_in_paid_by", () => {
+  it("defaults to true and persists an off toggle on create", async () => {
+    await createMember(form({ name: "Payer", role: "member" })); // absent => default true
+    await createMember(
+      form({ name: "NotPayer", role: "member", showInPaidBy: "false" }),
+    );
+    const rows = await db
+      .select()
+      .from(householdMembers)
+      .where(eq(householdMembers.householdId, "h1"));
+    expect(rows.find((m) => m.name === "Payer")?.showInPaidBy).toBe(true);
+    expect(rows.find((m) => m.name === "NotPayer")?.showInPaidBy).toBe(false);
+  });
+
+  it("updateMember flips showInPaidBy off and back on", async () => {
+    await createMember(form({ name: "Flip", role: "member" }));
+    const [m] = await db
+      .select()
+      .from(householdMembers)
+      .where(eq(householdMembers.name, "Flip"));
+    expect(m.showInPaidBy).toBe(true);
+
+    await updateMember(
+      m.id,
+      form({ name: "Flip", role: "member", showInPaidBy: "false" }),
+    );
+    let [after] = await db
+      .select()
+      .from(householdMembers)
+      .where(eq(householdMembers.id, m.id));
+    expect(after.showInPaidBy).toBe(false);
+    // The other toggle is untouched by this one.
+    expect(after.includeInSettleUp).toBe(true);
+
+    await updateMember(
+      m.id,
+      form({ name: "Flip", role: "member", showInPaidBy: "true" }),
+    );
+    [after] = await db
+      .select()
+      .from(householdMembers)
+      .where(eq(householdMembers.id, m.id));
+    expect(after.showInPaidBy).toBe(true);
+  });
+});

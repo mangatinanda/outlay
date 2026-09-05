@@ -4,6 +4,7 @@ import { ImportExpenses } from "@/components/expenses/import-expenses";
 import { NoHousehold } from "@/components/shared/no-household";
 import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
+import { visiblePayers } from "@/lib/members";
 import { getCategories } from "@/lib/queries/category-queries";
 import { getCurrentHousehold } from "@/lib/queries/household-queries";
 import { getMembers } from "@/lib/queries/member-queries";
@@ -45,7 +46,7 @@ export default async function ImportExpensesPage() {
       />
       <ImportExpenses
         existingCategories={categories.map((c) => c.name)}
-        members={members.map((m) => ({
+        members={visiblePayers(members).map((m) => ({
           id: m.id,
           name: m.name,
           email: m.email,

@@ -1,6 +1,6 @@
 "use client";
 
-import { Crown, Edit, Plus, Scale, Trash2, Users } from "lucide-react";
+import { Crown, Edit, EyeOff, Plus, Scale, Trash2, Users } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { MotionCard } from "@/components/motion/motion-card";
@@ -44,6 +44,7 @@ interface MemberItem {
   email: string | null;
   userId: string | null;
   includeInSettleUp: boolean;
+  showInPaidBy: boolean;
   expenseCount: number;
   totalSpent: number;
 }
@@ -56,16 +57,19 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
   const [loading, setLoading] = useState(false);
   const [inviting, setInviting] = useState(false);
   const [includeInSettleUp, setIncludeInSettleUp] = useState(true);
+  const [showInPaidBy, setShowInPaidBy] = useState(true);
 
   function openNew() {
     setEditing(null);
     setIncludeInSettleUp(true);
+    setShowInPaidBy(true);
     setDialogOpen(true);
   }
 
   function openEdit(member: MemberItem) {
     setEditing(member);
     setIncludeInSettleUp(member.includeInSettleUp);
+    setShowInPaidBy(member.showInPaidBy);
     setDialogOpen(true);
   }
 
@@ -195,6 +199,12 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
                             Not in settle-up
                           </Badge>
                         )}
+                        {!member.showInPaidBy && (
+                          <Badge variant="secondary" className="text-xs">
+                            <EyeOff className="mr-1 h-3 w-3" />
+                            Hidden from Paid by
+                          </Badge>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -308,6 +318,24 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
                 id="include-settle"
                 checked={includeInSettleUp}
                 onCheckedChange={setIncludeInSettleUp}
+              />
+            </div>
+            <div className="flex items-center justify-between gap-3 rounded-xl border border-border p-3">
+              <div className="space-y-0.5">
+                <Label htmlFor="show-paid-by">Show in Paid by</Label>
+                <p className="text-muted-foreground text-xs">
+                  Off = not offered as a payer when adding expenses.
+                </p>
+              </div>
+              <input
+                type="hidden"
+                name="showInPaidBy"
+                value={showInPaidBy ? "true" : "false"}
+              />
+              <Switch
+                id="show-paid-by"
+                checked={showInPaidBy}
+                onCheckedChange={setShowInPaidBy}
               />
             </div>
             <DialogFooter>

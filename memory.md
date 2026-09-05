@@ -65,6 +65,22 @@ double‑spec; CI reads pnpm from `packageManager`).
 
 ## Work log
 
+### 2026‑09‑06 — Per‑member "Show in Paid by" switch
+
+Owner asked to hide a member from the add‑expense "Paid by" list (admin's choice, any member).
+- **Schema:** `household_members.show_in_paid_by` (boolean, default true) — migration `drizzle/0008_fixed_cable.sql`
+  (additive `ALTER TABLE … ADD … DEFAULT true NOT NULL`).
+- **Validator/actions:** `memberSchema.showInPaidBy` (absent → true, same preprocess as `includeInSettleUp`);
+  `createMember`/`updateMember` persist it. `getMembersWithStats` selects it.
+- **UI:** member edit dialog gets a second Switch "Show in Paid by" + a "Hidden from Paid by" badge (EyeOff) on the
+  row. `ExpenseForm` (page + sheet + edit) renders `visiblePayers(members, expense?.memberId)` from
+  `src/lib/members.ts` — hidden members are dropped except the current payer of the expense being edited; an
+  empty list shows a hint pointing at Members. The import page passes `visiblePayers(members)` to the picker
+  (temporarily unhide a member to import their historical rows).
+- **Untouched by design:** history, stats, settle‑up (`includeInSettleUp` is a separate concept), expense filters.
+- **Tests:** `member-toggle.test.ts` (create default / off / update round‑trip), `src/lib/members.test.ts` (helper),
+  `expense-form.test.tsx` (happy‑dom: hidden chip absent, current payer kept while editing, empty hint).
+
 ### 2026‑09‑05 (evening) — "Lock admin" for the owner; e2e port override; domain‑watch routine
 
 - **`lockAdmin` server action** (`src/lib/actions/auth-actions.ts`): deletes only `he_session` and picks
