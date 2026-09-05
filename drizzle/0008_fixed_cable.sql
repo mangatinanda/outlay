@@ -1,0 +1,1 @@
+ALTER TABLE `household_members` ADD `show_in_paid_by` integer DEFAULT true NOT NULL;

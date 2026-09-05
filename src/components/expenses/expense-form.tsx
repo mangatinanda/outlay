@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { createExpense, updateExpense } from "@/lib/actions/expense-actions";
 import type { Category, HouseholdMember } from "@/lib/db/schema";
+import { visiblePayers } from "@/lib/members";
 import { withProgress } from "@/lib/progress";
 import { cn } from "@/lib/utils";
 
@@ -44,8 +45,11 @@ export function ExpenseForm({
   const [categoryId, setCategoryId] = useState(
     expense?.categoryId ?? categories[0]?.id ?? "",
   );
+  // Hidden members are not offered as payers; the expense's current payer
+  // stays so editing never silently reassigns it.
+  const payers = visiblePayers(members, expense?.memberId);
   const [memberId, setMemberId] = useState(
-    expense?.memberId ?? members[0]?.id ?? "",
+    expense?.memberId ?? payers[0]?.id ?? "",
   );
 
   async function handleSubmit(formData: FormData) {
@@ -148,8 +152,13 @@ export function ExpenseForm({
         <div className="space-y-2">
           <Label>Paid by</Label>
           <input type="hidden" name="memberId" value={memberId} />
+          {payers.length === 0 && (
+            <p className="text-muted-foreground text-sm">
+              Nobody is shown in Paid by. Turn it on for a member under Members.
+            </p>
+          )}
           <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
-            {members.map((member) => {
+            {payers.map((member) => {
               const active = member.id === memberId;
               return (
                 <button

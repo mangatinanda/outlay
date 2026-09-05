@@ -57,6 +57,13 @@
       "when": 1783403932796,
       "tag": "0007_neat_barracuda",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1788646808831,
+      "tag": "0008_fixed_cable",
+      "breakpoints": true
     }
   ]
 }

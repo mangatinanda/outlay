@@ -19,6 +19,7 @@ export const createMember = safeAction(
       email: formData.get("email"),
       role: formData.get("role") || "member",
       includeInSettleUp: formData.get("includeInSettleUp"),
+      showInPaidBy: formData.get("showInPaidBy"),
     };
 
     const parsed = memberSchema.safeParse(raw);
@@ -53,6 +54,7 @@ export const createMember = safeAction(
       email,
       role: parsed.data.role,
       includeInSettleUp: parsed.data.includeInSettleUp,
+      showInPaidBy: parsed.data.showInPaidBy,
     });
 
     await logActivity({
@@ -74,6 +76,7 @@ export const updateMember = safeAction(
       email: formData.get("email"),
       role: formData.get("role") || "member",
       includeInSettleUp: formData.get("includeInSettleUp"),
+      showInPaidBy: formData.get("showInPaidBy"),
     };
 
     const parsed = memberSchema.safeParse(raw);
@@ -108,6 +111,7 @@ export const updateMember = safeAction(
         email,
         role: parsed.data.role,
         includeInSettleUp: parsed.data.includeInSettleUp,
+        showInPaidBy: parsed.data.showInPaidBy,
       })
       .where(
         and(

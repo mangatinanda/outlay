@@ -17,6 +17,11 @@ export const memberSchema = z.object({
     if (v === undefined || v === null || v === "") return true;
     return v === "true" || v === "on" || v === true;
   }, z.boolean()),
+  // Same shape: absent → true (offered as a payer by default).
+  showInPaidBy: z.preprocess((v) => {
+    if (v === undefined || v === null || v === "") return true;
+    return v === "true" || v === "on" || v === true;
+  }, z.boolean()),
 });
 
 export type MemberFormData = z.infer<typeof memberSchema>;

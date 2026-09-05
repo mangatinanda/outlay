@@ -4,7 +4,7 @@ Outlay is a shared expense tracker for your household. Everyone who lives togeth
 can log what they spend, see where the money goes, and settle up who owes whom —
 on the web or installed on your phone.
 
-_Last updated: 2026-09-05_
+_Last updated: 2026-09-06_
 
 ## Track your spending
 - Add an expense in seconds: amount, date, description, category, who paid, and an
@@ -31,6 +31,9 @@ A dashboard that updates as you add expenses:
 - Get the simplest set of payments to square everyone up, with a one-tap
   "Settle up" to record a payment.
 - Keep a history of settlements; choose per member who's included in settle-up.
+- Choose per member whether they appear in the "Paid by" list when adding an
+  expense — handy for someone who never pays. Their past expenses stay as they
+  are, and editing one of those still shows them.
 
 ## Stay in the loop
 - A bell in the header shows your unread count and keeps itself up to date while
