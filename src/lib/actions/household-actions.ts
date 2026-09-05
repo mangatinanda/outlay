@@ -10,10 +10,12 @@ import { isMember } from "@/lib/auth/membership";
 import { db } from "@/lib/db";
 import { DEFAULT_CATEGORIES } from "@/lib/db/default-categories";
 import {
+  activity,
   categories,
   expenses,
   householdMembers,
   households,
+  settlements,
 } from "@/lib/db/schema";
 import { LIMITS } from "@/lib/limits";
 import {
@@ -189,8 +191,13 @@ export const deleteHousehold = safeAction(
     }
 
     // Cascade-delete children in FK order, then the household — atomically.
+    // libSQL enforces FKs: settlements + expenses reference members (and
+    // categories), the activity feed references the household — every
+    // household has audit rows from the moment it is created.
     await db.batch([
+      db.delete(settlements).where(eq(settlements.householdId, id)),
       db.delete(expenses).where(eq(expenses.householdId, id)),
+      db.delete(activity).where(eq(activity.householdId, id)),
       db.delete(categories).where(eq(categories.householdId, id)),
       db.delete(householdMembers).where(eq(householdMembers.householdId, id)),
       db.delete(households).where(eq(households.id, id)),

@@ -1,11 +1,13 @@
 import { and, eq, inArray, isNotNull, lt, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import {
+  activity,
   categories,
   expenses,
   householdMembers,
   households,
   notifications,
+  settlements,
   users,
 } from "@/lib/db/schema";
 import { env } from "@/lib/env";
@@ -27,14 +29,15 @@ export interface CleanupResult {
  * conservative — it only removes data that is provably empty:
  *
  * - A user is "abandoned" iff created before the retention cutoff AND none of
- *   the households they belong to contain ANY expense (counting the WHOLE
- *   household, not just rows attributed to the user's own member — otherwise
- *   the sole owner of a household whose expenses are attributed to
+ *   the households they belong to contain ANY expense or settlement (counting
+ *   the WHOLE household, not just rows attributed to the user's own member —
+ *   otherwise the sole owner of a household whose expenses are attributed to
  *   attribution-only members like "Amma" would be deleted, orphaning the data).
- *   Such users' membership rows and the user row are deleted atomically.
- * - A household is removed only if, afterwards, it has zero expenses AND zero
- *   remaining auth-members. A household with ANY expense or ANY live member is
- *   never touched, so shared data can't be lost.
+ *   Such users' notifications, membership rows and the user row are deleted
+ *   atomically (their activity rows are kept, actor unlinked).
+ * - A household is removed only if, afterwards, it has zero expenses, zero
+ *   settlements AND zero remaining auth-members. A household with ANY ledger
+ *   row or ANY live member is never touched, so shared data can't be lost.
  *
  * `now` / `retentionDays` are injectable for tests.
  */
@@ -61,21 +64,21 @@ export async function cleanupAbandonedAccounts(
       .where(eq(householdMembers.userId, u.id));
     const householdIds = memberships.map((m) => m.householdId);
 
-    // Does ANY household this user belongs to hold expenses? (Whole-household
-    // count, so an owner whose data lives on attribution-only members is kept.)
-    let belongsToActiveHousehold = false;
-    if (householdIds.length > 0) {
-      const [{ n }] = await db
-        .select({ n: sql<number>`count(*)` })
-        .from(expenses)
-        .where(inArray(expenses.householdId, householdIds));
-      belongsToActiveHousehold = n > 0;
+    // Does ANY household this user belongs to hold ledger rows? (Whole-
+    // household count, so an owner whose data lives on attribution-only
+    // members is kept.)
+    if (householdIds.length > 0 && (await hasLedgerRows(householdIds))) {
+      continue; // active household — keep the user
     }
-    if (belongsToActiveHousehold) continue; // active household — keep the user
 
     for (const hid of householdIds) affectedHouseholds.add(hid);
-    // Delete every row that FKs to the user, then the user — atomically.
+    // Unlink/delete every row that FKs to the user, then the user — atomically.
+    // The audit feed is append-only: keep the rows, drop the actor link.
     await db.batch([
+      db
+        .update(activity)
+        .set({ actorUserId: null })
+        .where(eq(activity.actorUserId, u.id)),
       db.delete(notifications).where(eq(notifications.userId, u.id)),
       db.delete(householdMembers).where(eq(householdMembers.userId, u.id)),
       db.delete(users).where(eq(users.id, u.id)),
@@ -86,11 +89,7 @@ export async function cleanupAbandonedAccounts(
   // Remove households left provably empty by the deletions above.
   let deletedHouseholds = 0;
   for (const hid of affectedHouseholds) {
-    const [{ exp }] = await db
-      .select({ exp: sql<number>`count(*)` })
-      .from(expenses)
-      .where(eq(expenses.householdId, hid));
-    if (exp > 0) continue;
+    if (await hasLedgerRows([hid])) continue;
 
     const [{ live }] = await db
       .select({ live: sql<number>`count(*)` })
@@ -103,8 +102,10 @@ export async function cleanupAbandonedAccounts(
       );
     if (live > 0) continue;
 
-    // Delete children then the household atomically (FK order).
+    // Delete children then the household atomically (FK order). The ledger
+    // is provably empty here; the audit feed still references the household.
     await db.batch([
+      db.delete(activity).where(eq(activity.householdId, hid)),
       db.delete(categories).where(eq(categories.householdId, hid)),
       db.delete(householdMembers).where(eq(householdMembers.householdId, hid)),
       db.delete(households).where(eq(households.id, hid)),
@@ -113,4 +114,18 @@ export async function cleanupAbandonedAccounts(
   }
 
   return { deletedUsers, deletedHouseholds };
+}
+
+/** True when any of the households holds an expense or a settlement. */
+async function hasLedgerRows(householdIds: string[]): Promise<boolean> {
+  const [{ n }] = await db
+    .select({ n: sql<number>`count(*)` })
+    .from(expenses)
+    .where(inArray(expenses.householdId, householdIds));
+  if (n > 0) return true;
+  const [{ m }] = await db
+    .select({ m: sql<number>`count(*)` })
+    .from(settlements)
+    .where(inArray(settlements.householdId, householdIds));
+  return m > 0;
 }

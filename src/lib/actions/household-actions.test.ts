@@ -24,11 +24,18 @@ import { eq } from "drizzle-orm";
 import { migrate } from "drizzle-orm/libsql/migrator";
 import {
   createHousehold,
+  deleteHousehold,
   renameHousehold,
   switchHousehold,
 } from "@/lib/actions/household-actions";
 import { db } from "@/lib/db";
-import { householdMembers, households, users } from "@/lib/db/schema";
+import {
+  activity,
+  householdMembers,
+  households,
+  settlements,
+  users,
+} from "@/lib/db/schema";
 import { HOUSEHOLD_COOKIE } from "@/lib/queries/household-queries";
 
 const U1 = { kind: "user", userId: "u1", email: "u1@x.com" } as const;
@@ -114,5 +121,58 @@ describe("createHousehold", () => {
       email: "u1@x.com",
       role: "admin",
     });
+  });
+});
+
+describe("deleteHousehold", () => {
+  it("deletes a household that has activity and settlement rows (FKs enforced)", async () => {
+    // A household that has been used: an audit row and a settlement between
+    // two attribution-only members, but no expenses.
+    await db.insert(households).values({ id: "h-used", name: "Used" });
+    await db.insert(householdMembers).values([
+      {
+        id: "m-used-u1",
+        householdId: "h-used",
+        userId: "u1",
+        name: "U1",
+        role: "admin",
+      },
+      { id: "m-used-a", householdId: "h-used", name: "Amma", role: "member" },
+      { id: "m-used-b", householdId: "h-used", name: "Appa", role: "member" },
+    ]);
+    await db.insert(activity).values({
+      id: "act-used",
+      householdId: "h-used",
+      actorUserId: "u1",
+      actorLabel: "U1",
+      action: "household.create",
+      summary: "created the household",
+    });
+    await db.insert(settlements).values({
+      id: "s-used",
+      householdId: "h-used",
+      fromMemberId: "m-used-a",
+      toMemberId: "m-used-b",
+      amountMinor: 500,
+      date: "2026-01-01",
+    });
+
+    const result = await deleteHousehold("h-used");
+    expect(result).toEqual({ success: true });
+    expect(
+      await db.select().from(households).where(eq(households.id, "h-used")),
+    ).toHaveLength(0);
+    expect(
+      await db
+        .select()
+        .from(activity)
+        .where(eq(activity.householdId, "h-used")),
+    ).toHaveLength(0);
+    expect(
+      await db
+        .select()
+        .from(settlements)
+        .where(eq(settlements.householdId, "h-used")),
+    ).toHaveLength(0);
   });
 });
