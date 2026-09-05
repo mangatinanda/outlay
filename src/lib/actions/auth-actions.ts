@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { signOut } from "@/auth";
+import { auth, signOut } from "@/auth";
 import { env } from "@/lib/env";
 import {
   constantTimeEqual,
@@ -45,6 +45,23 @@ export const verifyPasscode = safeAction(
     redirect("/dashboard");
   },
 );
+
+/**
+ * Drop superadmin elevation only: clear the passcode cookie and keep any
+ * Google session. The passcode cookie wins in getCurrentActor(), so an owner
+ * who unlocked /admin is superadmin on every request (and, by design, gets no
+ * notifications) until this runs. Picks the destination itself: the
+ * dashboard when a Google session remains, else /login. (Redirecting to the
+ * dashboard and letting the proxy bounce would render /login under a stale
+ * /dashboard URL — the RSC fetch follows the 307 without updating the
+ * address bar.) Bare <form action> like logout(), so no safeAction wrapper.
+ */
+export async function lockAdmin() {
+  const cookieStore = await cookies();
+  cookieStore.delete(SESSION_COOKIE);
+  const session = await auth();
+  redirect(session?.user?.id ? "/dashboard" : "/login");
+}
 
 /**
  * Sign out of both auth paths: clear the passcode cookie and any Google

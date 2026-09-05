@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut, Menu, Settings } from "lucide-react";
+import { Lock, LogOut, Menu, Settings } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -17,7 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { logout } from "@/lib/actions/auth-actions";
+import { lockAdmin, logout } from "@/lib/actions/auth-actions";
 import { Sidebar } from "./sidebar";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -107,7 +107,10 @@ export function Header({
             <ThemeToggle />
           </div>
           <DropdownMenu>
-            <DropdownMenuTrigger className="relative h-9 w-9 cursor-pointer rounded-full">
+            <DropdownMenuTrigger
+              className="relative h-9 w-9 cursor-pointer rounded-full"
+              aria-label="Open user menu"
+            >
               <Avatar className="h-9 w-9">
                 {user?.image && (
                   <AvatarImage src={user.image} alt={user.name ?? ""} />
@@ -139,6 +142,19 @@ export function Header({
                 Settings
               </DropdownMenuItem>
               <DropdownMenuSeparator />
+              {isSuperadmin && (
+                // Drop the passcode elevation only; a Google session (and its
+                // notifications) carries on. Sign out below clears both.
+                <form action={lockAdmin}>
+                  <button
+                    type="submit"
+                    className="flex w-full cursor-default items-center gap-1.5 rounded-md px-1.5 py-1 text-sm outline-hidden hover:bg-muted"
+                  >
+                    <Lock className="h-4 w-4" />
+                    Lock admin
+                  </button>
+                </form>
+              )}
               <form action={logout}>
                 <button
                   type="submit"

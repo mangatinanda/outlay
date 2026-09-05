@@ -65,6 +65,28 @@ double‑spec; CI reads pnpm from `packageManager`).
 
 ## Work log
 
+### 2026‑09‑05 (evening) — "Lock admin" for the owner; e2e port override; domain‑watch routine
+
+- **`lockAdmin` server action** (`src/lib/actions/auth-actions.ts`): deletes only `he_session` and picks
+  its own destination — `/dashboard` when a Google session remains (`auth()`), else `/login`. The passcode
+  cookie wins in `getCurrentActor()`, so an owner who unlocked `/admin` was superadmin on every request and
+  saw no bell/notifications until they signed out of everything. **Gotcha found via e2e:** redirecting to
+  `/dashboard` and letting `proxy.ts` bounce rendered the login page under a stale `/dashboard` URL (the
+  RSC fetch follows the 307 without updating the address bar) — hence the action decides itself.
+- **Header:** "Lock admin" item (Lock icon) above "Sign out" in the avatar menu, superadmin‑only; the avatar
+  trigger gained `aria-label="Open user menu"`. Sign out still clears both identities.
+- **Tests:** unit (cookie dropped, household cookie kept, `signOut` not called, redirect target per
+  session) + e2e in `e2e/dashboard.spec.ts` (passcode login → menu → Lock admin → `/login`).
+- **`playwright.config.ts`:** `E2E_PORT` env override (baseURL, webServer url, `PORT`, `AUTH_URL`). Needed
+  because `reuseExistingServer` made Playwright talk to *another project's* `next dev` on :3000
+  (`~/ishait/ivm/ivm-pwa`) and every spec failed on "Page not found". Run `E2E_PORT=3100 pnpm test:e2e`
+  when :3000 is busy.
+- **Domain watch routine** (cloud, not in repo): "Domain watch: mangatinanda.me",
+  `trig_01QVpkKuoV1mD5wvHwNxCHAC`, daily 03:30 UTC (09:00 IST), `claude-sonnet-5`, Slack connector; queries
+  `whois -h whois.nic.me`, classifies DROPZONE / AVAILABLE / REGISTERED / UNKNOWN, DMs the owner on Slack
+  only when the classification changes (reads its own previous "[Domain watch]" DM as state). Manage at
+  https://claude.ai/code/routines/trig_01QVpkKuoV1mD5wvHwNxCHAC.
+
 ### 2026‑09‑05 (later) — PR #4: household deletion was FK‑broken; cleanup hardening; flaky db test
 
 Follow‑ups from the PR #2 review, squash `edf0eb6` on `main`.
@@ -576,11 +598,14 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
   pinned to the old host to need a reinstall.
 - **PR #4 MERGED (2026‑09‑05): `deleteHousehold` FK fix + cleanup hardening + flaky db test** — squash
   `edf0eb6`; prod auto‑deploy from `main`. See the "(later)" 2026‑09‑05 work‑log entry.
-- **Deferred from the notifications review** (design/UX; details in the 2026‑09‑05 entry): owner‑as‑superadmin
-  sees no bell while rows accrue for their user id (user asked for a clearer explanation — pending their
-  decision between a "lock admin" action and a superadmin actor that carries `userId`); threshold form
-  resets its input on `{error}`; non‑`menuitem` buttons inside the bell's `role="menu"`; `readAt` unused
-  for unread styling.
+- **"Lock admin" shipped (2026‑09‑05 evening entry)** — the owner can drop passcode elevation from the avatar
+  menu and get notifications back. Still deferred from the notifications review: threshold form resets its
+  input on `{error}`; non‑`menuitem` buttons inside the bell's `role="menu"`; `readAt` unused for unread
+  styling.
+- **Domain watch routine is live** (`trig_01QVpkKuoV1mD5wvHwNxCHAC`, daily 09:00 IST, Slack DM on change).
+  Baseline 2026‑09‑05: registry says "available for application via the Identity Digital Dropzone service"
+  (14‑day registrar Dutch auction after expiry). If it survives the window it returns to the general pool at
+  list price; a backorder at a Dropzone‑partner registrar is the only way to secure it earlier.
 - **Model B is live on prod** (since PR #1, 2026‑06‑22). Not verifiable from the repo: whether
   `pnpm db:migrate:model-b` (owner backfill → `mangatinanda@gmail.com`) was run against prod Turso — if the
   owner lacks a `household_members.user_id` link, run it (see the 2026‑06‑16 runbook in the work log).
