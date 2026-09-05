@@ -1,0 +1,93 @@
+# Daily watch on the (expired) custom domain. The registry's whois is
+# classified by scripts/domain-watch.sh; the newest issue labelled
+# `domain-watch` is the remembered state, so nothing is committed and no
+# Vercel deploy is triggered. A change opens a new issue assigned to the repo
+# owner (GitHub e-mails it); a failed lookup fails the run (GitHub e-mails
+# that too). Trigger manually from the Actions tab (workflow_dispatch).
+name: Domain watch
+
+on:
+  schedule:
+    - cron: "30 3 * * *" # 09:00 IST daily
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: domain-watch
+  cancel-in-progress: false
+
+env:
+  DOMAIN: mangatinanda.me
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install whois
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq whois
+
+      - name: Self-test the classifier
+        run: scripts/domain-watch.sh selftest
+
+      - name: Query the .me registry
+        id: check
+        run: |
+          raw="$(scripts/domain-watch.sh lookup "$DOMAIN")"
+          status="$(printf '%s' "$raw" | scripts/domain-watch.sh classify)"
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          {
+            echo 'raw<<RAW_EOF'
+            printf '%s\n' "$raw" | grep -v '^\s*$' | head -30
+            echo 'RAW_EOF'
+          } >> "$GITHUB_OUTPUT"
+          echo "::notice title=$DOMAIN::$status"
+          printf '%s\n' "$raw" | grep -v '^\s*$' | head -30
+
+      - name: Fail loudly when the lookup itself failed
+        if: steps.check.outputs.status == 'UNKNOWN'
+        run: |
+          echo "::error title=Domain watch::whois lookup for $DOMAIN returned nothing usable"
+          exit 1
+
+      - name: Compare with the last recorded status and open an issue on change
+        env:
+          STATUS: ${{ steps.check.outputs.status }}
+          RAW: ${{ steps.check.outputs.raw }}
+        run: |
+          gh label create domain-watch --repo "$GITHUB_REPOSITORY" \
+            --color 0E8A16 --description "Automated domain status changes" 2>/dev/null || true
+
+          last="$(gh issue list --repo "$GITHUB_REPOSITORY" --label domain-watch --state all \
+                    --limit 1 --json title --jq '.[0].title // ""' | sed -E 's/.*: ([A-Z]+)$/\1/')"
+          echo "last=$last current=$STATUS"
+          if [ "$last" = "$STATUS" ]; then
+            echo "Unchanged — nothing to report."
+            exit 0
+          fi
+
+          case "$STATUS" in
+            AVAILABLE)
+              advice="The registry no longer holds it. Register it NOW at a registrar that accepts INR (e.g. BigRock, GoDaddy India) before someone else does. Then: point DNS at Vercel, add the domain in the Vercel project, re-check the Google OAuth redirect URIs (see memory.md)." ;;
+            REGISTERED)
+              advice="Someone registered it. Options: check whether it is you; otherwise consider a backorder for its next expiry, or keep using the Vercel hostname." ;;
+            DROPZONE)
+              advice="Still inside Identity Digital's post-expiry Dropzone window (registrar-only Dutch auction, ~14 days). No action unless you want to secure it early via a backorder at a Dropzone-partner registrar." ;;
+            *)
+              advice="Unrecognised status — inspect the raw record below." ;;
+          esac
+
+          body="$(printf '**%s** is now **%s** (previously: %s).\n\n%s\n\n<details><summary>Raw registry record</summary>\n\n```\n%s\n```\n</details>\n\n_Opened by the Domain watch workflow. The newest `domain-watch` issue is the remembered state; close it whenever you like._' \
+                  "$DOMAIN" "$STATUS" "${last:-none}" "$advice" "$RAW")"
+
+          gh issue create --repo "$GITHUB_REPOSITORY" \
+            --title "[Domain watch] $DOMAIN: $STATUS" \
+            --label domain-watch \
+            --assignee "$GITHUB_REPOSITORY_OWNER" \
+            --body "$body"
