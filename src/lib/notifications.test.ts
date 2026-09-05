@@ -70,4 +70,34 @@ describe("notify", () => {
     expect(rows.some((r) => r.id === "n000")).toBe(false);
     expect(rows.some((r) => r.payload.includes("newest"))).toBe(true);
   });
+
+  it("never prunes invite.received rows, even when they are the oldest", async () => {
+    await db.delete(notifications);
+    // Oldest row of all is a pending invite; then a flood of chatty events.
+    await db.insert(notifications).values({
+      id: "invite-old",
+      userId: "u1",
+      type: "invite.received",
+      payload: JSON.stringify({ memberId: "m1" }),
+      createdAt: new Date(1600000000000),
+    });
+    for (let i = 0; i < NOTIFICATIONS_KEEP + 5; i++) {
+      await db.insert(notifications).values({
+        id: `n${i.toString().padStart(3, "0")}`,
+        userId: "u1",
+        type: "expense.large",
+        payload: "{}",
+        createdAt: new Date(1700000000000 + i * 1000),
+      });
+    }
+    await notify({ userIds: ["u1"], type: "expense.large", payload: {} });
+    const rows = await db
+      .select()
+      .from(notifications)
+      .where(eq(notifications.userId, "u1"));
+    expect(rows.some((r) => r.id === "invite-old")).toBe(true);
+    expect(rows.filter((r) => r.type === "expense.large")).toHaveLength(
+      NOTIFICATIONS_KEEP,
+    );
+  });
 });

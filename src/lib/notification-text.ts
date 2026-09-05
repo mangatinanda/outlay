@@ -1,16 +1,16 @@
+import { formatCurrency } from "@/components/shared/currency-display";
+import { MINOR_UNITS_PER_MAJOR } from "@/lib/money";
 import type { NotificationItemData } from "@/lib/queries/notification-queries";
 
 /** Format minor units in the currency snapshotted at emit time (notifications
- *  span households, so the active household's CurrencyProvider is wrong here). */
+ *  span households, so the active household's CurrencyProvider is wrong here —
+ *  but the per-currency locale rules must match every other amount). */
 export function formatMinor(amountMinor: number, currency: string): string {
+  const major = amountMinor / MINOR_UNITS_PER_MAJOR;
   try {
-    return new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency,
-      maximumFractionDigits: 2,
-    }).format(amountMinor / 100);
+    return formatCurrency(major, currency);
   } catch {
-    return `${(amountMinor / 100).toFixed(2)} ${currency}`;
+    return `${major.toFixed(2)} ${currency}`;
   }
 }
 
@@ -51,6 +51,13 @@ export function notificationText(item: NotificationItemData): {
       return {
         title: `Large expense in ${household}`,
         detail: `${str(p.actorLabel, "Someone")} added "${str(p.description, "an expense")}" — ${formatMinor(num(p.amountMinor), str(p.currency, "INR"))}`,
+      };
+    default:
+      // A row written by a newer build (the column has no CHECK constraint)
+      // must degrade gracefully rather than blank the whole app shell.
+      return {
+        title: `Update in ${household}`,
+        detail: "Open Outlay for details",
       };
   }
 }

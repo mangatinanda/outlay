@@ -3,6 +3,7 @@
 import { Bell } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 import { NotificationItem } from "@/components/notifications/notification-item";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,20 +19,34 @@ import {
 import type { NotificationItemData } from "@/lib/queries/notification-queries";
 
 const POLL_MS = 60_000;
+const LOAD_FAILED = "Couldn't load notifications. Please try again.";
 
 export function NotificationBell({ initialCount }: { initialCount: number }) {
   const [count, setCount] = useState(initialCount);
   const [items, setItems] = useState<NotificationItemData[] | null>(null);
+  const [loadFailed, setLoadFailed] = useState(false);
   const [open, setOpen] = useState(false);
   // Monotonic request sequence: on rapid open→close→reopen two list fetches
   // can be in flight; only the latest one may write to state.
   const seqRef = useRef(0);
+  // Mirrors `open` for the poll (which closes over the first render).
+  const openRef = useRef(false);
+
+  // The (app) layout re-renders with a fresh server count after any
+  // revalidating action (router.refresh(), revalidatePath) — adopt it rather
+  // than waiting up to a minute for the next poll.
+  useEffect(() => {
+    setCount(initialCount);
+  }, [initialCount]);
 
   // Poll the unread count while the tab is visible. Silent on any failure —
-  // the badge self-corrects on the next poll or navigation.
+  // the badge self-corrects on the next poll or server render.
   useEffect(() => {
     const tick = async () => {
       if (document.visibilityState === "hidden") return;
+      // While the menu is open everything is being marked read; a tick that
+      // lands mid-way would write the pre-read count back over the zero.
+      if (openRef.current) return;
       try {
         const res = await fetch("/api/notifications/count");
         if (
@@ -49,20 +64,44 @@ export function NotificationBell({ initialCount }: { initialCount: number }) {
     return () => clearInterval(id);
   }, []);
 
-  async function refreshList() {
+  /** Fetch the dropdown list. Resolves false when the load failed. */
+  async function refreshList(): Promise<boolean> {
     const seq = ++seqRef.current;
     const result = await loadNotifications();
-    if (seq !== seqRef.current) return; // stale response — a newer fetch won
-    if (result && "items" in result) setItems(result.items);
+    if (seq !== seqRef.current) return true; // stale response — a newer fetch won
+    if (result && "items" in result) {
+      setItems(result.items);
+      setLoadFailed(false);
+      return true;
+    }
+    setItems([]);
+    setLoadFailed(true);
+    toast.error(result && "error" in result ? result.error : LOAD_FAILED);
+    return false;
   }
 
   async function onOpenChange(next: boolean) {
     setOpen(next);
+    openRef.current = next;
     if (!next) return;
-    setCount(0); // optimistic — mark-all-read follows
+    const previous = count;
+    setCount(0); // optimistic — mark-all-read follows once the list is shown
     setItems(null);
-    await refreshList();
-    await markAllNotificationsRead();
+    setLoadFailed(false);
+    try {
+      if (!(await refreshList())) {
+        setCount(previous); // nothing was shown, so nothing is read
+        return;
+      }
+      await markAllNotificationsRead();
+    } catch {
+      // A network-level rejection of the RPC itself (safeAction only wraps
+      // errors thrown inside the action body).
+      setItems((current) => current ?? []);
+      setLoadFailed(true);
+      setCount(previous);
+      toast.error(LOAD_FAILED);
+    }
   }
 
   return (
@@ -94,6 +133,8 @@ export function NotificationBell({ initialCount }: { initialCount: number }) {
         <div className="max-h-96 overflow-y-auto p-1">
           {items === null ? (
             <p className="p-4 text-muted-foreground text-sm">Loading…</p>
+          ) : loadFailed ? (
+            <p className="p-4 text-muted-foreground text-sm">{LOAD_FAILED}</p>
           ) : items.length === 0 ? (
             <p className="p-4 text-muted-foreground text-sm">
               You're all caught up.

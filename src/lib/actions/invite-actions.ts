@@ -53,6 +53,20 @@ export const inviteToHousehold = safeAction(
       .limit(1);
     if (dup) return { error: "That email is already invited" };
 
+    // In-app notification if the invited email already has an account
+    // (brand-new emails have nobody to notify; they claim at first sign-in).
+    // Resolved BEFORE the insert so a failed lookup can't turn a committed
+    // invite into an {error} — the retry would then say "already invited"
+    // while the invitee was never notified.
+    const [invitee] = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1);
+    const invitedBy = invitee
+      ? (await actorLabelFor(household.id)).actorLabel
+      : null;
+
     const memberId = createId();
     await db.insert(householdMembers).values({
       id: memberId,
@@ -62,19 +76,11 @@ export const inviteToHousehold = safeAction(
       role: "member",
     });
 
-    // In-app notification if the invited email already has an account
-    // (brand-new emails have nobody to notify; they claim at first sign-in).
-    const [invitee] = await db
-      .select({ id: users.id })
-      .from(users)
-      .where(eq(users.email, email))
-      .limit(1);
-    if (invitee) {
-      const { actorLabel } = await actorLabelFor(household.id);
+    if (invitee && invitedBy !== null) {
       const payload: InviteReceivedPayload = {
         memberId,
         householdName: household.name,
-        invitedBy: actorLabel,
+        invitedBy,
       };
       await notify({
         userIds: [invitee.id],

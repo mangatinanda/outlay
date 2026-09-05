@@ -98,12 +98,45 @@ export const createExpense = safeAction(
       };
     }
 
+    const amountMinor = toMinorUnits(parsed.data.amount);
+
+    // Threshold notification: only on CREATE (updates/imports never emit).
+    // Recipients + labels are resolved BEFORE the insert: a failed lookup
+    // must not turn a committed row into an {error} whose natural retry
+    // creates a duplicate. After the insert only best-effort calls remain.
+    const threshold = household.notifyExpenseOverMinor ?? 0;
+    let largeExpense: {
+      userIds: string[];
+      payload: ExpenseLargePayload;
+    } | null = null;
+    if (threshold > 0 && amountMinor >= threshold) {
+      const actor = await getCurrentActor();
+      const actorUserId = actor?.kind === "user" ? actor.userId : null;
+      const linked = await db
+        .select({ userId: householdMembers.userId })
+        .from(householdMembers)
+        .where(eq(householdMembers.householdId, household.id));
+      const { actorLabel } = await actorLabelFor(household.id);
+      largeExpense = {
+        userIds: linked
+          .map((m) => m.userId)
+          .filter((id): id is string => !!id && id !== actorUserId),
+        payload: {
+          amountMinor,
+          currency: household.currency,
+          description: parsed.data.description,
+          actorLabel,
+          householdName: household.name,
+        },
+      };
+    }
+
     await db.insert(expenses).values({
       id: createId(),
       householdId: household.id,
       categoryId: parsed.data.categoryId,
       memberId: parsed.data.memberId,
-      amountMinor: toMinorUnits(parsed.data.amount),
+      amountMinor,
       description: parsed.data.description,
       date: parsed.data.date,
       notes: parsed.data.notes || null,
@@ -115,32 +148,12 @@ export const createExpense = safeAction(
       summary: `added "${parsed.data.description}" ₹${parsed.data.amount}`,
     });
 
-    // Threshold notification: only on CREATE (updates/imports never emit).
-    const threshold = household.notifyExpenseOverMinor ?? 0;
-    const amountMinor = toMinorUnits(parsed.data.amount);
-    if (threshold > 0 && amountMinor >= threshold) {
-      const actor = await getCurrentActor();
-      const actorUserId = actor?.kind === "user" ? actor.userId : null;
-      const linked = await db
-        .select({ userId: householdMembers.userId })
-        .from(householdMembers)
-        .where(eq(householdMembers.householdId, household.id));
-      const recipients = linked
-        .map((m) => m.userId)
-        .filter((id): id is string => !!id && id !== actorUserId);
-      const { actorLabel } = await actorLabelFor(household.id);
-      const payload: ExpenseLargePayload = {
-        amountMinor,
-        currency: household.currency,
-        description: parsed.data.description,
-        actorLabel,
-        householdName: household.name,
-      };
+    if (largeExpense) {
       await notify({
-        userIds: recipients,
+        userIds: largeExpense.userIds,
         type: "expense.large",
         householdId: household.id,
-        payload: { ...payload },
+        payload: { ...largeExpense.payload },
       });
     }
 

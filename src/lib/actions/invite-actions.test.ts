@@ -19,10 +19,15 @@ vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
 vi.mock("@/lib/auth/actor", () => ({
   getCurrentActor: async () => actorState.actor,
 }));
+vi.mock("@/lib/activity", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/activity")>();
+  return { ...actual, actorLabelFor: vi.fn(actual.actorLabelFor) };
+});
 
 import { and, eq } from "drizzle-orm";
 import { migrate } from "drizzle-orm/libsql/migrator";
 import { inviteToHousehold } from "@/lib/actions/invite-actions";
+import { actorLabelFor } from "@/lib/activity";
 import { db } from "@/lib/db";
 import {
   householdMembers,
@@ -134,6 +139,22 @@ describe("inviteToHousehold → invite.received notification", () => {
       .where(eq(householdMembers.id, payload.memberId));
     expect(invite.email).toBe("cara@x.com");
     expect(invite.userId).toBeNull();
+  });
+
+  it("tells the truth when the label lookup fails: error ⇒ no invite row", async () => {
+    await db
+      .insert(users)
+      .values({ id: "u4", name: "Dan", email: "dan@x.com" });
+    vi.mocked(actorLabelFor).mockRejectedValueOnce(new Error("transient"));
+    const result = await inviteToHousehold(form("dan@x.com"));
+    const rows = await db
+      .select()
+      .from(householdMembers)
+      .where(eq(householdMembers.email, "dan@x.com"));
+    // An {error} for a row that was committed makes the retry say
+    // "already invited" while the invitee never got notified.
+    if ("error" in result) expect(rows).toHaveLength(0);
+    else expect(rows).toHaveLength(1);
   });
 
   it("creates no notification for an unknown email", async () => {

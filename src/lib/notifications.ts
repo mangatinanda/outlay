@@ -38,7 +38,9 @@ export interface ExpenseLargePayload {
   householdName: string;
 }
 
-/** Keep only this many notifications per user (pruned on write). */
+/** Keep only this many notifications per user (pruned on write). Pending
+ *  invites are exempt: they are actionable, rare, and bounded by household
+ *  count — a chatty household must not silently delete someone's invite. */
 export const NOTIFICATIONS_KEEP = 100;
 
 /**
@@ -79,7 +81,7 @@ export async function notify(input: {
       await db
         .delete(notifications)
         .where(
-          sql`${notifications.userId} = ${userId} AND ${notInArray(notifications.id, keep)}`,
+          sql`${notifications.userId} = ${userId} AND ${notifications.type} <> 'invite.received' AND ${notInArray(notifications.id, keep)}`,
         );
     }
   } catch (err) {

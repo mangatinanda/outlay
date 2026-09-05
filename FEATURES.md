@@ -35,12 +35,12 @@ A dashboard that updates as you add expenses:
 ## Stay in the loop
 - A bell in the header shows your unread count and keeps itself up to date while
   you're using the app.
-- You're told when someone invites you to a household, when an invite you sent is
-  accepted or declined, when a payment is recorded, and when a large expense is
-  added.
+- You're told when someone invites you to a household, when an invite to a
+  household you manage is accepted or declined, when a payment is recorded, and
+  when a large expense is added.
 - Accept or decline a household invite straight from the notification.
-- Open the **Notifications** page for your recent history across all your
-  households, or mark everything read in one tap.
+- Opening the bell marks everything as read. Open the **Notifications** page for
+  your recent history across all your households.
 - Admins choose what counts as a "large" expense — or turn those alerts off — in
   Settings.
 

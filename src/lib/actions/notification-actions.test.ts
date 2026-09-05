@@ -22,6 +22,7 @@ vi.mock("@/lib/auth/actor", () => ({
 
 import { and, eq, isNull } from "drizzle-orm";
 import { migrate } from "drizzle-orm/libsql/migrator";
+import { revalidatePath } from "next/cache";
 import {
   acceptInvite,
   declineInvite,
@@ -29,6 +30,9 @@ import {
 } from "@/lib/actions/notification-actions";
 import { db } from "@/lib/db";
 import {
+  activity,
+  categories,
+  expenses,
   householdMembers,
   households,
   notifications,
@@ -44,6 +48,11 @@ beforeAll(async () => {
     .insert(users)
     .values({ id: "u2", name: "Cara", email: "cara@x.com" });
   await db.insert(households).values({ id: "h1", name: "Home" });
+  await db.insert(categories).values({
+    id: "c1",
+    householdId: "h1",
+    name: "General",
+  });
   await db.insert(householdMembers).values({
     id: "m-admin",
     householdId: "h1",
@@ -54,9 +63,26 @@ beforeAll(async () => {
   });
 });
 
+/** An expense attributed to the pending invite row (admins can pick pending
+ *  invitees as payers, so this is a real state). */
+async function attributeExpenseToInvite() {
+  await db.insert(expenses).values({
+    id: "e-invite",
+    householdId: "h1",
+    categoryId: "c1",
+    memberId: "m-invite",
+    amountMinor: 1000,
+    description: "Paid by Cara",
+    date: "2026-01-01",
+  });
+}
+
 beforeEach(async () => {
   actorState.actor = INVITEE;
+  vi.mocked(revalidatePath).mockClear();
   await db.delete(notifications);
+  await db.delete(activity);
+  await db.delete(expenses);
   await db
     .delete(householdMembers)
     .where(eq(householdMembers.householdId, "h1"))
@@ -130,6 +156,27 @@ describe("acceptInvite", () => {
         ),
       );
     expect(leftovers).toHaveLength(0);
+    // The switcher + scoped lists must refresh on this path too.
+    expect(revalidatePath).toHaveBeenCalledWith("/", "layout");
+  });
+
+  it("reports already-a-member when the duplicate invite row has expenses (no FK crash)", async () => {
+    await db.insert(householdMembers).values({
+      id: "m-existing",
+      householdId: "h1",
+      userId: "u2",
+      name: "Cara",
+      role: "member",
+    });
+    await attributeExpenseToInvite();
+    const result = await acceptInvite("m-invite");
+    expect(result).toHaveProperty("error");
+    expect((result as { error: string }).error).toMatch(/already a member/i);
+    const [row] = await db
+      .select()
+      .from(householdMembers)
+      .where(eq(householdMembers.id, "m-invite"));
+    expect(row).toBeDefined(); // untouched — an admin reassigns, then removes it
   });
 });
 
@@ -154,6 +201,29 @@ describe("declineInvite", () => {
     actorState.actor = { kind: "user", userId: "u1", email: "a@x.com" };
     const result = await declineInvite("m-invite");
     expect(result).toEqual({ error: "Invite no longer available" });
+  });
+
+  it("refuses to decline while expenses are attributed to the invite (no FK crash)", async () => {
+    await attributeExpenseToInvite();
+    const result = await declineInvite("m-invite");
+    expect(result).toHaveProperty("error");
+    expect((result as { error: string }).error).toMatch(/reassign/i);
+    const rows = await db
+      .select()
+      .from(householdMembers)
+      .where(eq(householdMembers.id, "m-invite"));
+    expect(rows).toHaveLength(1);
+    expect(rows[0].userId).toBeNull();
+  });
+
+  it("records the decline in the household activity feed", async () => {
+    await declineInvite("m-invite");
+    const rows = await db
+      .select()
+      .from(activity)
+      .where(eq(activity.householdId, "h1"));
+    expect(rows).toHaveLength(1);
+    expect(rows[0].summary).toMatch(/declined/i);
   });
 });
 

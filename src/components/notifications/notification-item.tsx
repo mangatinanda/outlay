@@ -82,7 +82,10 @@ export function NotificationItem({
       <div className="min-w-0 flex-1 space-y-1">
         <p className="font-medium text-sm leading-tight">{title}</p>
         <p className="text-muted-foreground text-sm">{detail}</p>
-        <p className="text-muted-foreground text-xs">
+        {/* Relative time is computed at render; the server and the client
+            legitimately disagree by a few seconds (or a threshold), so tell
+            React not to treat that as a hydration mismatch. */}
+        <p className="text-muted-foreground text-xs" suppressHydrationWarning>
           {formatDistanceToNow(new Date(item.createdAt), { addSuffix: true })}
         </p>
         {pending && (

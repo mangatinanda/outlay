@@ -19,14 +19,21 @@ vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
 vi.mock("@/lib/auth/actor", () => ({
   getCurrentActor: async () => actorState.actor,
 }));
+// Spy on the label lookup so a test can make it fail like a transient DB error.
+vi.mock("@/lib/activity", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/activity")>();
+  return { ...actual, actorLabelFor: vi.fn(actual.actorLabelFor) };
+});
 
 import { eq } from "drizzle-orm";
 import { migrate } from "drizzle-orm/libsql/migrator";
 import { createExpense } from "@/lib/actions/expense-actions";
 import { createSettlement } from "@/lib/actions/settlement-actions";
+import { actorLabelFor } from "@/lib/activity";
 import { db } from "@/lib/db";
 import {
   categories,
+  expenses,
   householdMembers,
   households,
   notifications,
@@ -74,7 +81,9 @@ beforeEach(async () => {
   cookieJar.clear();
   cookieJar.set(HOUSEHOLD_COOKIE, "h1");
   actorState.actor = ALICE;
+  vi.mocked(actorLabelFor).mockClear();
   await db.delete(notifications);
+  await db.delete(expenses);
   await db
     .update(households)
     .set({ notifyExpenseOverMinor: null })
@@ -140,6 +149,21 @@ describe("createExpense → expense.large", () => {
     const payload = JSON.parse(rows[0].payload);
     expect(payload.description).toBe("Groceries");
     expect(payload.actorLabel).toBe("Alice");
+  });
+
+  it("tells the truth when the recipient lookup fails: error ⇒ nothing inserted", async () => {
+    await db
+      .update(households)
+      .set({ notifyExpenseOverMinor: 50000 })
+      .where(eq(households.id, "h1"));
+    // A transient failure in a lookup that runs as part of the emit path.
+    vi.mocked(actorLabelFor).mockRejectedValueOnce(new Error("transient"));
+    const result = await createExpense(expenseForm("500"));
+    const rows = await db.select().from(expenses);
+    // Whatever the outcome, the response must match the DB — an {error} for
+    // a row that was actually committed makes the user's retry a duplicate.
+    if ("error" in result) expect(rows).toHaveLength(0);
+    else expect(rows).toHaveLength(1);
   });
 
   it("stays silent below the threshold", async () => {

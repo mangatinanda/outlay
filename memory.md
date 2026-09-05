@@ -80,22 +80,22 @@ Spec: `docs/superpowers/specs/2026-07-07-in-app-notifications-design.md`; plan:
   the table can't grow unbounded.
 - **Emitters wired into existing actions:** `invite.received` (on `inviteToHousehold`, only to
   already‑registered users — a pending invite with no `user_id` yet has nothing to notify),
-  `invite.accepted` / `invite.declined` (back to the inviter), `settlement.recorded` (on
+  `invite.accepted` / `invite.declined` (to the household's other admins), `settlement.recorded` (on
   `createSettlement`, to the other party), `expense.large` (on `createExpense`, fan‑out to household
   members when the expense's `amountMinor` exceeds the household's `notifyExpenseOverMinor`
-  threshold — `null` treated as always‑notify).
+  threshold — `null`/`0` = OFF, fires at‑or‑above).
 - **In‑app invite accept/decline without re‑login:** `acceptInvite`/`declineInvite`
   (`src/lib/actions/notification-actions.ts`) let a signed‑in user claim a pending
   `household_members` invite row directly from the notification UI; the existing login‑time
   `claimInvites` (Auth.js `jwt` callback) remains the fallback for invites accepted before the user
-  ever signs in. Also: `markAllNotificationsRead`, `loadNotifications` (paginated).
+  ever signs in. Also: `markAllNotificationsRead`, `loadNotifications` (newest 10 for the dropdown).
 - **Reads:** notification queries (unread count + list, newest‑first) scoped to
-  `(household_id, user_id)` — **superadmin gets nothing** (no `userId` on that actor, by design:
+  `user_id` (cross‑household by design) — **superadmin gets nothing** (no `userId` on that actor, by design:
   notifications are a per‑user‑household concept, not a superadmin/god‑mode one).
   `GET /api/notifications/count` powers a 60s client poll.
 - **UI:** `NotificationItem` (shared render for both the dropdown and the full page, with inline
   Accept/Decline buttons for invite‑type rows), `NotificationBell` in the header (badge shows
-  unread count, dropdown lists recent, "Mark all read"), `/notifications` page (paginated history).
+  unread count, dropdown lists the newest 10 and auto‑marks all read on open), `/notifications` page (newest 50).
   Bell renders `null`/is absent entirely for the superadmin actor.
 - **Threshold setting:** Settings UI (admin‑only) to set/clear the per‑household
   `notifyExpenseOverMinor`; a small `memberRole` helper resolves whether the current actor is an

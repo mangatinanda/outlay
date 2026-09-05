@@ -13,6 +13,7 @@ import {
   expenses,
   householdMembers,
   households,
+  notifications,
   users,
 } from "@/lib/db/schema";
 
@@ -91,6 +92,14 @@ beforeAll(async () => {
       date: "2026-01-02",
     },
   ]);
+  // The abandoned user once received a notification (e.g. an invite). Its
+  // users.id FK must not block the account deletion.
+  await db.insert(notifications).values({
+    id: "n-ab",
+    userId: "u-abandoned",
+    type: "invite.received",
+    payload: "{}",
+  });
 });
 
 describe("cleanupAbandonedAccounts", () => {
@@ -108,6 +117,7 @@ describe("cleanupAbandonedAccounts", () => {
       .map((u) => u.id)
       .sort();
     expect(remainingUsers).toEqual(["u-active", "u-orphan", "u-recent"]);
+    expect(await db.select().from(notifications)).toHaveLength(0);
 
     const remainingHouseholds = (await db.select().from(households))
       .map((h) => h.id)
