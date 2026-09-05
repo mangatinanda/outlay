@@ -81,11 +81,16 @@ double‑spec; CI reads pnpm from `packageManager`).
   because `reuseExistingServer` made Playwright talk to *another project's* `next dev` on :3000
   (`~/ishait/ivm/ivm-pwa`) and every spec failed on "Page not found". Run `E2E_PORT=3100 pnpm test:e2e`
   when :3000 is busy.
-- **Domain watch routine** (cloud, not in repo): "Domain watch: mangatinanda.me",
-  `trig_01QVpkKuoV1mD5wvHwNxCHAC`, daily 03:30 UTC (09:00 IST), `claude-sonnet-5`, Slack connector; queries
-  `whois -h whois.nic.me`, classifies DROPZONE / AVAILABLE / REGISTERED / UNKNOWN, DMs the owner on Slack
-  only when the classification changes (reads its own previous "[Domain watch]" DM as state). Manage at
-  https://claude.ai/code/routines/trig_01QVpkKuoV1mD5wvHwNxCHAC.
+- **Domain watch — cloud routine tried and DISABLED, replaced by a GitHub Action.** The claude.ai routine
+  (`trig_01QVpkKuoV1mD5wvHwNxCHAC`) ran once: the cloud sandbox has no `whois`/`dig`, blocks TCP/43 and its
+  egress proxy 403s every whois/RDAP site, so it could only report UNKNOWN; worse, the Slack connector is
+  signed in as a colleague's account, so its one DM went to the wrong person. **Never use the Slack
+  connector for notifications.** Replacement: `.github/workflows/domain-watch.yml` (daily 03:30 UTC =
+  09:00 IST + `workflow_dispatch`) runs `scripts/domain-watch.sh` (`lookup` → registry whois, `classify` →
+  DROPZONE/AVAILABLE/REGISTERED/UNKNOWN, `selftest`). State = the newest issue labelled `domain-watch`
+  (no commits → no Vercel deploys); a change opens a new issue assigned to the repo owner; UNKNOWN fails the
+  run so GitHub e‑mails the failure. Baseline issue "[Domain watch] mangatinanda.me: DROPZONE" is created on
+  the first run.
 
 ### 2026‑09‑05 (later) — PR #4: household deletion was FK‑broken; cleanup hardening; flaky db test
 
@@ -602,10 +607,13 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
   menu and get notifications back. Still deferred from the notifications review: threshold form resets its
   input on `{error}`; non‑`menuitem` buttons inside the bell's `role="menu"`; `readAt` unused for unread
   styling.
-- **Domain watch routine is live** (`trig_01QVpkKuoV1mD5wvHwNxCHAC`, daily 09:00 IST, Slack DM on change).
-  Baseline 2026‑09‑05: registry says "available for application via the Identity Digital Dropzone service"
-  (14‑day registrar Dutch auction after expiry). If it survives the window it returns to the general pool at
-  list price; a backorder at a Dropzone‑partner registrar is the only way to secure it earlier.
+- **Domain watch = GitHub Action** (`.github/workflows/domain-watch.yml`, daily 09:00 IST; state = newest
+  `domain-watch` issue; the cloud routine `trig_01QVpkKuoV1mD5wvHwNxCHAC` is disabled — delete it at
+  claude.ai/code/routines). Baseline 2026‑09‑05: registry says "available for application via the Identity
+  Digital Dropzone service" (14‑day registrar Dutch auction after expiry). If it survives the window it
+  returns to the general pool at list price; a backorder at a Dropzone‑partner registrar is the only way to
+  secure it earlier. Re‑purchase checklist: buy at an INR registrar → DNS to Vercel → add domain in the
+  Vercel project → re‑add Google OAuth redirect URI for the custom host → PWA reinstalls.
 - **Model B is live on prod** (since PR #1, 2026‑06‑22). Not verifiable from the repo: whether
   `pnpm db:migrate:model-b` (owner backfill → `mangatinanda@gmail.com`) was run against prod Turso — if the
   owner lacks a `household_members.user_id` link, run it (see the 2026‑06‑16 runbook in the work log).
