@@ -65,6 +65,30 @@ double‑spec; CI reads pnpm from `packageManager`).
 
 ## Work log
 
+### 2026‑09‑05 (later) — PR #4: household deletion was FK‑broken; cleanup hardening; flaky db test
+
+Follow‑ups from the PR #2 review, squash `edf0eb6` on `main`.
+- **`deleteHousehold` had never worked for a real household.** Root cause: `createHousehold` always
+  logs a `household.create` activity row, `activity.household_id` is an enforced FK (libSQL:
+  `PRAGMA foreign_keys=1`), and the cascade batch deleted expenses/categories/members but never
+  `activity` (or `settlements`) → `LibsqlBatchError: FOREIGN KEY constraint failed` → "Something went
+  wrong". Batch order is now settlements → expenses → activity → categories → members → household.
+  (Notifications keep their snapshot payloads; `notifications.household_id` has no FK by design.)
+- **`cleanupAbandonedAccounts`:** same two gaps (`activity.actor_user_id` on user delete,
+  `activity.household_id` on household delete) plus it treated a household with settlements but no
+  expenses as empty. Now: actor unlinked (`SET actor_user_id = NULL`, feed kept append‑only), activity
+  deleted with an empty household, and `hasLedgerRows()` counts settlements as real data (user +
+  household kept). Fixtures: `u-settled`/`h-settled`.
+- **`src/lib/db/index.test.ts` flake:** post‑`resetModules` dynamic import of `@/lib/db` exceeded the 5s
+  default under CPU load (seen when vitest ran alongside `tsc`/`next build`); the abandoned body's
+  `finally` hadn't restored `DATABASE_URL`, so the sibling test then failed the strict env parse. Env is
+  now `vi.stubEnv`'d (`unstubAllEnvs` in `afterEach` restores it however the test ended), the test asserts
+  the var is really absent, and the import has a 30s budget. 239 tests green while `tsc` + `next build`
+  ran concurrently.
+- **Lesson (repeats PR #2):** every delete of a `households`/`household_members`/`users` row must
+  enumerate its FK dependants — `activity`, `settlements`, `expenses`, `notifications`,
+  `household_members` — or go through a guard like `memberLedgerReference()`.
+
 ### 2026‑09‑05 — PR #2 (in‑app notifications) reviewed + hardened before merge
 
 `/code-review 2 high` (10 finder angles, per‑finding verifiers) returned 15 findings on the branch; the
@@ -543,16 +567,20 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
   `https://myoutlay.vercel.app` (HTTP 200; `/serwist/sw.js` carries the `/api/notifications/` NetworkOnly
   rule). Migration `0007` (notifications table + `households.notify_expense_over_minor`, additive) is applied
   by `scripts/migrate-if-prod.mjs` during the prod build — a failure there fails the build, so it applied.
-- **⚠️ Custom domain `outlay.mangatinanda.me` does NOT resolve (seen 2026‑09‑05):** the `.me` registry answers
-  NXDOMAIN for `mangatinanda.me` itself (`dig +trace` ends at the TLD SOA — no NS delegation) while whois still
-  shows the registration ACTIVE, i.e. the registrar dropped/held the nameservers or the DNS zone was removed.
-  Unrelated to the app; the Vercel aliases `myoutlay.vercel.app` / `outlay-kappa.vercel.app` still serve it,
-  and the Google OAuth redirect URIs were registered for those hosts (2026‑06‑13), so sign‑in works there.
+- **⚠️ Custom domain `outlay.mangatinanda.me` is DOWN — the domain `mangatinanda.me` EXPIRED** (owner,
+  2026‑09‑05). The `.me` registry answers NXDOMAIN (no NS delegation). The owner is waiting for it to drop
+  and become purchasable again, then intends to re‑buy from a registrar that accepts INR. Until then the app
+  is served by the Vercel aliases `myoutlay.vercel.app` / `outlay-kappa.vercel.app` (Google OAuth redirect
+  URIs exist for those hosts, so sign‑in works there). After re‑purchase: point DNS at Vercel, re‑add the
+  domain in the Vercel project, re‑check the OAuth redirect URI for the custom host, and expect PWA installs
+  pinned to the old host to need a reinstall.
+- **PR #4 MERGED (2026‑09‑05): `deleteHousehold` FK fix + cleanup hardening + flaky db test** — squash
+  `edf0eb6`; prod auto‑deploy from `main`. See the "(later)" 2026‑09‑05 work‑log entry.
 - **Deferred from the notifications review** (design/UX; details in the 2026‑09‑05 entry): owner‑as‑superadmin
-  sees no bell while rows accrue for their user id; threshold form resets its input on `{error}`;
-  non‑`menuitem` buttons inside the bell's `role="menu"`; `readAt` unused for unread styling; pre‑existing
-  `activity`/`settlements` FK gaps in `cleanup.ts` + `deleteHousehold`; `src/lib/db/index.test.ts` flakes
-  under CPU load (5s dynamic‑import timeout cascades into its sibling test).
+  sees no bell while rows accrue for their user id (user asked for a clearer explanation — pending their
+  decision between a "lock admin" action and a superadmin actor that carries `userId`); threshold form
+  resets its input on `{error}`; non‑`menuitem` buttons inside the bell's `role="menu"`; `readAt` unused
+  for unread styling.
 - **Model B is live on prod** (since PR #1, 2026‑06‑22). Not verifiable from the repo: whether
   `pnpm db:migrate:model-b` (owner backfill → `mangatinanda@gmail.com`) was run against prod Turso — if the
   owner lacks a `household_members.user_id` link, run it (see the 2026‑06‑16 runbook in the work log).
