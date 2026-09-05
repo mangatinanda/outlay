@@ -1,0 +1,415 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_memory_md",
+      "label": "memory.md",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "outlay_memory_outlay_project_memory",
+      "label": "Outlay \u2014 Project Memory",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "outlay_memory_snapshot",
+      "label": "Snapshot",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L6"
+    },
+    {
+      "id": "outlay_memory_stack",
+      "label": "Stack",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L13"
+    },
+    {
+      "id": "outlay_memory_architecture_conventions",
+      "label": "Architecture & conventions",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L28"
+    },
+    {
+      "id": "outlay_memory_work_log",
+      "label": "Work log",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L66"
+    },
+    {
+      "id": "outlay_memory_2026_09_06_per_member_show_in_paid_by_switch",
+      "label": "2026\u201109\u201106 \u2014 Per\u2011member \"Show in Paid by\" switch",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L68"
+    },
+    {
+      "id": "outlay_memory_2026_09_05_evening_lock_admin_for_the_owner_e2e_port_override_domain_watch_routine",
+      "label": "2026\u201109\u201105 (evening) \u2014 \"Lock admin\" for the owner; e2e port override; domain\u2011watch routine",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L84"
+    },
+    {
+      "id": "outlay_memory_2026_09_05_later_pr_4_household_deletion_was_fk_broken_cleanup_hardening_flaky_db_test",
+      "label": "2026\u201109\u201105 (later) \u2014 PR #4: household deletion was FK\u2011broken; cleanup hardening; flaky db test",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L111"
+    },
+    {
+      "id": "outlay_memory_2026_09_05_pr_2_in_app_notifications_reviewed_hardened_before_merge",
+      "label": "2026\u201109\u201105 \u2014 PR #2 (in\u2011app notifications) reviewed + hardened before merge",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L135"
+    },
+    {
+      "id": "outlay_memory_2026_07_07_in_app_notifications_branch_feat_in_app_notifications",
+      "label": "2026\u201107\u201107 \u2014 In-app notifications (branch `feat/in-app-notifications`)",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L173"
+    },
+    {
+      "id": "outlay_memory_2026_06_23_mobile_drawer_auto_close_app_level_loader_top_bar_skeletons",
+      "label": "2026\u201106\u201123 \u2014 Mobile drawer auto-close + app-level loader (top bar + skeletons)",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L226"
+    },
+    {
+      "id": "outlay_memory_2026_06_22_settle_up_activity_log_balances_settlements_audit_trail",
+      "label": "2026\u201106\u201122 \u2014 Settle-up + Activity Log: balances, settlements, audit trail",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L270"
+    },
+    {
+      "id": "outlay_memory_2026_06_22_drop_the_forced_first_household_onboarding_empty_states_instead",
+      "label": "2026\u201106\u201122 \u2014 Drop the forced first\u2011household onboarding (empty states instead)",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L302"
+    },
+    {
+      "id": "outlay_memory_2026_06_16_model_b_user_owned_households_superadmin_passcode_branch_feature_model_b_households",
+      "label": "2026\u201106\u201116 \u2014 Model B: user\u2011owned households + superadmin passcode (branch `feature/model-b-households`)",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L337"
+    },
+    {
+      "id": "outlay_memory_2026_06_15_end_of_day_fresh_ledger_redesign_merged_to_main_deployed_to_prod",
+      "label": "2026\u201106\u201115 (end of day) \u2014 Fresh Ledger redesign MERGED to `main` + DEPLOYED to prod",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L363"
+    },
+    {
+      "id": "outlay_memory_2026_06_15_latest_m5_m6_final_verification_isolation_e2e_a11y_lighthouse_100",
+      "label": "2026\u201106\u201115 (latest) \u2014 M5/M6 final verification: isolation e2e + a11y \u2192 Lighthouse 100",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L380"
+    },
+    {
+      "id": "outlay_memory_2026_06_15_later_m4_expenses_redesign_e2e_suite_made_reliably_green_9997fa3",
+      "label": "2026\u201106\u201115 (later) \u2014 M4 expenses redesign: e2e suite made reliably green (`9997fa3`)",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L427"
+    },
+    {
+      "id": "outlay_memory_2026_06_12_later_audit_complete_1_5_1_6_all_of_milestone_3_claude_code_config",
+      "label": "2026\u201106\u201112 (later) \u2014 Audit complete: 1.5, 1.6, all of milestone 3 + Claude Code config",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L455"
+    },
+    {
+      "id": "outlay_memory_2026_06_12_audit_milestone_2_committed_pushed",
+      "label": "2026\u201106\u201112 \u2014 Audit milestone 2 (committed + pushed)",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L479"
+    },
+    {
+      "id": "outlay_memory_2026_06_15_fresh_ledger_ui_redesign_spec_implementation_plan_not_yet_built",
+      "label": "2026\u201106\u201115 \u2014 \"Fresh Ledger\" UI redesign: spec + implementation plan (NOT yet built)",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L499"
+    },
+    {
+      "id": "outlay_memory_2026_06_11_repo_audit_top_5_hardening_pass",
+      "label": "2026\u201106\u201111 \u2014 Repo audit + top\u20115 hardening pass",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L524"
+    },
+    {
+      "id": "outlay_memory_2026_06_05_06_10_previous_session",
+      "label": "2026\u201106\u201105 \u2192 06\u201110 (previous session)",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L550"
+    },
+    {
+      "id": "outlay_memory_key_decisions",
+      "label": "Key decisions",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L586"
+    },
+    {
+      "id": "outlay_memory_current_state_open_items",
+      "label": "Current state & open items",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L605"
+    },
+    {
+      "id": "outlay_memory_commands",
+      "label": "Commands",
+      "file_type": "document",
+      "source_file": "memory.md",
+      "source_location": "L648"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_memory_md",
+      "target": "outlay_memory_outlay_project_memory",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_outlay_project_memory",
+      "target": "outlay_memory_snapshot",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_outlay_project_memory",
+      "target": "outlay_memory_stack",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_outlay_project_memory",
+      "target": "outlay_memory_architecture_conventions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_outlay_project_memory",
+      "target": "outlay_memory_work_log",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L66",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_work_log",
+      "target": "outlay_memory_2026_09_06_per_member_show_in_paid_by_switch",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L68",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_work_log",
+      "target": "outlay_memory_2026_09_05_evening_lock_admin_for_the_owner_e2e_port_override_domain_watch_routine",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L84",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_work_log",
+      "target": "outlay_memory_2026_09_05_later_pr_4_household_deletion_was_fk_broken_cleanup_hardening_flaky_db_test",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L111",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_work_log",
+      "target": "outlay_memory_2026_09_05_pr_2_in_app_notifications_reviewed_hardened_before_merge",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L135",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_work_log",
+      "target": "outlay_memory_2026_07_07_in_app_notifications_branch_feat_in_app_notifications",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L173",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_work_log",
+      "target": "outlay_memory_2026_06_23_mobile_drawer_auto_close_app_level_loader_top_bar_skeletons",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L226",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_work_log",
+      "target": "outlay_memory_2026_06_22_settle_up_activity_log_balances_settlements_audit_trail",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L270",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_work_log",
+      "target": "outlay_memory_2026_06_22_drop_the_forced_first_household_onboarding_empty_states_instead",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L302",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_work_log",
+      "target": "outlay_memory_2026_06_16_model_b_user_owned_households_superadmin_passcode_branch_feature_model_b_households",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L337",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_work_log",
+      "target": "outlay_memory_2026_06_15_end_of_day_fresh_ledger_redesign_merged_to_main_deployed_to_prod",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L363",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_work_log",
+      "target": "outlay_memory_2026_06_15_latest_m5_m6_final_verification_isolation_e2e_a11y_lighthouse_100",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L380",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_work_log",
+      "target": "outlay_memory_2026_06_15_later_m4_expenses_redesign_e2e_suite_made_reliably_green_9997fa3",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L427",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_work_log",
+      "target": "outlay_memory_2026_06_12_later_audit_complete_1_5_1_6_all_of_milestone_3_claude_code_config",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L455",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_work_log",
+      "target": "outlay_memory_2026_06_12_audit_milestone_2_committed_pushed",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L479",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_work_log",
+      "target": "outlay_memory_2026_06_15_fresh_ledger_ui_redesign_spec_implementation_plan_not_yet_built",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L499",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_work_log",
+      "target": "outlay_memory_2026_06_11_repo_audit_top_5_hardening_pass",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L524",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_work_log",
+      "target": "outlay_memory_2026_06_05_06_10_previous_session",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L550",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_outlay_project_memory",
+      "target": "outlay_memory_key_decisions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L586",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_outlay_project_memory",
+      "target": "outlay_memory_current_state_open_items",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L605",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_memory_outlay_project_memory",
+      "target": "outlay_memory_commands",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "memory.md",
+      "source_location": "L648",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}
