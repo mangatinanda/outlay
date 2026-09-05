@@ -1,0 +1,63 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_claude_rules_playwright_md",
+      "label": "playwright.md",
+      "file_type": "document",
+      "source_file": ".claude/rules/playwright.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "rules_playwright_playwright_e2e_rules",
+      "label": "Playwright e2e rules",
+      "file_type": "document",
+      "source_file": ".claude/rules/playwright.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "rules_playwright_never_assert_getbyrole_alert",
+      "label": "Never assert `getByRole(\"alert\")`",
+      "file_type": "document",
+      "source_file": ".claude/rules/playwright.md",
+      "source_location": "L3"
+    },
+    {
+      "id": "rules_playwright_auth_in_e2e",
+      "label": "Auth in e2e",
+      "file_type": "document",
+      "source_file": ".claude/rules/playwright.md",
+      "source_location": "L20"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_claude_rules_playwright_md",
+      "target": "rules_playwright_playwright_e2e_rules",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/rules/playwright.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "rules_playwright_playwright_e2e_rules",
+      "target": "rules_playwright_never_assert_getbyrole_alert",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/rules/playwright.md",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "rules_playwright_playwright_e2e_rules",
+      "target": "rules_playwright_auth_in_e2e",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/rules/playwright.md",
+      "source_location": "L20",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

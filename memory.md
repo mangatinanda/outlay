@@ -65,6 +65,44 @@ double‑spec; CI reads pnpm from `packageManager`).
 
 ## Work log
 
+### 2026‑09‑05 — PR #2 (in‑app notifications) reviewed + hardened before merge
+
+`/code-review 2 high` (10 finder angles, per‑finding verifiers) returned 15 findings on the branch; the
+correctness ones were fixed in `ffe1877`, each with a regression test written first (238 unit tests now).
+- **FK‑safe invite decline/accept:** `declineInvite` and `acceptInvite`'s duplicate‑row branch deleted a
+  `household_members` row that `expenses`/`settlements` may reference (admins can pick a pending invitee as
+  payer; **libSQL enforces FKs by default — `PRAGMA foreign_keys=1`**), so the DELETE threw and the invite
+  was stuck forever. New shared guard `memberLedgerReference()` (`src/lib/queries/member-ledger.ts`, also
+  reused by `deleteMember`) refuses with a clear message. Decline now writes an activity row; the
+  duplicate‑row path revalidates the layout.
+- **Cleanup cron:** `cleanupAbandonedAccounts` now deletes the user's `notifications` inside the atomic
+  batch (the new `notifications.user_id` FK would have 500'd the nightly job for any abandoned user who
+  ever got one).
+- **Honest results:** `createExpense`, `inviteToHousehold`, `acceptInvite`, `declineInvite` ran unguarded
+  lookups *after* their mutation, so a transient failure returned `{error}` for a committed row (retry ⇒
+  duplicate expense / "already invited"). Lookups now run before the mutation; only best‑effort
+  `notify`/`logActivity` follow it.
+- **Prune exempts `invite.received`** (a chatty household could silently delete a pending invite).
+- **`formatMinor` → shared `formatCurrency()`** (was hard‑coded `en-IN`: USD showed lakh grouping, JPY
+  showed decimals). `notificationText` gained a `default` branch (unknown type no longer crashes the header).
+- **Bell:** handles `loadNotifications`' `{error}` (no stuck "Loading…", no premature mark‑all‑read, badge
+  restored), skips poll ticks while open, adopts a fresh server `initialCount` via effect. Relative time in
+  `NotificationItem` gets `suppressHydrationWarning`.
+- **Service worker:** `sw.ts` prepends a `NetworkOnly` rule for `/api/notifications/` — Serwist's
+  `defaultCache` applies NetworkFirst (10s timeout → cache) to every same‑origin `/api/` GET, which could
+  resurrect a stale or another user's unread count.
+- **Docs corrected** (FEATURES.md + the 07‑07 entry above): no "mark all read" control exists (the bell
+  auto‑marks on open); `null`/`0` threshold = OFF, fires at‑or‑above; lists are fixed 10/50, not paginated;
+  invite outcomes go to all other admins; queries scope by `user_id` only.
+- **Deferred (design/UX, not blockers):** (1) the owner who unlocked `/admin` is resolved as superadmin on
+  every request (passcode cookie wins) and therefore sees no bell while `notify()` still writes rows to their
+  user id — needs a "lock admin" action or a superadmin actor that carries `userId`; (2) React 19 resets the
+  threshold form's uncontrolled input on an `{error}` result; (3) Accept/Decline/View‑all are non‑`menuitem`
+  children inside the `role="menu"` popup; (4) `readAt` reaches the client but isn't used for unread
+  styling; (5) pre‑existing: `cleanup.ts`/`deleteHousehold` don't delete `activity`/`settlements` rows
+  before the household row (same FK class); (6) `src/lib/db/index.test.ts` times out under CPU load
+  (dynamic import >5s) and then cascades into its sibling test — pre‑existing flake, not from this branch.
+
 ### 2026‑07‑07 — In-app notifications (branch `feat/in-app-notifications`)
 
 Implemented full in‑app notifications end‑to‑end via subagent‑driven TDD (12 tasks, all green).

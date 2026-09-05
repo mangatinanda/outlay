@@ -1,0 +1,111 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_src_claude_md",
+      "label": "CLAUDE.md",
+      "file_type": "document",
+      "source_file": "src/CLAUDE.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_claude_source_directory_context",
+      "label": "Source Directory Context",
+      "file_type": "document",
+      "source_file": "src/CLAUDE.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_claude_component_guidelines",
+      "label": "Component Guidelines",
+      "file_type": "document",
+      "source_file": "src/CLAUDE.md",
+      "source_location": "L3"
+    },
+    {
+      "id": "src_claude_server_vs_client_components",
+      "label": "Server vs Client Components",
+      "file_type": "document",
+      "source_file": "src/CLAUDE.md",
+      "source_location": "L9"
+    },
+    {
+      "id": "src_claude_database_patterns",
+      "label": "Database Patterns",
+      "file_type": "document",
+      "source_file": "src/CLAUDE.md",
+      "source_location": "L15"
+    },
+    {
+      "id": "src_claude_adding_new_features",
+      "label": "Adding New Features",
+      "file_type": "document",
+      "source_file": "src/CLAUDE.md",
+      "source_location": "L22"
+    },
+    {
+      "id": "src_claude_household_context_model_b_per_user",
+      "label": "Household Context (Model B \u2014 per-user)",
+      "file_type": "document",
+      "source_file": "src/CLAUDE.md",
+      "source_location": "L30"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_src_claude_md",
+      "target": "src_claude_source_directory_context",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/CLAUDE.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_claude_source_directory_context",
+      "target": "src_claude_component_guidelines",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/CLAUDE.md",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_claude_source_directory_context",
+      "target": "src_claude_server_vs_client_components",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/CLAUDE.md",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "src_claude_source_directory_context",
+      "target": "src_claude_database_patterns",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/CLAUDE.md",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "src_claude_source_directory_context",
+      "target": "src_claude_adding_new_features",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/CLAUDE.md",
+      "source_location": "L22",
+      "weight": 1.0
+    },
+    {
+      "source": "src_claude_source_directory_context",
+      "target": "src_claude_household_context_model_b_per_user",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/CLAUDE.md",
+      "source_location": "L30",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

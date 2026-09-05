@@ -1,0 +1,255 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_docs_superpowers_plans_2026_06_15_redesign_05_grids_login_polish_md",
+      "label": "2026-06-15-redesign-05-grids-login-polish.md",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_05_grids_login_polish_redesign_m5_m6_grids_login_empty_states_e2e_a11y",
+      "label": "Redesign M5+M6 \u2014 Grids, Login, Empty States, e2e & a11y",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_05_grids_login_polish_conventions_canonical_read_first",
+      "label": "Conventions (canonical \u2014 read first)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L15"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_05_grids_login_polish_task_1_restyle_the_categories_grid",
+      "label": "Task 1: Restyle the categories grid",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L42"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_05_grids_login_polish_task_2_add_a_friendly_empty_state_to_the_categories_page",
+      "label": "Task 2: Add a friendly empty state to the categories page",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L152"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_05_grids_login_polish_task_3_restyle_the_members_grid",
+      "label": "Task 3: Restyle the members grid",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L225"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_05_grids_login_polish_task_4_add_a_friendly_empty_state_to_the_members_page",
+      "label": "Task 4: Add a friendly empty state to the members page",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L354"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_05_grids_login_polish_task_5_restyle_the_households_grid",
+      "label": "Task 5: Restyle the households grid",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L425"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_05_grids_login_polish_task_6_restyle_the_settings_cards",
+      "label": "Task 6: Restyle the settings cards",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L554"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_05_grids_login_polish_task_7_restyle_the_login_screen",
+      "label": "Task 7: Restyle the login screen",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L645"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_05_grids_login_polish_task_8_soften_the_shared_emptystate_to_fresh_ledger",
+      "label": "Task 8: Soften the shared EmptyState to Fresh Ledger",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L740"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_05_grids_login_polish_task_9_e2e_switch_household_data_isolation_tdd",
+      "label": "Task 9: e2e \u2014 switch-household data isolation (TDD)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L787"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_05_grids_login_polish_task_10_wire_the_e2e_job_into_ci_non_blocking",
+      "label": "Task 10: Wire the e2e job into CI (non-blocking)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L964"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_05_grids_login_polish_task_11_a11y_reduced_motion_sweep",
+      "label": "Task 11: a11y + reduced-motion sweep",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L1034"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_05_grids_login_polish_task_12_mobile_lighthouse_pass_on_the_dashboard",
+      "label": "Task 12: Mobile Lighthouse pass on the dashboard",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L1052"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_05_grids_login_polish_critical_files_for_implementation",
+      "label": "Critical Files for Implementation",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L1101"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_docs_superpowers_plans_2026_06_15_redesign_05_grids_login_polish_md",
+      "target": "plans_2026_06_15_redesign_05_grids_login_polish_redesign_m5_m6_grids_login_empty_states_e2e_a11y",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_05_grids_login_polish_redesign_m5_m6_grids_login_empty_states_e2e_a11y",
+      "target": "plans_2026_06_15_redesign_05_grids_login_polish_conventions_canonical_read_first",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_05_grids_login_polish_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_05_grids_login_polish_task_1_restyle_the_categories_grid",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L42",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_05_grids_login_polish_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_05_grids_login_polish_task_2_add_a_friendly_empty_state_to_the_categories_page",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L152",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_05_grids_login_polish_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_05_grids_login_polish_task_3_restyle_the_members_grid",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L225",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_05_grids_login_polish_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_05_grids_login_polish_task_4_add_a_friendly_empty_state_to_the_members_page",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L354",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_05_grids_login_polish_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_05_grids_login_polish_task_5_restyle_the_households_grid",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L425",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_05_grids_login_polish_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_05_grids_login_polish_task_6_restyle_the_settings_cards",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L554",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_05_grids_login_polish_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_05_grids_login_polish_task_7_restyle_the_login_screen",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L645",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_05_grids_login_polish_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_05_grids_login_polish_task_8_soften_the_shared_emptystate_to_fresh_ledger",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L740",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_05_grids_login_polish_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_05_grids_login_polish_task_9_e2e_switch_household_data_isolation_tdd",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L787",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_05_grids_login_polish_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_05_grids_login_polish_task_10_wire_the_e2e_job_into_ci_non_blocking",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L964",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_05_grids_login_polish_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_05_grids_login_polish_task_11_a11y_reduced_motion_sweep",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L1034",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_05_grids_login_polish_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_05_grids_login_polish_task_12_mobile_lighthouse_pass_on_the_dashboard",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L1052",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_05_grids_login_polish_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_05_grids_login_polish_critical_files_for_implementation",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-05-grids-login-polish.md",
+      "source_location": "L1101",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

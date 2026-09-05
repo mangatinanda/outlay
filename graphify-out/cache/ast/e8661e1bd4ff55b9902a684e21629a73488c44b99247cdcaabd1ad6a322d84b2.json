@@ -1,0 +1,191 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_features_md",
+      "label": "FEATURES.md",
+      "file_type": "document",
+      "source_file": "FEATURES.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "outlay_features_what_you_can_do_with_outlay",
+      "label": "What you can do with Outlay",
+      "file_type": "document",
+      "source_file": "FEATURES.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "outlay_features_track_your_spending",
+      "label": "Track your spending",
+      "file_type": "document",
+      "source_file": "FEATURES.md",
+      "source_location": "L9"
+    },
+    {
+      "id": "outlay_features_keep_things_organized",
+      "label": "Keep things organized",
+      "file_type": "document",
+      "source_file": "FEATURES.md",
+      "source_location": "L15"
+    },
+    {
+      "id": "outlay_features_see_where_the_money_goes",
+      "label": "See where the money goes",
+      "file_type": "document",
+      "source_file": "FEATURES.md",
+      "source_location": "L21"
+    },
+    {
+      "id": "outlay_features_settle_up_who_owes_whom",
+      "label": "Settle up (who owes whom)",
+      "file_type": "document",
+      "source_file": "FEATURES.md",
+      "source_location": "L29"
+    },
+    {
+      "id": "outlay_features_stay_in_the_loop",
+      "label": "Stay in the loop",
+      "file_type": "document",
+      "source_file": "FEATURES.md",
+      "source_location": "L35"
+    },
+    {
+      "id": "outlay_features_activity_feed",
+      "label": "Activity feed",
+      "file_type": "document",
+      "source_file": "FEATURES.md",
+      "source_location": "L47"
+    },
+    {
+      "id": "outlay_features_more_than_one_home",
+      "label": "More than one home",
+      "file_type": "document",
+      "source_file": "FEATURES.md",
+      "source_location": "L52"
+    },
+    {
+      "id": "outlay_features_bring_data_in_and_out",
+      "label": "Bring data in and out",
+      "file_type": "document",
+      "source_file": "FEATURES.md",
+      "source_location": "L57"
+    },
+    {
+      "id": "outlay_features_signing_in_and_sharing",
+      "label": "Signing in and sharing",
+      "file_type": "document",
+      "source_file": "FEATURES.md",
+      "source_location": "L62"
+    },
+    {
+      "id": "outlay_features_use_it_like_an_app",
+      "label": "Use it like an app",
+      "file_type": "document",
+      "source_file": "FEATURES.md",
+      "source_location": "L67"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_features_md",
+      "target": "outlay_features_what_you_can_do_with_outlay",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "FEATURES.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_features_what_you_can_do_with_outlay",
+      "target": "outlay_features_track_your_spending",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "FEATURES.md",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_features_what_you_can_do_with_outlay",
+      "target": "outlay_features_keep_things_organized",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "FEATURES.md",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_features_what_you_can_do_with_outlay",
+      "target": "outlay_features_see_where_the_money_goes",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "FEATURES.md",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_features_what_you_can_do_with_outlay",
+      "target": "outlay_features_settle_up_who_owes_whom",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "FEATURES.md",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_features_what_you_can_do_with_outlay",
+      "target": "outlay_features_stay_in_the_loop",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "FEATURES.md",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_features_what_you_can_do_with_outlay",
+      "target": "outlay_features_activity_feed",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "FEATURES.md",
+      "source_location": "L47",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_features_what_you_can_do_with_outlay",
+      "target": "outlay_features_more_than_one_home",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "FEATURES.md",
+      "source_location": "L52",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_features_what_you_can_do_with_outlay",
+      "target": "outlay_features_bring_data_in_and_out",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "FEATURES.md",
+      "source_location": "L57",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_features_what_you_can_do_with_outlay",
+      "target": "outlay_features_signing_in_and_sharing",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "FEATURES.md",
+      "source_location": "L62",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_features_what_you_can_do_with_outlay",
+      "target": "outlay_features_use_it_like_an_app",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "FEATURES.md",
+      "source_location": "L67",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

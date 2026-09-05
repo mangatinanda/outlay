@@ -1,0 +1,367 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_docs_superpowers_plans_2026_06_15_redesign_03_shell_and_dashboard_md",
+      "label": "2026-06-15-redesign-03-shell-and-dashboard.md",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_redesign_m2_m3_app_shell_dashboard",
+      "label": "Redesign M2+M3 \u2014 App Shell & Dashboard",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_conventions_canonical_read_first",
+      "label": "Conventions (canonical \u2014 read first)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L15"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_1_confirm_motion_primitive_tokens_are_available",
+      "label": "Task 1: Confirm motion primitive + tokens are available",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L31"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_2_wrap_app_content_in_pagetransition",
+      "label": "Task 2: Wrap (app) content in PageTransition",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L55"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_3_restyle_the_desktop_sidebar_with_a_soft_indigo_active_pill",
+      "label": "Task 3: Restyle the desktop sidebar with a soft indigo active pill",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L121"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_4_extract_the_mobile_nav_active_item_logic_and_unit_test_it",
+      "label": "Task 4: Extract the mobile-nav active-item logic and unit-test it",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L217"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_5_restyle_the_mobile_bottom_nav_sliding_pill_elevated_fab_safe_area_44px",
+      "label": "Task 5: Restyle the mobile bottom nav (sliding pill, elevated FAB, safe-area, \u226544px)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L301"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_6_restyle_the_header_greeting_household_name_avatar",
+      "label": "Task 6: Restyle the header (greeting + household name + avatar)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L408"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_7_verify_the_app_shell_lint_build_screenshots_eyeball",
+      "label": "Task 7: Verify the app shell (lint, build, screenshots, eyeball)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L550"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_critical_files_for_implementation",
+      "label": "Critical Files for Implementation",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L621"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_8_add_the_count_up_easing_helper_tdd_pure_logic",
+      "label": "Task 8: Add the count-up easing helper (TDD, pure logic)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L634"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_9_create_the_animatednumber_primitive_reduced_motion_aware",
+      "label": "Task 9: Create the AnimatedNumber primitive (reduced-motion aware)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L717"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_10_create_the_stagger_staggeritem_primitives_reduced_motion_aware",
+      "label": "Task 10: Create the Stagger / StaggerItem primitives (reduced-motion aware)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L804"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_11_redesign_summary_cards_into_hero_soft_stat_chips",
+      "label": "Task 11: Redesign summary cards into hero + soft stat chips",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L892"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_12_convert_daily_spending_chart_to_a_gradient_area_chart_with_empty_state",
+      "label": "Task 12: Convert daily-spending chart to a gradient area chart with empty state",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L1029"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_13_restyle_the_category_donut_with_percentage_chips",
+      "label": "Task 13: Restyle the category donut with percentage chips",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L1175"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_14_restyle_the_recent_expenses_list_with_category_chips",
+      "label": "Task 14: Restyle the recent-expenses list with category chips",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L1308"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_15_full_build_verification",
+      "label": "Task 15: Full build verification",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L1431"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_16_visual_verification_seeded_state_desktop_mobile_light_dark",
+      "label": "Task 16: Visual verification \u2014 seeded state (desktop + mobile, light + dark)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L1459"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_17_visual_verification_empty_state_desktop_mobile_light_dark",
+      "label": "Task 17: Visual verification \u2014 empty state (desktop + mobile, light + dark)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L1491"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_18_add_a_playwright_smoke_test_that_the_dashboard_renders_after_login",
+      "label": "Task 18: Add a Playwright smoke test that the dashboard renders after login",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L1512"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_03_shell_and_dashboard_critical_files_for_implementation_1598",
+      "label": "Critical Files for Implementation",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L1598"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_docs_superpowers_plans_2026_06_15_redesign_03_shell_and_dashboard_md",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_redesign_m2_m3_app_shell_dashboard",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_redesign_m2_m3_app_shell_dashboard",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_conventions_canonical_read_first",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_1_confirm_motion_primitive_tokens_are_available",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_2_wrap_app_content_in_pagetransition",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L55",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_3_restyle_the_desktop_sidebar_with_a_soft_indigo_active_pill",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L121",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_4_extract_the_mobile_nav_active_item_logic_and_unit_test_it",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L217",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_5_restyle_the_mobile_bottom_nav_sliding_pill_elevated_fab_safe_area_44px",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L301",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_6_restyle_the_header_greeting_household_name_avatar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L408",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_7_verify_the_app_shell_lint_build_screenshots_eyeball",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L550",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_critical_files_for_implementation",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L621",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_8_add_the_count_up_easing_helper_tdd_pure_logic",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L634",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_9_create_the_animatednumber_primitive_reduced_motion_aware",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L717",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_10_create_the_stagger_staggeritem_primitives_reduced_motion_aware",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L804",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_11_redesign_summary_cards_into_hero_soft_stat_chips",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L892",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_12_convert_daily_spending_chart_to_a_gradient_area_chart_with_empty_state",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L1029",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_13_restyle_the_category_donut_with_percentage_chips",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L1175",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_14_restyle_the_recent_expenses_list_with_category_chips",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L1308",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_15_full_build_verification",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L1431",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_16_visual_verification_seeded_state_desktop_mobile_light_dark",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L1459",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_17_visual_verification_empty_state_desktop_mobile_light_dark",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L1491",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_task_18_add_a_playwright_smoke_test_that_the_dashboard_renders_after_login",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L1512",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_03_shell_and_dashboard_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_03_shell_and_dashboard_critical_files_for_implementation_1598",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-03-shell-and-dashboard.md",
+      "source_location": "L1598",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

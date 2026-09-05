@@ -1,0 +1,415 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_docs_superpowers_plans_2026_06_15_redesign_01_repo_hardening_md",
+      "label": "2026-06-15-redesign-01-repo-hardening.md",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_redesign_m0_repo_hardening_biome_typed_env_playwright",
+      "label": "Redesign M0 \u2014 Repo Hardening (Biome \u00b7 typed-env \u00b7 Playwright)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_conventions_canonical_read_first",
+      "label": "Conventions (canonical \u2014 read first)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L15"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_task_1_install_biome_and_remove_eslint_dependencies",
+      "label": "Task 1: Install Biome and remove ESLint dependencies",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L33"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_task_2_create_biome_json",
+      "label": "Task 2: Create biome.json",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L56"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_task_3_delete_the_eslint_config_file",
+      "label": "Task 3: Delete the ESLint config file",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L157"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_task_4_wire_biome_into_package_json_scripts",
+      "label": "Task 4: Wire Biome into package.json scripts",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L166"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_task_5_update_the_ci_lint_step",
+      "label": "Task 5: Update the CI lint step",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L205"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_task_6_add_the_posttooluse_auto_format_hook_script",
+      "label": "Task 6: Add the PostToolUse auto-format hook script",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L231"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_task_7_register_the_hook_and_biome_permissions_in_claude_settings_json",
+      "label": "Task 7: Register the hook and Biome permissions in .claude/settings.json",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L310"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_task_8_full_verification_of_the_m0_toolchain_swap",
+      "label": "Task 8: Full verification of the M0 toolchain swap",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L364"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_task_9_commit_m0_as_an_isolated_commit",
+      "label": "Task 9: Commit M0 as an isolated commit",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L394"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_typed_env_module_zod",
+      "label": "Typed env module (zod)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L438"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_task_10_create_the_typed_env_schema_with_failing_tests_first",
+      "label": "Task 10: Create the typed env schema with failing tests first",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L444"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_task_11_replace_raw_process_env_reads_with_the_typed_env_export",
+      "label": "Task 11: Replace raw process.env reads with the typed env export",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L625"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_playwright_e2e_scaffold_mobile_first",
+      "label": "Playwright e2e scaffold (mobile-first)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L827"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_task_12_install_playwright_test_as_an_exact_dev_dependency",
+      "label": "Task 12: Install @playwright/test as an exact dev dependency",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L841"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_task_13_add_the_db_e2e_and_test_e2e_scripts",
+      "label": "Task 13: Add the db:e2e and test:e2e scripts",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L863"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_task_14_gitignore_the_e2e_database_artifacts",
+      "label": "Task 14: Gitignore the e2e database artifacts",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L904"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_task_15_create_the_playwright_global_setup_that_builds_the_e2e_db",
+      "label": "Task 15: Create the Playwright global-setup that builds the e2e DB",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L941"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_task_16_create_playwright_config_ts_single_pixel_7_mobile_project",
+      "label": "Task 16: Create playwright.config.ts (single Pixel 7 mobile project)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L983"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_task_17_write_the_login_smoke_test_passcode_path",
+      "label": "Task 17: Write the login smoke test (passcode path)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L1055"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_task_18_add_the_claude_rules_note_about_the_route_announcer",
+      "label": "Task 18: Add the .claude/rules note about the route announcer",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L1116"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_task_19_add_a_separate_non_blocking_e2e_ci_job",
+      "label": "Task 19: Add a separate, non-blocking e2e CI job",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L1162"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_task_20_final_full_suite_verification",
+      "label": "Task 20: Final full-suite verification",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L1232"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_01_repo_hardening_task_21_pin_packagemanager_and_engines_dependency_discipline_spec_8_4",
+      "label": "Task 21: Pin packageManager and engines (dependency discipline \u2014 spec \u00a78.4)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L1258"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_docs_superpowers_plans_2026_06_15_redesign_01_repo_hardening_md",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_redesign_m0_repo_hardening_biome_typed_env_playwright",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_redesign_m0_repo_hardening_biome_typed_env_playwright",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_conventions_canonical_read_first",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_task_1_install_biome_and_remove_eslint_dependencies",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_task_2_create_biome_json",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L56",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_task_3_delete_the_eslint_config_file",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L157",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_task_4_wire_biome_into_package_json_scripts",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L166",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_task_5_update_the_ci_lint_step",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L205",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_task_6_add_the_posttooluse_auto_format_hook_script",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L231",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_task_7_register_the_hook_and_biome_permissions_in_claude_settings_json",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L310",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_task_8_full_verification_of_the_m0_toolchain_swap",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L364",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_task_9_commit_m0_as_an_isolated_commit",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L394",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_redesign_m0_repo_hardening_biome_typed_env_playwright",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_typed_env_module_zod",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L438",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_typed_env_module_zod",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_task_10_create_the_typed_env_schema_with_failing_tests_first",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L444",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_typed_env_module_zod",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_task_11_replace_raw_process_env_reads_with_the_typed_env_export",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L625",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_redesign_m0_repo_hardening_biome_typed_env_playwright",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_playwright_e2e_scaffold_mobile_first",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L827",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_playwright_e2e_scaffold_mobile_first",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_task_12_install_playwright_test_as_an_exact_dev_dependency",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L841",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_playwright_e2e_scaffold_mobile_first",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_task_13_add_the_db_e2e_and_test_e2e_scripts",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L863",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_playwright_e2e_scaffold_mobile_first",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_task_14_gitignore_the_e2e_database_artifacts",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L904",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_playwright_e2e_scaffold_mobile_first",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_task_15_create_the_playwright_global_setup_that_builds_the_e2e_db",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L941",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_playwright_e2e_scaffold_mobile_first",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_task_16_create_playwright_config_ts_single_pixel_7_mobile_project",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L983",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_playwright_e2e_scaffold_mobile_first",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_task_17_write_the_login_smoke_test_passcode_path",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L1055",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_playwright_e2e_scaffold_mobile_first",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_task_18_add_the_claude_rules_note_about_the_route_announcer",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L1116",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_playwright_e2e_scaffold_mobile_first",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_task_19_add_a_separate_non_blocking_e2e_ci_job",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L1162",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_playwright_e2e_scaffold_mobile_first",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_task_20_final_full_suite_verification",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L1232",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_01_repo_hardening_playwright_e2e_scaffold_mobile_first",
+      "target": "plans_2026_06_15_redesign_01_repo_hardening_task_21_pin_packagemanager_and_engines_dependency_discipline_spec_8_4",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-01-repo-hardening.md",
+      "source_location": "L1258",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

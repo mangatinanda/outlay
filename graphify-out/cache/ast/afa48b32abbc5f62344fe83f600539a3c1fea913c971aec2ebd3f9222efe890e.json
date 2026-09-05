@@ -1,0 +1,159 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_docs_superpowers_plans_2026_06_15_redesign_04_expenses_and_forms_md",
+      "label": "2026-06-15-redesign-04-expenses-and-forms.md",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_04_expenses_and_forms_redesign_m4_expenses_list_add_edit_flow",
+      "label": "Redesign M4 \u2014 Expenses List & Add/Edit Flow",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_04_expenses_and_forms_conventions_canonical_read_first",
+      "label": "Conventions (canonical \u2014 read first)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "L15"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_04_expenses_and_forms_task_1_restyle_the_grouped_expense_list_shell_sticky_headers_soft_rows",
+      "label": "Task 1: Restyle the grouped expense list shell (sticky headers + soft rows)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "L30"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_04_expenses_and_forms_task_2_build_the_expenserow_with_swipe_to_delete_and_a_button_fallback",
+      "label": "Task 2: Build the ExpenseRow with swipe-to-delete and a button fallback",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "L92"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_04_expenses_and_forms_task_3_convert_the_expense_form_to_a_chip_category_selector_avatar_member_chips_large_amount",
+      "label": "Task 3: Convert the expense form to a chip category selector + avatar member chips + large amount",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "L243"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_04_expenses_and_forms_task_4_mobile_add_edit_bottom_sheet_that_the_fab_morphs_into_desktop_keeps_the_route",
+      "label": "Task 4: Mobile add/edit bottom sheet that the FAB morphs into (desktop keeps the route)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "L368"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_04_expenses_and_forms_task_5_visual_verification_screenshots_both_breakpoints_both_themes",
+      "label": "Task 5: Visual verification (screenshots, both breakpoints, both themes)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "L684"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_04_expenses_and_forms_task_6_playwright_e2e_add_an_expense_and_assert_list_dashboard_update",
+      "label": "Task 6: Playwright e2e \u2014 add an expense and assert list + dashboard update",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "L702"
+    },
+    {
+      "id": "plans_2026_06_15_redesign_04_expenses_and_forms_critical_files_for_implementation",
+      "label": "Critical Files for Implementation",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "L811"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_docs_superpowers_plans_2026_06_15_redesign_04_expenses_and_forms_md",
+      "target": "plans_2026_06_15_redesign_04_expenses_and_forms_redesign_m4_expenses_list_add_edit_flow",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_04_expenses_and_forms_redesign_m4_expenses_list_add_edit_flow",
+      "target": "plans_2026_06_15_redesign_04_expenses_and_forms_conventions_canonical_read_first",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_04_expenses_and_forms_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_04_expenses_and_forms_task_1_restyle_the_grouped_expense_list_shell_sticky_headers_soft_rows",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_04_expenses_and_forms_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_04_expenses_and_forms_task_2_build_the_expenserow_with_swipe_to_delete_and_a_button_fallback",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "L92",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_04_expenses_and_forms_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_04_expenses_and_forms_task_3_convert_the_expense_form_to_a_chip_category_selector_avatar_member_chips_large_amount",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "L243",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_04_expenses_and_forms_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_04_expenses_and_forms_task_4_mobile_add_edit_bottom_sheet_that_the_fab_morphs_into_desktop_keeps_the_route",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "L368",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_04_expenses_and_forms_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_04_expenses_and_forms_task_5_visual_verification_screenshots_both_breakpoints_both_themes",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "L684",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_04_expenses_and_forms_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_04_expenses_and_forms_task_6_playwright_e2e_add_an_expense_and_assert_list_dashboard_update",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "L702",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_redesign_04_expenses_and_forms_conventions_canonical_read_first",
+      "target": "plans_2026_06_15_redesign_04_expenses_and_forms_critical_files_for_implementation",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-redesign-04-expenses-and-forms.md",
+      "source_location": "L811",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

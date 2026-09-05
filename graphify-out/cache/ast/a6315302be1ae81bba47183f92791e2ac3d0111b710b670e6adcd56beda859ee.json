@@ -1,0 +1,143 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_claude_skills_design_system_skill_md",
+      "label": "SKILL.md",
+      "file_type": "document",
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "design_system_skill_fresh_ledger_design_system",
+      "label": "Fresh Ledger Design System",
+      "file_type": "document",
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": "L6"
+    },
+    {
+      "id": "design_system_skill_core_rules_non_negotiable",
+      "label": "Core rules (non-negotiable)",
+      "file_type": "document",
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": "L12"
+    },
+    {
+      "id": "design_system_skill_color_tokens_semantic",
+      "label": "Color tokens (semantic)",
+      "file_type": "document",
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": "L25"
+    },
+    {
+      "id": "design_system_skill_radius_elevation_tokens",
+      "label": "Radius & elevation tokens",
+      "file_type": "document",
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": "L47"
+    },
+    {
+      "id": "design_system_skill_type_scale",
+      "label": "Type scale",
+      "file_type": "document",
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": "L61"
+    },
+    {
+      "id": "design_system_skill_motion_rules",
+      "label": "Motion rules",
+      "file_type": "document",
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": "L76"
+    },
+    {
+      "id": "design_system_skill_voice",
+      "label": "Voice",
+      "file_type": "document",
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": "L92"
+    },
+    {
+      "id": "design_system_skill_restyle_workflow",
+      "label": "Restyle workflow",
+      "file_type": "document",
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": "L101"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_claude_skills_design_system_skill_md",
+      "target": "design_system_skill_fresh_ledger_design_system",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "design_system_skill_fresh_ledger_design_system",
+      "target": "design_system_skill_core_rules_non_negotiable",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "design_system_skill_fresh_ledger_design_system",
+      "target": "design_system_skill_color_tokens_semantic",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "design_system_skill_fresh_ledger_design_system",
+      "target": "design_system_skill_radius_elevation_tokens",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": "L47",
+      "weight": 1.0
+    },
+    {
+      "source": "design_system_skill_fresh_ledger_design_system",
+      "target": "design_system_skill_type_scale",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": "L61",
+      "weight": 1.0
+    },
+    {
+      "source": "design_system_skill_fresh_ledger_design_system",
+      "target": "design_system_skill_motion_rules",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": "L76",
+      "weight": 1.0
+    },
+    {
+      "source": "design_system_skill_fresh_ledger_design_system",
+      "target": "design_system_skill_voice",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": "L92",
+      "weight": 1.0
+    },
+    {
+      "source": "design_system_skill_fresh_ledger_design_system",
+      "target": "design_system_skill_restyle_workflow",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/design-system/SKILL.md",
+      "source_location": "L101",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

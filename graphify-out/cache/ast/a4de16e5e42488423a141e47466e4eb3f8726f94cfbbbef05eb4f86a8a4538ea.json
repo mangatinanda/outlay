@@ -1,0 +1,255 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_docs_superpowers_plans_2026_07_07_in_app_notifications_md",
+      "label": "2026-07-07-in-app-notifications.md",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_07_07_in_app_notifications_in_app_notifications_implementation_plan",
+      "label": "In-App Notifications Implementation Plan",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_07_07_in_app_notifications_global_constraints",
+      "label": "Global Constraints",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L13"
+    },
+    {
+      "id": "plans_2026_07_07_in_app_notifications_task_1_schema_notifications_table_households_notify_expense_over_minor",
+      "label": "Task 1: Schema \u2014 `notifications` table + `households.notify_expense_over_minor`",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L27"
+    },
+    {
+      "id": "plans_2026_07_07_in_app_notifications_task_2_notify_helper",
+      "label": "Task 2: `notify()` helper",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L109"
+    },
+    {
+      "id": "plans_2026_07_07_in_app_notifications_task_3_emitter_invite_received_from_invitetohousehold",
+      "label": "Task 3: Emitter \u2014 `invite.received` from `inviteToHousehold`",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L314"
+    },
+    {
+      "id": "plans_2026_07_07_in_app_notifications_task_4_read_queries_getunreadcount_listnotifications",
+      "label": "Task 4: Read queries \u2014 `getUnreadCount` + `listNotifications`",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L440"
+    },
+    {
+      "id": "plans_2026_07_07_in_app_notifications_task_5_actions_acceptinvite_declineinvite_markallnotificationsread_loadnotifications",
+      "label": "Task 5: Actions \u2014 `acceptInvite`, `declineInvite`, `markAllNotificationsRead`, `loadNotifications`",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L691"
+    },
+    {
+      "id": "plans_2026_07_07_in_app_notifications_task_6_emitters_settlement_recorded_expense_large",
+      "label": "Task 6: Emitters \u2014 `settlement.recorded` + `expense.large`",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L1081"
+    },
+    {
+      "id": "plans_2026_07_07_in_app_notifications_task_7_threshold_setting_validator_action_settings_ui",
+      "label": "Task 7: Threshold setting \u2014 validator + action + Settings UI",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L1358"
+    },
+    {
+      "id": "plans_2026_07_07_in_app_notifications_task_8_count_poll_route_get_api_notifications_count",
+      "label": "Task 8: Count poll route \u2014 GET `/api/notifications/count`",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L1677"
+    },
+    {
+      "id": "plans_2026_07_07_in_app_notifications_task_9_notificationitem_shared_component",
+      "label": "Task 9: `NotificationItem` shared component",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L1772"
+    },
+    {
+      "id": "plans_2026_07_07_in_app_notifications_task_10_notificationbell_header_layout_wiring",
+      "label": "Task 10: `NotificationBell` + header + layout wiring",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L2057"
+    },
+    {
+      "id": "plans_2026_07_07_in_app_notifications_task_11_notifications_page_loading_skeleton",
+      "label": "Task 11: `/notifications` page + loading skeleton",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L2276"
+    },
+    {
+      "id": "plans_2026_07_07_in_app_notifications_task_12_e2e_guard_full_verification_memory",
+      "label": "Task 12: e2e guard, full verification, memory",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L2371"
+    },
+    {
+      "id": "plans_2026_07_07_in_app_notifications_post_plan_notes_for_the_implementer",
+      "label": "Post-plan notes for the implementer",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L2413"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_docs_superpowers_plans_2026_07_07_in_app_notifications_md",
+      "target": "plans_2026_07_07_in_app_notifications_in_app_notifications_implementation_plan",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_07_07_in_app_notifications_in_app_notifications_implementation_plan",
+      "target": "plans_2026_07_07_in_app_notifications_global_constraints",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_07_07_in_app_notifications_global_constraints",
+      "target": "plans_2026_07_07_in_app_notifications_task_1_schema_notifications_table_households_notify_expense_over_minor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L27",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_07_07_in_app_notifications_global_constraints",
+      "target": "plans_2026_07_07_in_app_notifications_task_2_notify_helper",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L109",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_07_07_in_app_notifications_global_constraints",
+      "target": "plans_2026_07_07_in_app_notifications_task_3_emitter_invite_received_from_invitetohousehold",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L314",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_07_07_in_app_notifications_global_constraints",
+      "target": "plans_2026_07_07_in_app_notifications_task_4_read_queries_getunreadcount_listnotifications",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L440",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_07_07_in_app_notifications_global_constraints",
+      "target": "plans_2026_07_07_in_app_notifications_task_5_actions_acceptinvite_declineinvite_markallnotificationsread_loadnotifications",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L691",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_07_07_in_app_notifications_global_constraints",
+      "target": "plans_2026_07_07_in_app_notifications_task_6_emitters_settlement_recorded_expense_large",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L1081",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_07_07_in_app_notifications_global_constraints",
+      "target": "plans_2026_07_07_in_app_notifications_task_7_threshold_setting_validator_action_settings_ui",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L1358",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_07_07_in_app_notifications_global_constraints",
+      "target": "plans_2026_07_07_in_app_notifications_task_8_count_poll_route_get_api_notifications_count",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L1677",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_07_07_in_app_notifications_global_constraints",
+      "target": "plans_2026_07_07_in_app_notifications_task_9_notificationitem_shared_component",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L1772",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_07_07_in_app_notifications_global_constraints",
+      "target": "plans_2026_07_07_in_app_notifications_task_10_notificationbell_header_layout_wiring",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L2057",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_07_07_in_app_notifications_global_constraints",
+      "target": "plans_2026_07_07_in_app_notifications_task_11_notifications_page_loading_skeleton",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L2276",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_07_07_in_app_notifications_global_constraints",
+      "target": "plans_2026_07_07_in_app_notifications_task_12_e2e_guard_full_verification_memory",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L2371",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_07_07_in_app_notifications_in_app_notifications_implementation_plan",
+      "target": "plans_2026_07_07_in_app_notifications_post_plan_notes_for_the_implementer",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-07-in-app-notifications.md",
+      "source_location": "L2413",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

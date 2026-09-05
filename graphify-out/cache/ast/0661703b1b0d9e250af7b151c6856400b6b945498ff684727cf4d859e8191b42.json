@@ -1,0 +1,63 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_graphify_out_memory_query_20260707_051325_make_me_understand_this_repo_check_if_dead_code_c_md",
+      "label": "query_20260707_051325_make_me_understand_this_repo__check_if_dead_code_c.md",
+      "file_type": "document",
+      "source_file": "graphify-out/memory/query_20260707_051325_make_me_understand_this_repo__check_if_dead_code_c.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "memory_query_20260707_051325_make_me_understand_this_repo_check_if_dead_code_c_q_make_me_understand_this_repo_check_if_dead_code_cleanup_is_needed",
+      "label": "Q: Make me understand this repo; check if dead code cleanup is needed.",
+      "file_type": "document",
+      "source_file": "graphify-out/memory/query_20260707_051325_make_me_understand_this_repo__check_if_dead_code_c.md",
+      "source_location": "L9"
+    },
+    {
+      "id": "memory_query_20260707_051325_make_me_understand_this_repo_check_if_dead_code_c_answer",
+      "label": "Answer",
+      "file_type": "document",
+      "source_file": "graphify-out/memory/query_20260707_051325_make_me_understand_this_repo__check_if_dead_code_c.md",
+      "source_location": "L11"
+    },
+    {
+      "id": "memory_query_20260707_051325_make_me_understand_this_repo_check_if_dead_code_c_source_nodes",
+      "label": "Source Nodes",
+      "file_type": "document",
+      "source_file": "graphify-out/memory/query_20260707_051325_make_me_understand_this_repo__check_if_dead_code_c.md",
+      "source_location": "L15"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_graphify_out_memory_query_20260707_051325_make_me_understand_this_repo_check_if_dead_code_c_md",
+      "target": "memory_query_20260707_051325_make_me_understand_this_repo_check_if_dead_code_c_q_make_me_understand_this_repo_check_if_dead_code_cleanup_is_needed",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "graphify-out/memory/query_20260707_051325_make_me_understand_this_repo__check_if_dead_code_c.md",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "memory_query_20260707_051325_make_me_understand_this_repo_check_if_dead_code_c_q_make_me_understand_this_repo_check_if_dead_code_cleanup_is_needed",
+      "target": "memory_query_20260707_051325_make_me_understand_this_repo_check_if_dead_code_c_answer",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "graphify-out/memory/query_20260707_051325_make_me_understand_this_repo__check_if_dead_code_c.md",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "memory_query_20260707_051325_make_me_understand_this_repo_check_if_dead_code_c_q_make_me_understand_this_repo_check_if_dead_code_cleanup_is_needed",
+      "target": "memory_query_20260707_051325_make_me_understand_this_repo_check_if_dead_code_c_source_nodes",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "graphify-out/memory/query_20260707_051325_make_me_understand_this_repo__check_if_dead_code_c.md",
+      "source_location": "L15",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

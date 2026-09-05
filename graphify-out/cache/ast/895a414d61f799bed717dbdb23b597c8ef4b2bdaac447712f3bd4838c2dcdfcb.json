@@ -1,0 +1,207 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_plans_2026_06_09_google_login_md",
+      "label": "2026-06-09-google-login.md",
+      "file_type": "document",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_06_09_google_login_plan_sign_in_with_google_model_a_identity_layer",
+      "label": "Plan \u2014 \"Sign in with Google\" (Model A: identity layer)",
+      "file_type": "document",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_06_09_google_login_1_goal",
+      "label": "1. Goal",
+      "file_type": "document",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L9"
+    },
+    {
+      "id": "plans_2026_06_09_google_login_2_locked_decisions",
+      "label": "2. Locked decisions",
+      "file_type": "document",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L16"
+    },
+    {
+      "id": "plans_2026_06_09_google_login_3_what_google_buys_us_in_model_a",
+      "label": "3. What Google buys us in Model A",
+      "file_type": "document",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L31"
+    },
+    {
+      "id": "plans_2026_06_09_google_login_4_technical_design",
+      "label": "4. Technical design",
+      "file_type": "document",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L43"
+    },
+    {
+      "id": "plans_2026_06_09_google_login_allow_list_callback_the_security_crux",
+      "label": "Allow\u2011list callback (the security crux)",
+      "file_type": "document",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L58"
+    },
+    {
+      "id": "plans_2026_06_09_google_login_5_file_by_file_changes",
+      "label": "5. File-by-file changes",
+      "file_type": "document",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L70"
+    },
+    {
+      "id": "plans_2026_06_09_google_login_6_external_setup_google_cloud",
+      "label": "6. External setup (Google Cloud)",
+      "file_type": "document",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L84"
+    },
+    {
+      "id": "plans_2026_06_09_google_login_7_implementation_steps_each_with_a_verification_gate",
+      "label": "7. Implementation steps (each with a verification gate)",
+      "file_type": "document",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L94"
+    },
+    {
+      "id": "plans_2026_06_09_google_login_8_model_b_user_owned_households_future_documented_now",
+      "label": "8. Model B \u2014 user\u2011owned households (FUTURE, documented now)",
+      "file_type": "document",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L105"
+    },
+    {
+      "id": "plans_2026_06_09_google_login_9_risks_gotchas",
+      "label": "9. Risks & gotchas",
+      "file_type": "document",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L128"
+    },
+    {
+      "id": "plans_2026_06_09_google_login_10_out_of_scope_now",
+      "label": "10. Out of scope (now)",
+      "file_type": "document",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L139"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_plans_2026_06_09_google_login_md",
+      "target": "plans_2026_06_09_google_login_plan_sign_in_with_google_model_a_identity_layer",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_09_google_login_plan_sign_in_with_google_model_a_identity_layer",
+      "target": "plans_2026_06_09_google_login_1_goal",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_09_google_login_plan_sign_in_with_google_model_a_identity_layer",
+      "target": "plans_2026_06_09_google_login_2_locked_decisions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_09_google_login_plan_sign_in_with_google_model_a_identity_layer",
+      "target": "plans_2026_06_09_google_login_3_what_google_buys_us_in_model_a",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_09_google_login_plan_sign_in_with_google_model_a_identity_layer",
+      "target": "plans_2026_06_09_google_login_4_technical_design",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L43",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_09_google_login_4_technical_design",
+      "target": "plans_2026_06_09_google_login_allow_list_callback_the_security_crux",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L58",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_09_google_login_plan_sign_in_with_google_model_a_identity_layer",
+      "target": "plans_2026_06_09_google_login_5_file_by_file_changes",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L70",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_09_google_login_plan_sign_in_with_google_model_a_identity_layer",
+      "target": "plans_2026_06_09_google_login_6_external_setup_google_cloud",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L84",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_09_google_login_plan_sign_in_with_google_model_a_identity_layer",
+      "target": "plans_2026_06_09_google_login_7_implementation_steps_each_with_a_verification_gate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L94",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_09_google_login_plan_sign_in_with_google_model_a_identity_layer",
+      "target": "plans_2026_06_09_google_login_8_model_b_user_owned_households_future_documented_now",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L105",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_09_google_login_plan_sign_in_with_google_model_a_identity_layer",
+      "target": "plans_2026_06_09_google_login_9_risks_gotchas",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L128",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_09_google_login_plan_sign_in_with_google_model_a_identity_layer",
+      "target": "plans_2026_06_09_google_login_10_out_of_scope_now",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-09-google-login.md",
+      "source_location": "L139",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}
