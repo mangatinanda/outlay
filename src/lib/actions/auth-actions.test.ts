@@ -14,10 +14,16 @@ vi.mock("next/headers", () => ({
     delete: (name: string) => void cookieJar.delete(name),
   }),
 }));
-// verifyPasscode doesn't use Auth.js; mock it out so the test stays hermetic.
-vi.mock("@/auth", () => ({ signOut: vi.fn() }));
+// Auth.js is mocked so the tests stay hermetic; `auth` returns the Google
+// session lockAdmin consults (null = passcode-only).
+const googleSession = vi.hoisted(() => ({ current: null as unknown }));
+vi.mock("@/auth", () => ({
+  signOut: vi.fn(),
+  auth: vi.fn(async () => googleSession.current),
+}));
 
-import { verifyPasscode } from "@/lib/actions/auth-actions";
+import { signOut } from "@/auth";
+import { lockAdmin, verifyPasscode } from "@/lib/actions/auth-actions";
 import { SESSION_COOKIE, verifySession } from "@/lib/gate";
 
 function form(passcode: string) {
@@ -46,5 +52,33 @@ describe("verifyPasscode", () => {
       digest: expect.stringContaining("NEXT_REDIRECT"),
     });
     expect(await verifySession(cookieJar.get(SESSION_COOKIE))).toBe(true);
+  });
+});
+
+describe("lockAdmin", () => {
+  it("drops only the passcode cookie; with a Google session it lands on the dashboard", async () => {
+    googleSession.current = { user: { id: "u1", email: "u1@x.com" } };
+    cookieJar.set(SESSION_COOKIE, "some-passcode-token");
+    // The active-household cookie (HOUSEHOLD_COOKIE in household-queries —
+    // not imported here to keep this test free of the db/env graph).
+    cookieJar.set("he_household", "h1");
+
+    await expect(lockAdmin()).rejects.toMatchObject({
+      digest: expect.stringMatching(/NEXT_REDIRECT.*\/dashboard/),
+    });
+
+    expect(cookieJar.has(SESSION_COOKIE)).toBe(false);
+    expect(cookieJar.get("he_household")).toBe("h1");
+    expect(signOut).not.toHaveBeenCalled(); // unlike logout()
+  });
+
+  it("with no Google session it goes straight to /login (no proxy bounce that leaves a stale URL)", async () => {
+    googleSession.current = null;
+    cookieJar.set(SESSION_COOKIE, "some-passcode-token");
+
+    await expect(lockAdmin()).rejects.toMatchObject({
+      digest: expect.stringMatching(/NEXT_REDIRECT.*\/login/),
+    });
+    expect(cookieJar.has(SESSION_COOKIE)).toBe(false);
   });
 });

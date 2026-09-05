@@ -43,3 +43,19 @@ test("dashboard renders after login", async ({ page }) => {
     page.getByRole("button", { name: /^Notifications/ }),
   ).toHaveCount(0);
 });
+
+test("superadmin can lock admin from the avatar menu", async ({ page }) => {
+  await page.goto("/admin");
+  await page.getByPlaceholder("Enter household passcode").fill("e2e-pass");
+  await page.getByRole("button", { name: "Unlock" }).click();
+  await page.waitForURL("**/dashboard");
+
+  // The avatar menu identifies the passcode session and offers "Lock admin".
+  await page.getByRole("button", { name: "Open user menu" }).click();
+  await expect(page.getByText("Signed in with passcode")).toBeVisible();
+  await page.getByRole("button", { name: "Lock admin" }).click();
+
+  // Passcode cookie gone; with no Google session the proxy bounces to /login.
+  await page.waitForURL("**/login");
+  await expect(page.getByText("Welcome to Outlay")).toBeVisible();
+});

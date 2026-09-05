@@ -1,6 +1,11 @@
 import { defineConfig, devices } from "@playwright/test";
 
 const isCI = !!process.env.CI;
+// Override with E2E_PORT when localhost:3000 is busy (e.g. another project's
+// dev server): with reuseExistingServer on, Playwright would otherwise talk
+// to that foreign server instead of booting Outlay.
+const port = Number(process.env.E2E_PORT ?? 3000);
+const baseURL = `http://localhost:${port}`;
 
 /**
  * Mobile-first e2e config. Single Pixel 7 project — Outlay is a phone-first
@@ -28,7 +33,7 @@ export default defineConfig({
     ? [["github"], ["html", { open: "never" }]]
     : [["list"], ["html", { open: "never" }]],
   use: {
-    baseURL: "http://localhost:3000",
+    baseURL,
     trace: "on-first-retry",
   },
   projects: [
@@ -39,19 +44,20 @@ export default defineConfig({
   ],
   webServer: {
     command: "pnpm db:e2e:reset && pnpm build && pnpm start",
-    url: "http://localhost:3000",
+    url: baseURL,
     reuseExistingServer: !isCI,
     // Cold runs do a DB reset + a full `next build` before the server is
     // reachable; 300s leaves comfortable headroom over the ~slowest observed
     // cold build so startup never trips the readiness timeout.
     timeout: 300_000,
     env: {
+      PORT: String(port), // honoured by `next start`
       DATABASE_URL: "file:./data/e2e.db",
       AUTH_SECRET: "e2e-secret",
       HOUSEHOLD_PASSCODE: "e2e-pass",
       // Auth.js trusts the e2e host so /api/auth/session doesn't error under
       // `next start` (no inferred trusted host outside Vercel).
-      AUTH_URL: "http://localhost:3000",
+      AUTH_URL: baseURL,
       AUTH_TRUST_HOST: "true",
     },
   },

@@ -4,7 +4,7 @@ Outlay is a shared expense tracker for your household. Everyone who lives togeth
 can log what they spend, see where the money goes, and settle up who owes whom —
 on the web or installed on your phone.
 
-_Last updated: 2026-07-29_
+_Last updated: 2026-09-05_
 
 ## Track your spending
 - Add an expense in seconds: amount, date, description, category, who paid, and an
@@ -43,6 +43,9 @@ A dashboard that updates as you add expenses:
   your recent history across all your households.
 - Admins choose what counts as a "large" expense — or turn those alerts off — in
   Settings.
+- If you also use the household passcode, "Lock admin" in your avatar menu drops
+  that elevated access and returns you to your own account, so your
+  notifications show again. "Sign out" still signs you out of both.
 
 ## Activity feed
 - A running log of everything that happened in the household — expenses added or
