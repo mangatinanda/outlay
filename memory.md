@@ -537,56 +537,36 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
 
 ## Current state & open items
 
-- **PR #1 MERGED (2026‑06‑22): forced first‑household onboarding removed** — new members enter the app with
-  `<NoHousehold>` empty states instead of a create‑household wall (see the 2026‑06‑22 work‑log entry).
-  Squash‑merged to `main` as `42a4990`; **prod auto‑deploy succeeded — Ready, live (HTTP 200 at
-  outlay.mangatinanda.me).** UI‑only change: no migration, no new env vars. Gates green (tsc/Biome/167 tests/
-  build); two review rounds (adversarial + `/code-review`) applied, incl. the `/settings` no‑household guard.
-- **✅ Vercel PREVIEW build failure FIXED (`520a94f`, on `main`):** previews used to die at "Collecting page data
-  for `/api/auth/[...nextauth]`" with `LibsqlError: URL_INVALID: The URL 'undefined'` — the libSQL client
-  (`src/lib/db/index.ts`) connected **eagerly at import**, so `next build` needed a `DATABASE_URL` the Preview env
-  doesn't set. Fix (option b): during the build phase (`NEXT_PHASE==='phase-production-build'`) `db` is a Proxy
-  that constructs the real client only on first use (which `force-dynamic` pages never trigger at build); at
-  runtime + in tests `db` stays the real eager client (unchanged). Regression test `src/lib/db/index.test.ts`.
-  Verified: `next build` succeeds with `DATABASE_URL` unset. Complements `69f802f` (auto-`drizzle-kit migrate` on
-  prod builds): that auto-migrates prod, this lets env-less preview builds pass. **Preview env vars still unset**
-  (so previews build but would 500 at runtime) — set them only if you want clickable previews.
-- **Model B implemented (2026‑06‑16), merged to local `main` (branch deleted) — NOT yet pushed/deployed.**
-  Local `main` is **18 commits ahead of `origin/main`**; prod still runs pre‑Model‑B code. All gates
-  green (116 unit + 4 e2e, tsc, Biome, build); final whole‑branch review APPROVED. **Deploy runbook
-  (additive migrations are backward‑compatible, so run them first):** (1) `pnpm db:migrate` + (2)
-  `pnpm db:migrate:model-b` against **prod Turso** (set prod `DATABASE_URL`/`TURSO_AUTH_TOKEN`, e.g.
-  `vercel env pull`); (3) `git push` `main` → Vercel auto‑deploys; (4) the `SESSION_VERSION` v2 cut logs
-  everyone out of the passcode path — owner re‑unlocks `/admin` once, family signs in with Google (must
-  be OAuth test users / app published), owner invites the other two from `/members`. Prod
-  `HOUSEHOLD_PASSCODE` is now the **superadmin** key — keep it owner‑only. **Pending external steps:**
-  (1) `pnpm db:migrate` then `pnpm db:migrate:model-b` against prod Turso; (2) the `SESSION_VERSION` v2
-  cut logs everyone out of the passcode path — the owner re‑unlocks `/admin` once; family members sign in
-  with Google (must be OAuth test users / app published) and the owner invites them to the shared
-  household(s) from `/members`. The prod passcode (`HOUSEHOLD_PASSCODE` in Vercel) is now the **superadmin**
-  key — keep it owner‑only.
-- **The 2026‑06‑11 audit is fully executed (M0–M3 + quick wins); CI green; audit clean.**
-- **DEPLOYED to production** (2026‑06‑12): https://outlay-kappa.vercel.app — Turso migrated
-  (all 3 migrations + indexes verified), 4 env vars set in Vercel (DATABASE_URL,
-  TURSO_AUTH_TOKEN, AUTH_SECRET, HOUSEHOLD_PASSCODE — all freshly generated; passcode is in
-  Vercel env + `/tmp/outlay-passcode.txt` locally, NOT in the repo). Browser‑verified E2E:
-  passcode login → dashboard (Turso reads), created "My Home" (INR) via UI (atomic batch
-  write), zero console errors. No sample seed in prod (real household made via UI).
-- **Google sign‑in ENABLED in prod (2026‑06‑13):** OAuth client created (redirect URIs for
-  myoutlay.vercel.app, outlay-kappa.vercel.app, and localhost:3000); `AUTH_GOOGLE_ID` /
-  `AUTH_GOOGLE_SECRET` / `HOUSEHOLD_ALLOWED_EMAILS` (3 family Gmails) set in Vercel production.
-  Verified live: the Google button reaches Google's sign‑in for myoutlay.vercel.app with the
-  correct client + callback. NOTE: the consent screen is in "Testing" mode — family members
-  must be added as test users in Google Cloud Console (or publish the app). For local dev,
-  the same three vars go in `.env.local`.
-- Deliberately kept: `getExpenses` filters param (roadmap filter UI) and the `users` table
-  (Model B). Optional future: filter UI, `.claude/agents/`, claude-code-action PR review.
-- **To finish Google login:** user must create a Google Cloud OAuth client (redirect URI
-  `http://localhost:3000/api/auth/callback/google`) and set `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` /
-  `HOUSEHOLD_ALLOWED_EMAILS` in `.env.local`, then restart. Browser end‑to‑end test still owed.
-- **Deploy** (Turso provision → Vercel env → migrate+seed → `vercel --prod`) is queued.
-- Stray empty `/Users/nanda/vibe-code/home-expense/.next` left over from the folder rename (harmless;
-  can be deleted).
+- **PR #2 MERGED (2026‑09‑05): in‑app notifications** — squash `2ff20a9` on `main`; feature branch deleted.
+  The pre‑merge `/code-review 2 high` fixes landed in the same squash (see the 2026‑09‑05 work‑log entry).
+  **Prod auto‑deploy succeeded** (GitHub deployment `success`; CI on `main` green). Verified live at
+  `https://myoutlay.vercel.app` (HTTP 200; `/serwist/sw.js` carries the `/api/notifications/` NetworkOnly
+  rule). Migration `0007` (notifications table + `households.notify_expense_over_minor`, additive) is applied
+  by `scripts/migrate-if-prod.mjs` during the prod build — a failure there fails the build, so it applied.
+- **⚠️ Custom domain `outlay.mangatinanda.me` does NOT resolve (seen 2026‑09‑05):** the `.me` registry answers
+  NXDOMAIN for `mangatinanda.me` itself (`dig +trace` ends at the TLD SOA — no NS delegation) while whois still
+  shows the registration ACTIVE, i.e. the registrar dropped/held the nameservers or the DNS zone was removed.
+  Unrelated to the app; the Vercel aliases `myoutlay.vercel.app` / `outlay-kappa.vercel.app` still serve it,
+  and the Google OAuth redirect URIs were registered for those hosts (2026‑06‑13), so sign‑in works there.
+- **Deferred from the notifications review** (design/UX; details in the 2026‑09‑05 entry): owner‑as‑superadmin
+  sees no bell while rows accrue for their user id; threshold form resets its input on `{error}`;
+  non‑`menuitem` buttons inside the bell's `role="menu"`; `readAt` unused for unread styling; pre‑existing
+  `activity`/`settlements` FK gaps in `cleanup.ts` + `deleteHousehold`; `src/lib/db/index.test.ts` flakes
+  under CPU load (5s dynamic‑import timeout cascades into its sibling test).
+- **Model B is live on prod** (since PR #1, 2026‑06‑22). Not verifiable from the repo: whether
+  `pnpm db:migrate:model-b` (owner backfill → `mangatinanda@gmail.com`) was run against prod Turso — if the
+  owner lacks a `household_members.user_id` link, run it (see the 2026‑06‑16 runbook in the work log).
+- **Vercel Preview env vars still unset** — previews build (lazy `db` proxy, `520a94f`) but would 500 at
+  runtime; set them only if you want clickable previews.
+- **Prod facts:** Turso DB `outlay` (aws‑ap‑south‑1). Vercel env: `DATABASE_URL`, `TURSO_AUTH_TOKEN`,
+  `AUTH_SECRET`, `HOUSEHOLD_PASSCODE` (= the **superadmin** key — keep owner‑only), `AUTH_GOOGLE_ID`,
+  `AUTH_GOOGLE_SECRET`, `HOUSEHOLD_ALLOWED_EMAILS` (3 family Gmails). The Google consent screen is in
+  "Testing" mode — family members must be added as test users (or publish the app). Local dev needs the same
+  three Google vars in `.env.local`.
+- Deliberately kept: `getExpenses` filters param (roadmap filter UI) and the `users` table. Optional future:
+  filter UI, `.claude/agents/`, claude-code-action PR review.
+- Stray, untracked/regenerable: `graphify-out/2026-09-05/` (graphify's pre‑update backup) and an empty
+  `/Users/nanda/vibe-code/home-expense/.next` left from the folder rename — safe to delete.
 
 ## Commands
 
