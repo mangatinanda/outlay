@@ -1,0 +1,351 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_docs_2026_06_11_repo_audit_md",
+      "label": "2026-06-11-repo-audit.md",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_outlay_repository_audit_improvement_plan",
+      "label": "Outlay \u2014 Repository Audit & Improvement Plan",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_executive_summary",
+      "label": "Executive Summary",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L9"
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_repo_map",
+      "label": "Repo Map",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L36"
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_audit_report",
+      "label": "Audit Report",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L74"
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_security",
+      "label": "Security",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L76"
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_testing",
+      "label": "Testing",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L90"
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_code_quality",
+      "label": "Code quality",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L96"
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_correctness_data_integrity",
+      "label": "Correctness / data integrity",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L105"
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_performance",
+      "label": "Performance",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L113"
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_dependencies",
+      "label": "Dependencies",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L122"
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_devex_operations",
+      "label": "DevEx & operations",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L128"
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_documentation",
+      "label": "Documentation",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L135"
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_strengths_preserve_these",
+      "label": "Strengths (preserve these)",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L147"
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_improvement_strategy",
+      "label": "Improvement Strategy",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L160"
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_task_plan",
+      "label": "Task Plan",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L192"
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_milestone_0_safety_net",
+      "label": "Milestone 0 \u2014 Safety net",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L194"
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_milestone_1_critical_correctness",
+      "label": "Milestone 1 \u2014 Critical & correctness",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L202"
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_milestone_2_high_leverage",
+      "label": "Milestone 2 \u2014 High leverage",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L213"
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_milestone_3_polish",
+      "label": "Milestone 3 \u2014 Polish",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L222"
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_open_questions_need_a_human_decision",
+      "label": "Open Questions (need a human decision)",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L235"
+    },
+    {
+      "id": "docs_2026_06_11_repo_audit_implementation_status",
+      "label": "Implementation status",
+      "file_type": "document",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L248"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_docs_2026_06_11_repo_audit_md",
+      "target": "docs_2026_06_11_repo_audit_outlay_repository_audit_improvement_plan",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_outlay_repository_audit_improvement_plan",
+      "target": "docs_2026_06_11_repo_audit_executive_summary",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_outlay_repository_audit_improvement_plan",
+      "target": "docs_2026_06_11_repo_audit_repo_map",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_outlay_repository_audit_improvement_plan",
+      "target": "docs_2026_06_11_repo_audit_audit_report",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L74",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_audit_report",
+      "target": "docs_2026_06_11_repo_audit_security",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L76",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_audit_report",
+      "target": "docs_2026_06_11_repo_audit_testing",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L90",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_audit_report",
+      "target": "docs_2026_06_11_repo_audit_code_quality",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L96",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_audit_report",
+      "target": "docs_2026_06_11_repo_audit_correctness_data_integrity",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L105",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_audit_report",
+      "target": "docs_2026_06_11_repo_audit_performance",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L113",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_audit_report",
+      "target": "docs_2026_06_11_repo_audit_dependencies",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L122",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_audit_report",
+      "target": "docs_2026_06_11_repo_audit_devex_operations",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L128",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_audit_report",
+      "target": "docs_2026_06_11_repo_audit_documentation",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L135",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_audit_report",
+      "target": "docs_2026_06_11_repo_audit_strengths_preserve_these",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L147",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_outlay_repository_audit_improvement_plan",
+      "target": "docs_2026_06_11_repo_audit_improvement_strategy",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L160",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_outlay_repository_audit_improvement_plan",
+      "target": "docs_2026_06_11_repo_audit_task_plan",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L192",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_task_plan",
+      "target": "docs_2026_06_11_repo_audit_milestone_0_safety_net",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L194",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_task_plan",
+      "target": "docs_2026_06_11_repo_audit_milestone_1_critical_correctness",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L202",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_task_plan",
+      "target": "docs_2026_06_11_repo_audit_milestone_2_high_leverage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L213",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_task_plan",
+      "target": "docs_2026_06_11_repo_audit_milestone_3_polish",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L222",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_task_plan",
+      "target": "docs_2026_06_11_repo_audit_open_questions_need_a_human_decision",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L235",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_2026_06_11_repo_audit_outlay_repository_audit_improvement_plan",
+      "target": "docs_2026_06_11_repo_audit_implementation_status",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/2026-06-11-repo-audit.md",
+      "source_location": "L248",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

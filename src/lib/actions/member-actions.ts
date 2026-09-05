@@ -1,12 +1,13 @@
 "use server";
 
 import { createId } from "@paralleldrive/cuid2";
-import { and, eq, or } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { logActivity } from "@/lib/activity";
 import { db } from "@/lib/db";
-import { expenses, householdMembers, settlements } from "@/lib/db/schema";
+import { householdMembers } from "@/lib/db/schema";
 import { getCurrentHousehold } from "@/lib/queries/household-queries";
+import { memberLedgerReference } from "@/lib/queries/member-ledger";
 import { memberSchema } from "@/lib/validators/member-schema";
 import { safeAction } from "./safe-action";
 
@@ -143,27 +144,16 @@ export const deleteMember = safeAction("deleteMember", async (id: string) => {
     .limit(1);
   if (!owned) return { error: "Member not found" };
 
-  // Block deletion while the member still has expenses, otherwise those rows
-  // would be orphaned (expenses.member_id references household_members.id).
-  const linkedExpenses = await db
-    .select({ id: expenses.id })
-    .from(expenses)
-    .where(eq(expenses.memberId, id))
-    .limit(1);
-
-  if (linkedExpenses.length > 0) {
+  // Block deletion while ledger rows still reference the member (FKs are
+  // enforced; the same guard protects declineInvite).
+  const ref = await memberLedgerReference(id);
+  if (ref === "expenses") {
     return {
       error:
         "Cannot delete a member with existing expenses. Reassign their expenses first.",
     };
   }
-
-  const linkedSettlements = await db
-    .select({ id: settlements.id })
-    .from(settlements)
-    .where(or(eq(settlements.fromMemberId, id), eq(settlements.toMemberId, id)))
-    .limit(1);
-  if (linkedSettlements.length > 0) {
+  if (ref === "settlements") {
     return {
       error:
         "Cannot delete a member referenced by a settlement. Delete those settlements first.",

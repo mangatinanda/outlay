@@ -22,7 +22,7 @@ export type ActivityAction =
   | "household.delete";
 
 /** Resolve a display name for the acting principal in this household. */
-async function actorLabelFor(
+export async function actorLabelFor(
   householdId: string,
 ): Promise<{ actorUserId: string | null; actorLabel: string }> {
   const actor = await getCurrentActor();

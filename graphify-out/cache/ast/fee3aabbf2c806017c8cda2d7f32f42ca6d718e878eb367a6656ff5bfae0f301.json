@@ -1,0 +1,143 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_claude_rules_ui_md",
+      "label": "ui.md",
+      "file_type": "document",
+      "source_file": ".claude/rules/ui.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "rules_ui_ui_rules_fresh_ledger",
+      "label": "UI Rules (Fresh Ledger)",
+      "file_type": "document",
+      "source_file": ".claude/rules/ui.md",
+      "source_location": "L8"
+    },
+    {
+      "id": "rules_ui_token_only_styling",
+      "label": "Token-only styling",
+      "file_type": "document",
+      "source_file": ".claude/rules/ui.md",
+      "source_location": "L14"
+    },
+    {
+      "id": "rules_ui_cva_cn_idiom",
+      "label": "cva + cn idiom",
+      "file_type": "document",
+      "source_file": ".claude/rules/ui.md",
+      "source_location": "L25"
+    },
+    {
+      "id": "rules_ui_reduced_motion",
+      "label": "Reduced motion",
+      "file_type": "document",
+      "source_file": ".claude/rules/ui.md",
+      "source_location": "L30"
+    },
+    {
+      "id": "rules_ui_touch_targets_44px",
+      "label": "Touch targets \u2265 44px",
+      "file_type": "document",
+      "source_file": ".claude/rules/ui.md",
+      "source_location": "L36"
+    },
+    {
+      "id": "rules_ui_do_not_fork_shadcn",
+      "label": "Do not fork shadcn",
+      "file_type": "document",
+      "source_file": ".claude/rules/ui.md",
+      "source_location": "L41"
+    },
+    {
+      "id": "rules_ui_accessibility_safe_areas",
+      "label": "Accessibility & safe areas",
+      "file_type": "document",
+      "source_file": ".claude/rules/ui.md",
+      "source_location": "L45"
+    },
+    {
+      "id": "rules_ui_styling_only",
+      "label": "Styling only",
+      "file_type": "document",
+      "source_file": ".claude/rules/ui.md",
+      "source_location": "L51"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_claude_rules_ui_md",
+      "target": "rules_ui_ui_rules_fresh_ledger",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/rules/ui.md",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "rules_ui_ui_rules_fresh_ledger",
+      "target": "rules_ui_token_only_styling",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/rules/ui.md",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "rules_ui_ui_rules_fresh_ledger",
+      "target": "rules_ui_cva_cn_idiom",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/rules/ui.md",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "rules_ui_ui_rules_fresh_ledger",
+      "target": "rules_ui_reduced_motion",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/rules/ui.md",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "rules_ui_ui_rules_fresh_ledger",
+      "target": "rules_ui_touch_targets_44px",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/rules/ui.md",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "rules_ui_ui_rules_fresh_ledger",
+      "target": "rules_ui_do_not_fork_shadcn",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/rules/ui.md",
+      "source_location": "L41",
+      "weight": 1.0
+    },
+    {
+      "source": "rules_ui_ui_rules_fresh_ledger",
+      "target": "rules_ui_accessibility_safe_areas",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/rules/ui.md",
+      "source_location": "L45",
+      "weight": 1.0
+    },
+    {
+      "source": "rules_ui_ui_rules_fresh_ledger",
+      "target": "rules_ui_styling_only",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/rules/ui.md",
+      "source_location": "L51",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

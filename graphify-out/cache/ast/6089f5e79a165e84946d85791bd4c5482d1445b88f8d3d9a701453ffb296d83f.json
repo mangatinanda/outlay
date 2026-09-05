@@ -1,0 +1,207 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_plans_2026_06_07_currency_switcher_md",
+      "label": "2026-06-07-currency-switcher.md",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_06_07_currency_switcher_plan_per_household_currency_switcher_default_inr",
+      "label": "Plan \u2014 Per-Household Currency Switcher (default INR)",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_06_07_currency_switcher_1_goal",
+      "label": "1. Goal",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L9"
+    },
+    {
+      "id": "plans_2026_06_07_currency_switcher_2_locked_decisions",
+      "label": "2. Locked Decisions",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L16"
+    },
+    {
+      "id": "plans_2026_06_07_currency_switcher_3_why_these_choices",
+      "label": "3. Why these choices",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L26"
+    },
+    {
+      "id": "plans_2026_06_07_currency_switcher_4_architecture",
+      "label": "4. Architecture",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L35"
+    },
+    {
+      "id": "plans_2026_06_07_currency_switcher_5_file_by_file_changes",
+      "label": "5. File-by-File Changes",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L50"
+    },
+    {
+      "id": "plans_2026_06_07_currency_switcher_new_files",
+      "label": "New files",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L52"
+    },
+    {
+      "id": "plans_2026_06_07_currency_switcher_modified_files",
+      "label": "Modified files",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L60"
+    },
+    {
+      "id": "plans_2026_06_07_currency_switcher_6_default_inr_migration",
+      "label": "6. Default \u2192 INR migration",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L76"
+    },
+    {
+      "id": "plans_2026_06_07_currency_switcher_7_implementation_steps_each_with_a_verification_gate",
+      "label": "7. Implementation Steps (each with a verification gate)",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L85"
+    },
+    {
+      "id": "plans_2026_06_07_currency_switcher_8_acceptance_criteria",
+      "label": "8. Acceptance Criteria",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L101"
+    },
+    {
+      "id": "plans_2026_06_07_currency_switcher_9_out_of_scope",
+      "label": "9. Out of Scope",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L109"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_plans_2026_06_07_currency_switcher_md",
+      "target": "plans_2026_06_07_currency_switcher_plan_per_household_currency_switcher_default_inr",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_currency_switcher_plan_per_household_currency_switcher_default_inr",
+      "target": "plans_2026_06_07_currency_switcher_1_goal",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_currency_switcher_plan_per_household_currency_switcher_default_inr",
+      "target": "plans_2026_06_07_currency_switcher_2_locked_decisions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_currency_switcher_plan_per_household_currency_switcher_default_inr",
+      "target": "plans_2026_06_07_currency_switcher_3_why_these_choices",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_currency_switcher_plan_per_household_currency_switcher_default_inr",
+      "target": "plans_2026_06_07_currency_switcher_4_architecture",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_currency_switcher_plan_per_household_currency_switcher_default_inr",
+      "target": "plans_2026_06_07_currency_switcher_5_file_by_file_changes",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_currency_switcher_5_file_by_file_changes",
+      "target": "plans_2026_06_07_currency_switcher_new_files",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L52",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_currency_switcher_5_file_by_file_changes",
+      "target": "plans_2026_06_07_currency_switcher_modified_files",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L60",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_currency_switcher_plan_per_household_currency_switcher_default_inr",
+      "target": "plans_2026_06_07_currency_switcher_6_default_inr_migration",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L76",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_currency_switcher_plan_per_household_currency_switcher_default_inr",
+      "target": "plans_2026_06_07_currency_switcher_7_implementation_steps_each_with_a_verification_gate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L85",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_currency_switcher_plan_per_household_currency_switcher_default_inr",
+      "target": "plans_2026_06_07_currency_switcher_8_acceptance_criteria",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L101",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_currency_switcher_plan_per_household_currency_switcher_default_inr",
+      "target": "plans_2026_06_07_currency_switcher_9_out_of_scope",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-currency-switcher.md",
+      "source_location": "L109",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

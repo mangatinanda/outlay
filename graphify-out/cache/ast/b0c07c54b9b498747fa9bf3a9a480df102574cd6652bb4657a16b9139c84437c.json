@@ -1,0 +1,111 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_docs_superpowers_plans_2026_06_15_fresh_ledger_redesign_readme_md",
+      "label": "2026-06-15-fresh-ledger-redesign-README.md",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_06_15_fresh_ledger_redesign_readme_fresh_ledger_redesign_plan_index_conventions",
+      "label": "Fresh Ledger Redesign \u2014 Plan Index & Conventions",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_06_15_fresh_ledger_redesign_readme_execute_in_this_order_strict",
+      "label": "Execute in this order (strict)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md",
+      "source_location": "L9"
+    },
+    {
+      "id": "plans_2026_06_15_fresh_ledger_redesign_readme_single_source_of_truth_resolves_cross_file_duplication",
+      "label": "Single source of truth (resolves cross-file duplication)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md",
+      "source_location": "L23"
+    },
+    {
+      "id": "plans_2026_06_15_fresh_ledger_redesign_readme_global_conventions",
+      "label": "Global conventions",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md",
+      "source_location": "L40"
+    },
+    {
+      "id": "plans_2026_06_15_fresh_ledger_redesign_readme_watch_items_the_critics_surfaced_resolve_while_executing",
+      "label": "Watch-items the critics surfaced (resolve while executing)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md",
+      "source_location": "L58"
+    },
+    {
+      "id": "plans_2026_06_15_fresh_ledger_redesign_readme_how_to_execute",
+      "label": "How to execute",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md",
+      "source_location": "L80"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_docs_superpowers_plans_2026_06_15_fresh_ledger_redesign_readme_md",
+      "target": "plans_2026_06_15_fresh_ledger_redesign_readme_fresh_ledger_redesign_plan_index_conventions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_fresh_ledger_redesign_readme_fresh_ledger_redesign_plan_index_conventions",
+      "target": "plans_2026_06_15_fresh_ledger_redesign_readme_execute_in_this_order_strict",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_fresh_ledger_redesign_readme_fresh_ledger_redesign_plan_index_conventions",
+      "target": "plans_2026_06_15_fresh_ledger_redesign_readme_single_source_of_truth_resolves_cross_file_duplication",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_fresh_ledger_redesign_readme_fresh_ledger_redesign_plan_index_conventions",
+      "target": "plans_2026_06_15_fresh_ledger_redesign_readme_global_conventions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md",
+      "source_location": "L40",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_fresh_ledger_redesign_readme_fresh_ledger_redesign_plan_index_conventions",
+      "target": "plans_2026_06_15_fresh_ledger_redesign_readme_watch_items_the_critics_surfaced_resolve_while_executing",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md",
+      "source_location": "L58",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_15_fresh_ledger_redesign_readme_fresh_ledger_redesign_plan_index_conventions",
+      "target": "plans_2026_06_15_fresh_ledger_redesign_readme_how_to_execute",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-15-fresh-ledger-redesign-README.md",
+      "source_location": "L80",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

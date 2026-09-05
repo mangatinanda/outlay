@@ -1,0 +1,191 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_docs_superpowers_specs_2026_07_07_in_app_notifications_design_md",
+      "label": "2026-07-07-in-app-notifications-design.md",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "specs_2026_07_07_in_app_notifications_design_in_app_notifications_design",
+      "label": "In-app notifications \u2014 design",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "specs_2026_07_07_in_app_notifications_design_goal",
+      "label": "Goal",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L7"
+    },
+    {
+      "id": "specs_2026_07_07_in_app_notifications_design_non_goals_v1",
+      "label": "Non-goals (v1)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L24"
+    },
+    {
+      "id": "specs_2026_07_07_in_app_notifications_design_decisions_from_brainstorming",
+      "label": "Decisions (from brainstorming)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L35"
+    },
+    {
+      "id": "specs_2026_07_07_in_app_notifications_design_data_model",
+      "label": "Data model",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L46"
+    },
+    {
+      "id": "specs_2026_07_07_in_app_notifications_design_emission_layer",
+      "label": "Emission layer",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L90"
+    },
+    {
+      "id": "specs_2026_07_07_in_app_notifications_design_actions_and_reads",
+      "label": "Actions and reads",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L120"
+    },
+    {
+      "id": "specs_2026_07_07_in_app_notifications_design_ui",
+      "label": "UI",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L151"
+    },
+    {
+      "id": "specs_2026_07_07_in_app_notifications_design_error_handling_edge_cases",
+      "label": "Error handling & edge cases",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L177"
+    },
+    {
+      "id": "specs_2026_07_07_in_app_notifications_design_testing",
+      "label": "Testing",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L193"
+    },
+    {
+      "id": "specs_2026_07_07_in_app_notifications_design_future_v2_web_push",
+      "label": "Future (v2): Web Push",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L209"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_docs_superpowers_specs_2026_07_07_in_app_notifications_design_md",
+      "target": "specs_2026_07_07_in_app_notifications_design_in_app_notifications_design",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_07_07_in_app_notifications_design_in_app_notifications_design",
+      "target": "specs_2026_07_07_in_app_notifications_design_goal",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_07_07_in_app_notifications_design_in_app_notifications_design",
+      "target": "specs_2026_07_07_in_app_notifications_design_non_goals_v1",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L24",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_07_07_in_app_notifications_design_in_app_notifications_design",
+      "target": "specs_2026_07_07_in_app_notifications_design_decisions_from_brainstorming",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_07_07_in_app_notifications_design_in_app_notifications_design",
+      "target": "specs_2026_07_07_in_app_notifications_design_data_model",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L46",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_07_07_in_app_notifications_design_in_app_notifications_design",
+      "target": "specs_2026_07_07_in_app_notifications_design_emission_layer",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L90",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_07_07_in_app_notifications_design_in_app_notifications_design",
+      "target": "specs_2026_07_07_in_app_notifications_design_actions_and_reads",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L120",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_07_07_in_app_notifications_design_in_app_notifications_design",
+      "target": "specs_2026_07_07_in_app_notifications_design_ui",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L151",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_07_07_in_app_notifications_design_in_app_notifications_design",
+      "target": "specs_2026_07_07_in_app_notifications_design_error_handling_edge_cases",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L177",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_07_07_in_app_notifications_design_in_app_notifications_design",
+      "target": "specs_2026_07_07_in_app_notifications_design_testing",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L193",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_07_07_in_app_notifications_design_in_app_notifications_design",
+      "target": "specs_2026_07_07_in_app_notifications_design_future_v2_web_push",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-07-07-in-app-notifications-design.md",
+      "source_location": "L209",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

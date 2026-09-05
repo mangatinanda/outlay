@@ -1,0 +1,111 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_src_lib_claude_md",
+      "label": "CLAUDE.md",
+      "file_type": "document",
+      "source_file": "src/lib/CLAUDE.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_claude_library_directory_context",
+      "label": "Library Directory Context",
+      "file_type": "document",
+      "source_file": "src/lib/CLAUDE.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_claude_db",
+      "label": "db/",
+      "file_type": "document",
+      "source_file": "src/lib/CLAUDE.md",
+      "source_location": "L3"
+    },
+    {
+      "id": "lib_claude_actions",
+      "label": "actions/",
+      "file_type": "document",
+      "source_file": "src/lib/CLAUDE.md",
+      "source_location": "L12"
+    },
+    {
+      "id": "lib_claude_queries",
+      "label": "queries/",
+      "file_type": "document",
+      "source_file": "src/lib/CLAUDE.md",
+      "source_location": "L26"
+    },
+    {
+      "id": "lib_claude_validators",
+      "label": "validators/",
+      "file_type": "document",
+      "source_file": "src/lib/CLAUDE.md",
+      "source_location": "L34"
+    },
+    {
+      "id": "lib_claude_tests",
+      "label": "Tests",
+      "file_type": "document",
+      "source_file": "src/lib/CLAUDE.md",
+      "source_location": "L39"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_src_lib_claude_md",
+      "target": "lib_claude_library_directory_context",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/CLAUDE.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_claude_library_directory_context",
+      "target": "lib_claude_db",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/CLAUDE.md",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_claude_library_directory_context",
+      "target": "lib_claude_actions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/CLAUDE.md",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_claude_library_directory_context",
+      "target": "lib_claude_queries",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/CLAUDE.md",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_claude_library_directory_context",
+      "target": "lib_claude_validators",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/CLAUDE.md",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_claude_library_directory_context",
+      "target": "lib_claude_tests",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/CLAUDE.md",
+      "source_location": "L39",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

@@ -65,6 +65,97 @@ double‑spec; CI reads pnpm from `packageManager`).
 
 ## Work log
 
+### 2026‑09‑05 — PR #2 (in‑app notifications) reviewed + hardened before merge
+
+`/code-review 2 high` (10 finder angles, per‑finding verifiers) returned 15 findings on the branch; the
+correctness ones were fixed in `ffe1877`, each with a regression test written first (238 unit tests now).
+- **FK‑safe invite decline/accept:** `declineInvite` and `acceptInvite`'s duplicate‑row branch deleted a
+  `household_members` row that `expenses`/`settlements` may reference (admins can pick a pending invitee as
+  payer; **libSQL enforces FKs by default — `PRAGMA foreign_keys=1`**), so the DELETE threw and the invite
+  was stuck forever. New shared guard `memberLedgerReference()` (`src/lib/queries/member-ledger.ts`, also
+  reused by `deleteMember`) refuses with a clear message. Decline now writes an activity row; the
+  duplicate‑row path revalidates the layout.
+- **Cleanup cron:** `cleanupAbandonedAccounts` now deletes the user's `notifications` inside the atomic
+  batch (the new `notifications.user_id` FK would have 500'd the nightly job for any abandoned user who
+  ever got one).
+- **Honest results:** `createExpense`, `inviteToHousehold`, `acceptInvite`, `declineInvite` ran unguarded
+  lookups *after* their mutation, so a transient failure returned `{error}` for a committed row (retry ⇒
+  duplicate expense / "already invited"). Lookups now run before the mutation; only best‑effort
+  `notify`/`logActivity` follow it.
+- **Prune exempts `invite.received`** (a chatty household could silently delete a pending invite).
+- **`formatMinor` → shared `formatCurrency()`** (was hard‑coded `en-IN`: USD showed lakh grouping, JPY
+  showed decimals). `notificationText` gained a `default` branch (unknown type no longer crashes the header).
+- **Bell:** handles `loadNotifications`' `{error}` (no stuck "Loading…", no premature mark‑all‑read, badge
+  restored), skips poll ticks while open, adopts a fresh server `initialCount` via effect. Relative time in
+  `NotificationItem` gets `suppressHydrationWarning`.
+- **Service worker:** `sw.ts` prepends a `NetworkOnly` rule for `/api/notifications/` — Serwist's
+  `defaultCache` applies NetworkFirst (10s timeout → cache) to every same‑origin `/api/` GET, which could
+  resurrect a stale or another user's unread count.
+- **Docs corrected** (FEATURES.md + the 07‑07 entry above): no "mark all read" control exists (the bell
+  auto‑marks on open); `null`/`0` threshold = OFF, fires at‑or‑above; lists are fixed 10/50, not paginated;
+  invite outcomes go to all other admins; queries scope by `user_id` only.
+- **Deferred (design/UX, not blockers):** (1) the owner who unlocked `/admin` is resolved as superadmin on
+  every request (passcode cookie wins) and therefore sees no bell while `notify()` still writes rows to their
+  user id — needs a "lock admin" action or a superadmin actor that carries `userId`; (2) React 19 resets the
+  threshold form's uncontrolled input on an `{error}` result; (3) Accept/Decline/View‑all are non‑`menuitem`
+  children inside the `role="menu"` popup; (4) `readAt` reaches the client but isn't used for unread
+  styling; (5) pre‑existing: `cleanup.ts`/`deleteHousehold` don't delete `activity`/`settlements` rows
+  before the household row (same FK class); (6) `src/lib/db/index.test.ts` times out under CPU load
+  (dynamic import >5s) and then cascades into its sibling test — pre‑existing flake, not from this branch.
+
+### 2026‑07‑07 — In-app notifications (branch `feat/in-app-notifications`)
+
+Implemented full in‑app notifications end‑to‑end via subagent‑driven TDD (12 tasks, all green).
+Spec: `docs/superpowers/specs/2026-07-07-in-app-notifications-design.md`; plan:
+`docs/superpowers/plans/2026-07-07-in-app-notifications.md`.
+
+- **Schema & migration** (`drizzle/0007_*.sql`): new `notifications` table (`household_id`,
+  `user_id`, `type`, `payload`, `read_at`, `created_at`) plus `households.notify_expense_over_minor`
+  (nullable integer minor‑units threshold — `null`/`0` = "expense notifications OFF" per household).
+- **`notify()` fan‑out helper** (`src/lib/notifications.ts` or similar) — best‑effort (never throws,
+  mirrors `logActivity`'s pattern), fans a single event out to every relevant household member's
+  `user_id`, and **prunes each recipient to their most‑recent 100** notifications on every write so
+  the table can't grow unbounded.
+- **Emitters wired into existing actions:** `invite.received` (on `inviteToHousehold`, only to
+  already‑registered users — a pending invite with no `user_id` yet has nothing to notify),
+  `invite.accepted` / `invite.declined` (to the household's other admins), `settlement.recorded` (on
+  `createSettlement`, to the other party), `expense.large` (on `createExpense`, fan‑out to household
+  members when the expense's `amountMinor` exceeds the household's `notifyExpenseOverMinor`
+  threshold — `null`/`0` = OFF, fires at‑or‑above).
+- **In‑app invite accept/decline without re‑login:** `acceptInvite`/`declineInvite`
+  (`src/lib/actions/notification-actions.ts`) let a signed‑in user claim a pending
+  `household_members` invite row directly from the notification UI; the existing login‑time
+  `claimInvites` (Auth.js `jwt` callback) remains the fallback for invites accepted before the user
+  ever signs in. Also: `markAllNotificationsRead`, `loadNotifications` (newest 10 for the dropdown).
+- **Reads:** notification queries (unread count + list, newest‑first) scoped to
+  `user_id` (cross‑household by design) — **superadmin gets nothing** (no `userId` on that actor, by design:
+  notifications are a per‑user‑household concept, not a superadmin/god‑mode one).
+  `GET /api/notifications/count` powers a 60s client poll.
+- **UI:** `NotificationItem` (shared render for both the dropdown and the full page, with inline
+  Accept/Decline buttons for invite‑type rows), `NotificationBell` in the header (badge shows
+  unread count, dropdown lists the newest 10 and auto‑marks all read on open), `/notifications` page (newest 50).
+  Bell renders `null`/is absent entirely for the superadmin actor.
+- **Threshold setting:** Settings UI (admin‑only) to set/clear the per‑household
+  `notifyExpenseOverMinor`; a small `memberRole` helper resolves whether the current actor is an
+  admin of the active household to gate the control.
+- **Two drive‑by fixes caught during implementation:** (1) `userHouseholds()`
+  (`src/lib/auth/membership.ts:32`) was not selecting `notifyExpenseOverMinor` — the expense emitter
+  needs it on the household row it already fetches, so it's now included in that query's column
+  list; (2) `createExpense` (`src/lib/actions/expense-actions.ts:119`) treats a `null` threshold as
+  `0` (`household.notifyExpenseOverMinor ?? 0`) so "no threshold set" means expense notifications OFF (only notify if `threshold > 0`).
+- **Web Push is explicitly v2**, hooked at the `notify()` call site (not built — in‑app only for v1).
+- **e2e guard** (`e2e/dashboard.spec.ts`): the existing passcode/superadmin dashboard smoke test now
+  asserts `getByRole("button", { name: /^Notifications/ })` has count 0 — locks in "superadmin sees
+  no bell" as a regression‑proof contract.
+- **Out of scope (deliberately not built):** Web Push, digests, per‑user notification preferences,
+  `invited_by` attribution, expense‑update/import emitters, a sidebar nav link to `/notifications`
+  (reached via the bell only).
+- **Verification:** Biome lint ✅ (3 pre‑existing warnings only — 2 graphify‑out file‑size, 1
+  `noExplicitAny` in `notification-actions.ts` predating this task's e2e/memory work), tsc ✅,
+  **227 unit tests** ✅, production build ✅ (routes incl. `/notifications` and
+  `/api/notifications/count` present), **`pnpm test:e2e` 4/4 specs green** (dashboard, login,
+  add‑expense, switch‑household‑isolation) including the new bell‑absence assertion.
+
 ### 2026‑06‑23 — Mobile drawer auto-close + app-level loader (top bar + skeletons)
 
 Two UX fixes (UI/interaction only; no data/query/action logic changed). **Uncommitted** on `main`.

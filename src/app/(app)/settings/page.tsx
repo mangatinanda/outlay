@@ -1,5 +1,6 @@
 import { Home } from "lucide-react";
 import { CurrencySwitcher } from "@/components/settings/currency-switcher";
+import { ExpenseNotifyThreshold } from "@/components/settings/expense-notify-threshold";
 import { NoHousehold } from "@/components/shared/no-household";
 import { PageHeader } from "@/components/shared/page-header";
 import {
@@ -9,12 +10,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { getCurrentActor } from "@/lib/auth/actor";
+import { memberRole } from "@/lib/auth/membership";
 import { getCurrentHousehold } from "@/lib/queries/household-queries";
 
 export const metadata = { title: "Settings" };
 
 export default async function SettingsPage() {
   const household = await getCurrentHousehold();
+  const actor = await getCurrentActor();
+  const isAdmin =
+    actor?.kind === "superadmin" ||
+    (actor?.kind === "user" && household
+      ? (await memberRole(actor.userId, household.id)) === "admin"
+      : false);
 
   return (
     <div className="max-w-2xl space-y-6">
@@ -44,6 +53,22 @@ export default async function SettingsPage() {
                 formatting only — your recorded amounts stay the same.
               </p>
             </div>
+            {isAdmin && (
+              <div className="space-y-2">
+                <p className="font-medium text-sm">Expense notifications</p>
+                <ExpenseNotifyThreshold
+                  current={
+                    household.notifyExpenseOverMinor
+                      ? household.notifyExpenseOverMinor / 100
+                      : null
+                  }
+                />
+                <p className="text-muted-foreground text-xs">
+                  Notify other members when someone adds an expense at or above
+                  this amount. Leave empty to turn off.
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
       ) : (

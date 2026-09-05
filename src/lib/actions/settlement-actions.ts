@@ -4,9 +4,11 @@ import { createId } from "@paralleldrive/cuid2";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { logActivity } from "@/lib/activity";
+import { getCurrentActor } from "@/lib/auth/actor";
 import { db } from "@/lib/db";
 import { householdMembers, settlements } from "@/lib/db/schema";
 import { toMinorUnits } from "@/lib/money";
+import { notify, type SettlementRecordedPayload } from "@/lib/notifications";
 import { getCurrentHousehold } from "@/lib/queries/household-queries";
 import { RATE_LIMITED_MESSAGE, RATE_LIMITS, rateLimit } from "@/lib/rate-limit";
 import { settlementSchema } from "@/lib/validators/settlement-schema";
@@ -35,7 +37,11 @@ export const createSettlement = safeAction(
 
     // Both members must be participants (include_in_settle_up) of THIS household.
     const members = await db
-      .select({ id: householdMembers.id, name: householdMembers.name })
+      .select({
+        id: householdMembers.id,
+        name: householdMembers.name,
+        userId: householdMembers.userId,
+      })
       .from(householdMembers)
       .where(
         and(
@@ -43,7 +49,7 @@ export const createSettlement = safeAction(
           eq(householdMembers.includeInSettleUp, true),
         ),
       );
-    const byId = new Map(members.map((m) => [m.id, m.name]));
+    const byId = new Map(members.map((m) => [m.id, m]));
     if (
       !byId.has(parsed.data.fromMemberId) ||
       !byId.has(parsed.data.toMemberId)
@@ -64,7 +70,28 @@ export const createSettlement = safeAction(
     await logActivity({
       householdId: household.id,
       action: "settlement.create",
-      summary: `settled ₹${parsed.data.amount} from ${byId.get(parsed.data.fromMemberId)} to ${byId.get(parsed.data.toMemberId)}`,
+      summary: `settled ₹${parsed.data.amount} from ${byId.get(parsed.data.fromMemberId)?.name} to ${byId.get(parsed.data.toMemberId)?.name}`,
+    });
+
+    // Notify the linked counterparty (never the actor, never unlinked rows).
+    const actor = await getCurrentActor();
+    const actorUserId = actor?.kind === "user" ? actor.userId : null;
+    const recipients = [
+      byId.get(parsed.data.fromMemberId)?.userId,
+      byId.get(parsed.data.toMemberId)?.userId,
+    ].filter((id): id is string => !!id && id !== actorUserId);
+    const payload: SettlementRecordedPayload = {
+      amountMinor: toMinorUnits(parsed.data.amount),
+      currency: household.currency,
+      fromName: byId.get(parsed.data.fromMemberId)?.name ?? "someone",
+      toName: byId.get(parsed.data.toMemberId)?.name ?? "someone",
+      householdName: household.name,
+    };
+    await notify({
+      userIds: recipients,
+      type: "settlement.recorded",
+      householdId: household.id,
+      payload: { ...payload },
     });
 
     revalidatePath("/settle-up");

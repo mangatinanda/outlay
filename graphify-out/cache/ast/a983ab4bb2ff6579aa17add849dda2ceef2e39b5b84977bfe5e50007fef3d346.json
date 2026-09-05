@@ -1,0 +1,63 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_claude_skills_features_doc_skill_md",
+      "label": "SKILL.md",
+      "file_type": "document",
+      "source_file": ".claude/skills/features-doc/SKILL.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "features_doc_skill_features_doc_generator",
+      "label": "Features doc generator",
+      "file_type": "document",
+      "source_file": ".claude/skills/features-doc/SKILL.md",
+      "source_location": "L6"
+    },
+    {
+      "id": "features_doc_skill_how_to_re_generate_it",
+      "label": "How to (re)generate it",
+      "file_type": "document",
+      "source_file": ".claude/skills/features-doc/SKILL.md",
+      "source_location": "L12"
+    },
+    {
+      "id": "features_doc_skill_output_rules",
+      "label": "Output rules",
+      "file_type": "document",
+      "source_file": ".claude/skills/features-doc/SKILL.md",
+      "source_location": "L32"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_claude_skills_features_doc_skill_md",
+      "target": "features_doc_skill_features_doc_generator",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/features-doc/SKILL.md",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "features_doc_skill_features_doc_generator",
+      "target": "features_doc_skill_how_to_re_generate_it",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/features-doc/SKILL.md",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "features_doc_skill_features_doc_generator",
+      "target": "features_doc_skill_output_rules",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/features-doc/SKILL.md",
+      "source_location": "L32",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

@@ -3,11 +3,13 @@
 import { createId } from "@paralleldrive/cuid2";
 import { and, eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { logActivity } from "@/lib/activity";
+import { actorLabelFor, logActivity } from "@/lib/activity";
+import { getCurrentActor } from "@/lib/auth/actor";
 import { db } from "@/lib/db";
 import { categories, expenses, householdMembers } from "@/lib/db/schema";
 import { LIMITS } from "@/lib/limits";
 import { toMinorUnits } from "@/lib/money";
+import { type ExpenseLargePayload, notify } from "@/lib/notifications";
 import { getCurrentHousehold } from "@/lib/queries/household-queries";
 import { RATE_LIMITED_MESSAGE, RATE_LIMITS, rateLimit } from "@/lib/rate-limit";
 import { expenseSchema } from "@/lib/validators/expense-schema";
@@ -60,7 +62,7 @@ export const createExpense = safeAction(
       categoryId: formData.get("categoryId"),
       memberId: formData.get("memberId"),
       date: formData.get("date"),
-      notes: formData.get("notes"),
+      notes: formData.get("notes") || undefined,
     };
 
     const parsed = expenseSchema.safeParse(raw);
@@ -96,12 +98,45 @@ export const createExpense = safeAction(
       };
     }
 
+    const amountMinor = toMinorUnits(parsed.data.amount);
+
+    // Threshold notification: only on CREATE (updates/imports never emit).
+    // Recipients + labels are resolved BEFORE the insert: a failed lookup
+    // must not turn a committed row into an {error} whose natural retry
+    // creates a duplicate. After the insert only best-effort calls remain.
+    const threshold = household.notifyExpenseOverMinor ?? 0;
+    let largeExpense: {
+      userIds: string[];
+      payload: ExpenseLargePayload;
+    } | null = null;
+    if (threshold > 0 && amountMinor >= threshold) {
+      const actor = await getCurrentActor();
+      const actorUserId = actor?.kind === "user" ? actor.userId : null;
+      const linked = await db
+        .select({ userId: householdMembers.userId })
+        .from(householdMembers)
+        .where(eq(householdMembers.householdId, household.id));
+      const { actorLabel } = await actorLabelFor(household.id);
+      largeExpense = {
+        userIds: linked
+          .map((m) => m.userId)
+          .filter((id): id is string => !!id && id !== actorUserId),
+        payload: {
+          amountMinor,
+          currency: household.currency,
+          description: parsed.data.description,
+          actorLabel,
+          householdName: household.name,
+        },
+      };
+    }
+
     await db.insert(expenses).values({
       id: createId(),
       householdId: household.id,
       categoryId: parsed.data.categoryId,
       memberId: parsed.data.memberId,
-      amountMinor: toMinorUnits(parsed.data.amount),
+      amountMinor,
       description: parsed.data.description,
       date: parsed.data.date,
       notes: parsed.data.notes || null,
@@ -112,6 +147,16 @@ export const createExpense = safeAction(
       action: "expense.create",
       summary: `added "${parsed.data.description}" ₹${parsed.data.amount}`,
     });
+
+    if (largeExpense) {
+      await notify({
+        userIds: largeExpense.userIds,
+        type: "expense.large",
+        householdId: household.id,
+        payload: { ...largeExpense.payload },
+      });
+    }
+
     revalidatePath("/dashboard");
     revalidatePath("/expenses");
     revalidatePath("/activity");
@@ -128,7 +173,7 @@ export const updateExpense = safeAction(
       categoryId: formData.get("categoryId"),
       memberId: formData.get("memberId"),
       date: formData.get("date"),
-      notes: formData.get("notes"),
+      notes: formData.get("notes") || undefined,
     };
 
     const parsed = expenseSchema.safeParse(raw);

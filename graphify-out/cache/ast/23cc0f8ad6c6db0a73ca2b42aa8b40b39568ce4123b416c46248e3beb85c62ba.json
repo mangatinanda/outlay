@@ -1,0 +1,271 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_docs_superpowers_specs_2026_06_22_settle_up_and_activity_log_design_md",
+      "label": "2026-06-22-settle-up-and-activity-log-design.md",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design_settle_up_balances_household_activity_log_design",
+      "label": "Settle-up balances + household activity log \u2014 design",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design_goal",
+      "label": "Goal",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L7"
+    },
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design_decisions_from_brainstorming",
+      "label": "Decisions (from brainstorming)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L18"
+    },
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design_consequence_accepted_the_toggle_is_retroactive",
+      "label": "Consequence accepted: the toggle is retroactive",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L28"
+    },
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design_data_model",
+      "label": "Data model",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L36"
+    },
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design_a_household_members_include_in_settle_up_new_column",
+      "label": "A. `household_members.include_in_settle_up` (new column)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L43"
+    },
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design_b_settlements_new_table_a_recorded_payback_a_pays_b",
+      "label": "B. `settlements` (new table) \u2014 a recorded payback (A pays B)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L51"
+    },
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design_c_activity_new_table_append_only_household_audit_feed",
+      "label": "C. `activity` (new table) \u2014 append-only household audit feed",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L67"
+    },
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design_balance_math",
+      "label": "Balance math",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L92"
+    },
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design_settle_up_flow",
+      "label": "Settle-up flow",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L132"
+    },
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design_activity_logging",
+      "label": "Activity logging",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L164"
+    },
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design_navigation",
+      "label": "Navigation",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L192"
+    },
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design_testing",
+      "label": "Testing",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L200"
+    },
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design_migration_rollout",
+      "label": "Migration & rollout",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L216"
+    },
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design_future_extension_per_expense_custom_splits_not_mvp",
+      "label": "Future extension: per-expense custom splits (not MVP)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L227"
+    },
+    {
+      "id": "specs_2026_06_22_settle_up_and_activity_log_design_out_of_scope_yagni",
+      "label": "Out of scope (YAGNI)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L252"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_docs_superpowers_specs_2026_06_22_settle_up_and_activity_log_design_md",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_settle_up_balances_household_activity_log_design",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design_settle_up_balances_household_activity_log_design",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_goal",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design_settle_up_balances_household_activity_log_design",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_decisions_from_brainstorming",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design_decisions_from_brainstorming",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_consequence_accepted_the_toggle_is_retroactive",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design_settle_up_balances_household_activity_log_design",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_data_model",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design_data_model",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_a_household_members_include_in_settle_up_new_column",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L43",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design_data_model",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_b_settlements_new_table_a_recorded_payback_a_pays_b",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L51",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design_data_model",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_c_activity_new_table_append_only_household_audit_feed",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L67",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design_settle_up_balances_household_activity_log_design",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_balance_math",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L92",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design_settle_up_balances_household_activity_log_design",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_settle_up_flow",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L132",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design_settle_up_balances_household_activity_log_design",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_activity_logging",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L164",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design_settle_up_balances_household_activity_log_design",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_navigation",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L192",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design_settle_up_balances_household_activity_log_design",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_testing",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L200",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design_settle_up_balances_household_activity_log_design",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_migration_rollout",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L216",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design_settle_up_balances_household_activity_log_design",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_future_extension_per_expense_custom_splits_not_mvp",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L227",
+      "weight": 1.0
+    },
+    {
+      "source": "specs_2026_06_22_settle_up_and_activity_log_design_settle_up_balances_household_activity_log_design",
+      "target": "specs_2026_06_22_settle_up_and_activity_log_design_out_of_scope_yagni",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md",
+      "source_location": "L252",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

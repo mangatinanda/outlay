@@ -1,0 +1,63 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_graphify_out_memory_query_20260707_045008_are_the_inferred_relationships_around_getcurrentho_md",
+      "label": "query_20260707_045008_are_the_inferred_relationships_around_getcurrentho.md",
+      "file_type": "document",
+      "source_file": "graphify-out/memory/query_20260707_045008_are_the_inferred_relationships_around_getcurrentho.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "memory_query_20260707_045008_are_the_inferred_relationships_around_getcurrentho_q_are_the_inferred_relationships_around_getcurrenthousehold_with_applayout_and_getcurrentactor_actually_correct_and_what_does_the_node_reveal_about_the_auth_boundary",
+      "label": "Q: Are the INFERRED relationships around getCurrentHousehold (with AppLayout() and getCurrentActor) actually correct, and what does the node reveal about the auth boundary?",
+      "file_type": "document",
+      "source_file": "graphify-out/memory/query_20260707_045008_are_the_inferred_relationships_around_getcurrentho.md",
+      "source_location": "L9"
+    },
+    {
+      "id": "memory_query_20260707_045008_are_the_inferred_relationships_around_getcurrentho_answer",
+      "label": "Answer",
+      "file_type": "document",
+      "source_file": "graphify-out/memory/query_20260707_045008_are_the_inferred_relationships_around_getcurrentho.md",
+      "source_location": "L11"
+    },
+    {
+      "id": "memory_query_20260707_045008_are_the_inferred_relationships_around_getcurrentho_source_nodes",
+      "label": "Source Nodes",
+      "file_type": "document",
+      "source_file": "graphify-out/memory/query_20260707_045008_are_the_inferred_relationships_around_getcurrentho.md",
+      "source_location": "L15"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_graphify_out_memory_query_20260707_045008_are_the_inferred_relationships_around_getcurrentho_md",
+      "target": "memory_query_20260707_045008_are_the_inferred_relationships_around_getcurrentho_q_are_the_inferred_relationships_around_getcurrenthousehold_with_applayout_and_getcurrentactor_actually_correct_and_what_does_the_node_reveal_about_the_auth_boundary",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "graphify-out/memory/query_20260707_045008_are_the_inferred_relationships_around_getcurrentho.md",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "memory_query_20260707_045008_are_the_inferred_relationships_around_getcurrentho_q_are_the_inferred_relationships_around_getcurrenthousehold_with_applayout_and_getcurrentactor_actually_correct_and_what_does_the_node_reveal_about_the_auth_boundary",
+      "target": "memory_query_20260707_045008_are_the_inferred_relationships_around_getcurrentho_answer",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "graphify-out/memory/query_20260707_045008_are_the_inferred_relationships_around_getcurrentho.md",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "memory_query_20260707_045008_are_the_inferred_relationships_around_getcurrentho_q_are_the_inferred_relationships_around_getcurrenthousehold_with_applayout_and_getcurrentactor_actually_correct_and_what_does_the_node_reveal_about_the_auth_boundary",
+      "target": "memory_query_20260707_045008_are_the_inferred_relationships_around_getcurrentho_source_nodes",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "graphify-out/memory/query_20260707_045008_are_the_inferred_relationships_around_getcurrentho.md",
+      "source_location": "L15",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

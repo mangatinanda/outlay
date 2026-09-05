@@ -1,0 +1,239 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_plans_2026_06_07_household_ui_multi_workspace_md",
+      "label": "2026-06-07-household-ui-multi-workspace.md",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_06_07_household_ui_multi_workspace_plan_multi_household_ui_shared_workspaces",
+      "label": "Plan \u2014 Multi-Household UI (shared \"workspaces\")",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_06_07_household_ui_multi_workspace_1_goal",
+      "label": "1. Goal",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L9"
+    },
+    {
+      "id": "plans_2026_06_07_household_ui_multi_workspace_2_locked_decisions",
+      "label": "2. Locked Decisions",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L17"
+    },
+    {
+      "id": "plans_2026_06_07_household_ui_multi_workspace_3_the_linchpin_current_household",
+      "label": "3. The linchpin: \"current household\"",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L28"
+    },
+    {
+      "id": "plans_2026_06_07_household_ui_multi_workspace_4_data_flow",
+      "label": "4. Data flow",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L55"
+    },
+    {
+      "id": "plans_2026_06_07_household_ui_multi_workspace_5_file_by_file_changes",
+      "label": "5. File-by-File Changes",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L71"
+    },
+    {
+      "id": "plans_2026_06_07_household_ui_multi_workspace_new_files",
+      "label": "New files",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L73"
+    },
+    {
+      "id": "plans_2026_06_07_household_ui_multi_workspace_modified_files",
+      "label": "Modified files",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L83"
+    },
+    {
+      "id": "plans_2026_06_07_household_ui_multi_workspace_6_key_flows",
+      "label": "6. Key flows",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L93"
+    },
+    {
+      "id": "plans_2026_06_07_household_ui_multi_workspace_7_implementation_steps_each_with_a_verification_gate",
+      "label": "7. Implementation Steps (each with a verification gate)",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L115"
+    },
+    {
+      "id": "plans_2026_06_07_household_ui_multi_workspace_8_acceptance_criteria",
+      "label": "8. Acceptance Criteria",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L131"
+    },
+    {
+      "id": "plans_2026_06_07_household_ui_multi_workspace_9_risks_mitigations",
+      "label": "9. Risks & Mitigations",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L140"
+    },
+    {
+      "id": "plans_2026_06_07_household_ui_multi_workspace_10_out_of_scope_deferred_to_real_auth_milestone",
+      "label": "10. Out of Scope (deferred to real-auth milestone)",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L150"
+    },
+    {
+      "id": "plans_2026_06_07_household_ui_multi_workspace_11_open_question_non_blocking",
+      "label": "11. Open question (non-blocking)",
+      "file_type": "document",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L156"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_plans_2026_06_07_household_ui_multi_workspace_md",
+      "target": "plans_2026_06_07_household_ui_multi_workspace_plan_multi_household_ui_shared_workspaces",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_household_ui_multi_workspace_plan_multi_household_ui_shared_workspaces",
+      "target": "plans_2026_06_07_household_ui_multi_workspace_1_goal",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_household_ui_multi_workspace_plan_multi_household_ui_shared_workspaces",
+      "target": "plans_2026_06_07_household_ui_multi_workspace_2_locked_decisions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_household_ui_multi_workspace_plan_multi_household_ui_shared_workspaces",
+      "target": "plans_2026_06_07_household_ui_multi_workspace_3_the_linchpin_current_household",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_household_ui_multi_workspace_plan_multi_household_ui_shared_workspaces",
+      "target": "plans_2026_06_07_household_ui_multi_workspace_4_data_flow",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L55",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_household_ui_multi_workspace_plan_multi_household_ui_shared_workspaces",
+      "target": "plans_2026_06_07_household_ui_multi_workspace_5_file_by_file_changes",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L71",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_household_ui_multi_workspace_5_file_by_file_changes",
+      "target": "plans_2026_06_07_household_ui_multi_workspace_new_files",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L73",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_household_ui_multi_workspace_5_file_by_file_changes",
+      "target": "plans_2026_06_07_household_ui_multi_workspace_modified_files",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L83",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_household_ui_multi_workspace_plan_multi_household_ui_shared_workspaces",
+      "target": "plans_2026_06_07_household_ui_multi_workspace_6_key_flows",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L93",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_household_ui_multi_workspace_plan_multi_household_ui_shared_workspaces",
+      "target": "plans_2026_06_07_household_ui_multi_workspace_7_implementation_steps_each_with_a_verification_gate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L115",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_household_ui_multi_workspace_plan_multi_household_ui_shared_workspaces",
+      "target": "plans_2026_06_07_household_ui_multi_workspace_8_acceptance_criteria",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L131",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_household_ui_multi_workspace_plan_multi_household_ui_shared_workspaces",
+      "target": "plans_2026_06_07_household_ui_multi_workspace_9_risks_mitigations",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L140",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_household_ui_multi_workspace_plan_multi_household_ui_shared_workspaces",
+      "target": "plans_2026_06_07_household_ui_multi_workspace_10_out_of_scope_deferred_to_real_auth_milestone",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L150",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_07_household_ui_multi_workspace_plan_multi_household_ui_shared_workspaces",
+      "target": "plans_2026_06_07_household_ui_multi_workspace_11_open_question_non_blocking",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plans/2026-06-07-household-ui-multi-workspace.md",
+      "source_location": "L156",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

@@ -5,6 +5,7 @@ import {
   expenses,
   householdMembers,
   households,
+  notifications,
   users,
 } from "@/lib/db/schema";
 import { env } from "@/lib/env";
@@ -73,8 +74,9 @@ export async function cleanupAbandonedAccounts(
     if (belongsToActiveHousehold) continue; // active household — keep the user
 
     for (const hid of householdIds) affectedHouseholds.add(hid);
-    // Delete membership rows + the user atomically (FK order: members first).
+    // Delete every row that FKs to the user, then the user — atomically.
     await db.batch([
+      db.delete(notifications).where(eq(notifications.userId, u.id)),
       db.delete(householdMembers).where(eq(householdMembers.userId, u.id)),
       db.delete(users).where(eq(users.id, u.id)),
     ]);

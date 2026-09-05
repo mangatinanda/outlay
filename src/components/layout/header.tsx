@@ -4,6 +4,7 @@ import { LogOut, Menu, Settings } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -47,10 +48,12 @@ export function Header({
   user,
   householdName,
   isSuperadmin = false,
+  unreadCount = null,
 }: {
   user: HeaderUser | null;
   householdName?: string | null;
   isSuperadmin?: boolean;
+  unreadCount?: number | null;
 }) {
   const name = firstName(user);
   const pathname = usePathname();
@@ -97,6 +100,9 @@ export function Header({
         </div>
 
         <div className="flex items-center gap-2">
+          {unreadCount !== null && (
+            <NotificationBell initialCount={unreadCount} />
+          )}
           <div className="hidden md:block">
             <ThemeToggle />
           </div>

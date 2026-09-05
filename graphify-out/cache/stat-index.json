@@ -10,9 +10,9 @@
     "hash": "48a707e13d7135451ae39ba9ab089ea224126400d56f03d3e462ca03c4556527"
   },
   "/Users/nanda/vibe-code/outlay/.claude/settings.json": {
-    "size": 884,
-    "mtime_ns": 1782140519266584787,
-    "hash": "003c29c1352fae6cfa62beaf0148161425c236e475a1114626e90017b516c16f"
+    "size": 2880,
+    "mtime_ns": 1783403996625994093,
+    "hash": "0930e28b6196e701b4cca958958e22f4347f8f9511e7baa0af4dc21886abcaeb"
   },
   "/Users/nanda/vibe-code/outlay/.husky/_/applypatch-msg": {
     "size": 39,
@@ -180,9 +180,9 @@
     "hash": "6c12773ded3b63e36b9cb4ae14575829a1dd144cd4f8a7197cc65db7284814a3"
   },
   "/Users/nanda/vibe-code/outlay/drizzle/meta/_journal.json": {
-    "size": 1068,
-    "mtime_ns": 1782138072363347742,
-    "hash": "2374f5b272cc07a143e0ab5d5563f82185ae33229d9b1d8f5230cb5ca7c3ca9b"
+    "size": 1210,
+    "mtime_ns": 1783403932797572740,
+    "hash": "ad30e8639da3b245816d89f6ee553a1e334c89d594bfc8c970c8a7753f5c3810"
   },
   "/Users/nanda/vibe-code/outlay/e2e/add-expense.spec.ts": {
     "size": 2646,
@@ -211,7 +211,7 @@
   },
   "/Users/nanda/vibe-code/outlay/package.json": {
     "size": 2646,
-    "mtime_ns": 1782137589979420892,
+    "mtime_ns": 1784654701114562719,
     "hash": "53f774d3af6a4d2deb37de9bb45a1cca9a80c96c75a03a4360ac62a992e5ea8e"
   },
   "/Users/nanda/vibe-code/outlay/playwright.config.ts": {
@@ -1201,7 +1201,7 @@
   },
   "/Users/nanda/vibe-code/outlay/.claude/rules/ui.md": {
     "size": 2199,
-    "mtime_ns": 1781514749839138968,
+    "mtime_ns": 1784654701113391801,
     "hash": "fee3aabbf2c806017c8cda2d7f32f42ca6d718e878eb367a6656ff5bfae0f301"
   },
   "/Users/nanda/vibe-code/outlay/.claude/skills/design-system/SKILL.md": {
@@ -1225,14 +1225,14 @@
     "hash": "1a5aaa6a62b77b5bc4a7b2b06a0eb39f31900c7ad4c88cc47a11aa6cca44f691"
   },
   "/Users/nanda/vibe-code/outlay/CLAUDE.md": {
-    "size": 7686,
-    "mtime_ns": 1782138072360969071,
-    "hash": "d284563c7882c3cbcc99d8770c324b8495e199da9f650a7ea27f24e84d5a4b10"
+    "size": 8459,
+    "mtime_ns": 1784654701113854010,
+    "hash": "59592650fd1fe3a170be87687b29db4769aa408742f025a2bb9dcfb6de6391ad"
   },
   "/Users/nanda/vibe-code/outlay/FEATURES.md": {
-    "size": 2587,
-    "mtime_ns": 1782140351847461363,
-    "hash": "df5869c336bae95ffdf083f715fb78cbab2a340324338739bcb5a7f6f6ca43c8"
+    "size": 3313,
+    "mtime_ns": 1788588865458583132,
+    "hash": "e8661e1bd4ff55b9902a684e21629a73488c44b99247cdcaabd1ad6a322d84b2"
   },
   "/Users/nanda/vibe-code/outlay/README.md": {
     "size": 18798,
@@ -1305,9 +1305,9 @@
     "hash": "23cc0f8ad6c6db0a73ca2b42aa8b40b39568ce4123b416c46248e3beb85c62ba"
   },
   "/Users/nanda/vibe-code/outlay/memory.md": {
-    "size": 40805,
-    "mtime_ns": 1782191164099593075,
-    "hash": "598a33a2c3f0a6e666d410cd3fd5767ba04737bbd8137a365edbc40bf8fe38f7"
+    "size": 45308,
+    "mtime_ns": 1788588865459461005,
+    "hash": "73b101921539b11b189826b581c4bf6686c3330b15b7b0da7729ced7c8842c2e"
   },
   "/Users/nanda/vibe-code/outlay/plans/2026-06-07-currency-switcher.md": {
     "size": 6427,
@@ -1423,5 +1423,35 @@
     "size": 1138,
     "mtime_ns": 1781663027700462977,
     "hash": "5f865bcd509101fb5d805306905a4184da7770d1ce905ac51f9866a207ac684c"
+  },
+  "/Users/nanda/vibe-code/outlay/drizzle/0007_neat_barracuda.sql": {
+    "size": 622,
+    "mtime_ns": 1783403932797668282,
+    "hash": "d501a27201443e80e4e0426cac3c12772b5674ea31d09cdea666ee5272ca0ac4"
+  },
+  "/Users/nanda/vibe-code/outlay/drizzle/meta/0007_snapshot.json": {
+    "size": 21276,
+    "mtime_ns": 1783403932796578576,
+    "hash": "c1cf4ce71ced9d30363dfbffd622efa80accac63e067a161fdc6751c8accb1dd"
+  },
+  "/Users/nanda/vibe-code/outlay/docs/superpowers/plans/2026-07-07-in-app-notifications.md": {
+    "size": 79154,
+    "mtime_ns": 1783403658582621118,
+    "hash": "a4de16e5e42488423a141e47466e4eb3f8726f94cfbbbef05eb4f86a8a4538ea"
+  },
+  "/Users/nanda/vibe-code/outlay/docs/superpowers/specs/2026-07-07-in-app-notifications-design.md": {
+    "size": 11388,
+    "mtime_ns": 1783402541626062740,
+    "hash": "09da8f98067ec65510643b67205b2f17656bf9bea5a50c4da06001f7a6587709"
+  },
+  "/Users/nanda/vibe-code/outlay/graphify-out/memory/query_20260707_045008_are_the_inferred_relationships_around_getcurrentho.md": {
+    "size": 2003,
+    "mtime_ns": 1783399808236751391,
+    "hash": "ac63410cf6fccc8ed42cc77fb5d552525728227520bbd4181da6325678216770"
+  },
+  "/Users/nanda/vibe-code/outlay/graphify-out/memory/query_20260707_051325_make_me_understand_this_repo__check_if_dead_code_c.md": {
+    "size": 2303,
+    "mtime_ns": 1783401205114984779,
+    "hash": "0661703b1b0d9e250af7b151c6856400b6b945498ff684727cf4d859e8191b42"
   }
 }

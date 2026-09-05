@@ -1,0 +1,223 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_claude_md",
+      "label": "CLAUDE.md",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "outlay_claude_outlay_household_expense_tracker",
+      "label": "Outlay - Household Expense Tracker",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "outlay_claude_project_overview",
+      "label": "Project Overview",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L3"
+    },
+    {
+      "id": "outlay_claude_tech_stack",
+      "label": "Tech Stack",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L6"
+    },
+    {
+      "id": "outlay_claude_architecture",
+      "label": "Architecture",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L18"
+    },
+    {
+      "id": "outlay_claude_directory_structure",
+      "label": "Directory Structure",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L20"
+    },
+    {
+      "id": "outlay_claude_data_flow_pattern",
+      "label": "Data Flow Pattern",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L51"
+    },
+    {
+      "id": "outlay_claude_database",
+      "label": "Database",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L58"
+    },
+    {
+      "id": "outlay_claude_package_manager",
+      "label": "Package Manager",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L67"
+    },
+    {
+      "id": "outlay_claude_commands",
+      "label": "Commands",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L70"
+    },
+    {
+      "id": "outlay_claude_key_conventions",
+      "label": "Key Conventions",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L83"
+    },
+    {
+      "id": "outlay_claude_auth_status",
+      "label": "Auth Status",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L91"
+    },
+    {
+      "id": "outlay_claude_environment_variables",
+      "label": "Environment Variables",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L96"
+    },
+    {
+      "id": "outlay_claude_graphify",
+      "label": "graphify",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L99"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_claude_md",
+      "target": "outlay_claude_outlay_household_expense_tracker",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_claude_outlay_household_expense_tracker",
+      "target": "outlay_claude_project_overview",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_claude_outlay_household_expense_tracker",
+      "target": "outlay_claude_tech_stack",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_claude_outlay_household_expense_tracker",
+      "target": "outlay_claude_architecture",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_claude_architecture",
+      "target": "outlay_claude_directory_structure",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_claude_architecture",
+      "target": "outlay_claude_data_flow_pattern",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L51",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_claude_architecture",
+      "target": "outlay_claude_database",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L58",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_claude_outlay_household_expense_tracker",
+      "target": "outlay_claude_package_manager",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L67",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_claude_outlay_household_expense_tracker",
+      "target": "outlay_claude_commands",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L70",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_claude_outlay_household_expense_tracker",
+      "target": "outlay_claude_key_conventions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L83",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_claude_outlay_household_expense_tracker",
+      "target": "outlay_claude_auth_status",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L91",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_claude_outlay_household_expense_tracker",
+      "target": "outlay_claude_environment_variables",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L96",
+      "weight": 1.0
+    },
+    {
+      "source": "outlay_claude_outlay_household_expense_tracker",
+      "target": "outlay_claude_graphify",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L99",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}
