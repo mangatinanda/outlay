@@ -190,8 +190,8 @@
     "semantic_hash": "bd41c1def0aa69eb222335a231b8fd1a"
   },
   "e2e/dashboard.spec.ts": {
-    "mtime": 1788589257.6615498,
-    "ast_hash": "a26f52b80de92161223f7f20aebc702c",
+    "mtime": 1788616611.556518,
+    "ast_hash": "630b4db93aae6b42a21e27aea9de64dd",
     "semantic_hash": ""
   },
   "e2e/login.spec.ts": {
@@ -215,9 +215,9 @@
     "semantic_hash": "b4fa9beb1247c847a89561eec3d629dd"
   },
   "playwright.config.ts": {
-    "mtime": 1781514749.843964,
-    "ast_hash": "a02d575d251085361fc5e867a312075f",
-    "semantic_hash": "a02d575d251085361fc5e867a312075f"
+    "mtime": 1788616611.556982,
+    "ast_hash": "c2e04327e3c8f2b64a3842700fa4eaf0",
+    "semantic_hash": ""
   },
   "postcss.config.mjs": {
     "mtime": 1773780266.268929,
@@ -500,8 +500,8 @@
     "semantic_hash": "308f78ba1d0de5d17be64ef0b9346abf"
   },
   "src/components/layout/header.tsx": {
-    "mtime": 1788589257.6784806,
-    "ast_hash": "aee047ff488f67b2c55ef8c54be12045",
+    "mtime": 1788616611.5572171,
+    "ast_hash": "01460d76e1c384244972b2cb91be9dd0",
     "semantic_hash": ""
   },
   "src/components/layout/household-switcher.tsx": {
@@ -720,14 +720,14 @@
     "semantic_hash": "aca02058123b3ad0cee0286551a0ceb8"
   },
   "src/lib/actions/auth-actions.test.ts": {
-    "mtime": 1781514749.8644738,
-    "ast_hash": "eaf3ee248e81e5ed814d4ebc908f5309",
-    "semantic_hash": "eaf3ee248e81e5ed814d4ebc908f5309"
+    "mtime": 1788616611.5573494,
+    "ast_hash": "8291654907c42e4d26b766304b2efac1",
+    "semantic_hash": ""
   },
   "src/lib/actions/auth-actions.ts": {
-    "mtime": 1781514749.8648467,
-    "ast_hash": "cd979de7db539c88fb0589b20346bd06",
-    "semantic_hash": "cd979de7db539c88fb0589b20346bd06"
+    "mtime": 1788616611.5578318,
+    "ast_hash": "1d1b800198d7e3c513b49e8afc6a121a",
+    "semantic_hash": ""
   },
   "src/lib/actions/category-actions.ts": {
     "mtime": 1782138072.3685966,
@@ -1230,8 +1230,8 @@
     "semantic_hash": ""
   },
   "FEATURES.md": {
-    "mtime": 1788589257.6611967,
-    "ast_hash": "460fb0884e66063dad0c01bff861a4d5",
+    "mtime": 1788616611.5562506,
+    "ast_hash": "927aa9ce4f5a532cb82e2c0d9998999b",
     "semantic_hash": ""
   },
   "README.md": {
@@ -1305,8 +1305,8 @@
     "semantic_hash": "8103246c7f0ac81c084a853677011086"
   },
   "memory.md": {
-    "mtime": 1788589644.323819,
-    "ast_hash": "a1538b33e3ab23c8379179fecf03a940",
+    "mtime": 1788616884.5574517,
+    "ast_hash": "e0789719371f7361b04a2178edb31ba7",
     "semantic_hash": ""
   },
   "plans/2026-06-07-currency-switcher.md": {
@@ -1547,6 +1547,16 @@
   "graphify-out/memory/query_20260707_051325_make_me_understand_this_repo__check_if_dead_code_c.md": {
     "mtime": 1788589257.6772692,
     "ast_hash": "3b3cf2335881b1cf6b8d392f4cefad0b",
+    "semantic_hash": ""
+  },
+  "scripts/domain-watch.sh": {
+    "mtime": 1788616884.5576565,
+    "ast_hash": "ccacea2a499842c49f73ce74973e165c",
+    "semantic_hash": ""
+  },
+  ".github/workflows/domain-watch.yml": {
+    "mtime": 1788616884.5568626,
+    "ast_hash": "6ea48e5b1ef159c7e59f20dc1fc6ef38",
     "semantic_hash": ""
   }
 }

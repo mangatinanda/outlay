@@ -1,0 +1,139 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_scripts_domain_watch_sh",
+      "label": "domain-watch.sh",
+      "file_type": "code",
+      "source_file": "scripts/domain-watch.sh",
+      "source_location": "L1",
+      "metadata": { "language": "bash", "kind": "file" }
+    },
+    {
+      "id": "users_nanda_vibe_code_outlay_scripts_domain_watch_sh__entry",
+      "label": "domain-watch.sh script",
+      "file_type": "code",
+      "source_file": "scripts/domain-watch.sh",
+      "source_location": "L1",
+      "metadata": { "language": "bash", "kind": "bash_entrypoint" }
+    },
+    {
+      "id": "scripts_domain_watch_lookup",
+      "label": "lookup()",
+      "file_type": "code",
+      "source_file": "scripts/domain-watch.sh",
+      "source_location": "L15",
+      "metadata": { "language": "bash", "kind": "bash_function" }
+    },
+    {
+      "id": "scripts_domain_watch_classify",
+      "label": "classify()",
+      "file_type": "code",
+      "source_file": "scripts/domain-watch.sh",
+      "source_location": "L21",
+      "metadata": { "language": "bash", "kind": "bash_function" }
+    },
+    {
+      "id": "scripts_domain_watch_selftest",
+      "label": "selftest()",
+      "file_type": "code",
+      "source_file": "scripts/domain-watch.sh",
+      "source_location": "L47",
+      "metadata": { "language": "bash", "kind": "bash_function" }
+    },
+    {
+      "id": "scripts_domain_watch_check",
+      "label": "check()",
+      "file_type": "code",
+      "source_file": "scripts/domain-watch.sh",
+      "source_location": "L49",
+      "metadata": { "language": "bash", "kind": "bash_function" }
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_scripts_domain_watch_sh",
+      "target": "users_nanda_vibe_code_outlay_scripts_domain_watch_sh__entry",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/domain-watch.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "users_nanda_vibe_code_outlay_scripts_domain_watch_sh",
+      "target": "scripts_domain_watch_lookup",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/domain-watch.sh",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "users_nanda_vibe_code_outlay_scripts_domain_watch_sh",
+      "target": "scripts_domain_watch_classify",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/domain-watch.sh",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "users_nanda_vibe_code_outlay_scripts_domain_watch_sh",
+      "target": "scripts_domain_watch_selftest",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/domain-watch.sh",
+      "source_location": "L47",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_domain_watch_selftest",
+      "target": "scripts_domain_watch_check",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/domain-watch.sh",
+      "source_location": "L49",
+      "weight": 1.0
+    },
+    {
+      "source": "users_nanda_vibe_code_outlay_scripts_domain_watch_sh__entry",
+      "target": "scripts_domain_watch_lookup",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/domain-watch.sh",
+      "source_location": "L73",
+      "weight": 1.0,
+      "context": "call"
+    },
+    {
+      "source": "users_nanda_vibe_code_outlay_scripts_domain_watch_sh__entry",
+      "target": "scripts_domain_watch_classify",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/domain-watch.sh",
+      "source_location": "L74",
+      "weight": 1.0,
+      "context": "call"
+    },
+    {
+      "source": "users_nanda_vibe_code_outlay_scripts_domain_watch_sh__entry",
+      "target": "scripts_domain_watch_selftest",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/domain-watch.sh",
+      "source_location": "L75",
+      "weight": 1.0,
+      "context": "call"
+    },
+    {
+      "source": "scripts_domain_watch_selftest",
+      "target": "scripts_domain_watch_check",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/domain-watch.sh",
+      "source_location": "L59",
+      "weight": 1.0,
+      "context": "call"
+    }
+  ]
+}
