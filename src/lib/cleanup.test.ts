@@ -9,11 +9,13 @@ import { migrate } from "drizzle-orm/libsql/migrator";
 import { cleanupAbandonedAccounts } from "@/lib/cleanup";
 import { db } from "@/lib/db";
 import {
+  activity,
   categories,
   expenses,
   householdMembers,
   households,
   notifications,
+  settlements,
   users,
 } from "@/lib/db/schema";
 
@@ -29,12 +31,14 @@ beforeAll(async () => {
     { id: "u-active", name: "Active", email: "act@x.com", createdAt: OLD },
     { id: "u-recent", name: "Recent", email: "rec@x.com", createdAt: RECENT },
     { id: "u-orphan", name: "Orphan", email: "orph@x.com", createdAt: OLD },
+    { id: "u-settled", name: "Settled", email: "set@x.com", createdAt: OLD },
   ]);
   await db.insert(households).values([
     { id: "h-empty", name: "Empty" },
     { id: "h-active", name: "Active" },
     { id: "h-recent", name: "Recent" },
     { id: "h-shared", name: "Shared" },
+    { id: "h-settled", name: "Settled" },
   ]);
   await db.insert(householdMembers).values([
     {
@@ -67,6 +71,16 @@ beforeAll(async () => {
     },
     // Attribution-only member (no userId) who owns the shared household's data.
     { id: "m-attr", householdId: "h-shared", name: "Amma", role: "member" },
+    // A household with a settlement but no expenses (still real data).
+    {
+      id: "m-set",
+      householdId: "h-settled",
+      userId: "u-settled",
+      name: "Settled",
+      role: "admin",
+    },
+    { id: "m-set-a", householdId: "h-settled", name: "A", role: "member" },
+    { id: "m-set-b", householdId: "h-settled", name: "B", role: "member" },
   ]);
   await db.insert(categories).values([
     { id: "c-active", householdId: "h-active", name: "Groceries" },
@@ -100,6 +114,24 @@ beforeAll(async () => {
     type: "invite.received",
     payload: "{}",
   });
+  // Creating a household writes an audit row (activity.household_id +
+  // activity.actor_user_id FKs) — every real household has at least one.
+  await db.insert(activity).values({
+    id: "act-ab",
+    householdId: "h-empty",
+    actorUserId: "u-abandoned",
+    actorLabel: "Abandoned",
+    action: "household.create",
+    summary: "created the household",
+  });
+  await db.insert(settlements).values({
+    id: "s-settled",
+    householdId: "h-settled",
+    fromMemberId: "m-set-a",
+    toMemberId: "m-set-b",
+    amountMinor: 500,
+    date: "2026-01-01",
+  });
 });
 
 describe("cleanupAbandonedAccounts", () => {
@@ -116,14 +148,27 @@ describe("cleanupAbandonedAccounts", () => {
     const remainingUsers = (await db.select().from(users))
       .map((u) => u.id)
       .sort();
-    expect(remainingUsers).toEqual(["u-active", "u-orphan", "u-recent"]);
+    // u-settled is KEPT too: a settlement is real household data.
+    expect(remainingUsers).toEqual([
+      "u-active",
+      "u-orphan",
+      "u-recent",
+      "u-settled",
+    ]);
     expect(await db.select().from(notifications)).toHaveLength(0);
+    expect(await db.select().from(activity)).toHaveLength(0);
 
     const remainingHouseholds = (await db.select().from(households))
       .map((h) => h.id)
       .sort();
-    // h-empty removed; h-shared kept (has an expense); h-recent kept (recent owner).
-    expect(remainingHouseholds).toEqual(["h-active", "h-recent", "h-shared"]);
+    // h-empty removed; h-shared kept (has an expense); h-recent kept (recent
+    // owner); h-settled kept (has a settlement).
+    expect(remainingHouseholds).toEqual([
+      "h-active",
+      "h-recent",
+      "h-settled",
+      "h-shared",
+    ]);
 
     // The shared household's data is intact.
     const sharedExpenses = await db.select().from(expenses);
