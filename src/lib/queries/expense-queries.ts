@@ -13,6 +13,8 @@ export async function getExpenses(
     memberId?: string;
     startDate?: string;
     endDate?: string;
+    /** Case-insensitive substring of the description. */
+    search?: string;
     limit?: number;
   },
 ) {
@@ -29,6 +31,17 @@ export async function getExpenses(
   }
   if (filters?.endDate) {
     conditions.push(lte(expenses.date, filters.endDate));
+  }
+  const search = filters?.search?.trim();
+  if (search) {
+    // SQLite's LIKE is case-insensitive for ASCII by default. Escape the
+    // wildcards so a description containing "%" or "_" matches literally
+    // instead of turning the search into "match everything"; drizzle's like()
+    // takes no escape option, so the ESCAPE clause is written out here.
+    const escaped = search.replace(/[\\%_]/g, "\\$&");
+    conditions.push(
+      sql`${expenses.description} LIKE ${`%${escaped}%`} ESCAPE '\\'`,
+    );
   }
 
   const result = await db
