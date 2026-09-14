@@ -65,6 +65,31 @@ double‑spec; CI reads pnpm from `packageManager`).
 
 ## Work log
 
+### 2026‑09‑14 — Expense filters (search + date range + category + paid‑by)
+
+The `getExpenses` filters param finally has a UI (it was flagged "kept for a roadmap filter UI" since the
+2026‑06‑11 audit).
+- **URL is the state:** `?from&to&category&member&q` on `/expenses`. `src/lib/validators/expense-filter-schema.ts`
+  (`parseExpenseFilters` / `filtersToSearchParams` / `countActiveFilters`) parses defensively — a hand‑edited
+  URL degrades to "no filter", a reversed range is swapped, `q` is trimmed to 100 chars, repeated params take
+  the first value. A date range counts as ONE active filter (one chip).
+- **Query:** `getExpenses` gained `search`. **Drizzle's `like()` takes only two args — the third options
+  object is silently ignored**, so the wildcard escape is written as raw SQL:
+  ``sql`${expenses.description} LIKE ${pattern} ESCAPE '\\'` `` with `%`/`_`/`\` escaped in the term. Without it a
+  description containing `%` turned the search into "match everything" (regression test covers `100%`).
+- **UI:** `src/components/expenses/expense-filters.tsx` — search input (300 ms debounce → `router.replace`),
+  a Filters button with an active count, a bottom sheet (date presets + custom from/to, category, paid‑by,
+  Apply/Clear) and removable chips. `FilterSummary` (same file, client) shows count + total; money must be
+  formatted via `useFormatCurrency`, so it can't live in the Server Component page.
+- **Page:** `/expenses` reads `searchParams`, passes filters to the query, keys the `<Suspense>` on the query
+  string so filter changes re‑suspend, and distinguishes "No matching expenses" (filters on, keeps the bar)
+  from the first‑run "No expenses yet" CTA. Export exports the filtered rows.
+- **⚠️ Biome footgun again** (see the 2026‑06‑23 entry): `useExhaustiveDependencies` **added** `filters` and
+  `apply` — both new identities every render — to the debounce effect. Fix: derive everything from
+  `searchParams.toString()` (a primitive) via `useMemo`, and wrap `apply` in `useCallback`.
+- **Tests:** validator (7), search query (5, incl. cross‑household isolation + wildcard), component (6, happy‑dom),
+  and `e2e/filter-expenses.spec.ts` (search → URL → reload → clear → no‑match empty state). 270 unit + 6 e2e green.
+
 ### 2026‑09‑06 — Per‑member "Show in Paid by" switch
 
 Owner asked to hide a member from the add‑expense "Paid by" list (admin's choice, any member).

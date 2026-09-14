@@ -4,12 +4,16 @@ Outlay is a shared expense tracker for your household. Everyone who lives togeth
 can log what they spend, see where the money goes, and settle up who owes whom —
 on the web or installed on your phone.
 
-_Last updated: 2026-09-06_
+_Last updated: 2026-09-14_
 
 ## Track your spending
 - Add an expense in seconds: amount, date, description, category, who paid, and an
   optional note.
 - Edit or remove any expense; on a phone, swipe a row to delete it.
+- Find past spending fast: search by description, or filter by date range,
+  category and who paid. Filters live in the web address, so a filtered view
+  survives a refresh and can be shared as a link, and Export gives you exactly
+  the rows you filtered to.
 - Money is shown in your household's currency, with totals that always add up.
 
 ## Keep things organized
