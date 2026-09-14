@@ -290,9 +290,9 @@
     "semantic_hash": "d753792a4ca9b3092c2b3260b3572aa1"
   },
   "src/app/(app)/expenses/page.tsx": {
-    "mtime": 1782110889.6197288,
-    "ast_hash": "16c66352ffdf7265a83890821a0f1399",
-    "semantic_hash": "16c66352ffdf7265a83890821a0f1399"
+    "mtime": 1789390177.6169994,
+    "ast_hash": "2f9a9d7a045749ddb2e0319a78cd5aa5",
+    "semantic_hash": ""
   },
   "src/app/(app)/households/loading.tsx": {
     "mtime": 1782190376.6807501,
@@ -1045,9 +1045,9 @@
     "semantic_hash": "5ec22551429a3a7f15e315533b1abfc2"
   },
   "src/lib/queries/expense-queries.ts": {
-    "mtime": 1781514749.8699734,
-    "ast_hash": "12cbd30a35f2c4d8179646698a15537a",
-    "semantic_hash": "12cbd30a35f2c4d8179646698a15537a"
+    "mtime": 1789390177.6178625,
+    "ast_hash": "98565cecac14c2b785100d6f339ef75b",
+    "semantic_hash": ""
   },
   "src/lib/queries/household-queries.test.ts": {
     "mtime": 1781607092.8982291,
@@ -1230,8 +1230,8 @@
     "semantic_hash": ""
   },
   "FEATURES.md": {
-    "mtime": 1788647088.8047876,
-    "ast_hash": "314265fda93d83cff9b80fd3415ef948",
+    "mtime": 1789390177.6161153,
+    "ast_hash": "6721da948bb66281502d9c13c831e6b3",
     "semantic_hash": ""
   },
   "README.md": {
@@ -1305,8 +1305,8 @@
     "semantic_hash": "8103246c7f0ac81c084a853677011086"
   },
   "memory.md": {
-    "mtime": 1788647088.8061628,
-    "ast_hash": "93a8c5f73d070405dc1225e0d6751747",
+    "mtime": 1789390177.6166973,
+    "ast_hash": "0b0f63a2cab22dbfeda3e0de3ec86ccf",
     "semantic_hash": ""
   },
   "plans/2026-06-07-currency-switcher.md": {
@@ -1582,6 +1582,36 @@
   "src/lib/members.ts": {
     "mtime": 1788647088.8088534,
     "ast_hash": "702b4c186e130e03935e47462ea6f396",
+    "semantic_hash": ""
+  },
+  "e2e/filter-expenses.spec.ts": {
+    "mtime": 1789390177.61633,
+    "ast_hash": "ce842ce0fcf966b8359afc467cc24db2",
+    "semantic_hash": ""
+  },
+  "src/components/expenses/expense-filters.test.tsx": {
+    "mtime": 1789390177.617188,
+    "ast_hash": "9d7bf529aa1d26087ced180c163ea455",
+    "semantic_hash": ""
+  },
+  "src/components/expenses/expense-filters.tsx": {
+    "mtime": 1789390177.6174555,
+    "ast_hash": "ec705ade4d476e891430ffc07830a894",
+    "semantic_hash": ""
+  },
+  "src/lib/queries/expense-search.test.ts": {
+    "mtime": 1789390177.6179686,
+    "ast_hash": "6eb0914ae837f4c22a140efcf957c31f",
+    "semantic_hash": ""
+  },
+  "src/lib/validators/expense-filter-schema.test.ts": {
+    "mtime": 1789390177.6180723,
+    "ast_hash": "d0434eff34d604c00f31ab2c3e565f1b",
+    "semantic_hash": ""
+  },
+  "src/lib/validators/expense-filter-schema.ts": {
+    "mtime": 1789390177.6181772,
+    "ast_hash": "c9237519365af1cdaddddb99e56c6d61",
     "semantic_hash": ""
   }
 }
