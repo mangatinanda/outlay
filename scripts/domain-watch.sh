@@ -1,13 +1,20 @@
 #!/usr/bin/env bash
-# Domain-status watcher for the (expired) custom domain.
+# Registry-status check for a domain. MANUAL TOOL — nothing runs this on a
+# schedule any more.
 #
 #   scripts/domain-watch.sh lookup <domain>   print the registry's raw whois record
 #   scripts/domain-watch.sh classify          read whois text on stdin, print one of
 #                                             DROPZONE | AVAILABLE | REGISTERED | UNKNOWN
 #   scripts/domain-watch.sh selftest          exercise classify against known records
 #
-# Used by .github/workflows/domain-watch.yml (daily). Kept as a plain script so
-# it can be run and tested locally: `scripts/domain-watch.sh lookup mangatinanda.me`.
+# Typical use:  scripts/domain-watch.sh lookup mangatinanda.me
+#
+# History: written 2026-09-05 when mangatinanda.me expired and sat in Identity
+# Digital's Dropzone window, and driven daily by a GitHub Action that opened an
+# issue on any status change. That Action caught the drop (issue #9, AVAILABLE)
+# on 2026-09-14; the domain was re-registered the same day and the workflow was
+# removed. Kept because the classifier is the quickest way to answer "what does
+# the registry actually say about this domain?" without trusting a whois UI.
 set -euo pipefail
 
 REGISTRY_WHOIS="${REGISTRY_WHOIS:-whois.nic.me}"
