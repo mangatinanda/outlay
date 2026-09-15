@@ -65,6 +65,26 @@ double‑spec; CI reads pnpm from `packageManager`).
 
 ## Work log
 
+### 2026‑09‑15 — Custom domain restored; domain watcher retired
+
+`mangatinanda.me` is **back and live**. The GitHub Action caught the drop on 2026‑09‑14 (issue #9,
+`AVAILABLE`) and the owner re‑registered it the same day.
+- **Registrar HOSTINGER operations, UAB.** Created 2026‑09‑14, **registry expiry 2027‑09‑14** — renew before
+  then; the previous lapse is what took the custom domain down for ~10 days.
+- **DNS:** the apex uses Hostinger's `lunar/solar.dns-parking.com` nameservers; `outlay.mangatinanda.me`
+  CNAMEs to `…vercel-dns-017.com`. Verified live: `/` → 307 → `/login` → 200, Let's Encrypt cert issued
+  2026‑09‑14. Auth.js on that host advertises
+  `callbackUrl: https://outlay.mangatinanda.me/api/auth/callback/google` and the sign‑in redirect carries the
+  matching `redirect_uri`, so the Google OAuth client must keep that URI registered.
+- **Watcher retired (owner's call: keep the script, stop running it).**
+  `.github/workflows/domain-watch.yml` is **deleted**; `scripts/domain-watch.sh` stays as a manual tool
+  (`lookup` / `classify` / `selftest`, self‑test green). Nothing is scheduled, so **no automated warning before
+  the 2027‑09‑14 expiry** — that is now a manual/registrar responsibility.
+- The claude.ai routine `trig_01QVpkKuoV1mD5wvHwNxCHAC` was already disabled (its sandbox can't reach whois);
+  delete it at claude.ai/code/routines. **Never use the Slack connector for notifications** — it is signed in
+  as a colleague's account.
+- Issues #7 (DROPZONE) and #9 (AVAILABLE) are closed; the `domain-watch` label is left in place.
+
 ### 2026‑09‑14 — Expense filters (search + date range + category + paid‑by)
 
 The `getExpenses` filters param finally has a UI (it was flagged "kept for a roadmap filter UI" since the
@@ -635,26 +655,19 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
   `https://myoutlay.vercel.app` (HTTP 200; `/serwist/sw.js` carries the `/api/notifications/` NetworkOnly
   rule). Migration `0007` (notifications table + `households.notify_expense_over_minor`, additive) is applied
   by `scripts/migrate-if-prod.mjs` during the prod build — a failure there fails the build, so it applied.
-- **⚠️ Custom domain `outlay.mangatinanda.me` is DOWN — the domain `mangatinanda.me` EXPIRED** (owner,
-  2026‑09‑05). The `.me` registry answers NXDOMAIN (no NS delegation). The owner is waiting for it to drop
-  and become purchasable again, then intends to re‑buy from a registrar that accepts INR. Until then the app
-  is served by the Vercel aliases `myoutlay.vercel.app` / `outlay-kappa.vercel.app` (Google OAuth redirect
-  URIs exist for those hosts, so sign‑in works there). After re‑purchase: point DNS at Vercel, re‑add the
-  domain in the Vercel project, re‑check the OAuth redirect URI for the custom host, and expect PWA installs
-  pinned to the old host to need a reinstall.
+- **✅ Custom domain restored (2026‑09‑14):** `outlay.mangatinanda.me` serves the app again (registrar
+  **Hostinger**, **expiry 2027‑09‑14 — renew before then**). The Vercel aliases `myoutlay.vercel.app` /
+  `outlay-kappa.vercel.app` still work. See the 2026‑09‑15 work‑log entry. **Nothing warns about the next
+  expiry** — the daily watcher was retired at the owner's request.
 - **PR #4 MERGED (2026‑09‑05): `deleteHousehold` FK fix + cleanup hardening + flaky db test** — squash
   `edf0eb6`; prod auto‑deploy from `main`. See the "(later)" 2026‑09‑05 work‑log entry.
 - **"Lock admin" shipped (2026‑09‑05 evening entry)** — the owner can drop passcode elevation from the avatar
   menu and get notifications back. Still deferred from the notifications review: threshold form resets its
   input on `{error}`; non‑`menuitem` buttons inside the bell's `role="menu"`; `readAt` unused for unread
   styling.
-- **Domain watch = GitHub Action** (`.github/workflows/domain-watch.yml`, daily 09:00 IST; state = newest
-  `domain-watch` issue; the cloud routine `trig_01QVpkKuoV1mD5wvHwNxCHAC` is disabled — delete it at
-  claude.ai/code/routines). Baseline 2026‑09‑05: registry says "available for application via the Identity
-  Digital Dropzone service" (14‑day registrar Dutch auction after expiry). If it survives the window it
-  returns to the general pool at list price; a backorder at a Dropzone‑partner registrar is the only way to
-  secure it earlier. Re‑purchase checklist: buy at an INR registrar → DNS to Vercel → add domain in the
-  Vercel project → re‑add Google OAuth redirect URI for the custom host → PWA reinstalls.
+- **`scripts/domain-watch.sh` is a manual tool** (`lookup` / `classify` / `selftest`) — the daily workflow
+  that drove it was deleted once the domain came back. The disabled cloud routine
+  `trig_01QVpkKuoV1mD5wvHwNxCHAC` can be deleted at claude.ai/code/routines.
 - **Model B is live on prod** (since PR #1, 2026‑06‑22). Not verifiable from the repo: whether
   `pnpm db:migrate:model-b` (owner backfill → `mangatinanda@gmail.com`) was run against prod Turso — if the
   owner lacks a `household_members.user_id` link, run it (see the 2026‑06‑16 runbook in the work log).
