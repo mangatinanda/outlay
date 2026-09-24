@@ -62,3 +62,6 @@ next-env.d.ts
 # graphify machine-local state (regenerated per machine)
 graphify-out/.graphify_python
 graphify-out/.graphify_root
+
+# Personal Claude Code instructions
+CLAUDE.local.md
