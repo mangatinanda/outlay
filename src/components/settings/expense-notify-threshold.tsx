@@ -12,6 +12,10 @@ export function ExpenseNotifyThreshold({
   current: number | null; // major units, null = off
 }) {
   const [saving, setSaving] = useState(false);
+  // Controlled on purpose: React 19 resets a <form action>'s uncontrolled
+  // fields once the action settles, which wiped what was typed on a rejected
+  // save (e.g. a non-admin). State survives the reset.
+  const [value, setValue] = useState(current === null ? "" : String(current));
 
   async function handleSubmit(formData: FormData) {
     setSaving(true);
@@ -34,7 +38,8 @@ export function ExpenseNotifyThreshold({
         name="amount"
         min="0"
         step="0.01"
-        defaultValue={current ?? ""}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
         placeholder="Off"
         aria-label="Notify members about expenses over this amount"
         className="h-11 max-w-40 rounded-xl"
