@@ -42,7 +42,8 @@ export default async function ActivityPage({
       )}
       {/* The feed keeps rows in state; remount it when the filter changes. */}
       <ActivityFeed
-        key={actor ?? "all"}
+        // Prefixed so an actor literally named "everyone" can't collide.
+        key={actor === undefined ? "everyone" : `actor:${actor}`}
         actor={actor}
         initial={rows.map((r) => ({
           id: r.id,

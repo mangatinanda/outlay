@@ -1,4 +1,4 @@
-import { and, desc, eq, lt } from "drizzle-orm";
+import { and, desc, eq, lt, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { activity } from "@/lib/db/schema";
 
@@ -29,9 +29,11 @@ export async function getActivity(
     .limit(limit);
 }
 
-/** Distinct actor labels that appear in this household's feed, A→Z. Read
- *  from the feed itself (not the member list) so past actors who have since
- *  left, and the passcode "Admin", stay filterable. */
+/** Distinct actor labels that appear in this household's feed, A→Z
+ *  case-insensitively (SQLite's default BINARY collation would sort every
+ *  lowercase-initial name after the capitalised ones). Read from the feed
+ *  itself (not the member list) so past actors who have since left, and the
+ *  passcode "Admin", stay filterable. */
 export async function getActivityActors(
   householdId: string,
 ): Promise<string[]> {
@@ -39,6 +41,6 @@ export async function getActivityActors(
     .selectDistinct({ actorLabel: activity.actorLabel })
     .from(activity)
     .where(eq(activity.householdId, householdId))
-    .orderBy(activity.actorLabel);
+    .orderBy(sql`lower(${activity.actorLabel})`);
   return rows.map((r) => r.actorLabel);
 }

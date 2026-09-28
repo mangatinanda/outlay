@@ -105,34 +105,45 @@ describe("logActivity + getActivity", () => {
 });
 
 describe("activity actor filter", () => {
-  // h1 has rows by "Admin" (superadmin), "Nanda" (member) and "Standalone"
-  // (a user with no membership) from the tests above.
+  // Self-contained household so these tests pass in any order.
+  const HH = "h-actors";
+  const row = (
+    id: string,
+    actorLabel: string,
+    createdAt: number,
+  ): typeof activity.$inferInsert => ({
+    id,
+    householdId: HH,
+    actorLabel,
+    action: "expense.create",
+    summary: `by ${actorLabel}`,
+    createdAt: new Date(createdAt),
+  });
+
+  beforeAll(async () => {
+    await db.insert(households).values({ id: HH, name: "Actors" });
+    await db
+      .insert(activity)
+      .values([
+        row("f-admin", "Admin", 1000),
+        row("f-nanda-old", "Nanda", 2000),
+        row("f-amma", "amma", 3000),
+        row("f-nanda-new", "Nanda", 4000),
+      ]);
+  });
+
   it("returns only rows by the named actor", async () => {
-    const rows = await getActivity("h1", { actor: "Nanda" });
-    expect(rows.length).toBeGreaterThan(0);
-    expect(rows.every((r) => r.actorLabel === "Nanda")).toBe(true);
+    const rows = await getActivity(HH, { actor: "Nanda" });
+    expect(rows.map((r) => r.id)).toEqual(["f-nanda-new", "f-nanda-old"]);
   });
 
   it("combines the actor filter with the `before` cursor", async () => {
-    await db.insert(activity).values({
-      id: "a-nanda-old",
-      householdId: "h2",
-      actorLabel: "Nanda",
-      action: "expense.create",
-      summary: "old by nanda",
-      createdAt: new Date(2000),
-    });
-    const rows = await getActivity("h2", { before: 3000, actor: "Nanda" });
-    expect(rows.map((r) => r.id)).toEqual(["a-nanda-old"]);
+    const rows = await getActivity(HH, { before: 3000, actor: "Nanda" });
+    expect(rows.map((r) => r.id)).toEqual(["f-nanda-old"]);
   });
 
-  it("lists distinct actor labels A→Z, scoped to the household", async () => {
-    expect(await getActivityActors("h1")).toEqual([
-      "Admin",
-      "Nanda",
-      "Standalone",
-    ]);
-    expect(await getActivityActors("h2")).toEqual(["Admin", "Nanda"]);
+  it("lists distinct actor labels A→Z regardless of case, scoped to the household", async () => {
+    expect(await getActivityActors(HH)).toEqual(["Admin", "amma", "Nanda"]);
     expect(await getActivityActors("nope")).toEqual([]);
   });
 });
