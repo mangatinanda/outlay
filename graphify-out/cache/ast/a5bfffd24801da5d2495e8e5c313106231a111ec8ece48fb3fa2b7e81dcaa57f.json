@@ -1,0 +1,159 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_docs_superpowers_plans_2026_09_28_custom_splits_md",
+      "label": "2026-09-28-custom-splits.md",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-09-28-custom-splits.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_09_28_custom_splits_per_expense_custom_splits_implementation_plan",
+      "label": "Per-expense custom splits \u2014 Implementation Plan",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-09-28-custom-splits.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_09_28_custom_splits_global_constraints",
+      "label": "Global Constraints",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-09-28-custom-splits.md",
+      "source_location": "L13"
+    },
+    {
+      "id": "plans_2026_09_28_custom_splits_review_focus",
+      "label": "Review Focus",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-09-28-custom-splits.md",
+      "source_location": "L23"
+    },
+    {
+      "id": "plans_2026_09_28_custom_splits_task_1_schema_migration",
+      "label": "Task 1: Schema + migration",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-09-28-custom-splits.md",
+      "source_location": "L33"
+    },
+    {
+      "id": "plans_2026_09_28_custom_splits_task_2_pure_math_validator",
+      "label": "Task 2: Pure math + validator",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-09-28-custom-splits.md",
+      "source_location": "L79"
+    },
+    {
+      "id": "plans_2026_09_28_custom_splits_task_3_queries",
+      "label": "Task 3: Queries",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-09-28-custom-splits.md",
+      "source_location": "L302"
+    },
+    {
+      "id": "plans_2026_09_28_custom_splits_task_4_actions_fk_safe_deletes",
+      "label": "Task 4: Actions + FK-safe deletes",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-09-28-custom-splits.md",
+      "source_location": "L353"
+    },
+    {
+      "id": "plans_2026_09_28_custom_splits_task_5_form_ui_list_badge",
+      "label": "Task 5: Form UI + list badge",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-09-28-custom-splits.md",
+      "source_location": "L418"
+    },
+    {
+      "id": "plans_2026_09_28_custom_splits_task_6_docs_graph_pr",
+      "label": "Task 6: Docs, graph, PR",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-09-28-custom-splits.md",
+      "source_location": "L444"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_docs_superpowers_plans_2026_09_28_custom_splits_md",
+      "target": "plans_2026_09_28_custom_splits_per_expense_custom_splits_implementation_plan",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-09-28-custom-splits.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_09_28_custom_splits_per_expense_custom_splits_implementation_plan",
+      "target": "plans_2026_09_28_custom_splits_global_constraints",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-09-28-custom-splits.md",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_09_28_custom_splits_per_expense_custom_splits_implementation_plan",
+      "target": "plans_2026_09_28_custom_splits_review_focus",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-09-28-custom-splits.md",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_09_28_custom_splits_review_focus",
+      "target": "plans_2026_09_28_custom_splits_task_1_schema_migration",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-09-28-custom-splits.md",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_09_28_custom_splits_review_focus",
+      "target": "plans_2026_09_28_custom_splits_task_2_pure_math_validator",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-09-28-custom-splits.md",
+      "source_location": "L79",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_09_28_custom_splits_review_focus",
+      "target": "plans_2026_09_28_custom_splits_task_3_queries",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-09-28-custom-splits.md",
+      "source_location": "L302",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_09_28_custom_splits_review_focus",
+      "target": "plans_2026_09_28_custom_splits_task_4_actions_fk_safe_deletes",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-09-28-custom-splits.md",
+      "source_location": "L353",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_09_28_custom_splits_review_focus",
+      "target": "plans_2026_09_28_custom_splits_task_5_form_ui_list_badge",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-09-28-custom-splits.md",
+      "source_location": "L418",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_09_28_custom_splits_review_focus",
+      "target": "plans_2026_09_28_custom_splits_task_6_docs_graph_pr",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-09-28-custom-splits.md",
+      "source_location": "L444",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

@@ -4,7 +4,7 @@ Outlay is a shared expense tracker for your household. Everyone who lives togeth
 can log what they spend, see where the money goes, and settle up who owes whom —
 on the web or installed on your phone.
 
-_Last updated: 2026-09-14_
+_Last updated: 2026-09-28_
 
 ## Track your spending
 - Add an expense in seconds: amount, date, description, category, who paid, and an
@@ -38,6 +38,12 @@ A dashboard that updates as you add expenses:
 - Choose per member whether they appear in the "Paid by" list when adding an
   expense — handy for someone who never pays. Their past expenses stay as they
   are, and editing one of those still shows them.
+- Split an expense unevenly, or among just some of you: choose **Custom** in
+  the Split section when adding or editing it, tick who's in, and adjust the
+  amounts (they have to add up). Everything else stays split equally, and
+  expenses split by hand show a "Split" tag in the list.
+- Made a mistake recording a payment? Edit it from the settle-up history
+  instead of deleting and re-adding it.
 
 ## Stay in the loop
 - A bell in the header shows your unread count and keeps itself up to date while
@@ -46,8 +52,9 @@ A dashboard that updates as you add expenses:
   household you manage is accepted or declined, when a payment is recorded, and
   when a large expense is added.
 - Accept or decline a household invite straight from the notification.
-- Opening the bell marks everything as read. Open the **Notifications** page for
-  your recent history across all your households.
+- New notifications are highlighted until you've seen them. Opening the bell
+  marks everything as read. Open the **Notifications** page for your recent
+  history across all your households.
 - Admins choose what counts as a "large" expense — or turn those alerts off — in
   Settings.
 - If you also use the household passcode, "Lock admin" in your avatar menu drops
@@ -58,6 +65,8 @@ A dashboard that updates as you add expenses:
 - A running log of everything that happened in the household — expenses added or
   edited, settlements, members and categories changed, imports — with who did it
   and when, grouped by day.
+- Narrow the log to one person with the "Show" picker; the choice lives in the
+  web address, so it survives a refresh and can be shared as a link.
 
 ## More than one home
 - Keep separate households (e.g. home and a family farm), switch between them, and
@@ -67,7 +76,9 @@ A dashboard that updates as you add expenses:
 ## Bring data in and out
 - **Import** expenses from a CSV file (for example, a Google Form or spreadsheet) —
   Outlay detects the columns, suggests categories, and skips duplicates.
-- **Export** your expenses to CSV, Excel, or PDF.
+- **Export** your expenses to CSV, Excel, or PDF. Exports list who paid and how
+  much; they don't carry a custom split, so re-importing an export brings those
+  expenses back split equally.
 
 ## Signing in and sharing
 - Sign in securely with your Google account.

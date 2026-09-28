@@ -226,6 +226,9 @@ Matches existing Vitest patterns (in-memory libSQL via `vi.hoisted`; mocked
 
 ## Future extension: per-expense custom splits (not MVP)
 
+> **Implemented 2026-09-28** along these lines (exact `share_minor` amounts, no
+> weights) — see `docs/superpowers/plans/2026-09-28-custom-splits.md`.
+
 The MVP is deliberately a stepping stone to per-expense custom splits. Adding
 them later is **additive and non-breaking**:
 

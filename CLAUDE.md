@@ -58,7 +58,7 @@ src/
 ### Database
 - libSQL via `@libsql/client`: a local SQLite file `data/expense.db` (gitignored) in dev, a Turso cloud DB in prod
 - Schema managed by Drizzle migrations (`pnpm db:migrate`); seeded on demand with `pnpm db:seed` (not auto-seeded)
-- Tables: users, households, household_members, categories, expenses, settlements, activity
+- Tables: users, households, household_members, categories, expenses, expense_splits, settlements, activity, notifications
 - Multi-household: the active household is resolved from the `he_household` cookie via `getCurrentHousehold()`, scoped to the current actor's memberships (superadmin sees all; a user only their `household_members` rows)
 - IDs are cuid2 strings
 - Timestamps stored as integer (unix epoch) via Drizzle `mode: "timestamp"`

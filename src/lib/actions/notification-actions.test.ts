@@ -32,6 +32,7 @@ import { db } from "@/lib/db";
 import {
   activity,
   categories,
+  expenseSplits,
   expenses,
   householdMembers,
   households,
@@ -82,6 +83,7 @@ beforeEach(async () => {
   vi.mocked(revalidatePath).mockClear();
   await db.delete(notifications);
   await db.delete(activity);
+  await db.delete(expenseSplits);
   await db.delete(expenses);
   await db
     .delete(householdMembers)
@@ -214,6 +216,31 @@ describe("declineInvite", () => {
       .where(eq(householdMembers.id, "m-invite"));
     expect(rows).toHaveLength(1);
     expect(rows[0].userId).toBeNull();
+  });
+
+  it("refuses to decline while an expense is split with the invite (no FK crash)", async () => {
+    await db.insert(expenses).values({
+      id: "e-split-invite",
+      householdId: "h1",
+      categoryId: "c1",
+      memberId: "m-admin",
+      amountMinor: 1000,
+      description: "Split with Cara",
+      date: "2026-01-01",
+    });
+    await db.insert(expenseSplits).values({
+      id: "sp-invite",
+      expenseId: "e-split-invite",
+      memberId: "m-invite",
+      shareMinor: 1000,
+    });
+    const result = await declineInvite("m-invite");
+    expect((result as { error: string }).error).toMatch(/split with you/i);
+    const rows = await db
+      .select()
+      .from(householdMembers)
+      .where(eq(householdMembers.id, "m-invite"));
+    expect(rows).toHaveLength(1);
   });
 
   it("records the decline in the household activity feed", async () => {

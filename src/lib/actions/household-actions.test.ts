@@ -31,6 +31,9 @@ import {
 import { db } from "@/lib/db";
 import {
   activity,
+  categories,
+  expenseSplits,
+  expenses,
   householdMembers,
   households,
   settlements,
@@ -156,9 +159,34 @@ describe("deleteHousehold", () => {
       amountMinor: 500,
       date: "2026-01-01",
     });
+    // …and an expense split by hand (split rows FK to the expense).
+    await db
+      .insert(categories)
+      .values({ id: "c-used", householdId: "h-used", name: "Cat" });
+    await db.insert(expenses).values({
+      id: "e-used",
+      householdId: "h-used",
+      categoryId: "c-used",
+      memberId: "m-used-a",
+      amountMinor: 1000,
+      description: "Split",
+      date: "2026-01-02",
+    });
+    await db.insert(expenseSplits).values({
+      id: "sp-used",
+      expenseId: "e-used",
+      memberId: "m-used-b",
+      shareMinor: 1000,
+    });
 
     const result = await deleteHousehold("h-used");
     expect(result).toEqual({ success: true });
+    expect(
+      await db
+        .select()
+        .from(expenseSplits)
+        .where(eq(expenseSplits.expenseId, "e-used")),
+    ).toHaveLength(0);
     expect(
       await db.select().from(households).where(eq(households.id, "h-used")),
     ).toHaveLength(0);

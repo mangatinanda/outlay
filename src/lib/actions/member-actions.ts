@@ -7,7 +7,10 @@ import { logActivity } from "@/lib/activity";
 import { db } from "@/lib/db";
 import { householdMembers } from "@/lib/db/schema";
 import { getCurrentHousehold } from "@/lib/queries/household-queries";
-import { memberLedgerReference } from "@/lib/queries/member-ledger";
+import {
+  memberHasSplitShares,
+  memberLedgerReference,
+} from "@/lib/queries/member-ledger";
 import { memberSchema } from "@/lib/validators/member-schema";
 import { safeAction } from "./safe-action";
 
@@ -104,6 +107,15 @@ export const updateMember = safeAction(
       }
     }
 
+    // A custom share only counts while its member is in settle-up; taking
+    // them out would leave the payer credited for a share nobody owes.
+    if (!parsed.data.includeInSettleUp && (await memberHasSplitShares(id))) {
+      return {
+        error:
+          "This member is part of a custom split. Edit those expenses before taking them out of settle-up.",
+      };
+    }
+
     const updated = await db
       .update(householdMembers)
       .set({
@@ -155,6 +167,12 @@ export const deleteMember = safeAction("deleteMember", async (id: string) => {
     return {
       error:
         "Cannot delete a member with existing expenses. Reassign their expenses first.",
+    };
+  }
+  if (ref === "splits") {
+    return {
+      error:
+        "Cannot delete a member who is part of a custom split. Edit those expenses first.",
     };
   }
   if (ref === "settlements") {
