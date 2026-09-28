@@ -7,7 +7,10 @@ import { logActivity } from "@/lib/activity";
 import { db } from "@/lib/db";
 import { householdMembers } from "@/lib/db/schema";
 import { getCurrentHousehold } from "@/lib/queries/household-queries";
-import { memberLedgerReference } from "@/lib/queries/member-ledger";
+import {
+  memberHasSplitShares,
+  memberLedgerReference,
+} from "@/lib/queries/member-ledger";
 import { memberSchema } from "@/lib/validators/member-schema";
 import { safeAction } from "./safe-action";
 
@@ -102,6 +105,15 @@ export const updateMember = safeAction(
       if (sameEmail.some((m) => m.id !== id)) {
         return { error: "A member with that email already exists." };
       }
+    }
+
+    // A custom share only counts while its member is in settle-up; taking
+    // them out would leave the payer credited for a share nobody owes.
+    if (!parsed.data.includeInSettleUp && (await memberHasSplitShares(id))) {
+      return {
+        error:
+          "This member is part of a custom split. Edit those expenses before taking them out of settle-up.",
+      };
     }
 
     const updated = await db

@@ -19,8 +19,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { createExpense, updateExpense } from "@/lib/actions/expense-actions";
 import type { Category, HouseholdMember } from "@/lib/db/schema";
 import { visiblePayers } from "@/lib/members";
+import { toMinorUnits } from "@/lib/money";
 import { withProgress } from "@/lib/progress";
 import { cn } from "@/lib/utils";
+import {
+  SPLIT_NOBODY_ERROR,
+  SPLIT_PAYER_ERROR,
+  SPLIT_SUM_ERROR,
+} from "@/lib/validators/expense-splits-schema";
 
 interface ExpenseFormProps {
   categories: Category[];
@@ -42,11 +48,11 @@ interface ExpenseFormProps {
 
 type SplitMode = "equal" | "custom";
 
-const SPLIT_SUM_ERROR = "Split amounts must add up to the expense amount";
-
-const pillClass = (active: boolean) =>
+/** The chip style shared by the category, payer and split pickers. */
+const pillClass = (active: boolean, dense = false) =>
   cn(
-    "flex shrink-0 items-center gap-2 rounded-full border px-3 py-2 text-sm outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50",
+    "flex shrink-0 items-center gap-2 rounded-full border text-sm outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50",
+    dense ? "px-2 py-1.5" : "px-3 py-2",
     active
       ? "border-primary bg-primary/10 text-foreground"
       : "border-border bg-card text-muted-foreground hover:bg-muted",
@@ -76,21 +82,21 @@ export function ExpenseForm({
   const [amount, setAmount] = useState(expense ? String(expense.amount) : "");
   const amountNumber = Number(amount);
 
-  // Only settle-up participants can carry a share (the balance math charges
-  // nobody else). A saved share for someone since toggled out is dropped
-  // here, which the "left to assign" line then makes visible.
+  // Only settle-up participants can carry a share, and only their expenses
+  // count toward balances, so a split needs a participant payer too. A saved
+  // share for someone since toggled out is dropped here (the server refuses
+  // that toggle while shares exist, so this is belt and braces).
   const participants = members
     .filter((m) => m.includeInSettleUp)
     .map((m) => ({ id: m.id, name: m.name }));
   const participantIds = new Set(participants.map((p) => p.id));
+  const payerIsParticipant = participantIds.has(memberId);
   const savedSplits = (expense?.splits ?? []).filter((s) =>
     participantIds.has(s.memberId),
   );
-  const canSplit = participants.length >= 2;
-  const [splitMode, setSplitMode] = useState<SplitMode>(
-    savedSplits.length > 0 ? "custom" : "equal",
-  );
-  const [split, setSplit] = useState<SplitState>(() =>
+  // What the editor starts from, and what comes back if the amount is typed
+  // back to its saved value after a slip.
+  const savedSplit: SplitState | null =
     savedSplits.length > 0
       ? {
           included: savedSplits.map((s) => s.memberId),
@@ -98,22 +104,47 @@ export function ExpenseForm({
             savedSplits.map((s) => [s.memberId, s.amount.toFixed(2)]),
           ),
         }
-      : { included: participants.map((p) => p.id), shares: {} },
+      : null;
+  const savedTotalMinor =
+    expense && savedSplit ? toMinorUnits(expense.amount) : null;
+  // Always show a saved split (so an edit can never silently drop it);
+  // otherwise only when there are at least two people to split between.
+  const showSplit = savedSplit !== null || participants.length >= 2;
+  const [splitMode, setSplitMode] = useState<SplitMode>(
+    savedSplit ? "custom" : "equal",
   );
-  const splitActive = canSplit && splitMode === "custom";
-  const splitInvalid =
-    splitActive &&
-    (split.included.length === 0 || remainingMinor(amountNumber, split) !== 0);
+  const [split, setSplit] = useState<SplitState>(
+    () => savedSplit ?? { included: participants.map((p) => p.id), shares: {} },
+  );
+  const splitActive = showSplit && splitMode === "custom";
+  const splitProblem = !splitActive
+    ? null
+    : !payerIsParticipant
+      ? SPLIT_PAYER_ERROR
+      : split.included.length === 0
+        ? SPLIT_NOBODY_ERROR
+        : remainingMinor(amountNumber, split) !== 0
+          ? SPLIT_SUM_ERROR
+          : null;
 
   function onAmountChange(value: string) {
     setAmount(value);
-    // The total moved, so any hand-tuned shares are stale: start over equal.
-    if (splitMode === "custom") {
-      setSplit((s) => ({
-        ...s,
-        shares: distributeEqually(Number(value), s.included),
-      }));
+    if (splitMode !== "custom") return;
+    const next = Number(value);
+    if (
+      savedSplit &&
+      savedTotalMinor !== null &&
+      Number.isFinite(next) &&
+      toMinorUnits(next) === savedTotalMinor
+    ) {
+      setSplit(savedSplit);
+      return;
     }
+    // The total moved, so any hand-tuned shares are stale: start over equal.
+    setSplit((s) => ({
+      ...s,
+      shares: distributeEqually(next, s.included),
+    }));
   }
 
   function chooseSplitMode(mode: SplitMode) {
@@ -128,12 +159,8 @@ export function ExpenseForm({
   }
 
   async function handleSubmit(formData: FormData) {
-    if (splitInvalid) {
-      toast.error(
-        split.included.length === 0
-          ? "Choose at least one person to split with"
-          : SPLIT_SUM_ERROR,
-      );
+    if (splitProblem) {
+      toast.error(splitProblem);
       return;
     }
     setLoading(true);
@@ -218,12 +245,7 @@ export function ExpenseForm({
                   type="button"
                   onClick={() => setCategoryId(cat.id)}
                   aria-pressed={active}
-                  className={cn(
-                    "flex shrink-0 items-center gap-2 rounded-full border px-3 py-2 text-sm outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50",
-                    active
-                      ? "border-primary bg-primary/10 text-foreground"
-                      : "border-border bg-card text-muted-foreground hover:bg-muted",
-                  )}
+                  className={pillClass(active)}
                 >
                   <CategoryIcon icon={cat.icon} color={cat.color} size="sm" />
                   <span className="whitespace-nowrap">{cat.name}</span>
@@ -250,12 +272,7 @@ export function ExpenseForm({
                   type="button"
                   onClick={() => setMemberId(member.id)}
                   aria-pressed={active}
-                  className={cn(
-                    "flex shrink-0 items-center gap-2 rounded-full border px-2 py-1.5 text-sm outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50",
-                    active
-                      ? "border-primary bg-primary/10 text-foreground"
-                      : "border-border bg-card text-muted-foreground hover:bg-muted",
-                  )}
+                  className={pillClass(active, true)}
                 >
                   <Avatar size="sm">
                     <AvatarFallback>
@@ -269,7 +286,7 @@ export function ExpenseForm({
           </div>
         </div>
 
-        {canSplit && (
+        {showSplit && (
           <div className="space-y-2">
             <Label>Split</Label>
             <div className="flex gap-2">
@@ -285,11 +302,17 @@ export function ExpenseForm({
                 type="button"
                 onClick={() => chooseSplitMode("custom")}
                 aria-pressed={splitMode === "custom"}
+                disabled={!payerIsParticipant && splitMode !== "custom"}
                 className={pillClass(splitMode === "custom")}
               >
                 Custom
               </button>
             </div>
+            {!payerIsParticipant && (
+              <p className="text-muted-foreground text-xs">
+                {SPLIT_PAYER_ERROR}.
+              </p>
+            )}
             {splitMode === "custom" && (
               <>
                 <input
@@ -326,7 +349,7 @@ export function ExpenseForm({
       </div>
 
       <div className="flex gap-3 pt-2">
-        <Button type="submit" disabled={loading || splitInvalid}>
+        <Button type="submit" disabled={loading || splitProblem !== null}>
           {loading ? "Saving..." : isEditing ? "Update Expense" : "Add Expense"}
         </Button>
         <Button

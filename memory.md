@@ -90,6 +90,17 @@ double‑spec; CI reads pnpm from `packageManager`).
   children; unread items styled from `readAt`; `/activity?actor=<label>` filter (`getActivityActors`,
   `ActivityActorFilter`, feed keyed by actor); `updateSettlement` + pencil button in settle‑up history
   (`settlement.update` activity action; no notification on edit).
+- **Review pass (`/code-review 13 high` + `/code-review 12 high`, same day):** fixed on #13 — `declineInvite` now
+  handles the `"splits"` ledger reference (was an FK crash); `updateMember` refuses to toggle a member OUT of
+  settle‑up while they hold a custom share (`memberHasSplitShares`) so balances keep summing to zero; the payer
+  of a split expense must be a participant too (`checkSplit`, `SPLIT_PAYER_ERROR`) — the form disables Custom
+  and explains why; a saved split is always shown on edit (never silently cleared); typing the amount back to
+  the saved total restores the saved shares; batch UPDATE/DELETE statements are household‑scoped again;
+  `getSettleUp` runs its four reads via `Promise.all`; split error strings are exported from the validator and
+  shared with the form. Declined: a shared "participants of household" helper across expense/settlement actions
+  and split data in CSV export (limitation documented in FEATURES.md). **Pre‑existing bug found by the #12
+  review:** Base UI `Select.Value` shows the raw sentinel (`__any__`) in a closed trigger unless `Select` gets an
+  `items` map — ExpenseFilters on main has this; fixed on #12 alongside the actor filter.
 - Both plans: `docs/superpowers/plans/2026-09-28-{custom-splits,deferred-polish}.md`. FEATURES.md updated for
   all of it on the splits branch (the polish branch deliberately touched no docs, to avoid conflicts).
 

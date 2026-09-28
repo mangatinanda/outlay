@@ -29,61 +29,60 @@ export async function getSettleUp(householdId: string) {
     eq(expenses.householdId, householdId),
     inArray(expenses.memberId, participantIds),
   );
-  const paidRows =
-    participantIds.length === 0
-      ? []
-      : await db
-          .select({
-            memberId: expenses.memberId,
-            paidMinor: sql<number>`coalesce(sum(${expenses.amountMinor}), 0)`,
-          })
-          .from(expenses)
-          .where(participantPaid)
-          .groupBy(expenses.memberId);
-
-  // Participant-paid expenses WITHOUT split rows form the equal pool …
-  const [{ equalPoolMinor }] =
-    participantIds.length === 0
-      ? [{ equalPoolMinor: 0 }]
-      : await db
-          .select({
-            equalPoolMinor: sql<number>`coalesce(sum(${expenses.amountMinor}), 0)`,
-          })
-          .from(expenses)
-          .where(
-            and(
-              participantPaid,
-              notExists(
-                db
-                  .select({ one: sql`1` })
-                  .from(expenseSplits)
-                  .where(eq(expenseSplits.expenseId, expenses.id)),
+  // None of these depend on each other, so they go out together (each is a
+  // network round-trip against Turso).
+  const [paidRows, [{ equalPoolMinor }], customShares, settlementRows] =
+    await Promise.all([
+      participantIds.length === 0
+        ? []
+        : db
+            .select({
+              memberId: expenses.memberId,
+              paidMinor: sql<number>`coalesce(sum(${expenses.amountMinor}), 0)`,
+            })
+            .from(expenses)
+            .where(participantPaid)
+            .groupBy(expenses.memberId),
+      // Participant-paid expenses WITHOUT split rows form the equal pool …
+      participantIds.length === 0
+        ? [{ equalPoolMinor: 0 }]
+        : db
+            .select({
+              equalPoolMinor: sql<number>`coalesce(sum(${expenses.amountMinor}), 0)`,
+            })
+            .from(expenses)
+            .where(
+              and(
+                participantPaid,
+                notExists(
+                  db
+                    .select({ one: sql`1` })
+                    .from(expenseSplits)
+                    .where(eq(expenseSplits.expenseId, expenses.id)),
+                ),
               ),
             ),
-          );
-
-  // … and the rest contribute their explicit per-member shares.
-  const customShares =
-    participantIds.length === 0
-      ? []
-      : await db
-          .select({
-            memberId: expenseSplits.memberId,
-            shareMinor: sql<number>`coalesce(sum(${expenseSplits.shareMinor}), 0)`,
-          })
-          .from(expenseSplits)
-          .innerJoin(expenses, eq(expenseSplits.expenseId, expenses.id))
-          .where(participantPaid)
-          .groupBy(expenseSplits.memberId);
-
-  const settlementRows = await db
-    .select({
-      fromMemberId: settlements.fromMemberId,
-      toMemberId: settlements.toMemberId,
-      amountMinor: settlements.amountMinor,
-    })
-    .from(settlements)
-    .where(eq(settlements.householdId, householdId));
+      // … and the rest contribute their explicit per-member shares.
+      participantIds.length === 0
+        ? []
+        : db
+            .select({
+              memberId: expenseSplits.memberId,
+              shareMinor: sql<number>`coalesce(sum(${expenseSplits.shareMinor}), 0)`,
+            })
+            .from(expenseSplits)
+            .innerJoin(expenses, eq(expenseSplits.expenseId, expenses.id))
+            .where(participantPaid)
+            .groupBy(expenseSplits.memberId),
+      db
+        .select({
+          fromMemberId: settlements.fromMemberId,
+          toMemberId: settlements.toMemberId,
+          amountMinor: settlements.amountMinor,
+        })
+        .from(settlements)
+        .where(eq(settlements.householdId, householdId)),
+    ]);
 
   const nets = computeNetBalances({
     participantIds,

@@ -20,12 +20,11 @@ import { RATE_LIMITED_MESSAGE, RATE_LIMITS, rateLimit } from "@/lib/rate-limit";
 import { expenseSchema } from "@/lib/validators/expense-schema";
 import {
   parseSplitsField,
+  SPLIT_MEMBERS_ERROR,
+  SPLIT_PAYER_ERROR,
   type SplitInput,
 } from "@/lib/validators/expense-splits-schema";
 import { safeAction } from "./safe-action";
-
-const SPLIT_MEMBERS_ERROR =
-  "Everyone in a split must be in settle-up for this household";
 
 function expenseFields(formData: FormData) {
   return {
@@ -77,14 +76,17 @@ async function checkOwnership(
 }
 
 /**
- * Every split member must be a settle-up participant of THIS household: the
- * balance math only charges participants, so a share for anyone else would
- * silently vanish (and a foreign member id must never be stored).
+ * The payer and every split member must be settle-up participants of THIS
+ * household: the balance math only counts expenses paid by participants and
+ * only charges participants, so a share for anyone else would silently
+ * vanish (and a foreign member id must never be stored).
  */
-async function checkSplitMembers(
+async function checkSplit(
   householdId: string,
+  payerId: string,
   splits: SplitInput[],
 ): Promise<string | null> {
+  const ids = [...new Set([payerId, ...splits.map((s) => s.memberId)])];
   const rows = await db
     .select({ id: householdMembers.id })
     .from(householdMembers)
@@ -92,13 +94,14 @@ async function checkSplitMembers(
       and(
         eq(householdMembers.householdId, householdId),
         eq(householdMembers.includeInSettleUp, true),
-        inArray(
-          householdMembers.id,
-          splits.map((s) => s.memberId),
-        ),
+        inArray(householdMembers.id, ids),
       ),
     );
-  return rows.length === splits.length ? null : SPLIT_MEMBERS_ERROR;
+  const participants = new Set(rows.map((r) => r.id));
+  if (!participants.has(payerId)) return SPLIT_PAYER_ERROR;
+  return splits.every((s) => participants.has(s.memberId))
+    ? null
+    : SPLIT_MEMBERS_ERROR;
 }
 
 function splitRows(expenseId: string, splits: SplitInput[]) {
@@ -138,7 +141,11 @@ export const createExpense = safeAction(
     );
     if (ownershipError) return { error: ownershipError };
     if (split.splits) {
-      const splitError = await checkSplitMembers(household.id, split.splits);
+      const splitError = await checkSplit(
+        household.id,
+        parsed.data.memberId,
+        split.splits,
+      );
       if (splitError) return { error: splitError };
     }
 
@@ -249,7 +256,11 @@ export const updateExpense = safeAction(
     );
     if (ownershipError) return { error: ownershipError };
     if (split.splits) {
-      const splitError = await checkSplitMembers(household.id, split.splits);
+      const splitError = await checkSplit(
+        household.id,
+        parsed.data.memberId,
+        split.splits,
+      );
       if (splitError) return { error: splitError };
     }
 
@@ -272,7 +283,7 @@ export const updateExpense = safeAction(
         notes: parsed.data.notes || null,
         updatedAt: new Date(),
       })
-      .where(eq(expenses.id, id));
+      .where(and(eq(expenses.id, id), eq(expenses.householdId, household.id)));
     // Shares are replaced wholesale: "Equally" clears them, "Custom" rewrites.
     const clearShares = db
       .delete(expenseSplits)
@@ -314,7 +325,9 @@ export const deleteExpense = safeAction("deleteExpense", async (id: string) => {
   // Shares reference the expense (FK), so they go first — atomically.
   await db.batch([
     db.delete(expenseSplits).where(eq(expenseSplits.expenseId, id)),
-    db.delete(expenses).where(eq(expenses.id, id)),
+    db
+      .delete(expenses)
+      .where(and(eq(expenses.id, id), eq(expenses.householdId, household.id))),
   ]);
 
   await logActivity({

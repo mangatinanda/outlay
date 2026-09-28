@@ -76,7 +76,9 @@ A dashboard that updates as you add expenses:
 ## Bring data in and out
 - **Import** expenses from a CSV file (for example, a Google Form or spreadsheet) —
   Outlay detects the columns, suggests categories, and skips duplicates.
-- **Export** your expenses to CSV, Excel, or PDF.
+- **Export** your expenses to CSV, Excel, or PDF. Exports list who paid and how
+  much; they don't carry a custom split, so re-importing an export brings those
+  expenses back split equally.
 
 ## Signing in and sharing
 - Sign in securely with your Google account.

@@ -169,6 +169,77 @@ describe("ExpenseForm Split", () => {
     expect(screen.getByText("Adds up")).toBeInTheDocument();
   });
 
+  it("typing the amount back to the saved total restores the saved shares", () => {
+    render(
+      <ExpenseForm
+        categories={categories}
+        members={members}
+        expense={{
+          id: "e1",
+          amount: 10,
+          description: "Dinner",
+          date: "2026-01-01",
+          categoryId: "c1",
+          memberId: "a",
+          notes: null,
+          splits: [
+            { memberId: "a", amount: 3 },
+            { memberId: "c", amount: 7 },
+          ],
+        }}
+      />,
+    );
+    const amount = screen.getByLabelText("Amount");
+    fireEvent.change(amount, { target: { value: "100" } });
+    expect(screen.getByLabelText("Amma's share")).toHaveValue(50);
+    fireEvent.change(amount, { target: { value: "10" } });
+    expect(screen.getByLabelText("Amma's share")).toHaveValue(3);
+    expect(screen.getByLabelText("Cara's share")).toHaveValue(7);
+  });
+
+  it("explains and blocks Custom when the payer is not in settle-up", () => {
+    // Amma is the default payer but not in settle-up; Bala and Cara are.
+    const payerOut = members.map((m) =>
+      m.id === "a" ? { ...m, includeInSettleUp: false } : m,
+    );
+    render(<ExpenseForm categories={categories} members={payerOut} />);
+    expect(screen.getByRole("button", { name: "Custom" })).toBeDisabled();
+    expect(
+      screen.getByText(/Only an expense paid by someone in settle-up/),
+    ).toBeInTheDocument();
+    // Picking a payer who is in settle-up lifts the block.
+    fireEvent.click(screen.getByRole("button", { name: /Cara/ }));
+    expect(screen.getByRole("button", { name: "Custom" })).toBeEnabled();
+  });
+
+  it("keeps a saved split on screen even when only one person is left in settle-up", () => {
+    const solo = members.map((m) => ({
+      ...m,
+      includeInSettleUp: m.id === "a",
+    }));
+    const { container } = render(
+      <ExpenseForm
+        categories={categories}
+        members={solo}
+        expense={{
+          id: "e1",
+          amount: 10,
+          description: "Dinner",
+          date: "2026-01-01",
+          categoryId: "c1",
+          memberId: "a",
+          notes: null,
+          splits: [{ memberId: "a", amount: 10 }],
+        }}
+      />,
+    );
+    expect(screen.getByRole("button", { name: "Custom" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+    expect(container.querySelector('input[name="splits"]')).not.toBeNull();
+  });
+
   it("hides the split control when fewer than two people are in settle-up", () => {
     const solo = members.map((m, i) => ({ ...m, includeInSettleUp: i === 0 }));
     render(<ExpenseForm categories={categories} members={solo} />);

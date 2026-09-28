@@ -164,6 +164,19 @@ describe("createExpense with a custom split", () => {
     expect(await expenseByDescription("Excluded")).toBeNull();
   });
 
+  it("refuses a split when the payer is not in settle-up", async () => {
+    const fd = expenseForm("Paid by X", "10", [
+      { memberId: "ma", amount: "5" },
+      { memberId: "mb", amount: "5" },
+    ]);
+    fd.set("memberId", "mx");
+    const res = await createExpense(fd);
+    expect(res).toEqual({
+      error: "Only an expense paid by someone in settle-up can be split",
+    });
+    expect(await expenseByDescription("Paid by X")).toBeNull();
+  });
+
   it("refuses shares that do not add up to the amount", async () => {
     const res = await createExpense(
       expenseForm("Short", "10", [

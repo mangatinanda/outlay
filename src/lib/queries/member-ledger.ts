@@ -21,12 +21,7 @@ export async function memberLedgerReference(
     .limit(1);
   if (expense) return "expenses";
 
-  const [split] = await db
-    .select({ id: expenseSplits.id })
-    .from(expenseSplits)
-    .where(eq(expenseSplits.memberId, memberId))
-    .limit(1);
-  if (split) return "splits";
+  if (await memberHasSplitShares(memberId)) return "splits";
 
   const [settlement] = await db
     .select({ id: settlements.id })
@@ -41,4 +36,16 @@ export async function memberLedgerReference(
   if (settlement) return "settlements";
 
   return null;
+}
+
+/** True while any expense is split by hand with a share for this member.
+ *  Such a member can be neither deleted (FK) nor taken out of settle-up (their
+ *  share would silently drop out of the balances). */
+export async function memberHasSplitShares(memberId: string): Promise<boolean> {
+  const [split] = await db
+    .select({ id: expenseSplits.id })
+    .from(expenseSplits)
+    .where(eq(expenseSplits.memberId, memberId))
+    .limit(1);
+  return !!split;
 }

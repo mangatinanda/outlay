@@ -127,6 +127,48 @@ describe("member include_in_settle_up", () => {
     ).toHaveLength(1);
   });
 
+  it("refuses to take a member out of settle-up while they hold a custom share", async () => {
+    await db.insert(householdMembers).values([
+      { id: "t-payer", householdId: "h1", name: "TPayer", role: "admin" },
+      { id: "t-sharer", householdId: "h1", name: "TSharer", role: "member" },
+    ]);
+    await db
+      .insert(categories)
+      .values({ id: "c-toggle", householdId: "h1", name: "Cat" });
+    await db.insert(expenses).values({
+      id: "e-toggle",
+      householdId: "h1",
+      categoryId: "c-toggle",
+      memberId: "t-payer",
+      amountMinor: 1000,
+      description: "Split",
+      date: "2026-01-02",
+    });
+    await db.insert(expenseSplits).values({
+      id: "sp-toggle",
+      expenseId: "e-toggle",
+      memberId: "t-sharer",
+      shareMinor: 1000,
+    });
+    const res = await updateMember(
+      "t-sharer",
+      form({ name: "TSharer", role: "member", includeInSettleUp: "false" }),
+    );
+    expect(res.error).toMatch(/custom split/i);
+    const [row] = await db
+      .select()
+      .from(householdMembers)
+      .where(eq(householdMembers.id, "t-sharer"));
+    expect(row.includeInSettleUp).toBe(true);
+    // Leaving them in (or any other edit) is still fine.
+    expect(
+      await updateMember(
+        "t-sharer",
+        form({ name: "TSharer", role: "member", includeInSettleUp: "true" }),
+      ),
+    ).toEqual({ success: true });
+  });
+
   it("updateMember persists a toggled-off includeInSettleUp", async () => {
     await createMember(form({ name: "Editable", role: "member" }));
     const [m] = await db
