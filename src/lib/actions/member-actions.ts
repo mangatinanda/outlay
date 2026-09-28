@@ -157,6 +157,12 @@ export const deleteMember = safeAction("deleteMember", async (id: string) => {
         "Cannot delete a member with existing expenses. Reassign their expenses first.",
     };
   }
+  if (ref === "splits") {
+    return {
+      error:
+        "Cannot delete a member who is part of a custom split. Edit those expenses first.",
+    };
+  }
   if (ref === "settlements") {
     return {
       error:

@@ -1,19 +1,42 @@
 "use server";
 
 import { createId } from "@paralleldrive/cuid2";
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq, inArray, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { actorLabelFor, logActivity } from "@/lib/activity";
 import { getCurrentActor } from "@/lib/auth/actor";
 import { db } from "@/lib/db";
-import { categories, expenses, householdMembers } from "@/lib/db/schema";
+import {
+  categories,
+  expenseSplits,
+  expenses,
+  householdMembers,
+} from "@/lib/db/schema";
 import { LIMITS } from "@/lib/limits";
 import { toMinorUnits } from "@/lib/money";
 import { type ExpenseLargePayload, notify } from "@/lib/notifications";
 import { getCurrentHousehold } from "@/lib/queries/household-queries";
 import { RATE_LIMITED_MESSAGE, RATE_LIMITS, rateLimit } from "@/lib/rate-limit";
 import { expenseSchema } from "@/lib/validators/expense-schema";
+import {
+  parseSplitsField,
+  type SplitInput,
+} from "@/lib/validators/expense-splits-schema";
 import { safeAction } from "./safe-action";
+
+const SPLIT_MEMBERS_ERROR =
+  "Everyone in a split must be in settle-up for this household";
+
+function expenseFields(formData: FormData) {
+  return {
+    amount: formData.get("amount"),
+    description: formData.get("description"),
+    categoryId: formData.get("categoryId"),
+    memberId: formData.get("memberId"),
+    date: formData.get("date"),
+    notes: formData.get("notes") || undefined,
+  };
+}
 
 /**
  * Returns an error message unless categoryId AND memberId both belong to the
@@ -53,22 +76,50 @@ async function checkOwnership(
   return null;
 }
 
+/**
+ * Every split member must be a settle-up participant of THIS household: the
+ * balance math only charges participants, so a share for anyone else would
+ * silently vanish (and a foreign member id must never be stored).
+ */
+async function checkSplitMembers(
+  householdId: string,
+  splits: SplitInput[],
+): Promise<string | null> {
+  const rows = await db
+    .select({ id: householdMembers.id })
+    .from(householdMembers)
+    .where(
+      and(
+        eq(householdMembers.householdId, householdId),
+        eq(householdMembers.includeInSettleUp, true),
+        inArray(
+          householdMembers.id,
+          splits.map((s) => s.memberId),
+        ),
+      ),
+    );
+  return rows.length === splits.length ? null : SPLIT_MEMBERS_ERROR;
+}
+
+function splitRows(expenseId: string, splits: SplitInput[]) {
+  return splits.map((s) => ({
+    id: createId(),
+    expenseId,
+    memberId: s.memberId,
+    shareMinor: s.shareMinor,
+  }));
+}
+
 export const createExpense = safeAction(
   "createExpense",
   async (formData: FormData) => {
-    const raw = {
-      amount: formData.get("amount"),
-      description: formData.get("description"),
-      categoryId: formData.get("categoryId"),
-      memberId: formData.get("memberId"),
-      date: formData.get("date"),
-      notes: formData.get("notes") || undefined,
-    };
-
-    const parsed = expenseSchema.safeParse(raw);
+    const parsed = expenseSchema.safeParse(expenseFields(formData));
     if (!parsed.success) {
       return { error: parsed.error.issues[0].message };
     }
+    const amountMinor = toMinorUnits(parsed.data.amount);
+    const split = parseSplitsField(formData.get("splits"), amountMinor);
+    if ("error" in split) return { error: split.error };
 
     const household = await getCurrentHousehold();
     if (!household) return { error: "No household found" };
@@ -86,6 +137,10 @@ export const createExpense = safeAction(
       parsed.data.memberId,
     );
     if (ownershipError) return { error: ownershipError };
+    if (split.splits) {
+      const splitError = await checkSplitMembers(household.id, split.splits);
+      if (splitError) return { error: splitError };
+    }
 
     // Bound how many expenses a single household can accumulate.
     const [{ n }] = await db
@@ -97,8 +152,6 @@ export const createExpense = safeAction(
         error: `This household has reached the limit of ${LIMITS.maxExpensesPerHousehold} expenses.`,
       };
     }
-
-    const amountMinor = toMinorUnits(parsed.data.amount);
 
     // Threshold notification: only on CREATE (updates/imports never emit).
     // Recipients + labels are resolved BEFORE the insert: a failed lookup
@@ -131,8 +184,9 @@ export const createExpense = safeAction(
       };
     }
 
-    await db.insert(expenses).values({
-      id: createId(),
+    const expenseId = createId();
+    const insertExpense = db.insert(expenses).values({
+      id: expenseId,
       householdId: household.id,
       categoryId: parsed.data.categoryId,
       memberId: parsed.data.memberId,
@@ -141,11 +195,20 @@ export const createExpense = safeAction(
       date: parsed.data.date,
       notes: parsed.data.notes || null,
     });
+    // The expense and its shares land together or not at all.
+    if (split.splits) {
+      await db.batch([
+        insertExpense,
+        db.insert(expenseSplits).values(splitRows(expenseId, split.splits)),
+      ]);
+    } else {
+      await insertExpense;
+    }
 
     await logActivity({
       householdId: household.id,
       action: "expense.create",
-      summary: `added "${parsed.data.description}" ₹${parsed.data.amount}`,
+      summary: `added "${parsed.data.description}" ₹${parsed.data.amount}${split.splits ? " (custom split)" : ""}`,
     });
 
     if (largeExpense) {
@@ -159,6 +222,7 @@ export const createExpense = safeAction(
 
     revalidatePath("/dashboard");
     revalidatePath("/expenses");
+    revalidatePath("/settle-up");
     revalidatePath("/activity");
     return { success: true };
   },
@@ -167,19 +231,13 @@ export const createExpense = safeAction(
 export const updateExpense = safeAction(
   "updateExpense",
   async (id: string, formData: FormData) => {
-    const raw = {
-      amount: formData.get("amount"),
-      description: formData.get("description"),
-      categoryId: formData.get("categoryId"),
-      memberId: formData.get("memberId"),
-      date: formData.get("date"),
-      notes: formData.get("notes") || undefined,
-    };
-
-    const parsed = expenseSchema.safeParse(raw);
+    const parsed = expenseSchema.safeParse(expenseFields(formData));
     if (!parsed.success) {
       return { error: parsed.error.issues[0].message };
     }
+    const amountMinor = toMinorUnits(parsed.data.amount);
+    const split = parseSplitsField(formData.get("splits"), amountMinor);
+    if ("error" in split) return { error: split.error };
 
     const household = await getCurrentHousehold();
     if (!household) return { error: "No household found" };
@@ -190,29 +248,53 @@ export const updateExpense = safeAction(
       parsed.data.memberId,
     );
     if (ownershipError) return { error: ownershipError };
+    if (split.splits) {
+      const splitError = await checkSplitMembers(household.id, split.splits);
+      if (splitError) return { error: splitError };
+    }
 
-    const updated = await db
+    // Scoped existence check up front: the batch below can't report "no row".
+    const [existing] = await db
+      .select({ id: expenses.id })
+      .from(expenses)
+      .where(and(eq(expenses.id, id), eq(expenses.householdId, household.id)))
+      .limit(1);
+    if (!existing) return { error: "Expense not found" };
+
+    const updateRow = db
       .update(expenses)
       .set({
         categoryId: parsed.data.categoryId,
         memberId: parsed.data.memberId,
-        amountMinor: toMinorUnits(parsed.data.amount),
+        amountMinor,
         description: parsed.data.description,
         date: parsed.data.date,
         notes: parsed.data.notes || null,
         updatedAt: new Date(),
       })
-      .where(and(eq(expenses.id, id), eq(expenses.householdId, household.id)))
-      .returning({ id: expenses.id });
-    if (updated.length === 0) return { error: "Expense not found" };
+      .where(eq(expenses.id, id));
+    // Shares are replaced wholesale: "Equally" clears them, "Custom" rewrites.
+    const clearShares = db
+      .delete(expenseSplits)
+      .where(eq(expenseSplits.expenseId, id));
+    if (split.splits) {
+      await db.batch([
+        updateRow,
+        clearShares,
+        db.insert(expenseSplits).values(splitRows(id, split.splits)),
+      ]);
+    } else {
+      await db.batch([updateRow, clearShares]);
+    }
 
     await logActivity({
       householdId: household.id,
       action: "expense.update",
-      summary: `edited "${parsed.data.description}"`,
+      summary: `edited "${parsed.data.description}"${split.splits ? " (custom split)" : ""}`,
     });
     revalidatePath("/dashboard");
     revalidatePath("/expenses");
+    revalidatePath("/settle-up");
     revalidatePath("/activity");
     return { success: true };
   },
@@ -222,11 +304,18 @@ export const deleteExpense = safeAction("deleteExpense", async (id: string) => {
   const household = await getCurrentHousehold();
   if (!household) return { error: "No household found" };
 
-  const deleted = await db
-    .delete(expenses)
+  const [existing] = await db
+    .select({ id: expenses.id })
+    .from(expenses)
     .where(and(eq(expenses.id, id), eq(expenses.householdId, household.id)))
-    .returning({ id: expenses.id });
-  if (deleted.length === 0) return { error: "Expense not found" };
+    .limit(1);
+  if (!existing) return { error: "Expense not found" };
+
+  // Shares reference the expense (FK), so they go first — atomically.
+  await db.batch([
+    db.delete(expenseSplits).where(eq(expenseSplits.expenseId, id)),
+    db.delete(expenses).where(eq(expenses.id, id)),
+  ]);
 
   await logActivity({
     householdId: household.id,
@@ -235,6 +324,7 @@ export const deleteExpense = safeAction("deleteExpense", async (id: string) => {
   });
   revalidatePath("/dashboard");
   revalidatePath("/expenses");
+  revalidatePath("/settle-up");
   revalidatePath("/activity");
   return { success: true };
 });

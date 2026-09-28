@@ -30,7 +30,14 @@ import {
   updateMember,
 } from "@/lib/actions/member-actions";
 import { db } from "@/lib/db";
-import { householdMembers, households, settlements } from "@/lib/db/schema";
+import {
+  categories,
+  expenseSplits,
+  expenses,
+  householdMembers,
+  households,
+  settlements,
+} from "@/lib/db/schema";
 import { HOUSEHOLD_COOKIE } from "@/lib/queries/household-queries";
 
 function form(fields: Record<string, string>) {
@@ -82,6 +89,42 @@ describe("member include_in_settle_up", () => {
     });
     const res = await deleteMember(payer.id);
     expect(res.error).toMatch(/settlement/i);
+  });
+
+  it("blocks deleting a member who only appears in a custom split", async () => {
+    await db.insert(householdMembers).values([
+      { id: "m-payer", householdId: "h1", name: "Payer", role: "admin" },
+      { id: "m-sharer", householdId: "h1", name: "Sharer", role: "member" },
+    ]);
+    await db
+      .insert(categories)
+      .values({ id: "c-split", householdId: "h1", name: "Cat" });
+    await db.insert(expenses).values({
+      id: "e-split",
+      householdId: "h1",
+      categoryId: "c-split",
+      memberId: "m-payer",
+      amountMinor: 1000,
+      description: "Split",
+      date: "2026-01-02",
+    });
+    await db.insert(expenseSplits).values({
+      id: "sp-split",
+      expenseId: "e-split",
+      memberId: "m-sharer",
+      shareMinor: 1000,
+    });
+    const res = await deleteMember("m-sharer");
+    expect(res).toEqual({
+      error:
+        "Cannot delete a member who is part of a custom split. Edit those expenses first.",
+    });
+    expect(
+      await db
+        .select()
+        .from(householdMembers)
+        .where(eq(householdMembers.id, "m-sharer")),
+    ).toHaveLength(1);
   });
 
   it("updateMember persists a toggled-off includeInSettleUp", async () => {
