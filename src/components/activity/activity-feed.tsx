@@ -23,7 +23,17 @@ function dayLabel(ms: number) {
   return format(d, "MMM d, yyyy");
 }
 
-export function ActivityFeed({ initial }: { initial: Row[] }) {
+/**
+ * Rows live in state so "Show more" can append. The page keys this component
+ * by the active actor filter, so a filter change remounts it with fresh rows.
+ */
+export function ActivityFeed({
+  initial,
+  actor,
+}: {
+  initial: Row[];
+  actor?: string;
+}) {
   const [rows, setRows] = useState(initial);
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(initial.length < 50);
@@ -33,7 +43,7 @@ export function ActivityFeed({ initial }: { initial: Row[] }) {
     if (!last) return;
     setLoading(true);
     try {
-      const res = await loadMoreActivity(last.createdAt);
+      const res = await loadMoreActivity(last.createdAt, actor);
       if ("error" in res) {
         toast.error(res.error);
         return;
@@ -46,7 +56,13 @@ export function ActivityFeed({ initial }: { initial: Row[] }) {
   }
 
   if (rows.length === 0) {
-    return (
+    return actor ? (
+      <EmptyState
+        icon={ActivityIcon}
+        title="Nothing here yet"
+        description={`No activity by ${actor} yet.`}
+      />
+    ) : (
       <EmptyState
         icon={ActivityIcon}
         title="No activity yet"

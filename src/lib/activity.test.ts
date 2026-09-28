@@ -14,7 +14,7 @@ import { migrate } from "drizzle-orm/libsql/migrator";
 import { logActivity } from "@/lib/activity";
 import { db } from "@/lib/db";
 import { activity, householdMembers, households, users } from "@/lib/db/schema";
-import { getActivity } from "@/lib/queries/activity-queries";
+import { getActivity, getActivityActors } from "@/lib/queries/activity-queries";
 
 beforeAll(async () => {
   await migrate(db, { migrationsFolder: "drizzle" });
@@ -101,5 +101,38 @@ describe("logActivity + getActivity", () => {
     ]);
     const rows = await getActivity("h2", { before: 3000 });
     expect(rows.map((r) => r.id)).toEqual(["a-old"]);
+  });
+});
+
+describe("activity actor filter", () => {
+  // h1 has rows by "Admin" (superadmin), "Nanda" (member) and "Standalone"
+  // (a user with no membership) from the tests above.
+  it("returns only rows by the named actor", async () => {
+    const rows = await getActivity("h1", { actor: "Nanda" });
+    expect(rows.length).toBeGreaterThan(0);
+    expect(rows.every((r) => r.actorLabel === "Nanda")).toBe(true);
+  });
+
+  it("combines the actor filter with the `before` cursor", async () => {
+    await db.insert(activity).values({
+      id: "a-nanda-old",
+      householdId: "h2",
+      actorLabel: "Nanda",
+      action: "expense.create",
+      summary: "old by nanda",
+      createdAt: new Date(2000),
+    });
+    const rows = await getActivity("h2", { before: 3000, actor: "Nanda" });
+    expect(rows.map((r) => r.id)).toEqual(["a-nanda-old"]);
+  });
+
+  it("lists distinct actor labels A→Z, scoped to the household", async () => {
+    expect(await getActivityActors("h1")).toEqual([
+      "Admin",
+      "Nanda",
+      "Standalone",
+    ]);
+    expect(await getActivityActors("h2")).toEqual(["Admin", "Nanda"]);
+    expect(await getActivityActors("nope")).toEqual([]);
   });
 });
