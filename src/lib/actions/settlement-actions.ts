@@ -26,21 +26,17 @@ function settlementFields(formData: FormData) {
   };
 }
 
-/** Participants (include_in_settle_up) of THIS household, by id. */
-async function participantsById(householdId: string) {
+/** Members of THIS household, by id, with their settle-up flag. */
+async function membersById(householdId: string) {
   const members = await db
     .select({
       id: householdMembers.id,
       name: householdMembers.name,
       userId: householdMembers.userId,
+      includeInSettleUp: householdMembers.includeInSettleUp,
     })
     .from(householdMembers)
-    .where(
-      and(
-        eq(householdMembers.householdId, householdId),
-        eq(householdMembers.includeInSettleUp, true),
-      ),
-    );
+    .where(eq(householdMembers.householdId, householdId));
   return new Map(members.map((m) => [m.id, m]));
 }
 
@@ -59,11 +55,13 @@ export const createSettlement = safeAction(
     });
     if (rl.limited) return { error: RATE_LIMITED_MESSAGE };
 
-    // Both members must be participants of THIS household.
-    const byId = await participantsById(household.id);
+    // Both members must be participants (include_in_settle_up) of THIS household.
+    const byId = await membersById(household.id);
     const from = byId.get(parsed.data.fromMemberId);
     const to = byId.get(parsed.data.toMemberId);
-    if (!from || !to) return { error: NOT_PARTICIPANTS };
+    if (!from?.includeInSettleUp || !to?.includeInSettleUp) {
+      return { error: NOT_PARTICIPANTS };
+    }
 
     await db.insert(settlements).values({
       id: createId(),
@@ -108,9 +106,11 @@ export const createSettlement = safeAction(
 );
 
 /**
- * Rewrite a recorded payment. Same rules as recording one; no notification —
- * the original recording already told the counterparty, and an edit is a
- * correction rather than a new event.
+ * Rewrite a recorded payment. Same rules as recording one, except that a
+ * member who has since been toggled out of settle-up may STAY on the row —
+ * otherwise its note, amount or date could never be corrected. Anyone newly
+ * assigned must be a participant. No notification: the original recording
+ * already told the counterparty, and an edit is a correction, not an event.
  */
 export const updateSettlement = safeAction(
   "updateSettlement",
@@ -127,12 +127,35 @@ export const updateSettlement = safeAction(
     });
     if (rl.limited) return { error: RATE_LIMITED_MESSAGE };
 
-    const byId = await participantsById(household.id);
+    // Scoped lookup first: a foreign id is indistinguishable from a missing one.
+    const [stored] = await db
+      .select({
+        fromMemberId: settlements.fromMemberId,
+        toMemberId: settlements.toMemberId,
+      })
+      .from(settlements)
+      .where(
+        and(eq(settlements.id, id), eq(settlements.householdId, household.id)),
+      )
+      .limit(1);
+    if (!stored) return { error: "Settlement not found" };
+
+    const byId = await membersById(household.id);
     const from = byId.get(parsed.data.fromMemberId);
     const to = byId.get(parsed.data.toMemberId);
-    if (!from || !to) return { error: NOT_PARTICIPANTS };
+    const allowed = (
+      member: typeof from,
+      storedId: string,
+    ): member is NonNullable<typeof from> =>
+      !!member && (member.includeInSettleUp || member.id === storedId);
+    if (
+      !allowed(from, stored.fromMemberId) ||
+      !allowed(to, stored.toMemberId)
+    ) {
+      return { error: NOT_PARTICIPANTS };
+    }
 
-    const updated = await db
+    await db
       .update(settlements)
       .set({
         fromMemberId: from.id,
@@ -143,9 +166,7 @@ export const updateSettlement = safeAction(
       })
       .where(
         and(eq(settlements.id, id), eq(settlements.householdId, household.id)),
-      )
-      .returning({ id: settlements.id });
-    if (updated.length === 0) return { error: "Settlement not found" };
+      );
 
     await logActivity({
       householdId: household.id,

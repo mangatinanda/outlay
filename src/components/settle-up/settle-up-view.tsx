@@ -60,7 +60,8 @@ interface Prefill {
   date: string;
   note: string;
   /** Members on an edited row who are no longer in settle-up, so the selects
-   *  can still show them (the server refuses the save until they're swapped). */
+   *  can still show them; the server accepts them as long as they are
+   *  unchanged, so the row's amount, date or note can still be corrected. */
   extras: Participant[];
 }
 
