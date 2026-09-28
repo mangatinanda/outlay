@@ -27,6 +27,7 @@ import { migrate } from "drizzle-orm/libsql/migrator";
 import {
   createSettlement,
   deleteSettlement,
+  updateSettlement,
 } from "@/lib/actions/settlement-actions";
 import { db } from "@/lib/db";
 import {
@@ -138,5 +139,110 @@ describe("deleteSettlement", () => {
     expect(
       await db.select().from(settlements).where(eq(settlements.id, row.id)),
     ).toHaveLength(0);
+  });
+});
+
+describe("updateSettlement", () => {
+  it("rewrites the row and logs settlement.update", async () => {
+    await db.insert(settlements).values({
+      id: "s-edit",
+      householdId: "h1",
+      fromMemberId: "mb",
+      toMemberId: "ma",
+      amountMinor: 1000,
+      date: "2026-06-01",
+    });
+    const res = await updateSettlement(
+      "s-edit",
+      form({
+        fromMemberId: "ma",
+        toMemberId: "mb",
+        amount: "25.50",
+        date: "2026-06-03",
+        note: "cash",
+      }),
+    );
+    expect(res).toEqual({ success: true });
+    const [row] = await db
+      .select()
+      .from(settlements)
+      .where(eq(settlements.id, "s-edit"));
+    expect(row).toMatchObject({
+      fromMemberId: "ma",
+      toMemberId: "mb",
+      amountMinor: 2550,
+      date: "2026-06-03",
+      note: "cash",
+    });
+    const log = await db
+      .select()
+      .from(activity)
+      .where(eq(activity.action, "settlement.update"));
+    expect(log).toHaveLength(1);
+    expect(log[0].summary).toBe("edited a settlement: ₹25.5 from A to B");
+  });
+
+  it("refuses a settlement that belongs to another household", async () => {
+    await db.insert(households).values({ id: "h2", name: "Other" });
+    await db.insert(householdMembers).values([
+      { id: "o1", householdId: "h2", name: "O1", role: "admin" },
+      { id: "o2", householdId: "h2", name: "O2", role: "member" },
+    ]);
+    await db.insert(settlements).values({
+      id: "s-foreign",
+      householdId: "h2",
+      fromMemberId: "o1",
+      toMemberId: "o2",
+      amountMinor: 100,
+      date: "2026-06-01",
+    });
+    const res = await updateSettlement(
+      "s-foreign",
+      form({
+        fromMemberId: "mb",
+        toMemberId: "ma",
+        amount: "1",
+        date: "2026-06-03",
+      }),
+    );
+    expect(res).toEqual({ error: "Settlement not found" });
+    const [row] = await db
+      .select()
+      .from(settlements)
+      .where(eq(settlements.id, "s-foreign"));
+    expect(row.amountMinor).toBe(100);
+  });
+
+  it("refuses a member outside settle-up", async () => {
+    const res = await updateSettlement(
+      "s-edit",
+      form({
+        fromMemberId: "mx",
+        toMemberId: "ma",
+        amount: "1",
+        date: "2026-06-03",
+      }),
+    );
+    expect(res).toEqual({
+      error: "Both members must be in settle-up for this household",
+    });
+  });
+
+  it("rejects from==to before touching the row", async () => {
+    const res = await updateSettlement(
+      "s-edit",
+      form({
+        fromMemberId: "ma",
+        toMemberId: "ma",
+        amount: "1",
+        date: "2026-06-03",
+      }),
+    );
+    expect(res.error).toMatch(/themselves|settle with/i);
+    const [row] = await db
+      .select()
+      .from(settlements)
+      .where(eq(settlements.id, "s-edit"));
+    expect(row.amountMinor).toBe(2550);
   });
 });

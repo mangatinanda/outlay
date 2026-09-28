@@ -104,6 +104,8 @@ describe("getSettleUp", () => {
     const rows = await getSettlements("h9");
     expect(rows).toHaveLength(1);
     expect(rows[0]).toMatchObject({
+      fromMemberId: "p2",
+      toMemberId: "p1",
       fromName: "P2",
       toName: "P1",
       amount: 450,
