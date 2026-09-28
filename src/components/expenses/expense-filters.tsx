@@ -302,6 +302,8 @@ export function ExpenseFilters({
 
             <div className="space-y-2">
               <Label htmlFor="filter-category">Category</Label>
+              {/* `items` labels the closed trigger; without it Base UI shows
+                  the raw value, i.e. the "__any__" sentinel. */}
               <Select
                 value={draft.category ?? ANY}
                 onValueChange={(v) =>
@@ -310,6 +312,10 @@ export function ExpenseFilters({
                     category: !v || v === ANY ? undefined : v,
                   }))
                 }
+                items={{
+                  [ANY]: "Any category",
+                  ...Object.fromEntries(categories.map((c) => [c.id, c.name])),
+                }}
               >
                 <SelectTrigger id="filter-category" className="min-h-11">
                   <SelectValue placeholder="Any category" />
@@ -335,6 +341,10 @@ export function ExpenseFilters({
                     member: !v || v === ANY ? undefined : v,
                   }))
                 }
+                items={{
+                  [ANY]: "Anyone",
+                  ...Object.fromEntries(members.map((m) => [m.id, m.name])),
+                }}
               >
                 <SelectTrigger id="filter-member" className="min-h-11">
                   <SelectValue placeholder="Anyone" />

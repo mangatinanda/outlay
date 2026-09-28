@@ -21,14 +21,21 @@ vi.mock("@/components/ui/select", async () => {
     Select: ({
       value,
       onValueChange,
+      items,
       children,
     }: {
       value: string;
       onValueChange: (value: string | null) => void;
+      items?: Record<string, string>;
       children: React.ReactNode;
     }) => (
       <Ctx.Provider value={onValueChange}>
-        <div data-testid="select" data-value={value}>
+        <div
+          data-testid="select"
+          data-value={value}
+          // What the real trigger shows while closed: the items label.
+          data-label={items?.[value]}
+        >
           {children}
         </div>
       </Ctx.Provider>
@@ -78,6 +85,11 @@ describe("ActivityActorFilter", () => {
     expect(
       screen.getByRole("button", { name: "Everyone" }),
     ).toBeInTheDocument();
+    // The closed trigger must read "Everyone", not the sentinel value.
+    expect(screen.getByTestId("select")).toHaveAttribute(
+      "data-label",
+      "Everyone",
+    );
     fireEvent.click(screen.getByRole("button", { name: "Nanda" }));
     expect(router.replace).toHaveBeenCalledWith("/activity?actor=Nanda", {
       scroll: false,
@@ -94,6 +106,7 @@ describe("ActivityActorFilter", () => {
   it("keeps a URL actor selectable even when the feed no longer lists them", () => {
     render(<ActivityActorFilter actors={actors} actor="Ghost" />);
     expect(screen.getByTestId("select")).toHaveAttribute("data-value", "Ghost");
+    expect(screen.getByTestId("select")).toHaveAttribute("data-label", "Ghost");
     expect(screen.getByRole("button", { name: "Ghost" })).toBeInTheDocument();
   });
 });

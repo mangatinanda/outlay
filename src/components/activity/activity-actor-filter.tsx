@@ -45,7 +45,16 @@ export function ActivityActorFilter({
       <Label htmlFor="activity-actor" className="text-muted-foreground text-sm">
         Show
       </Label>
-      <Select value={actor ?? EVERYONE} onValueChange={onChange}>
+      {/* `items` gives the closed trigger its label; without it Base UI
+          renders the raw value, i.e. the "__everyone__" sentinel. */}
+      <Select
+        value={actor ?? EVERYONE}
+        onValueChange={onChange}
+        items={{
+          [EVERYONE]: "Everyone",
+          ...Object.fromEntries(options.map((a) => [a, a])),
+        }}
+      >
         <SelectTrigger id="activity-actor" className="min-h-11 w-48">
           <SelectValue placeholder="Everyone" />
         </SelectTrigger>
