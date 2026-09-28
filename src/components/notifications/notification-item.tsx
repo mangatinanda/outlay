@@ -20,6 +20,7 @@ import {
 } from "@/lib/actions/notification-actions";
 import { notificationText } from "@/lib/notification-text";
 import type { NotificationItemData } from "@/lib/queries/notification-queries";
+import { cn } from "@/lib/utils";
 
 const ICONS: Record<NotificationItemData["type"], LucideIcon> = {
   "invite.received": UserPlus,
@@ -43,6 +44,11 @@ export function NotificationItem({
   );
   const Icon = ICONS[item.type] ?? Bell;
   const { title, detail } = notificationText(item);
+  // The bell loads the list BEFORE marking everything read, so the rows it
+  // shows still carry readAt=null and get the "new" treatment while open; on
+  // /notifications (which never marks read) the flag persists until the bell
+  // is next opened.
+  const unread = item.readAt === null;
   const memberId =
     typeof item.payload.memberId === "string" ? item.payload.memberId : null;
   const pending =
@@ -75,12 +81,31 @@ export function NotificationItem({
   }
 
   return (
-    <div className="flex gap-3 rounded-xl p-3">
+    <div
+      className={cn("flex gap-3 rounded-xl p-3", unread && "bg-primary/5")}
+      data-unread={unread || undefined}
+    >
       <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
         <Icon className="h-4 w-4" />
       </div>
       <div className="min-w-0 flex-1 space-y-1">
-        <p className="font-medium text-sm leading-tight">{title}</p>
+        <p
+          className={cn(
+            "text-sm leading-tight",
+            unread ? "font-semibold" : "font-medium",
+          )}
+        >
+          {title}
+          {unread && (
+            <>
+              <span
+                aria-hidden
+                className="ml-2 inline-block size-2 rounded-full bg-primary align-middle"
+              />
+              <span className="sr-only">Unread</span>
+            </>
+          )}
+        </p>
         <p className="text-muted-foreground text-sm">{detail}</p>
         {/* Relative time is computed at render; the server and the client
             legitimately disagree by a few seconds (or a threshold), so tell
