@@ -65,7 +65,7 @@ double‑spec; CI reads pnpm from `packageManager`).
 
 ## Work log
 
-### 2026‑09‑28 — Per‑expense custom splits + the deferred polish list (two branches)
+### 2026‑09‑28 — Per‑expense custom splits (#13) + the deferred polish list (#12) — merged
 
 - **Custom splits** (PR #13, the settle‑up spec's "future extension", branch `feat/custom-splits`): new table
   `expense_splits` (`expense_id`, `member_id`, `share_minor`; unique per expense+member; migration
@@ -688,17 +688,12 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
 
 ## Current state & open items
 
-- **Two PRs awaiting review/merge (2026‑09‑28): #13** `feat/custom-splits` (per‑expense custom shares; new
-  `expense_splits` table, migration `0009` — the prod build applies it automatically after merge) and
-  **#12** `chore/deferred-polish` (notification a11y/unread, activity actor filter, settlement editing). Merge either
-  first; the splits branch carries the FEATURES.md/memory updates for both. Custom splits are **not yet
-  exercised by an e2e spec** — `add-expense.spec.ts` still submits the default equal split.
-- **PR #2 MERGED (2026‑09‑05): in‑app notifications** — squash `2ff20a9` on `main`; feature branch deleted.
-  The pre‑merge `/code-review 2 high` fixes landed in the same squash (see the 2026‑09‑05 work‑log entry).
-  **Prod auto‑deploy succeeded** (GitHub deployment `success`; CI on `main` green). Verified live at
-  `https://myoutlay.vercel.app` (HTTP 200; `/serwist/sw.js` carries the `/api/notifications/` NetworkOnly
-  rule). Migration `0007` (notifications table + `households.notify_expense_over_minor`, additive) is applied
-  by `scripts/migrate-if-prod.mjs` during the prod build — a failure there fails the build, so it applied.
+- **✅ Both 2026‑09‑28 PRs MERGED + DEPLOYED:** #13 custom splits (squash `18a0d53`) and #12 deferred polish
+  (squash `ab631c1`), reviewed with `/code-review <n> high` before merging; findings fixed on the branches (see
+  the 2026‑09‑28 work‑log entry). Prod auto‑deployed from `main`; migration `0009` (`expense_splits`) was
+  applied by the build. Custom splits are **not yet exercised by an e2e spec** — `add-expense.spec.ts` still
+  submits the default equal split. Follow‑ups declined for now: split data in CSV export; notifying the
+  counterparty when a settlement is edited.
 - **✅ Custom domain restored (2026‑09‑14):** `outlay.mangatinanda.me` serves the app again (registrar
   **Hostinger**, **expiry 2027‑09‑14 — renew before then**). The Vercel aliases `myoutlay.vercel.app` /
   `outlay-kappa.vercel.app` still work. See the 2026‑09‑15 work‑log entry. **Nothing warns about the next
