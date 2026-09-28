@@ -1,6 +1,11 @@
 import { and, desc, eq, gte, lte, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { categories, expenses, householdMembers } from "@/lib/db/schema";
+import {
+  categories,
+  expenseSplits,
+  expenses,
+  householdMembers,
+} from "@/lib/db/schema";
 
 // Stored as integer minor units; exposed to the app in major units via a
 // single exact conversion at the query boundary (see src/lib/money.ts).
@@ -58,6 +63,8 @@ export async function getExpenses(
       memberId: expenses.memberId,
       memberName: householdMembers.name,
       createdAt: expenses.createdAt,
+      // 1 when the expense was split by hand (has split rows), else 0.
+      hasCustomSplit: sql<number>`exists(select 1 from ${expenseSplits} where ${expenseSplits.expenseId} = ${expenses.id})`,
     })
     .from(expenses)
     .innerJoin(categories, eq(expenses.categoryId, categories.id))
@@ -66,7 +73,7 @@ export async function getExpenses(
     .orderBy(desc(expenses.date), desc(expenses.createdAt))
     .limit(filters?.limit ?? 100);
 
-  return result;
+  return result.map((r) => ({ ...r, hasCustomSplit: r.hasCustomSplit === 1 }));
 }
 
 /** Scoped by household so one household's pages can never load another's expense. */
@@ -89,6 +96,19 @@ export async function getExpenseById(id: string, householdId: string) {
     .innerJoin(householdMembers, eq(expenses.memberId, householdMembers.id))
     .where(and(eq(expenses.id, id), eq(expenses.householdId, householdId)))
     .limit(1);
+  const row = result[0];
+  if (!row) return null;
 
-  return result[0] ?? null;
+  // Empty when the expense is split equally (no rows), else one share per
+  // person in major units for the edit form.
+  const splits = await db
+    .select({
+      memberId: expenseSplits.memberId,
+      amount: sql<number>`${expenseSplits.shareMinor} / 100.0`,
+    })
+    .from(expenseSplits)
+    .where(eq(expenseSplits.expenseId, id))
+    .orderBy(expenseSplits.memberId);
+
+  return { ...row, splits };
 }

@@ -9,11 +9,12 @@ import { migrate } from "drizzle-orm/libsql/migrator";
 import { db } from "@/lib/db";
 import {
   categories,
+  expenseSplits,
   expenses,
   householdMembers,
   households,
 } from "@/lib/db/schema";
-import { getExpenses } from "@/lib/queries/expense-queries";
+import { getExpenseById, getExpenses } from "@/lib/queries/expense-queries";
 
 beforeAll(async () => {
   await migrate(db, { migrationsFolder: "drizzle" });
@@ -97,5 +98,30 @@ describe("getExpenses search", () => {
   it("is a no-op when the search is blank", async () => {
     const rows = await getExpenses("h1", { search: "   " });
     expect(rows).toHaveLength(3);
+  });
+});
+
+describe("custom splits on expense rows", () => {
+  beforeAll(async () => {
+    await db.insert(expenseSplits).values({
+      id: "split-e2",
+      expenseId: "e2",
+      memberId: "m1",
+      shareMinor: 5000,
+    });
+  });
+
+  it("flags only expenses that have split rows", async () => {
+    const rows = await getExpenses("h1");
+    const byId = Object.fromEntries(rows.map((r) => [r.id, r.hasCustomSplit]));
+    expect(byId.e2).toBe(true);
+    expect(byId.e1).toBe(false);
+  });
+
+  it("returns an expense's shares in major units, and none for an equal split", async () => {
+    const split = await getExpenseById("e2", "h1");
+    expect(split?.splits).toEqual([{ memberId: "m1", amount: 50 }]);
+    const equal = await getExpenseById("e1", "h1");
+    expect(equal?.splits).toEqual([]);
   });
 });

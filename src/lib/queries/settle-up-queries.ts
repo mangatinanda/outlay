@@ -1,6 +1,11 @@
-import { and, eq, inArray, sql } from "drizzle-orm";
+import { and, eq, inArray, notExists, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { expenses, householdMembers, settlements } from "@/lib/db/schema";
+import {
+  expenseSplits,
+  expenses,
+  householdMembers,
+  settlements,
+} from "@/lib/db/schema";
 import { computeNetBalances, simplifyDebts } from "@/lib/settle-up/balances";
 
 export async function getSettleUp(householdId: string) {
@@ -20,6 +25,10 @@ export async function getSettleUp(householdId: string) {
 
   // Only participants' expenses are settleable. Skip entirely when there are
   // no participants (inArray with an empty array is a SQL footgun).
+  const participantPaid = and(
+    eq(expenses.householdId, householdId),
+    inArray(expenses.memberId, participantIds),
+  );
   const paidRows =
     participantIds.length === 0
       ? []
@@ -29,13 +38,43 @@ export async function getSettleUp(householdId: string) {
             paidMinor: sql<number>`coalesce(sum(${expenses.amountMinor}), 0)`,
           })
           .from(expenses)
+          .where(participantPaid)
+          .groupBy(expenses.memberId);
+
+  // Participant-paid expenses WITHOUT split rows form the equal pool …
+  const [{ equalPoolMinor }] =
+    participantIds.length === 0
+      ? [{ equalPoolMinor: 0 }]
+      : await db
+          .select({
+            equalPoolMinor: sql<number>`coalesce(sum(${expenses.amountMinor}), 0)`,
+          })
+          .from(expenses)
           .where(
             and(
-              eq(expenses.householdId, householdId),
-              inArray(expenses.memberId, participantIds),
+              participantPaid,
+              notExists(
+                db
+                  .select({ one: sql`1` })
+                  .from(expenseSplits)
+                  .where(eq(expenseSplits.expenseId, expenses.id)),
+              ),
             ),
-          )
-          .groupBy(expenses.memberId);
+          );
+
+  // … and the rest contribute their explicit per-member shares.
+  const customShares =
+    participantIds.length === 0
+      ? []
+      : await db
+          .select({
+            memberId: expenseSplits.memberId,
+            shareMinor: sql<number>`coalesce(sum(${expenseSplits.shareMinor}), 0)`,
+          })
+          .from(expenseSplits)
+          .innerJoin(expenses, eq(expenseSplits.expenseId, expenses.id))
+          .where(participantPaid)
+          .groupBy(expenseSplits.memberId);
 
   const settlementRows = await db
     .select({
@@ -49,6 +88,8 @@ export async function getSettleUp(householdId: string) {
   const nets = computeNetBalances({
     participantIds,
     paid: paidRows,
+    equalPoolMinor,
+    customShares,
     settlements: settlementRows,
   });
   const transfers = simplifyDebts(nets);
