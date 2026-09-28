@@ -1,12 +1,19 @@
 /**
- * Pure settle-up math (integer minor units; see spec). Equal split of the
- * settleable total among participants, netted against settlements, plus a
- * greedy debt-simplification.
+ * Pure settle-up math (integer minor units; see spec). Each participant's
+ * share is two parts: an equal slice of the "equal pool" (participant-paid
+ * expenses with no split rows) plus the sum of their explicit shares from
+ * expenses that were split by hand. That share is netted against what they
+ * paid and against recorded settlements, then a greedy pass simplifies debts.
  */
 
 export interface MemberPaid {
   memberId: string;
   paidMinor: number;
+}
+
+export interface MemberShare {
+  memberId: string;
+  shareMinor: number;
 }
 
 export interface SettlementRow {
@@ -49,6 +56,12 @@ export function computeShares(
 export function computeNetBalances(input: {
   participantIds: string[];
   paid: MemberPaid[];
+  /** Sum of participant-paid expenses WITHOUT split rows. Defaults to the
+   *  total of `paid`, i.e. everything is split equally (legacy callers). */
+  equalPoolMinor?: number;
+  /** Per-member shares from expenses WITH split rows (participant-paid only).
+   *  Shares for non-participants are ignored, like their paid expenses. */
+  customShares?: MemberShare[];
   settlements: SettlementRow[];
 }): Balance[] {
   const participants = new Set(input.participantIds);
@@ -62,7 +75,15 @@ export function computeNetBalances(input: {
     );
     total += p.paidMinor;
   }
-  const shares = computeShares(total, input.participantIds);
+  const equalShares = computeShares(
+    input.equalPoolMinor ?? total,
+    input.participantIds,
+  );
+  const custom = new Map<string, number>();
+  for (const s of input.customShares ?? []) {
+    if (!participants.has(s.memberId)) continue;
+    custom.set(s.memberId, (custom.get(s.memberId) ?? 0) + s.shareMinor);
+  }
   const out = new Map<string, number>();
   const inn = new Map<string, number>();
   // Edge: if a member is toggled out of settle-up AFTER a settlement involving them, only the
@@ -80,7 +101,8 @@ export function computeNetBalances(input: {
     memberId: id,
     netMinor:
       (paidByMember.get(id) ?? 0) -
-      (shares.get(id) ?? 0) +
+      (equalShares.get(id) ?? 0) -
+      (custom.get(id) ?? 0) +
       (out.get(id) ?? 0) -
       (inn.get(id) ?? 0),
   }));
