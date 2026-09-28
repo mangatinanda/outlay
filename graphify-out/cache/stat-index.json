@@ -180,9 +180,9 @@
     "hash": "6c12773ded3b63e36b9cb4ae14575829a1dd144cd4f8a7197cc65db7284814a3"
   },
   "/Users/nanda/vibe-code/outlay/drizzle/meta/_journal.json": {
-    "size": 1349,
-    "mtime_ns": 1788647088805624127,
-    "hash": "14f402245dea64078ce1e47a1ae07a019b0fa5f2a2f47c16e17204e999196591"
+    "size": 1495,
+    "mtime_ns": 1790590261616915765,
+    "hash": "2d4dfd2fc7607f67f7655f2c6e0e1fe88c65da1cd9c6f9580b5f5cad9af1d6ec"
   },
   "/Users/nanda/vibe-code/outlay/e2e/add-expense.spec.ts": {
     "size": 2646,
@@ -1225,14 +1225,14 @@
     "hash": "1a5aaa6a62b77b5bc4a7b2b06a0eb39f31900c7ad4c88cc47a11aa6cca44f691"
   },
   "/Users/nanda/vibe-code/outlay/CLAUDE.md": {
-    "size": 8459,
-    "mtime_ns": 1788589257661086629,
-    "hash": "59592650fd1fe3a170be87687b29db4769aa408742f025a2bb9dcfb6de6391ad"
+    "size": 8490,
+    "mtime_ns": 1790590318588806538,
+    "hash": "22fcbaef0003e6880b8d628da0d434ea75c2b602eb2d02f33f62eb8ef2f1fa87"
   },
   "/Users/nanda/vibe-code/outlay/FEATURES.md": {
-    "size": 3997,
-    "mtime_ns": 1789390177616115368,
-    "hash": "5ae6cd3601cc70bd72fc07d17c3bf7357179292cc10be18972bd0ea3f0dd3dde"
+    "size": 4603,
+    "mtime_ns": 1790590849994110672,
+    "hash": "46a215a4e3fe19acc4469c3fa52e13770d3f1433cbe0a0abb7599c0dacf9b06a"
   },
   "/Users/nanda/vibe-code/outlay/README.md": {
     "size": 18798,
@@ -1300,14 +1300,14 @@
     "hash": "a76feeaaf45e1a9844425b6fc221248c24a716421a8666fa91c346c6108d3baf"
   },
   "/Users/nanda/vibe-code/outlay/docs/superpowers/specs/2026-06-22-settle-up-and-activity-log-design.md": {
-    "size": 13197,
-    "mtime_ns": 1782138072362565574,
-    "hash": "23cc0f8ad6c6db0a73ca2b42aa8b40b39568ce4123b416c46248e3beb85c62ba"
+    "size": 13351,
+    "mtime_ns": 1790590849994683132,
+    "hash": "c8312609d7400aaa764d1e55235b4af8a6ebb875868247fb8bca1580a74ef687"
   },
   "/Users/nanda/vibe-code/outlay/memory.md": {
-    "size": 56017,
-    "mtime_ns": 1789390177616697326,
-    "hash": "cd90f746593dfab030d2bd7bd3a95e0d5e0a6caa180b687b79a3a84afb9e3f29"
+    "size": 59946,
+    "mtime_ns": 1790590849996285261,
+    "hash": "dfb2e1cc5f9e2b5bdae53797c061a620dea3a44641cbe4f90cdfd1bced52c4ec"
   },
   "/Users/nanda/vibe-code/outlay/plans/2026-06-07-currency-switcher.md": {
     "size": 6427,
@@ -1455,9 +1455,9 @@
     "hash": "0661703b1b0d9e250af7b151c6856400b6b945498ff684727cf4d859e8191b42"
   },
   "/Users/nanda/vibe-code/outlay/scripts/domain-watch.sh": {
-    "size": 2756,
-    "mtime_ns": 1788616884557656618,
-    "hash": "fb76eddc830a1829aa60fcac68a6632f30838a6edcc15e5de467f4397f863f41"
+    "size": 3172,
+    "mtime_ns": 1789437310096795272,
+    "hash": "75f762cc77af5f5a4df7896592d0ba62dbe83a647183af3fe6383f68325051a4"
   },
   "/Users/nanda/vibe-code/outlay/drizzle/0008_fixed_cable.sql": {
     "size": 84,
@@ -1468,5 +1468,25 @@
     "size": 21500,
     "mtime_ns": 1788647088805219335,
     "hash": "8bfce23d1efd51570345ba6a84e16017db7c7710ef85fcfe87960fd3ee971d89"
+  },
+  "/Users/nanda/vibe-code/outlay/drizzle/0009_careless_tenebrous.sql": {
+    "size": 588,
+    "mtime_ns": 1790590261616990118,
+    "hash": "cd0d24bcef6891e60cab66c9fe9da0b2e7cc91363195462a4650eb2668034bc0"
+  },
+  "/Users/nanda/vibe-code/outlay/drizzle/meta/0009_snapshot.json": {
+    "size": 23681,
+    "mtime_ns": 1790590261616675068,
+    "hash": "eb591488e2400e2dcf86c227b6f8372ecc8d20830d509555fa3dca427be69b42"
+  },
+  "/Users/nanda/vibe-code/outlay/docs/superpowers/plans/2026-09-28-custom-splits.md": {
+    "size": 25670,
+    "mtime_ns": 1790590191897047593,
+    "hash": "a5bfffd24801da5d2495e8e5c313106231a111ec8ece48fb3fa2b7e81dcaa57f"
+  },
+  "/Users/nanda/vibe-code/outlay/docs/superpowers/plans/2026-09-28-deferred-polish.md": {
+    "size": 27516,
+    "mtime_ns": 1790590077410675675,
+    "hash": "b0399f8823885441014ead35d65cc934ba2b96a3a052b49a577737f1e0b941b9"
   }
 }

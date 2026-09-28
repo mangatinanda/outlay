@@ -18,6 +18,7 @@ interface ExpenseItem {
   categoryIcon: string;
   categoryColor: string;
   memberName: string;
+  hasCustomSplit?: boolean;
 }
 
 export function ExpenseList({ expenses }: { expenses: ExpenseItem[] }) {

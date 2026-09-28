@@ -97,3 +97,51 @@ describe("simplifyDebts", () => {
     ).toEqual([]);
   });
 });
+
+describe("computeNetBalances with custom splits", () => {
+  it("uses the custom shares of split expenses and the equal pool for the rest", () => {
+    // A paid 1000 split A:200 / B:800; B paid 600 unsplit (equal pool).
+    const nets = computeNetBalances({
+      participantIds: ["a", "b"],
+      paid: [
+        { memberId: "a", paidMinor: 1000 },
+        { memberId: "b", paidMinor: 600 },
+      ],
+      equalPoolMinor: 600,
+      customShares: [
+        { memberId: "a", shareMinor: 200 },
+        { memberId: "b", shareMinor: 800 },
+      ],
+      settlements: [],
+    });
+    const byId = Object.fromEntries(nets.map((n) => [n.memberId, n.netMinor]));
+    expect(byId.a).toBe(1000 - (300 + 200)); // 500
+    expect(byId.b).toBe(600 - (300 + 800)); // -500
+    expect(nets.reduce((s, n) => s + n.netMinor, 0)).toBe(0);
+  });
+
+  it("ignores custom shares for non-participants", () => {
+    const nets = computeNetBalances({
+      participantIds: ["a", "b"],
+      paid: [{ memberId: "a", paidMinor: 1000 }],
+      equalPoolMinor: 0,
+      customShares: [
+        { memberId: "a", shareMinor: 500 },
+        { memberId: "z", shareMinor: 500 },
+      ],
+      settlements: [],
+    });
+    const byId = Object.fromEntries(nets.map((n) => [n.memberId, n.netMinor]));
+    expect(byId.a).toBe(500);
+    expect(byId.b).toBe(0);
+  });
+
+  it("defaults the equal pool to everything paid (legacy callers)", () => {
+    const nets = computeNetBalances({
+      participantIds: ["a", "b"],
+      paid: [{ memberId: "a", paidMinor: 1000 }],
+      settlements: [],
+    });
+    expect(nets.find((n) => n.memberId === "b")?.netMinor).toBe(-500);
+  });
+});

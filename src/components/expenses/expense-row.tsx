@@ -16,6 +16,8 @@ interface ExpenseRowItem {
   categoryIcon: string;
   categoryColor: string;
   memberName: string;
+  /** Split by hand (custom shares) rather than equally. */
+  hasCustomSplit?: boolean;
 }
 
 interface ExpenseRowProps {
@@ -73,6 +75,12 @@ export function ExpenseRow({
             </p>
             <p className="truncate text-muted-foreground text-xs">
               {expense.categoryName} &middot; {expense.memberName}
+              {expense.hasCustomSplit && (
+                <>
+                  {" "}
+                  &middot; <span className="text-primary">Split</span>
+                </>
+              )}
             </p>
           </div>
           <span className="whitespace-nowrap font-display font-semibold text-sm tabular-nums">

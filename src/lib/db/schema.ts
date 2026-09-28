@@ -154,6 +154,31 @@ export const expenses = sqliteTable(
   ],
 );
 
+// Custom share of one expense for one member, in minor units. An expense with
+// NO rows is split equally among the current settle-up participants (the
+// pre-splits behavior); rows exist only for expenses split by hand. Rows for a
+// member later toggled out of settle-up are ignored by the balance math.
+export const expenseSplits = sqliteTable(
+  "expense_splits",
+  {
+    id: text("id").primaryKey(),
+    expenseId: text("expense_id")
+      .notNull()
+      .references(() => expenses.id),
+    memberId: text("member_id")
+      .notNull()
+      .references(() => householdMembers.id),
+    shareMinor: integer("share_minor").notNull(),
+  },
+  (table) => [
+    uniqueIndex("expense_splits_expense_member_uidx").on(
+      table.expenseId,
+      table.memberId,
+    ),
+    index("expense_splits_member_idx").on(table.memberId),
+  ],
+);
+
 // Fixed-window rate-limit counters, shared across serverless instances (an
 // in-memory limiter is unreliable on distributed/ephemeral functions). One row
 // per limiter key; `window_start` is the unix-second start of the current
@@ -224,6 +249,8 @@ export type HouseholdMember = typeof householdMembers.$inferSelect;
 export type Category = typeof categories.$inferSelect;
 export type Expense = typeof expenses.$inferSelect;
 export type NewExpense = typeof expenses.$inferInsert;
+export type ExpenseSplit = typeof expenseSplits.$inferSelect;
+export type NewExpenseSplit = typeof expenseSplits.$inferInsert;
 export type NewCategory = typeof categories.$inferInsert;
 export type NewHouseholdMember = typeof householdMembers.$inferInsert;
 export type Settlement = typeof settlements.$inferSelect;

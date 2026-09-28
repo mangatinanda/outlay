@@ -9,6 +9,7 @@ import { migrate } from "drizzle-orm/libsql/migrator";
 import { db } from "@/lib/db";
 import {
   categories,
+  expenseSplits,
   expenses,
   householdMembers,
   households,
@@ -112,5 +113,56 @@ describe("getSettleUp", () => {
       date: "2026-06-03",
       note: "UPI",
     });
+  });
+});
+
+describe("getSettleUp with custom splits", () => {
+  beforeAll(async () => {
+    await db.insert(households).values({ id: "h3", name: "Split" });
+    await db.insert(householdMembers).values([
+      { id: "pa", householdId: "h3", name: "PA", role: "admin" },
+      { id: "pb", householdId: "h3", name: "PB", role: "member" },
+      { id: "pc", householdId: "h3", name: "PC", role: "member" },
+    ]);
+    await db
+      .insert(categories)
+      .values({ id: "c3", householdId: "h3", name: "Cat" });
+    // PA paid 9000 split PB:6000 / PC:3000 (PA owes nothing on it);
+    // PB paid 3000 with no split rows → the equal pool (1000 each).
+    await db.insert(expenses).values([
+      {
+        id: "e3a",
+        householdId: "h3",
+        categoryId: "c3",
+        memberId: "pa",
+        amountMinor: 900000,
+        description: "Split dinner",
+        date: "2026-06-01",
+      },
+      {
+        id: "e3b",
+        householdId: "h3",
+        categoryId: "c3",
+        memberId: "pb",
+        amountMinor: 300000,
+        description: "Groceries",
+        date: "2026-06-02",
+      },
+    ]);
+    await db.insert(expenseSplits).values([
+      { id: "sp1", expenseId: "e3a", memberId: "pb", shareMinor: 600000 },
+      { id: "sp2", expenseId: "e3a", memberId: "pc", shareMinor: 300000 },
+    ]);
+  });
+
+  it("charges explicit shares for split expenses and equal shares for the rest", async () => {
+    const res = await getSettleUp("h3");
+    const byId = Object.fromEntries(
+      res.balances.map((b) => [b.memberId, b.net]),
+    );
+    expect(byId.pa).toBe(9000 - 1000);
+    expect(byId.pb).toBe(3000 - (1000 + 6000));
+    expect(byId.pc).toBe(-(1000 + 3000));
+    expect(res.settledUp).toBe(false);
   });
 });

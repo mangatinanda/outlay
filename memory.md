@@ -65,6 +65,45 @@ double‑spec; CI reads pnpm from `packageManager`).
 
 ## Work log
 
+### 2026‑09‑28 — Per‑expense custom splits + the deferred polish list (two branches)
+
+- **Custom splits** (PR #13, the settle‑up spec's "future extension", branch `feat/custom-splits`): new table
+  `expense_splits` (`expense_id`, `member_id`, `share_minor`; unique per expense+member; migration
+  `0009_careless_tenebrous`). **No rows = equal split** among current participants — unchanged behaviour, no
+  backfill, imports stay equal. `computeNetBalances` gained `equalPoolMinor` (participant‑paid expenses with no
+  rows) + `customShares`; `getSettleUp` feeds both. Shares are **exact amounts**, not weights/percentages —
+  simplest to reason about; "some people only" is just a subset with equal amounts. Validation lives in
+  `parseSplitsField` (`src/lib/validators/expense-splits-schema.ts`): JSON `splits` form field, shares ≥0 with
+  ≤2dp, unique members, non‑zero rows must sum EXACTLY to the amount; every split member must be a settle‑up
+  participant of the household (`checkSplitMembers` in `expense-actions.ts`). Writes are atomic `db.batch`
+  (expense + rows; edit = delete + reinsert; "Equally" clears rows). Delete paths know the FK: `deleteExpense`,
+  `deleteHousehold`, and `memberLedgerReference` → `"splits"` (member delete refused with a message). Activity
+  summaries append ` (custom split)`. UI: "Split" section in `ExpenseForm` (Equally/Custom pills; hidden with
+  <2 participants), `SplitEditor` (`split-editor.tsx`: checkbox + share per participant, auto equal‑distribute on
+  toggle or total change, "left to assign / over" line, submit disabled until it adds up); the amount input is
+  now controlled; list rows show "· Split". A saved share for a member since toggled out of settle‑up is dropped
+  when editing (the shortfall line makes it visible). Rows for non‑participants are ignored by the math (same
+  accepted edge as the toggle).
+- **Deferred polish** (PR #12, branch `chore/deferred-polish`, built in parallel by a forked agent in a worktree —
+  plan `docs/superpowers/plans/2026-09-28-deferred-polish.md`): controlled notify‑threshold input (React 19
+  reset); bell popup moved from Menu to **Popover** (role=dialog) so Accept/Decline/View‑all are valid
+  children; unread items styled from `readAt`; `/activity?actor=<label>` filter (`getActivityActors`,
+  `ActivityActorFilter`, feed keyed by actor); `updateSettlement` + pencil button in settle‑up history
+  (`settlement.update` activity action; no notification on edit).
+- **Review pass (`/code-review 13 high` + `/code-review 12 high`, same day):** fixed on #13 — `declineInvite` now
+  handles the `"splits"` ledger reference (was an FK crash); `updateMember` refuses to toggle a member OUT of
+  settle‑up while they hold a custom share (`memberHasSplitShares`) so balances keep summing to zero; the payer
+  of a split expense must be a participant too (`checkSplit`, `SPLIT_PAYER_ERROR`) — the form disables Custom
+  and explains why; a saved split is always shown on edit (never silently cleared); typing the amount back to
+  the saved total restores the saved shares; batch UPDATE/DELETE statements are household‑scoped again;
+  `getSettleUp` runs its four reads via `Promise.all`; split error strings are exported from the validator and
+  shared with the form. Declined: a shared "participants of household" helper across expense/settlement actions
+  and split data in CSV export (limitation documented in FEATURES.md). **Pre‑existing bug found by the #12
+  review:** Base UI `Select.Value` shows the raw sentinel (`__any__`) in a closed trigger unless `Select` gets an
+  `items` map — ExpenseFilters on main has this; fixed on #12 alongside the actor filter.
+- Both plans: `docs/superpowers/plans/2026-09-28-{custom-splits,deferred-polish}.md`. FEATURES.md updated for
+  all of it on the splits branch (the polish branch deliberately touched no docs, to avoid conflicts).
+
 ### 2026‑09‑15 — Custom domain restored; domain watcher retired
 
 `mangatinanda.me` is **back and live**. The GitHub Action caught the drop on 2026‑09‑14 (issue #9,
@@ -649,6 +688,11 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
 
 ## Current state & open items
 
+- **Two PRs awaiting review/merge (2026‑09‑28): #13** `feat/custom-splits` (per‑expense custom shares; new
+  `expense_splits` table, migration `0009` — the prod build applies it automatically after merge) and
+  **#12** `chore/deferred-polish` (notification a11y/unread, activity actor filter, settlement editing). Merge either
+  first; the splits branch carries the FEATURES.md/memory updates for both. Custom splits are **not yet
+  exercised by an e2e spec** — `add-expense.spec.ts` still submits the default equal split.
 - **PR #2 MERGED (2026‑09‑05): in‑app notifications** — squash `2ff20a9` on `main`; feature branch deleted.
   The pre‑merge `/code-review 2 high` fixes landed in the same squash (see the 2026‑09‑05 work‑log entry).
   **Prod auto‑deploy succeeded** (GitHub deployment `success`; CI on `main` green). Verified live at
@@ -662,9 +706,8 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
 - **PR #4 MERGED (2026‑09‑05): `deleteHousehold` FK fix + cleanup hardening + flaky db test** — squash
   `edf0eb6`; prod auto‑deploy from `main`. See the "(later)" 2026‑09‑05 work‑log entry.
 - **"Lock admin" shipped (2026‑09‑05 evening entry)** — the owner can drop passcode elevation from the avatar
-  menu and get notifications back. Still deferred from the notifications review: threshold form resets its
-  input on `{error}`; non‑`menuitem` buttons inside the bell's `role="menu"`; `readAt` unused for unread
-  styling.
+  menu and get notifications back. The three UX nits deferred from the notifications review were closed on
+  2026‑09‑28 (branch `chore/deferred-polish`).
 - **`scripts/domain-watch.sh` is a manual tool** (`lookup` / `classify` / `selftest`) — the daily workflow
   that drove it was deleted once the domain came back. The disabled cloud routine
   `trig_01QVpkKuoV1mD5wvHwNxCHAC` can be deleted at claude.ai/code/routines.
@@ -678,8 +721,7 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
   `AUTH_GOOGLE_SECRET`, `HOUSEHOLD_ALLOWED_EMAILS` (3 family Gmails). The Google consent screen is in
   "Testing" mode — family members must be added as test users (or publish the app). Local dev needs the same
   three Google vars in `.env.local`.
-- Deliberately kept: `getExpenses` filters param (roadmap filter UI) and the `users` table. Optional future:
-  filter UI, `.claude/agents/`, claude-code-action PR review.
+- Deliberately kept: the `users` table. Optional future: `.claude/agents/`, claude-code-action PR review.
 - Stray, untracked/regenerable: `graphify-out/2026-09-05/` (graphify's pre‑update backup) and an empty
   `/Users/nanda/vibe-code/home-expense/.next` left from the folder rename — safe to delete.
 

@@ -180,6 +180,12 @@ export const declineInvite = safeAction(
           "You can't decline yet: expenses in this household are attributed to you. Ask an admin to reassign them first.",
       };
     }
+    if (ref === "splits") {
+      return {
+        error:
+          "You can't decline yet: an expense in this household is split with you. Ask an admin to edit it first.",
+      };
+    }
     if (ref === "settlements") {
       return {
         error:

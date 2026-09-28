@@ -1,0 +1,159 @@
+{
+  "nodes": [
+    {
+      "id": "users_nanda_vibe_code_outlay_docs_superpowers_plans_2026_09_28_deferred_polish_md",
+      "label": "2026-09-28-deferred-polish.md",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-09-28-deferred-polish.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_09_28_deferred_polish_deferred_polish_notifications_activity_filter_settlement_editing_implementation_plan",
+      "label": "Deferred polish (notifications, activity filter, settlement editing) \u2014 Implementation Plan",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-09-28-deferred-polish.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_09_28_deferred_polish_global_constraints",
+      "label": "Global Constraints",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-09-28-deferred-polish.md",
+      "source_location": "L13"
+    },
+    {
+      "id": "plans_2026_09_28_deferred_polish_review_focus",
+      "label": "Review Focus",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-09-28-deferred-polish.md",
+      "source_location": "L24"
+    },
+    {
+      "id": "plans_2026_09_28_deferred_polish_task_1_threshold_form_keeps_its_input_on_error",
+      "label": "Task 1: Threshold form keeps its input on `{error}`",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-09-28-deferred-polish.md",
+      "source_location": "L34"
+    },
+    {
+      "id": "plans_2026_09_28_deferred_polish_task_2_bell_popup_becomes_a_popover_role_dialog",
+      "label": "Task 2: Bell popup becomes a Popover (role=dialog)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-09-28-deferred-polish.md",
+      "source_location": "L105"
+    },
+    {
+      "id": "plans_2026_09_28_deferred_polish_task_3_unread_styling_from_readat",
+      "label": "Task 3: Unread styling from `readAt`",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-09-28-deferred-polish.md",
+      "source_location": "L182"
+    },
+    {
+      "id": "plans_2026_09_28_deferred_polish_task_4_activity_feed_who_did_it_filter",
+      "label": "Task 4: Activity feed \"who did it\" filter",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-09-28-deferred-polish.md",
+      "source_location": "L261"
+    },
+    {
+      "id": "plans_2026_09_28_deferred_polish_task_5_edit_a_recorded_settlement",
+      "label": "Task 5: Edit a recorded settlement",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-09-28-deferred-polish.md",
+      "source_location": "L472"
+    },
+    {
+      "id": "plans_2026_09_28_deferred_polish_task_6_branch_wrap_up",
+      "label": "Task 6: Branch wrap-up",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-09-28-deferred-polish.md",
+      "source_location": "L620"
+    }
+  ],
+  "edges": [
+    {
+      "source": "users_nanda_vibe_code_outlay_docs_superpowers_plans_2026_09_28_deferred_polish_md",
+      "target": "plans_2026_09_28_deferred_polish_deferred_polish_notifications_activity_filter_settlement_editing_implementation_plan",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-09-28-deferred-polish.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_09_28_deferred_polish_deferred_polish_notifications_activity_filter_settlement_editing_implementation_plan",
+      "target": "plans_2026_09_28_deferred_polish_global_constraints",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-09-28-deferred-polish.md",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_09_28_deferred_polish_deferred_polish_notifications_activity_filter_settlement_editing_implementation_plan",
+      "target": "plans_2026_09_28_deferred_polish_review_focus",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-09-28-deferred-polish.md",
+      "source_location": "L24",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_09_28_deferred_polish_review_focus",
+      "target": "plans_2026_09_28_deferred_polish_task_1_threshold_form_keeps_its_input_on_error",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-09-28-deferred-polish.md",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_09_28_deferred_polish_review_focus",
+      "target": "plans_2026_09_28_deferred_polish_task_2_bell_popup_becomes_a_popover_role_dialog",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-09-28-deferred-polish.md",
+      "source_location": "L105",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_09_28_deferred_polish_review_focus",
+      "target": "plans_2026_09_28_deferred_polish_task_3_unread_styling_from_readat",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-09-28-deferred-polish.md",
+      "source_location": "L182",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_09_28_deferred_polish_review_focus",
+      "target": "plans_2026_09_28_deferred_polish_task_4_activity_feed_who_did_it_filter",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-09-28-deferred-polish.md",
+      "source_location": "L261",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_09_28_deferred_polish_review_focus",
+      "target": "plans_2026_09_28_deferred_polish_task_5_edit_a_recorded_settlement",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-09-28-deferred-polish.md",
+      "source_location": "L472",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_09_28_deferred_polish_review_focus",
+      "target": "plans_2026_09_28_deferred_polish_task_6_branch_wrap_up",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-09-28-deferred-polish.md",
+      "source_location": "L620",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

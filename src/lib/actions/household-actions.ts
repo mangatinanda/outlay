@@ -1,7 +1,7 @@
 "use server";
 
 import { createId } from "@paralleldrive/cuid2";
-import { eq, sql } from "drizzle-orm";
+import { eq, inArray, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { logActivity } from "@/lib/activity";
@@ -12,6 +12,7 @@ import { DEFAULT_CATEGORIES } from "@/lib/db/default-categories";
 import {
   activity,
   categories,
+  expenseSplits,
   expenses,
   householdMembers,
   households,
@@ -191,10 +192,22 @@ export const deleteHousehold = safeAction(
     }
 
     // Cascade-delete children in FK order, then the household — atomically.
-    // libSQL enforces FKs: settlements + expenses reference members (and
-    // categories), the activity feed references the household — every
-    // household has audit rows from the moment it is created.
+    // libSQL enforces FKs: split rows reference expenses, settlements +
+    // expenses reference members (and categories), the activity feed
+    // references the household — every household has audit rows from the
+    // moment it is created.
     await db.batch([
+      db
+        .delete(expenseSplits)
+        .where(
+          inArray(
+            expenseSplits.expenseId,
+            db
+              .select({ id: expenses.id })
+              .from(expenses)
+              .where(eq(expenses.householdId, id)),
+          ),
+        ),
       db.delete(settlements).where(eq(settlements.householdId, id)),
       db.delete(expenses).where(eq(expenses.householdId, id)),
       db.delete(activity).where(eq(activity.householdId, id)),
