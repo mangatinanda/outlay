@@ -7,11 +7,10 @@ import { toast } from "sonner";
 import { NotificationItem } from "@/components/notifications/notification-item";
 import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   loadNotifications,
   markAllNotificationsRead,
@@ -105,8 +104,8 @@ export function NotificationBell({ initialCount }: { initialCount: number }) {
   }
 
   return (
-    <DropdownMenu open={open} onOpenChange={onOpenChange}>
-      <DropdownMenuTrigger
+    <Popover open={open} onOpenChange={onOpenChange}>
+      <PopoverTrigger
         render={
           <Button
             variant="ghost"
@@ -124,12 +123,18 @@ export function NotificationBell({ initialCount }: { initialCount: number }) {
             {count > 9 ? "9+" : count}
           </span>
         )}
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-80 p-0">
+      </PopoverTrigger>
+      {/* A popover (role=dialog), not a menu: the list holds ordinary buttons
+          and a link, which a role=menu may only expose as menuitems. */}
+      <PopoverContent
+        align="end"
+        aria-label="Notifications"
+        className="w-80 gap-0 p-0"
+      >
         <p className="px-4 pt-3 pb-2 font-display font-semibold text-sm">
           Notifications
         </p>
-        <DropdownMenuSeparator />
+        <div className="h-px bg-border" />
         <div className="max-h-96 overflow-y-auto p-1">
           {items === null ? (
             <p className="p-4 text-muted-foreground text-sm">Loading…</p>
@@ -149,7 +154,7 @@ export function NotificationBell({ initialCount }: { initialCount: number }) {
             ))
           )}
         </div>
-        <DropdownMenuSeparator />
+        <div className="h-px bg-border" />
         <Link
           href="/notifications"
           onClick={() => setOpen(false)}
@@ -157,7 +162,7 @@ export function NotificationBell({ initialCount }: { initialCount: number }) {
         >
           View all
         </Link>
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </PopoverContent>
+    </Popover>
   );
 }

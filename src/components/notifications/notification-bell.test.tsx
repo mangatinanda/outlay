@@ -28,10 +28,10 @@ vi.mock("next/link", () => ({
     href: string;
   }) => <a href={href}>{children}</a>,
 }));
-// Base UI's menu needs real pointer/portal plumbing; a plain stand-in keeps
+// Base UI's popover needs real pointer/portal plumbing; a plain stand-in keeps
 // the test about the bell's own state machine (open → load → mark read).
-vi.mock("@/components/ui/dropdown-menu", () => ({
-  DropdownMenu: ({
+vi.mock("@/components/ui/popover", () => ({
+  Popover: ({
     children,
     onOpenChange,
   }: {
@@ -45,13 +45,12 @@ vi.mock("@/components/ui/dropdown-menu", () => ({
       {children}
     </div>
   ),
-  DropdownMenuTrigger: ({ children }: { children: React.ReactNode }) => (
+  PopoverTrigger: ({ children }: { children: React.ReactNode }) => (
     <div>{children}</div>
   ),
-  DropdownMenuContent: ({ children }: { children: React.ReactNode }) => (
+  PopoverContent: ({ children }: { children: React.ReactNode }) => (
     <div>{children}</div>
   ),
-  DropdownMenuSeparator: () => <hr />,
 }));
 
 import { NotificationBell } from "./notification-bell";
