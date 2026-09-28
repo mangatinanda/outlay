@@ -67,7 +67,7 @@ double‑spec; CI reads pnpm from `packageManager`).
 
 ### 2026‑09‑28 — Per‑expense custom splits + the deferred polish list (two branches)
 
-- **Custom splits** (the settle‑up spec's "future extension", branch `feat/custom-splits`): new table
+- **Custom splits** (PR #13, the settle‑up spec's "future extension", branch `feat/custom-splits`): new table
   `expense_splits` (`expense_id`, `member_id`, `share_minor`; unique per expense+member; migration
   `0009_careless_tenebrous`). **No rows = equal split** among current participants — unchanged behaviour, no
   backfill, imports stay equal. `computeNetBalances` gained `equalPoolMinor` (participant‑paid expenses with no
@@ -84,7 +84,7 @@ double‑spec; CI reads pnpm from `packageManager`).
   now controlled; list rows show "· Split". A saved share for a member since toggled out of settle‑up is dropped
   when editing (the shortfall line makes it visible). Rows for non‑participants are ignored by the math (same
   accepted edge as the toggle).
-- **Deferred polish** (branch `chore/deferred-polish`, built in parallel by a forked agent in a worktree —
+- **Deferred polish** (PR #12, branch `chore/deferred-polish`, built in parallel by a forked agent in a worktree —
   plan `docs/superpowers/plans/2026-09-28-deferred-polish.md`): controlled notify‑threshold input (React 19
   reset); bell popup moved from Menu to **Popover** (role=dialog) so Accept/Decline/View‑all are valid
   children; unread items styled from `readAt`; `/activity?actor=<label>` filter (`getActivityActors`,
@@ -677,9 +677,9 @@ commit (`5b56777`) by rebasing and keeping the comprehensive README.
 
 ## Current state & open items
 
-- **Two branches awaiting review/merge (2026‑09‑28):** `feat/custom-splits` (per‑expense custom shares; new
+- **Two PRs awaiting review/merge (2026‑09‑28): #13** `feat/custom-splits` (per‑expense custom shares; new
   `expense_splits` table, migration `0009` — the prod build applies it automatically after merge) and
-  `chore/deferred-polish` (notification a11y/unread, activity actor filter, settlement editing). Merge either
+  **#12** `chore/deferred-polish` (notification a11y/unread, activity actor filter, settlement editing). Merge either
   first; the splits branch carries the FEATURES.md/memory updates for both. Custom splits are **not yet
   exercised by an e2e spec** — `add-expense.spec.ts` still submits the default equal split.
 - **PR #2 MERGED (2026‑09‑05): in‑app notifications** — squash `2ff20a9` on `main`; feature branch deleted.
