@@ -7,11 +7,11 @@ import { toast } from "sonner";
 import { NotificationItem } from "@/components/notifications/notification-item";
 import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  Popover,
+  PopoverContent,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   loadNotifications,
   markAllNotificationsRead,
@@ -31,6 +31,11 @@ export function NotificationBell({ initialCount }: { initialCount: number }) {
   const seqRef = useRef(0);
   // Mirrors `open` for the poll (which closes over the first render).
   const openRef = useRef(false);
+  // Ids that were unread when the popup first loaded this time round.
+  // Everything is marked read right after that load, so a later refresh
+  // (after Accept/Decline) comes back fully read and would drop the "new"
+  // highlight mid-view; those items keep it until the popup closes.
+  const unreadAtOpenRef = useRef<Set<string> | null>(null);
 
   // The (app) layout re-renders with a fresh server count after any
   // revalidating action (router.refresh(), revalidatePath) — adopt it rather
@@ -70,7 +75,14 @@ export function NotificationBell({ initialCount }: { initialCount: number }) {
     const result = await loadNotifications();
     if (seq !== seqRef.current) return true; // stale response — a newer fetch won
     if (result && "items" in result) {
-      setItems(result.items);
+      const unread = (unreadAtOpenRef.current ??= new Set(
+        result.items.filter((i) => i.readAt === null).map((i) => i.id),
+      ));
+      setItems(
+        result.items.map((i) =>
+          i.readAt !== null && unread.has(i.id) ? { ...i, readAt: null } : i,
+        ),
+      );
       setLoadFailed(false);
       return true;
     }
@@ -83,6 +95,7 @@ export function NotificationBell({ initialCount }: { initialCount: number }) {
   async function onOpenChange(next: boolean) {
     setOpen(next);
     openRef.current = next;
+    unreadAtOpenRef.current = null;
     if (!next) return;
     const previous = count;
     setCount(0); // optimistic — mark-all-read follows once the list is shown
@@ -105,8 +118,8 @@ export function NotificationBell({ initialCount }: { initialCount: number }) {
   }
 
   return (
-    <DropdownMenu open={open} onOpenChange={onOpenChange}>
-      <DropdownMenuTrigger
+    <Popover open={open} onOpenChange={onOpenChange}>
+      <PopoverTrigger
         render={
           <Button
             variant="ghost"
@@ -124,12 +137,15 @@ export function NotificationBell({ initialCount }: { initialCount: number }) {
             {count > 9 ? "9+" : count}
           </span>
         )}
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-80 p-0">
-        <p className="px-4 pt-3 pb-2 font-display font-semibold text-sm">
+      </PopoverTrigger>
+      {/* A popover (role=dialog), not a menu: the list holds ordinary buttons
+          and a link, which a role=menu may only expose as menuitems. The
+          title labels the dialog (Base UI wires aria-labelledby). */}
+      <PopoverContent align="end" className="w-80 gap-0 p-0">
+        <PopoverTitle className="px-4 pt-3 pb-2 font-display font-semibold text-sm">
           Notifications
-        </p>
-        <DropdownMenuSeparator />
+        </PopoverTitle>
+        <div className="h-px bg-border" />
         <div className="max-h-96 overflow-y-auto p-1">
           {items === null ? (
             <p className="p-4 text-muted-foreground text-sm">Loading…</p>
@@ -149,15 +165,17 @@ export function NotificationBell({ initialCount }: { initialCount: number }) {
             ))
           )}
         </div>
-        <DropdownMenuSeparator />
+        <div className="h-px bg-border" />
         <Link
           href="/notifications"
-          onClick={() => setOpen(false)}
+          // Through onOpenChange, not setOpen: the poll guard (openRef) must
+          // clear too, or polling would stay suspended after navigating away.
+          onClick={() => void onOpenChange(false)}
           className="block min-h-11 px-4 py-3 text-center font-medium text-primary text-sm hover:bg-muted"
         >
           View all
         </Link>
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </PopoverContent>
+    </Popover>
   );
 }

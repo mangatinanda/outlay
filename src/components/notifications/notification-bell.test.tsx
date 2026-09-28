@@ -11,6 +11,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 const actions = vi.hoisted(() => ({
   loadNotifications: vi.fn(),
   markAllNotificationsRead: vi.fn(),
+  acceptInvite: vi.fn(),
+  declineInvite: vi.fn(),
 }));
 const toast = vi.hoisted(() => ({ error: vi.fn(), success: vi.fn() }));
 
@@ -23,15 +25,27 @@ vi.mock("next/link", () => ({
   default: ({
     children,
     href,
+    onClick,
   }: {
     children: React.ReactNode;
     href: string;
-  }) => <a href={href}>{children}</a>,
+    onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
+  }) => (
+    <a
+      href={href}
+      onClick={(event) => {
+        event.preventDefault(); // no happy-dom navigation
+        onClick?.(event);
+      }}
+    >
+      {children}
+    </a>
+  ),
 }));
-// Base UI's menu needs real pointer/portal plumbing; a plain stand-in keeps
+// Base UI's popover needs real pointer/portal plumbing; a plain stand-in keeps
 // the test about the bell's own state machine (open → load → mark read).
-vi.mock("@/components/ui/dropdown-menu", () => ({
-  DropdownMenu: ({
+vi.mock("@/components/ui/popover", () => ({
+  Popover: ({
     children,
     onOpenChange,
   }: {
@@ -45,15 +59,18 @@ vi.mock("@/components/ui/dropdown-menu", () => ({
       {children}
     </div>
   ),
-  DropdownMenuTrigger: ({ children }: { children: React.ReactNode }) => (
+  PopoverTrigger: ({ children }: { children: React.ReactNode }) => (
     <div>{children}</div>
   ),
-  DropdownMenuContent: ({ children }: { children: React.ReactNode }) => (
+  PopoverContent: ({ children }: { children: React.ReactNode }) => (
     <div>{children}</div>
   ),
-  DropdownMenuSeparator: () => <hr />,
+  PopoverTitle: ({ children }: { children: React.ReactNode }) => (
+    <h2>{children}</h2>
+  ),
 }));
 
+import type { NotificationItemData } from "@/lib/queries/notification-queries";
 import { NotificationBell } from "./notification-bell";
 
 function jsonResponse(body: unknown) {
@@ -69,6 +86,7 @@ describe("NotificationBell", () => {
     actions.markAllNotificationsRead.mockReset().mockResolvedValue({
       success: true,
     });
+    actions.acceptInvite.mockReset();
     toast.error.mockReset();
   });
 
@@ -118,5 +136,61 @@ describe("NotificationBell", () => {
     });
     // The stale server count must not resurrect a badge for items just read.
     expect(screen.queryByText("7")).not.toBeInTheDocument();
+  });
+
+  it("resumes polling after View all closes the popup", async () => {
+    vi.useFakeTimers();
+    const fetchMock = vi.fn().mockResolvedValue(jsonResponse({ count: 1 }));
+    vi.stubGlobal("fetch", fetchMock);
+    actions.loadNotifications.mockResolvedValue({ success: true, items: [] });
+    render(<NotificationBell initialCount={0} />);
+
+    fireEvent.click(screen.getByText("open-menu"));
+    await act(async () => {
+      await Promise.resolve();
+    });
+    // Closing via the link (not the popover's own dismiss) must also lift the
+    // "open" guard on the poll, or polling stays suspended for good.
+    fireEvent.click(screen.getByText("View all"));
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(60_000);
+    });
+    expect(fetchMock).toHaveBeenCalledWith("/api/notifications/count");
+    expect(screen.getByText("1")).toBeInTheDocument();
+  });
+
+  it("keeps the unread highlight after an invite is actioned", async () => {
+    const invite: NotificationItemData = {
+      id: "n1",
+      type: "invite.received",
+      householdId: "h1",
+      payload: { memberId: "m1", householdName: "Home", invitedBy: "Amma" },
+      readAt: null,
+      createdAt: Date.now(),
+      inviteState: "pending",
+    };
+    actions.loadNotifications
+      .mockResolvedValueOnce({ success: true, items: [invite] })
+      // The refetch after Accept: everything was marked read on open.
+      .mockResolvedValueOnce({
+        success: true,
+        items: [{ ...invite, readAt: Date.now(), inviteState: "accepted" }],
+      });
+    actions.acceptInvite.mockResolvedValue({ success: true });
+    render(<NotificationBell initialCount={1} />);
+
+    fireEvent.click(screen.getByText("open-menu"));
+    await waitFor(() => expect(screen.getByText("Unread")).toBeInTheDocument());
+
+    fireEvent.click(screen.getByRole("button", { name: "Accept" }));
+    await waitFor(() =>
+      expect(actions.loadNotifications).toHaveBeenCalledTimes(2),
+    );
+    await waitFor(() =>
+      expect(screen.getByText("Accepted")).toBeInTheDocument(),
+    );
+    // Still presented as new while the popup stays open.
+    expect(screen.getByText("Unread")).toBeInTheDocument();
   });
 });

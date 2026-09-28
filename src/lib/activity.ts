@@ -10,6 +10,7 @@ export type ActivityAction =
   | "expense.delete"
   | "expense.import"
   | "settlement.create"
+  | "settlement.update"
   | "settlement.delete"
   | "member.create"
   | "member.update"

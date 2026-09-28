@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Check, Trash2 } from "lucide-react";
+import { ArrowRight, Check, Pencil, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -19,6 +19,7 @@ import { Label } from "@/components/ui/label";
 import {
   createSettlement,
   deleteSettlement,
+  updateSettlement,
 } from "@/lib/actions/settlement-actions";
 import { withProgress } from "@/lib/progress";
 import { cn } from "@/lib/utils";
@@ -37,11 +38,45 @@ interface Suggestion {
 }
 interface HistoryRow {
   id: string;
+  fromMemberId: string;
+  toMemberId: string;
   fromName: string;
   toName: string;
   amount: number;
   date: string;
   note: string | null;
+}
+interface Participant {
+  id: string;
+  name: string;
+}
+
+/** What the dialog form starts from. `id` set = editing that settlement. */
+interface Prefill {
+  id: string | null;
+  fromId: string;
+  toId: string;
+  amount: string;
+  date: string;
+  note: string;
+  /** Members on an edited row who are no longer in settle-up, so the selects
+   *  can still show them; the server accepts them as long as they are
+   *  unchanged, so the row's amount, date or note can still be corrected. */
+  extras: Participant[];
+}
+
+const today = () => new Date().toLocaleDateString("en-CA");
+
+function blankPrefill(participants: Participant[]): Prefill {
+  return {
+    id: null,
+    fromId: participants[0]?.id ?? "",
+    toId: participants[1]?.id ?? "",
+    amount: "",
+    date: today(),
+    note: "",
+    extras: [],
+  };
 }
 
 export function SettleUpView({
@@ -55,44 +90,62 @@ export function SettleUpView({
   suggestions: Suggestion[];
   settledUp: boolean;
   history: HistoryRow[];
-  participants: { id: string; name: string }[];
+  participants: Participant[];
 }) {
   const formatCurrency = useFormatCurrency();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [prefill, setPrefill] = useState<{
-    fromId: string;
-    toId: string;
-    amount: string;
-  }>({
-    fromId: participants[0]?.id ?? "",
-    toId: participants[1]?.id ?? "",
-    amount: "",
-  });
+  const [prefill, setPrefill] = useState<Prefill>(() =>
+    blankPrefill(participants),
+  );
+  const editing = prefill.id !== null;
+  const options = [...prefill.extras, ...participants];
 
   function openRecord(p?: Suggestion) {
+    const blank = blankPrefill(participants);
     setPrefill(
       p
-        ? { fromId: p.fromId, toId: p.toId, amount: String(p.amount) }
-        : {
-            fromId: participants[0]?.id ?? "",
-            toId: participants[1]?.id ?? "",
-            amount: "",
-          },
+        ? { ...blank, fromId: p.fromId, toId: p.toId, amount: String(p.amount) }
+        : blank,
     );
     setOpen(true);
   }
 
-  async function handleRecord(formData: FormData) {
+  function openEdit(h: HistoryRow) {
+    const known = new Set(participants.map((p) => p.id));
+    const extras: Participant[] = [];
+    if (!known.has(h.fromMemberId)) {
+      extras.push({ id: h.fromMemberId, name: h.fromName });
+    }
+    if (!known.has(h.toMemberId)) {
+      extras.push({ id: h.toMemberId, name: h.toName });
+    }
+    setPrefill({
+      id: h.id,
+      fromId: h.fromMemberId,
+      toId: h.toMemberId,
+      amount: String(h.amount),
+      date: h.date,
+      note: h.note ?? "",
+      extras,
+    });
+    setOpen(true);
+  }
+
+  async function handleSave(formData: FormData) {
     setLoading(true);
     try {
-      const res = await withProgress(() => createSettlement(formData));
+      const res = await withProgress(() =>
+        prefill.id
+          ? updateSettlement(prefill.id, formData)
+          : createSettlement(formData),
+      );
       if (res.error) {
         toast.error(res.error);
         return;
       }
-      toast.success("Settlement recorded");
+      toast.success(editing ? "Settlement updated" : "Settlement recorded");
       setOpen(false);
       router.refresh();
     } finally {
@@ -196,15 +249,26 @@ export function SettleUpView({
                   </span>
                   {h.note ? ` · ${h.note}` : ""}
                 </span>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-11 w-11 text-destructive"
-                  aria-label="Delete settlement"
-                  onClick={() => handleDelete(h.id)}
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </Button>
+                <span className="flex shrink-0 items-center">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-11 w-11"
+                    aria-label="Edit settlement"
+                    onClick={() => openEdit(h)}
+                  >
+                    <Pencil className="h-3.5 w-3.5" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-11 w-11 text-destructive"
+                    aria-label="Delete settlement"
+                    onClick={() => handleDelete(h.id)}
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </Button>
+                </span>
               </div>
             ))}
           </CardContent>
@@ -214,11 +278,21 @@ export function SettleUpView({
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Record a payment</DialogTitle>
+            <DialogTitle>
+              {editing ? "Edit payment" : "Record a payment"}
+            </DialogTitle>
           </DialogHeader>
           <form
-            action={handleRecord}
-            key={`${prefill.fromId}-${prefill.toId}-${prefill.amount}`}
+            action={handleSave}
+            // Remount per prefill so defaultValues take effect for each row.
+            key={[
+              prefill.id ?? "new",
+              prefill.fromId,
+              prefill.toId,
+              prefill.amount,
+              prefill.date,
+              prefill.note,
+            ].join("|")}
             className="space-y-4"
           >
             <div className="grid grid-cols-2 gap-4">
@@ -230,7 +304,7 @@ export function SettleUpView({
                   defaultValue={prefill.fromId}
                   className="h-11 w-full rounded-md border border-input bg-card px-2 text-sm"
                 >
-                  {participants.map((p) => (
+                  {options.map((p) => (
                     <option key={p.id} value={p.id}>
                       {p.name}
                     </option>
@@ -245,7 +319,7 @@ export function SettleUpView({
                   defaultValue={prefill.toId}
                   className="h-11 w-full rounded-md border border-input bg-card px-2 text-sm"
                 >
-                  {participants.map((p) => (
+                  {options.map((p) => (
                     <option key={p.id} value={p.id}>
                       {p.name}
                     </option>
@@ -272,13 +346,18 @@ export function SettleUpView({
                 id="date"
                 name="date"
                 type="date"
-                defaultValue={new Date().toLocaleDateString("en-CA")}
+                defaultValue={prefill.date}
                 required
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="note">Note (optional)</Label>
-              <Input id="note" name="note" placeholder="e.g. UPI" />
+              <Input
+                id="note"
+                name="note"
+                placeholder="e.g. UPI"
+                defaultValue={prefill.note}
+              />
             </div>
             <DialogFooter>
               <Button
@@ -289,7 +368,7 @@ export function SettleUpView({
                 Cancel
               </Button>
               <Button type="submit" disabled={loading}>
-                {loading ? "Saving..." : "Record"}
+                {loading ? "Saving..." : editing ? "Save" : "Record"}
               </Button>
             </DialogFooter>
           </form>

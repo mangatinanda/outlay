@@ -136,6 +136,9 @@ export async function getSettlements(householdId: string) {
 
   return rows.map((r) => ({
     id: r.id,
+    // Ids ride along so the history row can prefill the edit dialog.
+    fromMemberId: r.fromMemberId,
+    toMemberId: r.toMemberId,
     fromName: nameById.get(r.fromMemberId) ?? "",
     toName: nameById.get(r.toMemberId) ?? "",
     amount: r.amount,

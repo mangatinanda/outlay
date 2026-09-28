@@ -14,7 +14,7 @@ import { migrate } from "drizzle-orm/libsql/migrator";
 import { logActivity } from "@/lib/activity";
 import { db } from "@/lib/db";
 import { activity, householdMembers, households, users } from "@/lib/db/schema";
-import { getActivity } from "@/lib/queries/activity-queries";
+import { getActivity, getActivityActors } from "@/lib/queries/activity-queries";
 
 beforeAll(async () => {
   await migrate(db, { migrationsFolder: "drizzle" });
@@ -101,5 +101,49 @@ describe("logActivity + getActivity", () => {
     ]);
     const rows = await getActivity("h2", { before: 3000 });
     expect(rows.map((r) => r.id)).toEqual(["a-old"]);
+  });
+});
+
+describe("activity actor filter", () => {
+  // Self-contained household so these tests pass in any order.
+  const HH = "h-actors";
+  const row = (
+    id: string,
+    actorLabel: string,
+    createdAt: number,
+  ): typeof activity.$inferInsert => ({
+    id,
+    householdId: HH,
+    actorLabel,
+    action: "expense.create",
+    summary: `by ${actorLabel}`,
+    createdAt: new Date(createdAt),
+  });
+
+  beforeAll(async () => {
+    await db.insert(households).values({ id: HH, name: "Actors" });
+    await db
+      .insert(activity)
+      .values([
+        row("f-admin", "Admin", 1000),
+        row("f-nanda-old", "Nanda", 2000),
+        row("f-amma", "amma", 3000),
+        row("f-nanda-new", "Nanda", 4000),
+      ]);
+  });
+
+  it("returns only rows by the named actor", async () => {
+    const rows = await getActivity(HH, { actor: "Nanda" });
+    expect(rows.map((r) => r.id)).toEqual(["f-nanda-new", "f-nanda-old"]);
+  });
+
+  it("combines the actor filter with the `before` cursor", async () => {
+    const rows = await getActivity(HH, { before: 3000, actor: "Nanda" });
+    expect(rows.map((r) => r.id)).toEqual(["f-nanda-old"]);
+  });
+
+  it("lists distinct actor labels A→Z regardless of case, scoped to the household", async () => {
+    expect(await getActivityActors(HH)).toEqual(["Admin", "amma", "Nanda"]);
+    expect(await getActivityActors("nope")).toEqual([]);
   });
 });
