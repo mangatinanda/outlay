@@ -12,7 +12,9 @@ A collaborative household expense tracking PWA built with Next.js 16, Turso/libS
 - **Charts**: Recharts
 - **Auth (Model B — per-user households)**: `getCurrentActor()` (`src/lib/auth/actor.ts`) resolves each request to a **superadmin** (valid shared-passcode cookie, entered at `/admin` — bypasses scoping, sees all households) or a scoped **user** (Google/Auth.js v5 JWT carrying `session.user.id`). Google users see only households they're a member of (`household_members.user_id`); membership is enforced in `getCurrentHousehold`/`listHouseholds`/`switchHousehold` + `assertCanAccessHousehold` (`src/lib/auth/membership.ts`). Sign-in eligibility = allow-listed (`src/lib/allow-list.ts`, FAILS CLOSED in prod) OR has a membership/invite. Passcode HMAC cookie `he_session` (`src/lib/gate.ts`, `v2.<issued-at>.<sig>`, 30-day expiry); `proxy.ts` still grants entry on either a Google session or the passcode cookie. `/login` is Google-only.
 - **PWA**: @serwist/turbopack service worker (served at `/serwist/sw.js`), manifest + icons, `/~offline` fallback
-- **Testing**: Vitest (`pnpm test`) — unit + integration against in-memory libSQL; GitHub Actions CI runs lint/typecheck/test/build
+- **Testing**: Vitest (`pnpm test`) — unit + integration against in-memory libSQL; Playwright e2e (`pnpm test:e2e`, one mobile project on a seeded `data/e2e.db`, rules in `.claude/rules/playwright.md`); GitHub Actions CI runs lint/typecheck/test/build plus the e2e job
+- **Lint/format**: Biome 2 (`pnpm lint` = `biome check .`, `pnpm format`); a lint-staged pre-commit hook and a PostToolUse hook auto-format, so add an import in the same edit as its first use
+- **Motion**: `motion/react` primitives in `src/components/motion/`, all no-op under reduced motion (see `.claude/rules/ui.md`)
 - **Date Utils**: date-fns
 
 ## Architecture
@@ -27,9 +29,12 @@ src/
 │   │   ├── expenses/       # CRUD expense pages
 │   │   ├── categories/     # Category management
 │   │   ├── members/        # Household member management
-│   │   ├── settings/       # App settings
-│   │   ├── settle-up/      # Settlement balances, split logic, minimal payments
-│   │   └── activity/       # Append-only activity audit feed
+│   │   ├── settings/       # Currency + large-expense alert threshold
+│   │   ├── settle-up/      # Balances (equal + custom splits), settlements, minimal payments
+│   │   ├── activity/       # Append-only activity audit feed (+ ?actor= filter)
+│   │   ├── notifications/  # In-app notification history
+│   │   └── households/     # Create / rename / delete / switch households, accent theme
+│   ├── api/                # auth (Auth.js), notifications/count (bell poll), cron/cleanup
 │   └── layout.tsx          # Root layout with providers
 ├── components/
 │   ├── ui/                 # shadcn/ui primitives (DO NOT edit manually)
@@ -38,14 +43,18 @@ src/
 │   ├── expenses/           # Expense-specific components
 │   ├── categories/         # Category management components
 │   ├── members/            # Member management components
+│   ├── settle-up/ activity/ notifications/ settings/ households/
+│   ├── motion/             # Reduced-motion-aware animation primitives
 │   └── shared/             # Reusable components (page-header, empty-state, etc.)
-├── lib/
-│   ├── db/                 # Database connection, schema, seed
-│   ├── auth/               # Actor resolver, membership guards, user persistence
-│   ├── actions/            # Server Actions (mutations)
-│   ├── queries/            # Data fetching functions (reads)
-│   └── validators/         # Zod schemas
-└── hooks/                  # Custom React hooks
+└── lib/
+    ├── db/                 # Database connection, schema, seed
+    ├── auth/               # Actor resolver, membership guards, user persistence
+    ├── actions/            # Server Actions (mutations)
+    ├── queries/            # Data fetching functions (reads)
+    ├── validators/         # Zod schemas
+    ├── settle-up/          # Pure balance math (equal pool + custom shares, debt simplification)
+    ├── import/ export/     # CSV parsing/matching; CSV/Excel/PDF export
+    └── notifications.ts activity.ts limits.ts rate-limit.ts cleanup.ts gate.ts money.ts
 ```
 
 ### Data Flow Pattern
@@ -63,6 +72,8 @@ src/
 - IDs are cuid2 strings
 - Timestamps stored as integer (unix epoch) via Drizzle `mode: "timestamp"`
 - **Money**: stored as integer minor units (`expenses.amount_minor`, fixed scale 100 — see `lib/money.ts`); queries convert back to major units with one `/ 100.0` at the boundary, so components always see major units
+- **Splits**: `expense_splits` rows are a hand-made split (`share_minor` per member). An expense with NO rows is split equally among the current settle-up participants — no backfill, imports stay equal. Balances are computed on read (`lib/settle-up/balances.ts`, `getSettleUp`), never stored. The payer and every split member must be settle-up participants; a member holding a share can't be deleted or toggled out of settle-up.
+- **Multi-row writes** go through `db.batch([...])` in FK order (split rows → expenses → settlements → activity → categories → members → household)
 
 ## Package Manager
 Uses **pnpm** (not npm/yarn). Always use `pnpm` commands.
@@ -71,8 +82,10 @@ Uses **pnpm** (not npm/yarn). Always use `pnpm` commands.
 ```bash
 pnpm dev             # Start dev server
 pnpm build           # Production build
-pnpm lint            # Run ESLint
+pnpm lint            # Biome check (lint + format check)
+pnpm format          # Biome format --write
 pnpm test            # Run Vitest (also in CI)
+pnpm test:e2e        # Playwright (builds + starts the app on a seeded e2e DB)
 pnpm db:init         # Initialize and seed database
 pnpm db:generate     # Generate Drizzle migrations
 pnpm db:push         # Push schema to database

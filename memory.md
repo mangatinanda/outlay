@@ -101,6 +101,13 @@ double‑spec; CI reads pnpm from `packageManager`).
   and split data in CSV export (limitation documented in FEATURES.md). **Pre‑existing bug found by the #12
   review:** Base UI `Select.Value` shows the raw sentinel (`__any__`) in a closed trigger unless `Select` gets an
   `items` map — ExpenseFilters on main has this; fixed on #12 alongside the actor filter.
+- **Docs refresh (same day, after the merges):** `README.md` rewritten — it still described the pre‑Model‑B app
+  (shared passcode at `/login`, 5 tables, ESLint, no settle‑up/activity/notifications/filters/import‑export).
+  Now: Model B access model + `/admin` superadmin, 10‑table ER diagram incl. `expense_splits`, settle‑up math,
+  full Server Action + query reference, the three API routes, Biome/Playwright/CI, env vars incl. `CRON_SECRET`
+  and the caps/rate limits, a documentation map, refreshed roadmap. `CLAUDE.md` (Biome, e2e, splits, batches,
+  directory tree), `src/lib/CLAUDE.md` (lazy build‑time DB client, batch/FK rule, settle‑up/activity/notification
+  queries, validators), `src/CLAUDE.md` (component dirs) and `.env.example` (`/admin` passcode) updated too.
 - Both plans: `docs/superpowers/plans/2026-09-28-{custom-splits,deferred-polish}.md`. FEATURES.md updated for
   all of it on the splits branch (the polish branch deliberately touched no docs, to avoid conflicts).
 
