@@ -1,5 +1,5 @@
 // @vitest-environment happy-dom
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@/lib/actions/expense-actions", () => ({
@@ -80,5 +80,98 @@ describe("ExpenseForm Paid by", () => {
     render(<ExpenseForm categories={categories} members={hidden} />);
     expect(screen.queryByRole("button", { name: /Amma/ })).toBeNull();
     expect(screen.getByText(/Members/)).toBeInTheDocument();
+  });
+});
+
+describe("ExpenseForm Split", () => {
+  function renderCustom(amount: string) {
+    const utils = render(
+      <ExpenseForm categories={categories} members={members} />,
+    );
+    fireEvent.change(screen.getByLabelText("Amount"), {
+      target: { value: amount },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Custom" }));
+    return utils;
+  }
+
+  it("starts split equally and posts no splits field", () => {
+    const { container } = render(
+      <ExpenseForm categories={categories} members={members} />,
+    );
+    expect(screen.getByRole("button", { name: "Equally" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+    expect(container.querySelector('input[name="splits"]')).toBeNull();
+  });
+
+  it("Custom shares the amount equally among everyone in settle-up", () => {
+    const { container } = renderCustom("9");
+    expect(screen.getByLabelText("Amma's share")).toHaveValue(3);
+    expect(screen.getByLabelText("Bala's share")).toHaveValue(3);
+    expect(screen.getByLabelText("Cara's share")).toHaveValue(3);
+    expect(screen.getByText("Adds up")).toBeInTheDocument();
+    const hidden = container.querySelector(
+      'input[name="splits"]',
+    ) as HTMLInputElement;
+    expect(JSON.parse(hidden.value)).toEqual([
+      { memberId: "a", amount: "3.00" },
+      { memberId: "b", amount: "3.00" },
+      { memberId: "c", amount: "3.00" },
+    ]);
+  });
+
+  it("leaving someone out re-shares the amount among the rest", () => {
+    renderCustom("9");
+    fireEvent.click(screen.getByLabelText("Include Bala"));
+    expect(screen.getByLabelText("Amma's share")).toHaveValue(4.5);
+    expect(screen.getByLabelText("Bala's share")).toBeDisabled();
+    expect(screen.getByLabelText("Cara's share")).toHaveValue(4.5);
+  });
+
+  it("flags shares that don't add up and blocks submit", () => {
+    renderCustom("9");
+    fireEvent.change(screen.getByLabelText("Amma's share"), {
+      target: { value: "5" },
+    });
+    expect(screen.getByText(/over$/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Add Expense" })).toBeDisabled();
+  });
+
+  it("editing a split expense opens in Custom with the saved shares", () => {
+    render(
+      <ExpenseForm
+        categories={categories}
+        members={members}
+        expense={{
+          id: "e1",
+          amount: 10,
+          description: "Dinner",
+          date: "2026-01-01",
+          categoryId: "c1",
+          memberId: "a",
+          notes: null,
+          splits: [
+            { memberId: "a", amount: 3 },
+            { memberId: "c", amount: 7 },
+          ],
+        }}
+      />,
+    );
+    expect(screen.getByRole("button", { name: "Custom" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+    expect(screen.getByLabelText("Amma's share")).toHaveValue(3);
+    expect(screen.getByLabelText("Cara's share")).toHaveValue(7);
+    expect(screen.getByLabelText("Include Bala")).not.toBeChecked();
+    expect(screen.getByText("Adds up")).toBeInTheDocument();
+  });
+
+  it("hides the split control when fewer than two people are in settle-up", () => {
+    const solo = members.map((m, i) => ({ ...m, includeInSettleUp: i === 0 }));
+    render(<ExpenseForm categories={categories} members={solo} />);
+    expect(screen.queryByRole("button", { name: "Custom" })).toBeNull();
   });
 });

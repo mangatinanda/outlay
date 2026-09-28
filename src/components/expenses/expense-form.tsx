@@ -4,6 +4,12 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { CategoryIcon } from "@/components/expenses/category-icon";
+import {
+  distributeEqually,
+  remainingMinor,
+  SplitEditor,
+  type SplitState,
+} from "@/components/expenses/split-editor";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,10 +33,24 @@ interface ExpenseFormProps {
     categoryId: string;
     memberId: string;
     notes: string | null;
+    /** Saved custom shares (major units); empty = split equally. */
+    splits?: { memberId: string; amount: number }[];
   };
   variant?: "page" | "sheet";
   onDone?: () => void;
 }
+
+type SplitMode = "equal" | "custom";
+
+const SPLIT_SUM_ERROR = "Split amounts must add up to the expense amount";
+
+const pillClass = (active: boolean) =>
+  cn(
+    "flex shrink-0 items-center gap-2 rounded-full border px-3 py-2 text-sm outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50",
+    active
+      ? "border-primary bg-primary/10 text-foreground"
+      : "border-border bg-card text-muted-foreground hover:bg-muted",
+  );
 
 export function ExpenseForm({
   categories,
@@ -52,7 +72,70 @@ export function ExpenseForm({
     expense?.memberId ?? payers[0]?.id ?? "",
   );
 
+  // Controlled so the split editor can follow the total as it is typed.
+  const [amount, setAmount] = useState(expense ? String(expense.amount) : "");
+  const amountNumber = Number(amount);
+
+  // Only settle-up participants can carry a share (the balance math charges
+  // nobody else). A saved share for someone since toggled out is dropped
+  // here, which the "left to assign" line then makes visible.
+  const participants = members
+    .filter((m) => m.includeInSettleUp)
+    .map((m) => ({ id: m.id, name: m.name }));
+  const participantIds = new Set(participants.map((p) => p.id));
+  const savedSplits = (expense?.splits ?? []).filter((s) =>
+    participantIds.has(s.memberId),
+  );
+  const canSplit = participants.length >= 2;
+  const [splitMode, setSplitMode] = useState<SplitMode>(
+    savedSplits.length > 0 ? "custom" : "equal",
+  );
+  const [split, setSplit] = useState<SplitState>(() =>
+    savedSplits.length > 0
+      ? {
+          included: savedSplits.map((s) => s.memberId),
+          shares: Object.fromEntries(
+            savedSplits.map((s) => [s.memberId, s.amount.toFixed(2)]),
+          ),
+        }
+      : { included: participants.map((p) => p.id), shares: {} },
+  );
+  const splitActive = canSplit && splitMode === "custom";
+  const splitInvalid =
+    splitActive &&
+    (split.included.length === 0 || remainingMinor(amountNumber, split) !== 0);
+
+  function onAmountChange(value: string) {
+    setAmount(value);
+    // The total moved, so any hand-tuned shares are stale: start over equal.
+    if (splitMode === "custom") {
+      setSplit((s) => ({
+        ...s,
+        shares: distributeEqually(Number(value), s.included),
+      }));
+    }
+  }
+
+  function chooseSplitMode(mode: SplitMode) {
+    setSplitMode(mode);
+    if (mode === "custom") {
+      setSplit((s) => {
+        const included =
+          s.included.length > 0 ? s.included : participants.map((p) => p.id);
+        return { included, shares: distributeEqually(amountNumber, included) };
+      });
+    }
+  }
+
   async function handleSubmit(formData: FormData) {
+    if (splitInvalid) {
+      toast.error(
+        split.included.length === 0
+          ? "Choose at least one person to split with"
+          : SPLIT_SUM_ERROR,
+      );
+      return;
+    }
     setLoading(true);
     try {
       const result = await withProgress(() =>
@@ -91,7 +174,8 @@ export function ExpenseForm({
             min="0"
             inputMode="decimal"
             placeholder="0.00"
-            defaultValue={expense?.amount}
+            value={amount}
+            onChange={(e) => onAmountChange(e.target.value)}
             required
             className="h-14 font-display font-semibold text-3xl tabular-nums"
           />
@@ -184,6 +268,50 @@ export function ExpenseForm({
             })}
           </div>
         </div>
+
+        {canSplit && (
+          <div className="space-y-2">
+            <Label>Split</Label>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => chooseSplitMode("equal")}
+                aria-pressed={splitMode === "equal"}
+                className={pillClass(splitMode === "equal")}
+              >
+                Equally
+              </button>
+              <button
+                type="button"
+                onClick={() => chooseSplitMode("custom")}
+                aria-pressed={splitMode === "custom"}
+                className={pillClass(splitMode === "custom")}
+              >
+                Custom
+              </button>
+            </div>
+            {splitMode === "custom" && (
+              <>
+                <input
+                  type="hidden"
+                  name="splits"
+                  value={JSON.stringify(
+                    split.included.map((id) => ({
+                      memberId: id,
+                      amount: split.shares[id] ?? "0",
+                    })),
+                  )}
+                />
+                <SplitEditor
+                  participants={participants}
+                  totalMajor={amountNumber}
+                  state={split}
+                  onChange={setSplit}
+                />
+              </>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="space-y-2">
@@ -198,7 +326,7 @@ export function ExpenseForm({
       </div>
 
       <div className="flex gap-3 pt-2">
-        <Button type="submit" disabled={loading}>
+        <Button type="submit" disabled={loading || splitInvalid}>
           {loading ? "Saving..." : isEditing ? "Update Expense" : "Add Expense"}
         </Button>
         <Button
