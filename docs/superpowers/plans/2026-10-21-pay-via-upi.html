@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pay via UPI plan</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #fbfaf7; --fg: #1d1c1a; --muted: #6b6861; --line: #e4e1da;
+    --code-bg: #f1efe9; --accent: #4f46e5; --th-bg: #f4f2ec; --note-bg: #eef0ff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #16151a; --fg: #ebe8e1; --muted: #a09c93; --line: #2d2b33;
+            --code-bg: #211f27; --accent: #a5b4fc; --th-bg: #1d1b23; --note-bg: #1f2140; }
+  }
+  html { background: var(--bg); }
+  body { margin: 0; padding: 32px 16px 64px; background: var(--bg); color: var(--fg);
+         font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 820px; margin: 0 auto; }
+  h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 8px; }
+  h2 { font-size: 1.35rem; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); }
+  h3 { font-size: 1.15rem; margin: 36px 0 8px; padding-top: 12px; border-top: 1px dashed var(--line); }
+  p, li { max-width: 78ch; }
+  .meta { color: var(--muted); margin: 0 0 24px; }
+  .note { background: var(--note-bg); border-left: 3px solid var(--accent); padding: 10px 14px; border-radius: 6px; }
+  code { font: 0.9em ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--code-bg);
+         padding: 1px 5px; border-radius: 4px; }
+  pre { background: var(--code-bg); padding: 12px 14px; border-radius: 8px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95rem; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  th { background: var(--th-bg); }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  .steps { list-style: none; padding-left: 0; }
+  .steps > li { margin: 10px 0; }
+  .steps > li::before { content: "☐ "; color: var(--muted); }
+  .files li, .iface li { margin: 2px 0; }
+</style>
+</head>
+<body>
+<main>
+<h1>Pay via UPI — implementation plan</h1>
+<p class="meta">2026-10-21 · Spec: <code>docs/superpowers/specs/2026-10-21-pay-via-upi-design.html</code></p>
+
+<p class="note"><strong>For agentic workers:</strong> REQUIRED SUB-SKILL: use <code>superpowers:subagent-driven-development</code> (recommended) or <code>superpowers:executing-plans</code> to implement this plan task by task. Steps are checkboxes for tracking.</p>
+
+<p><strong>Goal:</strong> Each household member can store a UPI ID, and every settle-up suggestion whose payee has one gets a "Pay" action that shows a UPI QR code and an "Open UPI app" deep link with the payee and exact amount prefilled.</p>
+<p><strong>Architecture:</strong> One nullable column on <code>household_members</code>, carried through the existing member validator/actions/queries. A pure link builder in <code>src/lib/upi.ts</code> turns minor-unit amounts into the NPCI <code>upi://pay</code> string. A new client component <code>UpiPayDialog</code> renders that string as an SVG QR (<code>qrcode.react</code>) plus an anchor; <code>SettleUpView</code> opens it per suggestion row. Nothing writes to the DB from the dialog.</p>
+<p><strong>Tech stack:</strong> Next.js 16 / React 19, Drizzle + libSQL (migration via <code>pnpm db:generate</code>), Zod 4, Vitest, Playwright, <code>qrcode.react</code> (new), lucide <code>QrCode</code> icon.</p>
+
+<h2>Global constraints</h2>
+<ul>
+  <li>Package manager is <strong>pnpm</strong>. Lint/format is Biome (<code>pnpm lint</code>); a PostToolUse hook auto-formats, so add an import in the same edit as its first use.</li>
+  <li>Money is stored as integer minor units; the UPI amount string is built from the integer, never from a float.</li>
+  <li>UPI IDs are stored <strong>trimmed and lowercased</strong>; regex <code>^[a-z0-9][a-z0-9._-]{0,254}@[a-z][a-z0-9]{1,63}$</code>; error copy <code>Enter a valid UPI ID, like name@bank</code>.</li>
+  <li>Link shape, exact parameter order: <code>upi://pay?pa=&lt;vpa&gt;&amp;pn=&lt;name&gt;&amp;am=&lt;amount&gt;&amp;cu=INR&amp;tn=&lt;note&gt;</code>. <code>pn</code> and <code>tn</code> trimmed to 50 characters; values encoded with <code>encodeURIComponent</code>.</li>
+  <li>UPI UI renders only when <code>useCurrency() === "INR"</code>. Opening the dialog, the link or the QR never writes.</li>
+  <li>e2e: never assert <code>getByRole("alert")</code>; auth via the passcode at <code>/admin</code> (<code>e2e-pass</code>); do not change <code>seedE2EIsolationFixture</code>.</li>
+  <li>Work on branch <code>feat/pay-via-upi</code>; conventional commit messages ending with the attribution line from the session.</li>
+</ul>
+
+<h2>Review focus</h2>
+<p>Inputs the spec implies but no feature test would otherwise exercise. Each has a test pinned in the owning task.</p>
+<ol>
+  <li><strong>Form posts without a <code>upiId</code> field</strong> (older callers, existing tests) → parses as absent, stores <code>NULL</code>, no error. → Task 1 validator test.</li>
+  <li><strong>UPI ID with surrounding spaces and capitals</strong> (<code>" Name@OKAXIS "</code>) → saved as <code>name@okaxis</code>. → Task 1 validator + action test.</li>
+  <li><strong>Non-positive or non-integer amount</strong> reaching the link builder → throws rather than emitting <code>am=0.00</code> or <code>am=12.5</code>. → Task 2 test.</li>
+  <li><strong>Payee name or household name with <code>&amp;</code>, <code>=</code>, <code>#</code> or Devanagari</strong> → encoded so the query string stays well-formed and the app shows the right name. → Task 2 test.</li>
+  <li><strong>Household name longer than 50 characters with multi-byte characters</strong> → note trimmed by code points, never splitting a character. → Task 2 test.</li>
+</ol>
+
+<h2>File structure</h2>
+<table>
+  <thead><tr><th>File</th><th>Change</th><th>Responsibility</th></tr></thead>
+  <tbody>
+    <tr><td><code>src/lib/db/schema.ts</code></td><td>modify</td><td><code>upiId: text("upi_id")</code> on <code>householdMembers</code></td></tr>
+    <tr><td><code>drizzle/0010_*.sql</code>, <code>drizzle/meta/*</code></td><td>generate</td><td>migration adding the column</td></tr>
+    <tr><td><code>src/lib/validators/member-schema.ts</code></td><td>modify</td><td><code>upiId</code> optional field + <code>UPI_ID_PATTERN</code>, <code>UPI_ID_ERROR</code></td></tr>
+    <tr><td><code>src/lib/validators/member-schema.test.ts</code></td><td>create</td><td>validator cases</td></tr>
+    <tr><td><code>src/lib/actions/member-actions.ts</code></td><td>modify</td><td>read/persist <code>upiId</code> in create + update</td></tr>
+    <tr><td><code>src/lib/actions/member-upi.test.ts</code></td><td>create</td><td>action persistence cases</td></tr>
+    <tr><td><code>src/lib/queries/member-queries.ts</code></td><td>modify</td><td><code>getMembersWithStats</code> selects <code>upiId</code></td></tr>
+    <tr><td><code>src/lib/upi.ts</code>, <code>src/lib/upi.test.ts</code></td><td>create</td><td>pure link builder + amount formatter</td></tr>
+    <tr><td><code>src/lib/queries/settle-up-queries.ts</code></td><td>modify</td><td>suggestions carry <code>amountMinor</code></td></tr>
+    <tr><td><code>src/components/members/member-manager.tsx</code></td><td>modify</td><td>UPI ID input in the sheet; muted line in the card</td></tr>
+    <tr><td><code>src/components/settle-up/upi-pay-dialog.tsx</code></td><td>create</td><td>QR + "Open UPI app" + "Record payment" dialog</td></tr>
+    <tr><td><code>src/components/settle-up/settle-up-view.tsx</code></td><td>modify</td><td>Pay button / hint per suggestion; owns dialog state</td></tr>
+    <tr><td><code>src/app/(app)/settle-up/page.tsx</code></td><td>modify</td><td>pass <code>upiId</code> per participant and <code>householdName</code></td></tr>
+    <tr><td><code>e2e/pay-via-upi.spec.ts</code></td><td>create</td><td>end-to-end: set UPI ID → Pay button → dialog link</td></tr>
+    <tr><td><code>FEATURES.md</code>, <code>README.md</code>, <code>memory.md</code></td><td>modify</td><td>docs</td></tr>
+  </tbody>
+</table>
+
+<!-- ============================================================ -->
+<h3>Task 1: Store a UPI ID on a member</h3>
+<p class="files"><strong>Files:</strong></p>
+<ul class="files">
+  <li>Modify: <code>src/lib/db/schema.ts</code> (<code>householdMembers</code>, after <code>showInPaidBy</code>)</li>
+  <li>Generate: <code>drizzle/0010_*.sql</code> + <code>drizzle/meta/</code></li>
+  <li>Modify: <code>src/lib/validators/member-schema.ts</code></li>
+  <li>Modify: <code>src/lib/actions/member-actions.ts</code> (<code>createMember</code> raw/insert, <code>updateMember</code> raw/set)</li>
+  <li>Modify: <code>src/lib/queries/member-queries.ts</code> (<code>getMembersWithStats</code> select)</li>
+  <li>Test: <code>src/lib/validators/member-schema.test.ts</code>, <code>src/lib/actions/member-upi.test.ts</code></li>
+</ul>
+<p><strong>Interfaces — produces:</strong> <code>householdMembers.upiId: string | null</code>; <code>memberSchema</code> output gains <code>upiId?: string</code> (already lowercased/trimmed); exported <code>UPI_ID_PATTERN: RegExp</code> and <code>UPI_ID_ERROR: string</code>; <code>getMembers()</code> rows and <code>getMembersWithStats()</code> rows carry <code>upiId: string | null</code>.</p>
+<ol class="steps">
+  <li><strong>Write the failing validator test</strong> <code>src/lib/validators/member-schema.test.ts</code>:
+<pre><code>import { describe, expect, it } from "vitest";
+import { UPI_ID_ERROR, memberSchema } from "./member-schema";
+
+const base = { name: "Priya", role: "member" };
+
+describe("memberSchema.upiId", () => {
+  it("is absent when the field is missing, empty or null", () => {
+    expect(memberSchema.parse(base).upiId).toBeUndefined();
+    expect(memberSchema.parse({ ...base, upiId: "" }).upiId).toBeUndefined();
+    expect(memberSchema.parse({ ...base, upiId: null }).upiId).toBeUndefined();
+  });
+  it("trims and lowercases", () => {
+    expect(memberSchema.parse({ ...base, upiId: " Name.Surname@OKAXIS " }).upiId)
+      .toBe("name.surname@okaxis");
+  });
+  it.each(["name@bank", "9876543210@ybl", "a-b_c.d@paytm"])("accepts %s", (v) => {
+    expect(memberSchema.safeParse({ ...base, upiId: v }).success).toBe(true);
+  });
+  it.each(["name@", "@bank", "name bank@upi", "name@b@nk", "name@1bank"])("rejects %s", (v) => {
+    const r = memberSchema.safeParse({ ...base, upiId: v });
+    expect(r.success).toBe(false);
+    if (!r.success) expect(r.error.issues[0].message).toBe(UPI_ID_ERROR);
+  });
+});</code></pre></li>
+  <li><strong>Run it to see it fail:</strong> <code>pnpm vitest run src/lib/validators/member-schema.test.ts</code> → FAIL (no <code>UPI_ID_ERROR</code> export / <code>upiId</code> stripped).</li>
+  <li><strong>Implement the validator:</strong> in <code>member-schema.ts</code> export <code>UPI_ID_PATTERN = /^[a-z0-9][a-z0-9._-]{0,254}@[a-z][a-z0-9]{1,63}$/</code> and <code>UPI_ID_ERROR = "Enter a valid UPI ID, like name@bank"</code>; add <code>upiId: z.preprocess(v =&gt; (v === "" || v === null || v === undefined ? undefined : String(v).trim().toLowerCase()), z.string().regex(UPI_ID_PATTERN, UPI_ID_ERROR).optional())</code>. Note: trimming to empty must also yield undefined (a value of <code>"  "</code> is absent).</li>
+  <li><strong>Run the validator test:</strong> PASS.</li>
+  <li><strong>Add the column and migration:</strong> in <code>schema.ts</code> add <code>upiId: text("upi_id"),</code> with a one-line comment ("VPA for Pay via UPI; stored lowercase"). Run <code>pnpm db:generate</code>; confirm <code>drizzle/0010_*.sql</code> contains <code>ALTER TABLE \`household_members\` ADD \`upi_id\` text;</code>. Then <code>pnpm db:migrate</code> for the local dev DB.</li>
+  <li><strong>Write the failing action test</strong> <code>src/lib/actions/member-upi.test.ts</code>, copying the hoisted mocks/<code>beforeAll</code>/<code>form()</code> helper from <code>member-toggle.test.ts</code> (household <code>h1</code>, superadmin actor):
+<pre><code>describe("member upiId", () => {
+  it("persists a trimmed, lowercased UPI ID on create", async () => {
+    await createMember(form({ name: "Priya", upiId: " Priya@OKAXIS " }));
+    const [row] = await db.select().from(householdMembers).where(eq(householdMembers.name, "Priya"));
+    expect(row.upiId).toBe("priya@okaxis");
+  });
+  it("stores NULL when the field is absent or empty, and clears it on update", async () => {
+    await createMember(form({ name: "Ravi" }));
+    const [ravi] = await db.select().from(householdMembers).where(eq(householdMembers.name, "Ravi"));
+    expect(ravi.upiId).toBeNull();
+    await updateMember(ravi.id, form({ name: "Ravi", upiId: "ravi@ybl" }));
+    expect((await db.select().from(householdMembers).where(eq(householdMembers.id, ravi.id)))[0].upiId).toBe("ravi@ybl");
+    await updateMember(ravi.id, form({ name: "Ravi", upiId: "" }));
+    expect((await db.select().from(householdMembers).where(eq(householdMembers.id, ravi.id)))[0].upiId).toBeNull();
+  });
+  it("returns the validator error for a bad UPI ID", async () => {
+    const r = await createMember(form({ name: "Bad", upiId: "nope" }));
+    expect(r).toEqual({ error: "Enter a valid UPI ID, like name@bank" });
+  });
+});</code></pre></li>
+  <li><strong>Run it to see it fail:</strong> <code>pnpm vitest run src/lib/actions/member-upi.test.ts</code> → FAIL (<code>upiId</code> null after create).</li>
+  <li><strong>Implement in the actions:</strong> add <code>upiId: formData.get("upiId")</code> to both <code>raw</code> objects; insert/set <code>upiId: parsed.data.upiId ?? null</code>. In <code>getMembersWithStats</code> add <code>upiId: householdMembers.upiId</code> to the select.</li>
+  <li><strong>Run the whole suite:</strong> <code>pnpm test</code> → all PASS (existing member tests post no <code>upiId</code>, which must still work). Then <code>pnpm lint</code> and <code>pnpm tsc --noEmit</code> clean.</li>
+  <li><strong>Commit:</strong> <code>feat(members): store an optional UPI ID per member</code> (schema, migration, validator, actions, query, tests).</li>
+</ol>
+
+<!-- ============================================================ -->
+<h3>Task 2: The UPI deep-link builder</h3>
+<p><strong>Files:</strong> Create <code>src/lib/upi.ts</code>, <code>src/lib/upi.test.ts</code>.</p>
+<p><strong>Interfaces — produces:</strong></p>
+<pre><code>export function formatUpiAmount(amountMinor: number): string;     // 124000 → "1240.00"; throws on &lt;= 0 or non-integer
+export function buildUpiPayLink(input: {
+  payeeVpa: string;      // already validated/lowercased
+  payeeName: string;
+  amountMinor: number;
+  note: string;
+}): string;              // "upi://pay?pa=…&amp;pn=…&amp;am=…&amp;cu=INR&amp;tn=…"
+export const UPI_TEXT_LIMIT = 50;</code></pre>
+<ol class="steps">
+  <li><strong>Write the failing tests</strong> <code>src/lib/upi.test.ts</code>:
+<pre><code>describe("formatUpiAmount", () => {
+  it.each([[124000, "1240.00"], [5, "0.05"], [100000000, "1000000.00"], [199, "1.99"]])("%i → %s", (m, s) =>
+    expect(formatUpiAmount(m)).toBe(s));
+  it.each([0, -100, 12.5, Number.NaN])("throws on %s", (m) => expect(() => formatUpiAmount(m)).toThrow());
+});
+describe("buildUpiPayLink", () => {
+  it("builds the NPCI link with parameters in order", () => {
+    expect(buildUpiPayLink({ payeeVpa: "priya@okaxis", payeeName: "Priya", amountMinor: 124000, note: "Outlay · Home" }))
+      .toBe("upi://pay?pa=priya%40okaxis&amp;pn=Priya&amp;am=1240.00&amp;cu=INR&amp;tn=Outlay%20%C2%B7%20Home");
+  });
+  it("encodes reserved and non-ASCII characters in name and note", () => {
+    const link = buildUpiPayLink({ payeeVpa: "a@b", payeeName: "R&amp;D #1=ok", amountMinor: 100, note: "घर" });
+    expect(link).toContain("pn=R%26D%20%231%3Dok");
+    expect(link).toContain("tn=%E0%A4%98%E0%A4%B0");
+    expect(link.split("&amp;")).toHaveLength(5);
+  });
+  it("trims name and note to 50 code points without splitting a character", () => {
+    const name = "अ".repeat(60);
+    const link = buildUpiPayLink({ payeeVpa: "a@b", payeeName: name, amountMinor: 100, note: "x".repeat(80) });
+    const pn = decodeURIComponent(new URL(link).searchParams.get("pn") ?? "");
+    expect(Array.from(pn)).toHaveLength(50);
+    expect(new URL(link).searchParams.get("tn")).toHaveLength(50);
+  });
+});</code></pre></li>
+  <li><strong>Run to see them fail:</strong> <code>pnpm vitest run src/lib/upi.test.ts</code> → FAIL (module missing).</li>
+  <li><strong>Implement <code>src/lib/upi.ts</code>:</strong> <code>formatUpiAmount</code> checks <code>Number.isInteger(m) &amp;&amp; m &gt; 0</code> (else <code>throw new RangeError</code>) and returns <code>`${Math.floor(m / 100)}.${String(m % 100).padStart(2, "0")}`</code>. A private <code>clip(s)</code> uses <code>Array.from(s.trim()).slice(0, UPI_TEXT_LIMIT).join("")</code>. <code>buildUpiPayLink</code> concatenates the five pairs in the fixed order with <code>encodeURIComponent</code> on each value (do not use <code>URLSearchParams</code>; it emits <code>+</code> for spaces).</li>
+  <li><strong>Run the tests:</strong> PASS. Note: <code>new URL("upi://…").searchParams</code> works in Node for a custom scheme; if it does not, parse with a regex in the test instead.</li>
+  <li><strong>Commit:</strong> <code>feat(upi): pure upi://pay link builder</code>.</li>
+</ol>
+
+<!-- ============================================================ -->
+<h3>Task 3: UPI ID in the Members UI</h3>
+<p><strong>Files:</strong> Modify <code>src/components/members/member-manager.tsx</code> (<code>MemberItem</code>, the card body, the add/edit form after the Email block).</p>
+<p><strong>Interfaces — consumes:</strong> <code>getMembersWithStats()</code> rows now carry <code>upiId</code> (Task 1); the <code>upiId</code> form field name read by the actions (Task 1).</p>
+<ol class="steps">
+  <li><strong>Extend <code>MemberItem</code></strong> with <code>upiId: string | null</code>.</li>
+  <li><strong>Add the form field</strong> directly under the Email block, same markup pattern: <code>&lt;Label htmlFor="member-upi"&gt;UPI ID (optional)&lt;/Label&gt;</code>, <code>&lt;Input id="member-upi" name="upiId" inputMode="email" autoCapitalize="none" autoCorrect="off" spellCheck={false} defaultValue={editing?.upiId ?? ""} placeholder="name@bank" /&gt;</code>, help text <code>Lets others pay this person with one tap from Settle up.</code></li>
+  <li><strong>Show it on the card:</strong> under the badges row, when <code>member.upiId</code> is set, render <code>&lt;p className="mt-1 truncate text-muted-foreground text-xs tabular-nums"&gt;{member.upiId}&lt;/p&gt;</code>.</li>
+  <li><strong>Verify by hand:</strong> <code>pnpm dev</code>, Members → Add Member with <code>Test@OKAXIS</code> → card shows <code>test@okaxis</code>; edit, clear the field, save → line disappears; enter <code>nope</code> → toast shows the validator error. Then <code>pnpm lint</code> + <code>pnpm tsc --noEmit</code>.</li>
+  <li><strong>Commit:</strong> <code>feat(members): UPI ID field in the member sheet and card</code>.</li>
+</ol>
+
+<!-- ============================================================ -->
+<h3>Task 4: Pay via UPI on Settle up</h3>
+<p><strong>Files:</strong></p>
+<ul class="files">
+  <li>Install: <code>pnpm add qrcode.react</code></li>
+  <li>Modify: <code>src/lib/queries/settle-up-queries.ts</code> (suggestions map, ~line 106)</li>
+  <li>Modify: <code>src/app/(app)/settle-up/page.tsx</code> (participants map, new <code>householdName</code> prop)</li>
+  <li>Create: <code>src/components/settle-up/upi-pay-dialog.tsx</code></li>
+  <li>Modify: <code>src/components/settle-up/settle-up-view.tsx</code> (types, props, suggestion rows, dialog state)</li>
+</ul>
+<p><strong>Interfaces — consumes:</strong> <code>buildUpiPayLink</code>, <code>formatUpiAmount</code> (Task 2); <code>getMembers()</code> rows with <code>upiId</code> (Task 1); <code>useCurrency()</code> from <code>@/components/providers/currency-provider</code>; <code>Dialog*</code> from <code>@/components/ui/dialog</code>; <code>QrCode</code> from <code>lucide-react</code>.</p>
+<p><strong>Interfaces — produces:</strong></p>
+<pre><code>// settle-up-queries.ts: each suggestion gains
+amountMinor: number;   // t.amountMinor, alongside the existing major-unit `amount`
+
+// upi-pay-dialog.tsx
+export function UpiPayDialog(props: {
+  open: boolean;
+  onOpenChange: (open: boolean) =&gt; void;
+  payeeName: string;
+  payeeVpa: string;
+  amountMinor: number;
+  householdName: string;
+  onRecord: () =&gt; void;         // parent closes the dialog and opens the record sheet
+}): JSX.Element;
+
+// settle-up-view.tsx
+interface Suggestion { …; amountMinor: number }
+interface Participant { id: string; name: string; upiId: string | null }
+SettleUpView gains prop `householdName: string`</code></pre>
+<ol class="steps">
+  <li><strong>Install:</strong> <code>pnpm add qrcode.react</code> (v4, exports <code>QRCodeSVG</code>).</li>
+  <li><strong>Query:</strong> add <code>amountMinor: t.amountMinor</code> to the suggestions map in <code>getSettleUp</code>. Run <code>pnpm test</code> (settle-up tests must still pass).</li>
+  <li><strong>Page:</strong> map participants to <code>{ id: m.id, name: m.name, upiId: m.upiId }</code> and pass <code>householdName={household.name}</code>.</li>
+  <li><strong>Create <code>UpiPayDialog</code></strong> (<code>"use client"</code>). Compute <code>link = buildUpiPayLink({ payeeVpa, payeeName, amountMinor, note: `Outlay · ${householdName}` })</code> with <code>useMemo</code>. Layout inside <code>DialogContent</code>:
+    <ul>
+      <li><code>DialogHeader</code> → <code>DialogTitle</code> <code>Pay {payeeName}</code>, <code>DialogDescription</code> <code>Scan with any UPI app, or open yours. Then record the payment here — Outlay can't see whether it went through.</code></li>
+      <li>a centered <code>&lt;div className="mx-auto w-fit rounded-xl bg-white p-3"&gt;</code> holding <code>&lt;QRCodeSVG value={link} size={200} level="M" marginSize={1} fgColor="#111111" bgColor="#ffffff" /&gt;</code> — explicit black-on-white so it scans in dark mode (document that this is the one deliberate non-token color, like the Google brand SVG).</li>
+      <li>a line <code>{payeeName} · {payeeVpa}</code> (muted, <code>break-all</code>) and the amount via <code>useFormatCurrency()(amountMinor / 100)</code>, large <code>font-display tabular-nums</code>.</li>
+      <li><code>DialogFooter</code>: <code>&lt;Button variant="outline" onClick={onRecord}&gt;Record payment&lt;/Button&gt;</code> and the primary <code>&lt;Button render={&lt;a href={link} /&gt;}&gt;Open UPI app&lt;/Button&gt;</code> — check how <code>Button</code> renders as a link elsewhere in the repo (the e2e note mentions "Button-as-Link") and use that pattern; no <code>target</code>, no <code>rel</code>.</li>
+    </ul>
+  </li>
+  <li><strong>Wire the view:</strong> in <code>SettleUpView</code> add state <code>const [paying, setPaying] = useState&lt;Suggestion | null&gt;(null)</code>; <code>const currency = useCurrency(); const upiEnabled = currency === "INR";</code>; a lookup <code>const upiById = new Map(participants.map(p =&gt; [p.id, p.upiId]))</code>. In each suggestion row, when <code>upiEnabled</code>:
+    <ul>
+      <li>payee has a VPA → before the "Settle up" button render <code>&lt;Button size="sm" variant="outline" aria-label="Pay via UPI" onClick={() =&gt; setPaying(s)}&gt;&lt;QrCode className="h-3.5 w-3.5" /&gt;&lt;span className="hidden sm:inline"&gt;Pay&lt;/span&gt;&lt;/Button&gt;</code>;</li>
+      <li>payee has none → under the row's text, <code>&lt;p className="text-muted-foreground text-xs"&gt;&lt;Link href="/members" className="underline"&gt;Add {s.toName}'s UPI ID&lt;/Link&gt; to pay from here&lt;/p&gt;</code>. Wrap the row's left side in a <code>div</code> so the hint sits under the names, not beside the buttons.</li>
+    </ul>
+    Render once, after the record dialog: <code>{paying &amp;&amp; (&lt;UpiPayDialog open onOpenChange={(o) =&gt; !o &amp;&amp; setPaying(null)} payeeName={paying.toName} payeeVpa={upiById.get(paying.toId) ?? ""} amountMinor={paying.amountMinor} householdName={householdName} onRecord={() =&gt; { const s = paying; setPaying(null); openRecord(s); }} /&gt;)}</code>.</li>
+  <li><strong>Verify by hand</strong> (<code>pnpm dev</code>, seeded DB): give one member a UPI ID; Settle up shows the Pay button only on rows paying that member and the hint on the others; dialog shows a QR, scanning it with a phone opens a UPI app with the amount prefilled; "Open UPI app" on desktop is a no-op anchor; "Record payment" closes the dialog and opens the record sheet with from/to/amount prefilled; switch Settings currency to USD → nothing UPI-related renders; dark mode QR stays black-on-white. Check the Pixel-width layout for the row (DevTools device toolbar).</li>
+  <li><strong>Checks:</strong> <code>pnpm lint</code>, <code>pnpm tsc --noEmit</code>, <code>pnpm test</code>, <code>pnpm build</code>.</li>
+  <li><strong>Commit:</strong> <code>feat(settle-up): Pay via UPI — QR code + deep link per suggested payment</code>.</li>
+</ol>
+
+<!-- ============================================================ -->
+<h3>Task 5: End-to-end spec</h3>
+<p><strong>Files:</strong> Create <code>e2e/pay-via-upi.spec.ts</code>. Follow the structure and comments of <code>e2e/add-expense.spec.ts</code>.</p>
+<ol class="steps">
+  <li><strong>Write the spec:</strong>
+    <ol>
+      <li>Unlock at <code>/admin</code> with <code>e2e-pass</code>, wait for <code>/dashboard</code>.</li>
+      <li><code>/members</code> → click the "Add member" card (<code>getByRole("button", { name: "Add member" })</code>) → fill <code>getByLabel("Name")</code> with <code>Carol</code> → submit "Add Member" button inside the dialog → wait for the dialog to hide.</li>
+      <li>Click <code>getByRole("button", { name: "Edit Alice" })</code> → fill <code>getByLabel("UPI ID (optional)")</code> with <code>Alice@OKAXIS</code> → save → expect <code>page.getByText("alice@okaxis")</code> visible.</li>
+      <li><code>/settle-up</code> → expect text <code>Carol</code> → <code>Alice</code> row with ₹150 (assert via <code>getByText(/150/)</code>) → click <code>getByRole("button", { name: "Pay via UPI" })</code>.</li>
+      <li>Inside <code>getByRole("dialog")</code>: expect <code>getByText("Pay Alice")</code>; the link <code>getByRole("link", { name: "Open UPI app" })</code> has <code>href</code> matching <code>/^upi:\/\/pay\?pa=alice%40okaxis&amp;pn=Alice&amp;am=150\.00&amp;cu=INR&amp;tn=/</code>; an <code>svg</code> exists inside the dialog.</li>
+      <li>Click "Record payment" → expect the record dialog's title text (read it from <code>settle-up-view.tsx</code>) visible with the amount input valued <code>150</code>.</li>
+    </ol>
+    The e2e DB is rebuilt by the Playwright <code>webServer</code> command, so Carol/UPI ID do not leak between runs; <code>switch-household-isolation.spec.ts</code> counts expenses, not members, so adding Carol is safe. If the projects run specs in parallel against one DB, give Carol a unique suffix (<code>`Carol ${Date.now()}`</code>) and match on it.</li>
+  <li><strong>Run:</strong> <code>pnpm test:e2e e2e/pay-via-upi.spec.ts</code> → PASS. Run the full <code>pnpm test:e2e</code> once to confirm no interference.</li>
+  <li><strong>Commit:</strong> <code>test(e2e): pay via UPI from settle-up</code>.</li>
+</ol>
+
+<!-- ============================================================ -->
+<h3>Task 6: Docs, memory, graph</h3>
+<p><strong>Files:</strong> <code>FEATURES.md</code>, <code>README.md</code>, <code>memory.md</code>.</p>
+<ol class="steps">
+  <li><strong>FEATURES.md:</strong> under "Settle up" add a bullet: pay a suggested payment with any UPI app — tap <strong>Pay</strong> to get a QR code and an "Open UPI app" button with the amount filled in, then record it; shown when the person being paid has a UPI ID and the household uses ₹. Under "Keep things organized → Members" add: give a member a UPI ID so others can pay them from Settle up. Bump the "Last updated" date.</li>
+  <li><strong>README.md:</strong> extend the Settle up and Members rows in the features table; add <code>qrcode.react</code> to the stack table's Charts/UI row or a new "QR" row; add <code>upi_id</code> to the ER diagram's <code>household_members</code> if columns are listed there.</li>
+  <li><strong>memory.md:</strong> dated work-log entry (2026-10-21): column, validator, builder, dialog, the black-on-white QR exception, e2e, and that the spec/plan are HTML.</li>
+  <li><strong>Graph:</strong> <code>graphify update .</code></li>
+  <li><strong>Commit:</strong> <code>docs: Pay via UPI in FEATURES/README/memory; refresh graph</code>.</li>
+</ol>
+
+<h2>Done when</h2>
+<ul>
+  <li><code>pnpm lint</code>, <code>pnpm tsc --noEmit</code>, <code>pnpm test</code>, <code>pnpm build</code>, <code>pnpm test:e2e</code> all green on <code>feat/pay-via-upi</code>.</li>
+  <li>A phone scanning the dialog's QR lands in a UPI app with the payee and amount prefilled.</li>
+  <li>Branch ready for a PR to <code>main</code>.</li>
+</ul>
+</main>
+</body>
+</html>

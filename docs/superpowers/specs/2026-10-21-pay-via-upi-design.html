@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pay via UPI design</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #fbfaf7; --fg: #1d1c1a; --muted: #6b6861; --line: #e4e1da;
+    --code-bg: #f1efe9; --accent: #4f46e5; --th-bg: #f4f2ec;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #16151a; --fg: #ebe8e1; --muted: #a09c93; --line: #2d2b33;
+            --code-bg: #211f27; --accent: #a5b4fc; --th-bg: #1d1b23; }
+  }
+  html { background: var(--bg); }
+  body { margin: 0; padding: 32px 16px 64px; background: var(--bg); color: var(--fg);
+         font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 8px; }
+  h2 { font-size: 1.35rem; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); }
+  h3 { font-size: 1.1rem; margin: 24px 0 8px; }
+  p, li { max-width: 70ch; }
+  .meta { color: var(--muted); margin: 0 0 24px; }
+  .meta b { color: var(--fg); }
+  code { font: 0.9em ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--code-bg);
+         padding: 1px 5px; border-radius: 4px; }
+  pre { background: var(--code-bg); padding: 12px 14px; border-radius: 8px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95rem; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  th { background: var(--th-bg); }
+  a { color: var(--accent); }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+</style>
+</head>
+<body>
+<main>
+<h1>Pay via UPI — design</h1>
+<p class="meta">
+  <b>Date:</b> 2026-10-21 &middot;
+  <b>Status:</b> Draft (brainstorm) — pending approval, then implementation plan &middot;
+  <b>Author:</b> Nanda + Claude
+</p>
+
+<h2>Intent</h2>
+<p>Settle-up today tells a household "Ravi pays Priya ₹1,240" and offers a "Settle up" button that only <em>records</em> the payment. In an Indian household the money itself moves over UPI (GPay, PhonePe, Paytm, BHIM…). This feature closes that gap: each member can store their UPI ID, and every suggested payment gets a <strong>Pay via UPI</strong> action that opens the payer's UPI app (on a phone) or shows a scannable <strong>QR code</strong> (on a laptop, or when paying from a different phone), with the payee and exact amount prefilled.</p>
+<p>The app still cannot know whether a payment went through, so recording the settlement stays a deliberate second tap, exactly as it is today.</p>
+
+<h2>Goals</h2>
+<ol>
+  <li>Store an optional <strong>UPI ID</strong> per household member (works for attribution-only people who never sign in, e.g. a grandparent).</li>
+  <li>On <code>/settle-up</code>, each suggested payment whose payee has a UPI ID gets a <strong>Pay via UPI</strong> button that opens a dialog with:
+    <ul>
+      <li>a <strong>QR code</strong> encoding the standard <code>upi://pay</code> link,</li>
+      <li>an <strong>"Open UPI app"</strong> link (<code>&lt;a href="upi://pay?…"&gt;</code>) for phones,</li>
+      <li>the payee's name, UPI ID and the amount, so the payer can double-check,</li>
+      <li>a <strong>"Record payment"</strong> button that opens the existing record-settlement sheet prefilled with this suggestion (same as "Settle up").</li>
+    </ul>
+  </li>
+  <li>Zero integrations: no bank/UPI/PSP API, no webhooks, no secrets, nothing to verify. The deep link + QR are the whole mechanism.</li>
+</ol>
+
+<h2>Non-goals</h2>
+<ul>
+  <li>Verifying or auto-recording payments. Recording stays manual.</li>
+  <li>Collecting money from people outside the household, or any public pay page.</li>
+  <li>Supporting currencies other than INR (UPI is INR-only; the feature hides itself when the household currency isn't INR).</li>
+  <li>Per-expense "pay this one" buttons; only the settle-up suggestions get it.</li>
+  <li>Reminders / nudges ("Ravi still owes you") — separate feature if wanted.</li>
+  <li>Carrying UPI IDs through CSV import/export.</li>
+</ul>
+
+<h2>Anti-goals (what would make this a failure)</h2>
+<ul>
+  <li>A wrong amount or wrong payee in the prefilled UPI screen. The link must be built from validated, server-stored data only, with the amount formatted exactly (two decimals, no grouping).</li>
+  <li>A payer recording a settlement by accident because they tapped "Pay". Opening the link or QR must never write anything.</li>
+  <li>Cluttering the mobile settle-up row. The row keeps one primary action ("Settle up"); the UPI action is a compact secondary button.</li>
+</ul>
+
+<h2>Decisions (from brainstorming)</h2>
+<table>
+  <thead><tr><th>Question</th><th>Decision</th></tr></thead>
+  <tbody>
+    <tr><td>Phone deep link only, or also QR?</td><td><strong>Both</strong>, in one dialog. No user-agent sniffing: the dialog shows the QR and the "Open UPI app" link on every device; the user picks.</td></tr>
+    <tr><td>Who can set a member's UPI ID?</td><td>Anyone who can edit the member today (same permission as name/email).</td></tr>
+    <tr><td>Visibility of UPI IDs</td><td>Visible to every member of the household (trusted circle). Shown in the member list under the email, muted.</td></tr>
+    <tr><td>Auto-record on tap?</td><td><strong>No.</strong> The dialog offers "Record payment" which opens the existing sheet.</td></tr>
+    <tr><td>Activity / notifications</td><td><strong>None</strong> for opening a link or QR. Editing a UPI ID flows through the existing <code>member.update</code> activity entry; no new activity types.</td></tr>
+    <tr><td>Non-INR households</td><td>The button and hint are <strong>hidden</strong> entirely.</td></tr>
+    <tr><td>Payee without a UPI ID</td><td>No button. A small muted hint under that suggestion row: "Add {payee}'s UPI ID to pay from here" linking to <code>/members</code>.</td></tr>
+  </tbody>
+</table>
+
+<h2>Data model</h2>
+<p><code>household_members</code> gains one nullable column:</p>
+<pre><code>upi_id TEXT NULL</code></pre>
+<p>Drizzle: <code>upiId: text("upi_id")</code>. Generate the migration with <code>pnpm db:generate</code> (next after <code>0009_careless_tenebrous</code>). No backfill. No uniqueness constraint — two members legitimately can share one VPA (e.g. a couple with a joint handle).</p>
+
+<h2>Validation (<code>src/lib/validators/member-schema.ts</code>)</h2>
+<p><code>upiId</code> is optional, like <code>email</code>: an empty string or absent field means "none" (store <code>NULL</code>). When present:</p>
+<ul>
+  <li>trim, then lowercase (VPAs are case-insensitive; storing lowercase keeps the QR/link deterministic);</li>
+  <li>must match <code>^[a-z0-9][a-z0-9._-]{0,254}@[a-z][a-z0-9]{1,63}$</code> (identifier: alphanumerics plus <code>.</code>, <code>_</code>, <code>-</code>; handle: letters/digits, e.g. <code>okaxis</code>, <code>ybl</code>, <code>paytm</code>, <code>upi</code>, <code>axl</code>); phone-number VPAs like <code>9876543210@ybl</code> pass;</li>
+  <li>error message: <code>"Enter a valid UPI ID, like name@bank"</code>.</li>
+</ul>
+<p><code>createMember</code> and <code>updateMember</code> read a <code>upiId</code> form field and persist it.</p>
+
+<h2>The UPI link (<code>src/lib/upi.ts</code>, pure, unit-tested)</h2>
+<pre><code>buildUpiPayLink({ payeeVpa, payeeName, amount, note }): string</code></pre>
+<p>Produces the NPCI deep-link form, which is also exactly what a UPI QR encodes:</p>
+<pre><code>upi://pay?pa=&lt;vpa&gt;&amp;pn=&lt;name&gt;&amp;am=&lt;amount&gt;&amp;cu=INR&amp;tn=&lt;note&gt;</code></pre>
+<p>Rules:</p>
+<ul>
+  <li><code>am</code> is the <strong>major-unit amount with exactly two decimals</strong>, no grouping (<code>1240.00</code>). Build it from the minor-unit integer (<code>amountMinor</code>), never from a float: <code>${Math.floor(m/100)}.${String(m%100).padStart(2,"0")}</code>. The settle-up suggestions currently expose <code>amount</code> in major units; the builder may either add <code>amountMinor</code> to the suggestion shape or convert with <code>Math.round(amount*100)</code> at the boundary. Prefer the former.</li>
+  <li><code>pn</code> is the payee's member name, trimmed to 50 characters.</li>
+  <li><code>tn</code> is <code>Outlay · &lt;household name&gt;</code>, trimmed to 50 characters (several apps truncate or reject long notes). <code>tn</code> is informational only.</li>
+  <li><code>cu=INR</code> always.</li>
+  <li>All values go through <code>encodeURIComponent</code>; spaces as <code>%20</code>, not <code>+</code>.</li>
+  <li>No <code>tr</code>/<code>mc</code>/<code>tid</code> fields (merchant-only).</li>
+</ul>
+
+<h2>UI</h2>
+<h3>Members page (<code>src/components/members/member-manager.tsx</code>)</h3>
+<ul>
+  <li>The add/edit member sheet gets a <strong>UPI ID (optional)</strong> input directly under Email: <code>name="upiId"</code>, <code>inputMode="email"</code>, <code>autoCapitalize="none"</code>, placeholder <code>name@bank</code>, help text "Lets others pay this person with one tap from Settle up."</li>
+  <li>The member list shows the UPI ID under the email line, muted, when set.</li>
+</ul>
+
+<h3>Settle-up page (<code>src/components/settle-up/settle-up-view.tsx</code>)</h3>
+<ul>
+  <li><code>participants</code> already reach the view as <code>{ id, name }</code>; extend to <code>{ id, name, upiId: string | null }</code> (from <code>getMembers</code>). The page also passes <code>householdName</code> for the note.</li>
+  <li>Currency comes from <code>useCurrency()</code> (existing provider). When it is not <code>"INR"</code>, render nothing UPI-related.</li>
+  <li>Each suggestion row: keep the current layout; add, left of "Settle up", a compact outline button with a <code>QrCode</code> lucide icon and the label <strong>Pay</strong> (icon-only at the narrowest widths, with <code>aria-label="Pay via UPI"</code>). Only when the payee (<code>toId</code>) has a <code>upiId</code>.</li>
+  <li>When the payee has no <code>upiId</code>, render the muted hint line below the row text with a link to <code>/members</code>.</li>
+  <li>Tapping <strong>Pay</strong> opens a <code>Dialog</code> (existing <code>src/components/ui/dialog.tsx</code>):
+    <ul>
+      <li>title: <code>Pay {toName}</code>;</li>
+      <li>the <strong>QR code</strong> (SVG, ~200px, quiet zone). A QR must stay dark-on-light to scan, so put it on an explicit light surface in both themes;</li>
+      <li>a line: <code>{toName} · {upiId}</code> and the amount, large and tabular;</li>
+      <li>primary action: <strong>Open UPI app</strong> as an <code>&lt;a href={link}&gt;</code> styled as a button (no <code>target="_blank"</code>; custom-scheme links must navigate in place to trigger the OS app chooser);</li>
+      <li>secondary action: <strong>Record payment</strong> → closes the dialog and calls the existing <code>openRecord(suggestion)</code>;</li>
+      <li>a one-line caption: "Scan with any UPI app, or open yours. Then record the payment here — Outlay can't see whether it went through."</li>
+    </ul>
+  </li>
+  <li>The dialog never writes. "Record payment" is the only path to the existing sheet.</li>
+</ul>
+
+<h3>QR rendering</h3>
+<p>Add <strong><code>qrcode.react</code></strong> (client-only, renders <code>&lt;QRCodeSVG value=… /&gt;</code>, no canvas, ~10 KB). Medium error-correction level (<code>level="M"</code>), which is what UPI QR codes in the wild use. The QR value is the identical <code>upi://pay?…</code> string.</p>
+
+<h2>Tests</h2>
+<ul>
+  <li><strong>Unit</strong> (<code>src/lib/upi.test.ts</code>): amount formatting from minor units (<code>124000 → 1240.00</code>, <code>5 → 0.05</code>, <code>100000000 → 1000000.00</code>), encoding of names with spaces/<code>&amp;</code>, note truncation, exact query ordering.</li>
+  <li><strong>Validator</strong> (<code>member-schema.test.ts</code> or alongside): accepts <code>name@bank</code>, <code>9876543210@ybl</code>, <code>Name.Surname@OKAXIS</code> (lowercased); rejects <code>name@</code>, <code>@bank</code>, <code>name bank@upi</code>, <code>name@b@nk</code>; empty → undefined.</li>
+  <li><strong>Integration</strong>: <code>createMember</code>/<code>updateMember</code> persist and clear <code>upiId</code>; <code>getMembers</code> returns it.</li>
+  <li><strong>E2E</strong> (<code>e2e/</code>): the e2e fixture seeds <strong>one</strong> member per household, so <code>/settle-up</code> has no suggestions out of the box. The spec first adds a second settle-up member ("Carol") through the Members sheet, then sets a UPI ID on the seeded payer (Alice, who paid the three ₹100 expenses) — this yields a "Carol → Alice ₹150" suggestion. Open <code>/settle-up</code>, assert the <strong>Pay via UPI</strong> button exists for that row and that the dialog's "Open UPI app" link <code>href</code> starts with <code>upi://pay?pa=</code>. Do not change the shared fixture (<code>switch-household-isolation.spec.ts</code> depends on it). Follow <code>.claude/rules/playwright.md</code> (no <code>getByRole("alert")</code>).</li>
+</ul>
+
+<h2>Docs &amp; housekeeping</h2>
+<ul>
+  <li><code>FEATURES.md</code>: a bullet under "Settle up" and one under "Members".</li>
+  <li><code>README.md</code>: Settle up + Members rows in the features table; add <code>qrcode.react</code> to the stack table; nothing new in the roadmap.</li>
+  <li><code>memory.md</code>: dated work-log entry.</li>
+  <li>Run <code>graphify update .</code> after the code lands.</li>
+</ul>
+
+<h2>Left to the builder</h2>
+<ul>
+  <li>Exact placement/wrapping of the Pay button vs. "Settle up" on the narrowest phone widths, within the "one primary action per row" rule.</li>
+  <li>Whether to also surface the UPI ID on the balances card (not required).</li>
+  <li>Where the QR foreground/background tokens come from, as long as the code scans in both themes.</li>
+  <li>Test file names and the migration name Drizzle generates.</li>
+</ul>
+</main>
+</body>
+</html>
