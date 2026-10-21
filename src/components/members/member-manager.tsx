@@ -42,6 +42,7 @@ interface MemberItem {
   role: string;
   avatar: string | null;
   email: string | null;
+  upiId: string | null;
   userId: string | null;
   includeInSettleUp: boolean;
   showInPaidBy: boolean;
@@ -206,6 +207,11 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
                           </Badge>
                         )}
                       </div>
+                      {member.upiId && (
+                        <p className="mt-1 truncate text-muted-foreground text-xs tabular-nums">
+                          {member.upiId}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="flex gap-1 opacity-0 transition-opacity focus-within:opacity-100 group-hover:opacity-100">
@@ -288,6 +294,22 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
               <p className="text-muted-foreground text-xs">
                 Adding an email lets this person sign in to the household. Leave
                 blank for an attribution-only member.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="member-upi">UPI ID (optional)</Label>
+              <Input
+                id="member-upi"
+                name="upiId"
+                inputMode="email"
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
+                defaultValue={editing?.upiId ?? ""}
+                placeholder="name@bank"
+              />
+              <p className="text-muted-foreground text-xs">
+                Lets others pay this person with one tap from Settle up.
               </p>
             </div>
             <div className="space-y-2">
