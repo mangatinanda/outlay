@@ -71,6 +71,13 @@
       "when": 1790590261616,
       "tag": "0009_careless_tenebrous",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "6",
+      "when": 1792572244979,
+      "tag": "0010_past_mauler",
+      "breakpoints": true
     }
   ]
 }

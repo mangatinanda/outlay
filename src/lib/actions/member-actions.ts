@@ -20,6 +20,7 @@ export const createMember = safeAction(
     const raw = {
       name: formData.get("name"),
       email: formData.get("email"),
+      upiId: formData.get("upiId"),
       role: formData.get("role") || "member",
       includeInSettleUp: formData.get("includeInSettleUp"),
       showInPaidBy: formData.get("showInPaidBy"),
@@ -55,6 +56,7 @@ export const createMember = safeAction(
       householdId: household.id,
       name: parsed.data.name,
       email,
+      upiId: parsed.data.upiId ?? null,
       role: parsed.data.role,
       includeInSettleUp: parsed.data.includeInSettleUp,
       showInPaidBy: parsed.data.showInPaidBy,
@@ -77,6 +79,7 @@ export const updateMember = safeAction(
     const raw = {
       name: formData.get("name"),
       email: formData.get("email"),
+      upiId: formData.get("upiId"),
       role: formData.get("role") || "member",
       includeInSettleUp: formData.get("includeInSettleUp"),
       showInPaidBy: formData.get("showInPaidBy"),
@@ -121,6 +124,7 @@ export const updateMember = safeAction(
       .set({
         name: parsed.data.name,
         email,
+        upiId: parsed.data.upiId ?? null,
         role: parsed.data.role,
         includeInSettleUp: parsed.data.includeInSettleUp,
         showInPaidBy: parsed.data.showInPaidBy,
