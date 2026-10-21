@@ -65,7 +65,7 @@ double‑spec; CI reads pnpm from `packageManager`).
 
 ## Work log
 
-### 2026‑10‑21 — Pay via UPI (branch `feat/pay-via-upi`)
+### 2026‑10‑21 — Pay via UPI (PR #14, branch `feat/pay-via-upi`)
 
 First "Indian context" feature, picked in a brainstorm over recurring outflows and share‑to‑app SMS parsing.
 Spec + plan are **HTML** (owner's standing preference from this date: docs as `.html`, not `.md`):
