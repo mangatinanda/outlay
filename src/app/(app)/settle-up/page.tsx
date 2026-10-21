@@ -38,7 +38,8 @@ export default async function SettleUpPage() {
         history={history}
         participants={members
           .filter((m) => m.includeInSettleUp)
-          .map((m) => ({ id: m.id, name: m.name }))}
+          .map((m) => ({ id: m.id, name: m.name, upiId: m.upiId }))}
+        householdName={household.name}
       />
     </div>
   );
