@@ -65,6 +65,30 @@ double‑spec; CI reads pnpm from `packageManager`).
 
 ## Work log
 
+### 2026‑10‑21 — Pay via UPI (branch `feat/pay-via-upi`)
+
+First "Indian context" feature, picked in a brainstorm over recurring outflows and share‑to‑app SMS parsing.
+Spec + plan are **HTML** (owner's standing preference from this date: docs as `.html`, not `.md`):
+`docs/superpowers/specs/2026-10-21-pay-via-upi-design.html`, `docs/superpowers/plans/2026-10-21-pay-via-upi.html`.
+- **Data:** `household_members.upi_id` (nullable, migration `0010_past_mauler`), validated in `memberSchema`
+  (`UPI_ID_PATTERN` / `UPI_ID_ERROR`, trimmed + lowercased; blank → NULL), read as the `upiId` form field by
+  `createMember`/`updateMember`, selected by `getMembersWithStats`. No uniqueness (a couple may share a VPA).
+- **Link:** `src/lib/upi.ts` — `formatUpiAmount(minor)` (integer‑only, throws on ≤0/non‑integer) and
+  `buildUpiPayLink({payeeVpa, payeeName, amountMinor, note})` → `upi://pay?pa&pn&am&cu=INR&tn` in that order,
+  `encodeURIComponent` (not `URLSearchParams`, which emits `+`), `pn`/`tn` clipped to 50 code points.
+  `getSettleUp` suggestions now also carry `amountMinor` so the link never comes from a float.
+- **UI:** Members sheet gets a "UPI ID (optional)" input; the card shows it muted. Settle‑up rows get a
+  compact outline **Pay** button (`aria-label="Pay via UPI"`) when the payee has a VPA and the household
+  currency is INR (`useCurrency()`), else a muted "Add X's UPI ID" link to `/members`. `UpiPayDialog`
+  (`src/components/settle-up/upi-pay-dialog.tsx`) shows a `qrcode.react` SVG QR of the same link, the amount,
+  `payee · vpa`, "Record payment" (→ the existing record sheet, prefilled) and "Open UPI app" — a **plain
+  `<a>` with `buttonVariants()`**, not Base UI `Button render=`, which reports `role=button`. The QR is the one
+  deliberate non‑token colour pair (black on white) so it scans in dark mode. Nothing in the dialog writes.
+- **Tests:** validator + action + link unit tests; `e2e/pay-via-upi.spec.ts` adds a second member (the e2e
+  fixture seeds one per household, so there are no suggestions otherwise), sets Alice's UPI ID, and asserts
+  the dialog's `href`. Browser bridges were unavailable in the session, so the hand‑check was Playwright
+  screenshots (phone light/dark + desktop).
+
 ### 2026‑09‑28 — Per‑expense custom splits (#13) + the deferred polish list (#12) — merged
 
 - **Custom splits** (PR #13, the settle‑up spec's "future extension", branch `feat/custom-splits`): new table
