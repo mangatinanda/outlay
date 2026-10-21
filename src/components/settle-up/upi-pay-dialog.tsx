@@ -3,7 +3,7 @@
 import { QRCodeSVG } from "qrcode.react";
 import { useMemo } from "react";
 import { useFormatCurrency } from "@/components/providers/currency-provider";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -13,6 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { buildUpiPayLink } from "@/lib/upi";
+import { cn } from "@/lib/utils";
 
 /**
  * "Pay via UPI" for one suggested payment: a QR code plus an `upi://pay`
@@ -85,12 +86,13 @@ export function UpiPayDialog({
           <Button variant="outline" onClick={onRecord}>
             Record payment
           </Button>
-          {/* Same-tab navigation: a custom-scheme href must not open a new
-              tab, or the OS app chooser never fires. */}
-          <Button
-            nativeButton={false}
-            render={<a href={link}>Open UPI app</a>}
-          />
+          {/* A real <a> (role=link), not Button's render prop, which would
+              report role=button. Same-tab navigation on purpose: a custom-
+              scheme href must not open a new tab, or the OS app chooser
+              never fires. */}
+          <a href={link} className={cn(buttonVariants())}>
+            Open UPI app
+          </a>
         </DialogFooter>
       </DialogContent>
     </Dialog>
