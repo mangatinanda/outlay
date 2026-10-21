@@ -74,8 +74,9 @@ Spec + plan are **HTML** (owner's standing preference from this date: docs as `.
   (`UPI_ID_PATTERN` / `UPI_ID_ERROR`, trimmed + lowercased; blank → NULL), read as the `upiId` form field by
   `createMember`/`updateMember`, selected by `getMembersWithStats`. No uniqueness (a couple may share a VPA).
 - **Link:** `src/lib/upi.ts` — `formatUpiAmount(minor)` (integer‑only, throws on ≤0/non‑integer) and
-  `buildUpiPayLink({payeeVpa, payeeName, amountMinor, note})` → `upi://pay?pa&pn&am&cu=INR&tn` in that order,
-  `encodeURIComponent` (not `URLSearchParams`, which emits `+`), `pn`/`tn` clipped to 50 code points.
+  `buildUpiPayLink({payeeVpa, payeeName, amountMinor, note})` → `upi://pay?pa&pn&am&cu=INR&tn` in that order.
+  `pa` is left **raw** (`name@bank`, as NPCI QR codes carry it — the validator bounds its charset); `pn`/`tn` go
+  through `encodeURIComponent` (not `URLSearchParams`, which emits `+`) and are clipped to 50 code points.
   `getSettleUp` suggestions now also carry `amountMinor` so the link never comes from a float.
 - **UI:** Members sheet gets a "UPI ID (optional)" input; the card shows it muted. Settle‑up rows get a
   compact outline **Pay** button (`aria-label="Pay via UPI"`) when the payee has a VPA and the household
@@ -86,8 +87,10 @@ Spec + plan are **HTML** (owner's standing preference from this date: docs as `.
   deliberate non‑token colour pair (black on white) so it scans in dark mode. Nothing in the dialog writes.
 - **Tests:** validator + action + link unit tests; `e2e/pay-via-upi.spec.ts` adds a second member (the e2e
   fixture seeds one per household, so there are no suggestions otherwise), sets Alice's UPI ID, and asserts
-  the dialog's `href`. Browser bridges were unavailable in the session, so the hand‑check was Playwright
-  screenshots (phone light/dark + desktop).
+  the dialog's `href` and 44 px hit areas. Browser bridges were unavailable in the session, so the hand‑check was
+  Playwright screenshots (phone light/dark + desktop). **Not yet done: a real‑phone scan with GPay/PhonePe/Paytm/BHIM**
+  — do it once before merging. Review deferred minors (grapheme‑safe clipping, long non‑Latin payloads, activity
+  summary naming the UPI change, per‑app amount limits) are listed in the PR.
 
 ### 2026‑09‑28 — Per‑expense custom splits (#13) + the deferred polish list (#12) — merged
 

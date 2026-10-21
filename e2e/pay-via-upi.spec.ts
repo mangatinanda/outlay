@@ -51,17 +51,28 @@ test("set a UPI ID, then pay a suggested settlement via UPI", async ({
   await page.goto("/settle-up");
   await expect(page.getByText("Suggested payments")).toBeVisible();
   await expect(page.getByText(CAROL).first()).toBeVisible();
-  await page.getByRole("button", { name: "Pay via UPI" }).first().click();
+  const payButton = page.getByRole("button", { name: /via UPI/ }).first();
+  // Phone-first feature: the UI rules want a 44px hit area.
+  expect((await payButton.boundingBox())?.height).toBeGreaterThanOrEqual(44);
+  expect((await payButton.boundingBox())?.width).toBeGreaterThanOrEqual(44);
+  await payButton.click();
 
   const payDialog = page.getByRole("dialog");
   await expect(payDialog.getByText("Pay Alice")).toBeVisible();
   const openApp = payDialog.getByRole("link", { name: "Open UPI app" });
   const linkPattern =
-    /^upi:\/\/pay\?pa=alice%40okaxis&pn=Alice&am=(\d+\.\d{2})&cu=INR&tn=Outlay/;
+    /^upi:\/\/pay\?pa=alice@okaxis&pn=Alice&am=(\d+\.\d{2})&cu=INR&tn=Outlay/;
   await expect(openApp).toHaveAttribute("href", linkPattern);
   const amount = (await openApp.getAttribute("href"))?.match(linkPattern)?.[1];
   expect(amount).toBeDefined();
   await expect(payDialog.locator("svg[role='img']")).toBeVisible();
+  // The dialog zooms in on open, so poll until the boxes reach full size.
+  const record = payDialog.getByRole("button", { name: "Record payment" });
+  for (const target of [openApp, record]) {
+    await expect
+      .poll(async () => (await target.boundingBox())?.height ?? 0)
+      .toBeGreaterThanOrEqual(44);
+  }
 
   // "Record payment" hands off to the existing record sheet, prefilled with
   // the same amount (major units, as the form shows it).

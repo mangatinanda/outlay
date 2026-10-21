@@ -31,8 +31,18 @@ describe("buildUpiPayLink", () => {
         note: "Outlay · Home",
       }),
     ).toBe(
-      "upi://pay?pa=priya%40okaxis&pn=Priya&am=1240.00&cu=INR&tn=Outlay%20%C2%B7%20Home",
+      "upi://pay?pa=priya@okaxis&pn=Priya&am=1240.00&cu=INR&tn=Outlay%20%C2%B7%20Home",
     );
+  });
+
+  it("keeps the payee VPA raw: the @ stays unencoded as in NPCI QR codes", () => {
+    const link = buildUpiPayLink({
+      payeeVpa: "9876543210@ybl",
+      payeeName: "x",
+      amountMinor: 100,
+      note: "n",
+    });
+    expect(link.startsWith("upi://pay?pa=9876543210@ybl&")).toBe(true);
   });
 
   it("encodes reserved and non-ASCII characters in name and note", () => {

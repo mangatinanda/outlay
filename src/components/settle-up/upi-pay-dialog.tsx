@@ -63,12 +63,13 @@ export function UpiPayDialog({
           <div className="overflow-hidden rounded-xl">
             {/* Deliberate non-token colors: a QR must be black-on-white to
                 scan reliably in both themes (same exemption as brand SVGs).
-                marginSize paints the quiet zone in bgColor. */}
+                marginSize=4 paints the standard four-module quiet zone in
+                bgColor so the dark dialog never touches the code. */}
             <QRCodeSVG
               value={link}
               size={200}
               level="M"
-              marginSize={2}
+              marginSize={4}
               fgColor="#000000"
               bgColor="#ffffff"
               role="img"
@@ -83,14 +84,14 @@ export function UpiPayDialog({
           </p>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={onRecord}>
+          <Button variant="outline" className="h-11" onClick={onRecord}>
             Record payment
           </Button>
           {/* A real <a> (role=link), not Button's render prop, which would
               report role=button. Same-tab navigation on purpose: a custom-
               scheme href must not open a new tab, or the OS app chooser
               never fires. */}
-          <a href={link} className={cn(buttonVariants())}>
+          <a href={link} className={cn(buttonVariants(), "h-11")}>
             Open UPI app
           </a>
         </DialogFooter>

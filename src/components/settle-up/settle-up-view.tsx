@@ -253,14 +253,19 @@ export function SettleUpView({
                       <Button
                         size="sm"
                         variant="outline"
-                        aria-label="Pay via UPI"
+                        className="min-h-11 min-w-11"
+                        aria-label={`Pay ${s.toName} via UPI`}
                         onClick={() => setPaying(s)}
                       >
-                        <QrCode className="h-3.5 w-3.5" />
+                        <QrCode className="h-4 w-4" />
                         <span className="hidden sm:inline">Pay</span>
                       </Button>
                     )}
-                    <Button size="sm" onClick={() => openRecord(s)}>
+                    <Button
+                      size="sm"
+                      className="min-h-11"
+                      onClick={() => openRecord(s)}
+                    >
                       Settle up
                     </Button>
                   </div>

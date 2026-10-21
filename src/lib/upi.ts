@@ -31,12 +31,15 @@ export function buildUpiPayLink(input: {
   note: string;
 }): string {
   // Fixed order; encodeURIComponent (not URLSearchParams) so spaces are %20.
+  // The VPA is left raw: NPCI QR codes carry `pa=name@bank` with a literal
+  // `@`, and the validator (UPI_ID_PATTERN) already limits it to [a-z0-9._-@],
+  // all of which are safe inside a query string.
   const pairs: [string, string][] = [
     ["pa", input.payeeVpa],
-    ["pn", clip(input.payeeName)],
+    ["pn", encodeURIComponent(clip(input.payeeName))],
     ["am", formatUpiAmount(input.amountMinor)],
     ["cu", "INR"],
-    ["tn", clip(input.note)],
+    ["tn", encodeURIComponent(clip(input.note))],
   ];
-  return `upi://pay?${pairs.map(([k, v]) => `${k}=${encodeURIComponent(v)}`).join("&")}`;
+  return `upi://pay?${pairs.map(([k, v]) => `${k}=${v}`).join("&")}`;
 }
