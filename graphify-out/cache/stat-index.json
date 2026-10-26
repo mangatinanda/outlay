@@ -180,9 +180,9 @@
     "hash": "6c12773ded3b63e36b9cb4ae14575829a1dd144cd4f8a7197cc65db7284814a3"
   },
   "/Users/nanda/vibe-code/outlay/drizzle/meta/_journal.json": {
-    "size": 1495,
-    "mtime_ns": 1790596006279191654,
-    "hash": "2d4dfd2fc7607f67f7655f2c6e0e1fe88c65da1cd9c6f9580b5f5cad9af1d6ec"
+    "size": 1635,
+    "mtime_ns": 1792572244979937748,
+    "hash": "b82f2a929bce5483bed7f63eda26a552cf0c35ee5e7423b183c0eee25340727c"
   },
   "/Users/nanda/vibe-code/outlay/e2e/add-expense.spec.ts": {
     "size": 2646,
@@ -210,9 +210,9 @@
     "hash": "3c4f45d8faf908cef43e09f9db2f396b9e6c640cbff4ae8b4b8873f8176ccb00"
   },
   "/Users/nanda/vibe-code/outlay/package.json": {
-    "size": 2646,
-    "mtime_ns": 1784654701114562719,
-    "hash": "53f774d3af6a4d2deb37de9bb45a1cca9a80c96c75a03a4360ac62a992e5ea8e"
+    "size": 2676,
+    "mtime_ns": 1792572385772821475,
+    "hash": "620dd0b6afa2f63b4b59c08d7b9e333da17e07d8e1d8d12d9cf3c2849aa8f7fe"
   },
   "/Users/nanda/vibe-code/outlay/playwright.config.ts": {
     "size": 2248,
@@ -1225,19 +1225,19 @@
     "hash": "1a5aaa6a62b77b5bc4a7b2b06a0eb39f31900c7ad4c88cc47a11aa6cca44f691"
   },
   "/Users/nanda/vibe-code/outlay/CLAUDE.md": {
-    "size": 8490,
-    "mtime_ns": 1790596006276896641,
-    "hash": "22fcbaef0003e6880b8d628da0d434ea75c2b602eb2d02f33f62eb8ef2f1fa87"
+    "size": 10378,
+    "mtime_ns": 1790605301186620536,
+    "hash": "b05c6de0b5000fa08356c7a53d2020a04a47529981535cd2d5a0371dd20db842"
   },
   "/Users/nanda/vibe-code/outlay/FEATURES.md": {
-    "size": 4744,
-    "mtime_ns": 1790596006277223018,
-    "hash": "99b5c27ca688d3ca0377bafb0fad91d369304de4dcc1e321dbd62f49caa33d50"
+    "size": 5190,
+    "mtime_ns": 1792572658803036943,
+    "hash": "27ab328332325eb2ad11e56f1312d9c4f3eb0ddbe07cfbd27b2cff21bd355993"
   },
   "/Users/nanda/vibe-code/outlay/README.md": {
-    "size": 18798,
-    "mtime_ns": 1781842671412318726,
-    "hash": "07f51354014c271e6a1b9dce1e0d1d3e3269535a82cf0817fc78d4f09532d81c"
+    "size": 32484,
+    "mtime_ns": 1792572658804130985,
+    "hash": "0f49cc0b1f17c8166f331b59597abfb818ac1645d5402ea4a3a3c92cb38d66ae"
   },
   "/Users/nanda/vibe-code/outlay/docs/2026-06-11-repo-audit.md": {
     "size": 18527,
@@ -1305,9 +1305,9 @@
     "hash": "c8312609d7400aaa764d1e55235b4af8a6ebb875868247fb8bca1580a74ef687"
   },
   "/Users/nanda/vibe-code/outlay/memory.md": {
-    "size": 61175,
-    "mtime_ns": 1790596006292448273,
-    "hash": "e8173bfc53e128eda8709daa287d4230a2f48e6e772fe26e26ab9628a205d924"
+    "size": 63650,
+    "mtime_ns": 1792572675629476798,
+    "hash": "886196e9b44d00e4f052025862181169f1c61c095851c9302fd16abdc66a12d9"
   },
   "/Users/nanda/vibe-code/outlay/plans/2026-06-07-currency-switcher.md": {
     "size": 6427,
@@ -1335,14 +1335,14 @@
     "hash": "57eab2c44fcdb5261889c9a955cd0ab3e2f298ef8e633642bf8dadd5dae754b3"
   },
   "/Users/nanda/vibe-code/outlay/src/CLAUDE.md": {
-    "size": 2700,
-    "mtime_ns": 1781607092890735297,
-    "hash": "0964027cb7462b4188553ab4bcd24553489349670ddaafb12a5213bdd799a994"
+    "size": 2986,
+    "mtime_ns": 1790605087640695945,
+    "hash": "2f7e802b578a031623f8584a8f96cc37d1c0e6970fed84f28e6045349bdf67bc"
   },
   "/Users/nanda/vibe-code/outlay/src/lib/CLAUDE.md": {
-    "size": 2476,
-    "mtime_ns": 1781236935576860659,
-    "hash": "0dd059d6902c4f4848d7272374cd91c46eb9ff338dc72fba62469726be3e17c1"
+    "size": 4182,
+    "mtime_ns": 1790605087640330612,
+    "hash": "3d9bbcf41344982cb550d0c7daf9fe6d7bd974f48137cb835ee99bc2bd05503e"
   },
   "/Users/nanda/vibe-code/outlay/public/icons/apple-touch-icon.png": {
     "size": 5583,
@@ -1488,5 +1488,15 @@
     "size": 27516,
     "mtime_ns": 1790596006277905022,
     "hash": "b0399f8823885441014ead35d65cc934ba2b96a3a052b49a577737f1e0b941b9"
+  },
+  "/Users/nanda/vibe-code/outlay/drizzle/0010_past_mauler.sql": {
+    "size": 50,
+    "mtime_ns": 1792572244980017165,
+    "hash": "89cf4ba83963e88955c553000b14840efb1c3eafc0d0c01a32fb8543447aef4a"
+  },
+  "/Users/nanda/vibe-code/outlay/drizzle/meta/0010_snapshot.json": {
+    "size": 23858,
+    "mtime_ns": 1792572244979657624,
+    "hash": "90ed90e6d13b33077175f9f70bfb53ac6484c4a61244d6061671ebc3bdd7cd90"
   }
 }

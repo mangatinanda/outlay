@@ -1,10 +1,15 @@
 "use client";
 
-import { ArrowRight, Check, Pencil, Trash2 } from "lucide-react";
+import { ArrowRight, Check, Pencil, QrCode, Trash2 } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
-import { useFormatCurrency } from "@/components/providers/currency-provider";
+import {
+  useCurrency,
+  useFormatCurrency,
+} from "@/components/providers/currency-provider";
+import { UpiPayDialog } from "@/components/settle-up/upi-pay-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -35,6 +40,7 @@ interface Suggestion {
   toId: string;
   toName: string;
   amount: number;
+  amountMinor: number;
 }
 interface HistoryRow {
   id: string;
@@ -49,6 +55,7 @@ interface HistoryRow {
 interface Participant {
   id: string;
   name: string;
+  upiId: string | null;
 }
 
 /** What the dialog form starts from. `id` set = editing that settlement. */
@@ -85,16 +92,27 @@ export function SettleUpView({
   settledUp,
   history,
   participants,
+  householdName,
 }: {
   balances: Balance[];
   suggestions: Suggestion[];
   settledUp: boolean;
   history: HistoryRow[];
   participants: Participant[];
+  householdName: string;
 }) {
   const formatCurrency = useFormatCurrency();
+  // UPI is INR-only; outside INR nothing UPI-related renders.
+  const upiEnabled = useCurrency() === "INR";
+  const upiById = new Map(participants.map((p) => [p.id, p.upiId]));
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [paying, setPaying] = useState<Suggestion | null>(null);
+  // Keep the last suggestion so the dialog stays mounted (and can animate
+  // out) after `paying` is cleared.
+  const lastPaying = useRef<Suggestion | null>(null);
+  if (paying) lastPaying.current = paying;
+  const shownPaying = paying ?? lastPaying.current;
   const [loading, setLoading] = useState(false);
   const [prefill, setPrefill] = useState<Prefill>(() =>
     blankPrefill(participants),
@@ -116,10 +134,10 @@ export function SettleUpView({
     const known = new Set(participants.map((p) => p.id));
     const extras: Participant[] = [];
     if (!known.has(h.fromMemberId)) {
-      extras.push({ id: h.fromMemberId, name: h.fromName });
+      extras.push({ id: h.fromMemberId, name: h.fromName, upiId: null });
     }
     if (!known.has(h.toMemberId)) {
-      extras.push({ id: h.toMemberId, name: h.toName });
+      extras.push({ id: h.toMemberId, name: h.toName, upiId: null });
     }
     setPrefill({
       id: h.id,
@@ -211,22 +229,54 @@ export function SettleUpView({
               <Check className="h-4 w-4 text-primary" /> All settled up 🎉
             </p>
           ) : (
-            suggestions.map((s) => (
-              <div
-                key={`${s.fromId}-${s.toId}`}
-                className="flex items-center justify-between gap-3 rounded-lg border border-border p-2"
-              >
-                <span className="flex items-center gap-2 text-sm">
-                  {s.fromName} <ArrowRight className="h-3.5 w-3.5" /> {s.toName}
-                  <span className="font-medium tabular-nums">
-                    {formatCurrency(s.amount)}
-                  </span>
-                </span>
-                <Button size="sm" onClick={() => openRecord(s)}>
-                  Settle up
-                </Button>
-              </div>
-            ))
+            suggestions.map((s) => {
+              const payeeVpa = upiEnabled ? upiById.get(s.toId) : null;
+              return (
+                <div
+                  key={`${s.fromId}-${s.toId}`}
+                  className="flex items-center justify-between gap-3 rounded-lg border border-border p-2"
+                >
+                  <div className="min-w-0">
+                    <span className="flex flex-wrap items-center gap-2 text-sm">
+                      {s.fromName} <ArrowRight className="h-3.5 w-3.5" />{" "}
+                      {s.toName}
+                      <span className="font-medium tabular-nums">
+                        {formatCurrency(s.amount)}
+                      </span>
+                    </span>
+                    {upiEnabled && !payeeVpa && (
+                      <p className="text-muted-foreground text-xs">
+                        <Link href="/members" className="underline">
+                          Add {s.toName}'s UPI ID
+                        </Link>{" "}
+                        to pay from here
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex shrink-0 gap-2">
+                    {payeeVpa && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="min-h-11 min-w-11"
+                        aria-label={`Pay ${s.toName} via UPI`}
+                        onClick={() => setPaying(s)}
+                      >
+                        <QrCode className="h-4 w-4" />
+                        <span className="hidden sm:inline">Pay</span>
+                      </Button>
+                    )}
+                    <Button
+                      size="sm"
+                      className="min-h-11"
+                      onClick={() => openRecord(s)}
+                    >
+                      Settle up
+                    </Button>
+                  </div>
+                </div>
+              );
+            })
           )}
         </CardContent>
       </Card>
@@ -273,6 +323,22 @@ export function SettleUpView({
             ))}
           </CardContent>
         </Card>
+      )}
+
+      {shownPaying && (
+        <UpiPayDialog
+          open={paying !== null}
+          onOpenChange={(o) => !o && setPaying(null)}
+          payeeName={shownPaying.toName}
+          payeeVpa={upiById.get(shownPaying.toId) ?? ""}
+          amountMinor={shownPaying.amountMinor}
+          householdName={householdName}
+          onRecord={() => {
+            const s = shownPaying;
+            setPaying(null);
+            openRecord(s);
+          }}
+        />
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>

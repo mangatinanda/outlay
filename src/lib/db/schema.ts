@@ -51,6 +51,8 @@ export const householdMembers = sqliteTable(
     showInPaidBy: integer("show_in_paid_by", { mode: "boolean" })
       .notNull()
       .default(true),
+    // VPA for "Pay via UPI" on settle-up; stored lowercase, null = none.
+    upiId: text("upi_id"),
     createdAt: integer("created_at", { mode: "timestamp" })
       .notNull()
       .$defaultFn(() => new Date()),

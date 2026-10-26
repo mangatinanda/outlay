@@ -1,16 +1,16 @@
-# Graph Report - outlay  (2026-09-28)
+# Graph Report - outlay  (2026-10-21)
 
 ## Corpus Check
-- 319 files · ~178,173 words
+- 327 files · ~188,882 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 4753 nodes · 6516 edges · 367 communities (354 shown, 13 thin omitted)
-- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 54 edges (avg confidence: 0.83)
+- 5167 nodes · 6982 edges · 387 communities (374 shown, 13 thin omitted)
+- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 55 edges (avg confidence: 0.83)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `ab631c11`
+- Built from commit: `2d029542`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -369,28 +369,47 @@
 - [[_COMMUNITY_Community 364|Community 364]]
 - [[_COMMUNITY_Community 365|Community 365]]
 - [[_COMMUNITY_Community 366|Community 366]]
+- [[_COMMUNITY_Community 367|Community 367]]
+- [[_COMMUNITY_Community 368|Community 368]]
+- [[_COMMUNITY_Community 369|Community 369]]
+- [[_COMMUNITY_Community 370|Community 370]]
+- [[_COMMUNITY_Community 371|Community 371]]
+- [[_COMMUNITY_Community 372|Community 372]]
+- [[_COMMUNITY_Community 373|Community 373]]
+- [[_COMMUNITY_Community 374|Community 374]]
+- [[_COMMUNITY_Community 375|Community 375]]
+- [[_COMMUNITY_Community 376|Community 376]]
+- [[_COMMUNITY_Community 377|Community 377]]
+- [[_COMMUNITY_Community 378|Community 378]]
+- [[_COMMUNITY_Community 379|Community 379]]
+- [[_COMMUNITY_Community 380|Community 380]]
+- [[_COMMUNITY_Community 381|Community 381]]
+- [[_COMMUNITY_Community 382|Community 382]]
+- [[_COMMUNITY_Community 383|Community 383]]
+- [[_COMMUNITY_Community 384|Community 384]]
+- [[_COMMUNITY_Community 385|Community 385]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `cn()` - 94 edges
-2. `DB` - 57 edges
-3. `householdMembers` - 44 edges
+1. `cn()` - 96 edges
+2. `DB` - 58 edges
+3. `householdMembers` - 45 edges
 4. `getCurrentHousehold` - 41 edges
-5. `households` - 34 edges
-6. `Button()` - 28 edges
+5. `households` - 35 edges
+6. `Button()` - 29 edges
 7. `expenses` - 26 edges
-8. `users` - 23 edges
-9. `categories` - 23 edges
-10. `useFormatCurrency()` - 22 edges
+8. `useFormatCurrency()` - 24 edges
+9. `users` - 23 edges
+10. `categories` - 23 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `Append-Only Activity Audit Feed` --references--> `logActivity()`  [EXTRACTED]
   memory.md → src/lib/activity.ts
-- `isEmailAllowed()` --implements--> `Sign in with Google Plan (Model A)`  [INFERRED]
-  src/lib/allow-list.ts → plans/2026-06-09-google-login.md
 - `Per-Household Currency Switcher Plan` --references--> `useFormatCurrency()`  [EXTRACTED]
   plans/2026-06-07-currency-switcher.md → src/components/providers/currency-provider.tsx
 - `Model B Per-User Household Auth` --references--> `NoHousehold()`  [EXTRACTED]
   CLAUDE.md → src/components/shared/no-household.tsx
+- `Model B Per-User Household Auth` --references--> `inviteToHousehold`  [EXTRACTED]
+  CLAUDE.md → src/lib/actions/invite-actions.ts
 - `App-Level Progress Bar + Route Skeletons` --references--> `updateHouseholdCurrency`  [EXTRACTED]
   memory.md → src/lib/actions/settings-actions.ts
 
@@ -412,7 +431,7 @@
 - **Rich Logo Composition (cream tile + rose O ring + saffron tiles + ink rupee)** — logos_logo_rich, logos_logo_rich_rupee_glyph, logos_logo_rich_parapet_tiles, logos_logo_rich_palette [EXTRACTED 1.00]
 - **Mosaic O Clean icon composition (cream tile + rose ring + ink rupee)** — app_icon_rose_ring_o, app_icon_indian_rupee_glyph, app_icon_home_photo_palette [EXTRACTED 1.00]
 
-## Communities (367 total, 13 thin omitted)
+## Communities (387 total, 13 thin omitted)
 
 ### Community 0 - "App Pages & Activity Feed"
 Cohesion: 0.05
@@ -428,15 +447,15 @@ Nodes (45): noSvgWithoutTitle, source, assist, actions, enabled, css, formatter,
 
 ### Community 3 - "Drizzle Snapshot 0002 #3"
 Cohesion: 0.11
-Nodes (10): actorState, ALICE, cookieJar, createSettlement, deleteSettlement, actorState, cookieJar, updateSettlement (+2 more)
+Nodes (11): actorState, ALICE, cookieJar, createSettlement, deleteSettlement, actorState, cookieJar, updateSettlement (+3 more)
 
 ### Community 4 - "Drizzle Snapshot 0003 #4"
 Cohesion: 0.05
 Nodes (43): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, columns (+35 more)
 
 ### Community 5 - "Drizzle Snapshot 0004 #5"
-Cohesion: 0.05
-Nodes (43): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, columns (+35 more)
+Cohesion: 0.15
+Nodes (13): columns, isUnique, name, columns, isUnique, name, indexes, columns (+5 more)
 
 ### Community 6 - "Drizzle Snapshot 0006 #6"
 Cohesion: 0.05
@@ -447,12 +466,12 @@ Cohesion: 0.05
 Nodes (39): household_members_household_id_households_id_fk, household_members_user_id_users_id_fk, checkConstraints, compositePrimaryKeys, columns, isUnique, name, foreignKeys (+31 more)
 
 ### Community 8 - "Category & Expense Actions"
-Cohesion: 0.21
-Nodes (11): logout(), AppLogo(), firstName(), greeting(), Header(), HeaderUser, initials(), navItems (+3 more)
+Cohesion: 0.05
+Nodes (43): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, columns (+35 more)
 
 ### Community 9 - "Management UI Components"
-Cohesion: 0.10
-Nodes (43): createCategory, CategoryItem, HouseholdItem, HouseholdManager(), CATEGORY_COLORS, CATEGORY_ICONS, CURRENCIES, cn() (+35 more)
+Cohesion: 0.08
+Nodes (40): PasscodeState, createCategory, updateExpenseNotifyThreshold, CategoryItem, HouseholdItem, CATEGORY_COLORS, CATEGORY_ICONS, CURRENCIES (+32 more)
 
 ### Community 10 - "Drizzle Snapshot 0006 #10"
 Cohesion: 0.11
@@ -460,27 +479,27 @@ Nodes (19): settlements_from_member_id_household_members_id_fk, settlements_hous
 
 ### Community 11 - "Accent & Invite Actions"
 Cohesion: 0.10
-Nodes (21): actorState, cookieJar, U1, updateHouseholdAccent, actorState, ADMIN, cookieJar, MEMBER (+13 more)
+Nodes (20): actorState, cookieJar, U1, updateHouseholdAccent, actorState, ADMIN, cookieJar, MEMBER (+12 more)
 
 ### Community 12 - "Auth Pages & Dashboard Charts"
-Cohesion: 0.06
-Nodes (41): loadMoreActivity, PasscodeState, Row, metadata, PasscodeForm(), CategoryPieChart(), CategoryPieChartProps, ExpenseChart() (+33 more)
+Cohesion: 0.11
+Nodes (26): loadMoreActivity, ActivityFeed(), Row, metadata, PasscodeForm(), CategoryPieChart(), CategoryPieChartProps, ExpenseChart() (+18 more)
 
 ### Community 13 - "Expense Form & UI Primitives"
-Cohesion: 0.09
-Nodes (25): DATE_PRESETS, ExpenseFilters(), formatRange(), Option, categories, members, router, searchParams (+17 more)
+Cohesion: 0.08
+Nodes (32): AddExpenseSheet(), DATE_PRESETS, ExpenseFilters(), FilterSummary(), formatRange(), Option, categories, members (+24 more)
 
 ### Community 14 - "Passcode Auth Flow"
 Cohesion: 0.11
 Nodes (20): lockAdmin(), cookieJar, googleSession, verifyPasscode, authState, cookieJar, Superadmin Passcode Gate (he_session), constantTimeEqual() (+12 more)
 
 ### Community 15 - "Allow-list & Cron Route"
-Cohesion: 0.17
-Nodes (13): applyUserIdToSession(), canSignIn(), claimInvites(), isKnownEmail(), upsertUserByEmail(), userCount(), migrateOwner(), householdMembers (+5 more)
+Cohesion: 0.14
+Nodes (17): applyUserIdToSession(), canSignIn(), claimInvites(), isKnownEmail(), upsertUserByEmail(), userCount(), Model B Per-User Household Auth, users (+9 more)
 
 ### Community 16 - "Household Actions"
-Cohesion: 0.09
-Nodes (23): deleteCategory, updateCategory, createHousehold, deleteHousehold, renameHousehold, switchHousehold, actorState, cookieJar (+15 more)
+Cohesion: 0.12
+Nodes (17): deleteCategory, updateCategory, createHousehold, deleteHousehold, renameHousehold, switchHousehold, actorState, cookieJar (+9 more)
 
 ### Community 17 - "Drizzle Snapshot 0006 #17"
 Cohesion: 0.05
@@ -491,44 +510,44 @@ Cohesion: 0.05
 Nodes (39): household_members_household_id_households_id_fk, household_members_user_id_users_id_fk, checkConstraints, compositePrimaryKeys, columns, isUnique, name, foreignKeys (+31 more)
 
 ### Community 19 - "Drizzle Snapshot 0005 #19"
-Cohesion: 0.11
-Nodes (19): count, key, window_start, autoincrement, name, notNull, primaryKey, type (+11 more)
+Cohesion: 0.15
+Nodes (13): count, key, autoincrement, name, notNull, primaryKey, type, autoincrement (+5 more)
 
 ### Community 20 - "Drizzle Snapshot 0006 #20"
 Cohesion: 0.08
 Nodes (26): count, key, window_start, autoincrement, name, notNull, primaryKey, type (+18 more)
 
 ### Community 21 - "Drizzle Snapshot 0005 #21"
-Cohesion: 0.29
-Nodes (8): ActivityFeed(), ActivityPage(), metadata, Activity, actorState, getActivity(), getActivityActors(), parseActorFilter()
+Cohesion: 0.32
+Nodes (7): ActivityPage(), metadata, Activity, actorState, getActivity(), getActivityActors(), parseActorFilter()
 
 ### Community 22 - "Drizzle Snapshot 0006 #22"
-Cohesion: 0.12
-Nodes (17): columns, isUnique, name, columns, isUnique, name, columns, isUnique (+9 more)
+Cohesion: 0.05
+Nodes (39): household_members_household_id_households_id_fk, household_members_user_id_users_id_fk, checkConstraints, compositePrimaryKeys, columns, isUnique, name, foreignKeys (+31 more)
 
 ### Community 23 - "Runtime Dependencies"
 Cohesion: 0.08
-Nodes (25): dependencies, @base-ui/react, class-variance-authority, clsx, date-fns, drizzle-orm, exceljs, jspdf (+17 more)
+Nodes (26): dependencies, @base-ui/react, class-variance-authority, clsx, date-fns, drizzle-orm, exceljs, jspdf (+18 more)
 
 ### Community 24 - "shadcn Components Config"
 Cohesion: 0.09
 Nodes (21): aliases, components, hooks, lib, ui, utils, iconLibrary, menuAccent (+13 more)
 
 ### Community 25 - "Drizzle Snapshot 0006 #25"
-Cohesion: 0.20
-Nodes (10): loadNotifications, NotificationBell(), actions, toast, Popover(), PopoverContent(), PopoverDescription(), PopoverHeader() (+2 more)
+Cohesion: 0.05
+Nodes (39): household_members_household_id_households_id_fk, household_members_user_id_users_id_fk, checkConstraints, compositePrimaryKeys, columns, isUnique, name, foreignKeys (+31 more)
 
 ### Community 26 - "Dev Dependencies"
 Cohesion: 0.09
 Nodes (22): devDependencies, @biomejs/biome, drizzle-kit, esbuild, happy-dom, lint-staged, @playwright/test, png-to-ico (+14 more)
 
 ### Community 27 - "CSV Import Feature"
-Cohesion: 0.14
-Nodes (17): ImportResult, ImportExpenses(), ImportExpensesProps, MemberChoice, numberFmt, Parsed, ROLE_LABELS, selectClass() (+9 more)
+Cohesion: 0.15
+Nodes (16): ImportResult, ImportExpensesProps, MemberChoice, numberFmt, Parsed, ROLE_LABELS, selectClass(), parseCsv() (+8 more)
 
 ### Community 28 - "Animated Number & Summary Cards"
-Cohesion: 0.13
-Nodes (20): Category, HouseholdMember, AddExpenseSheet(), AddExpenseSheetProps, ExpenseForm(), ExpenseFormProps, pillClass(), SplitMode (+12 more)
+Cohesion: 0.08
+Nodes (38): ActivityActorFilter(), actors, router, searchParams, Category, HouseholdMember, AddExpenseSheetProps, ExpenseForm() (+30 more)
 
 ### Community 29 - "Drizzle Snapshot 0006 #29"
 Cohesion: 0.10
@@ -539,12 +558,12 @@ Cohesion: 0.10
 Nodes (19): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+11 more)
 
 ### Community 31 - "Expense List & Progress UI"
-Cohesion: 0.14
-Nodes (14): columns, autoincrement, default, name, notNull, primaryKey, type, color (+6 more)
+Cohesion: 0.10
+Nodes (21): columns, icon, is_default, name, autoincrement, default, name, notNull (+13 more)
 
 ### Community 32 - "Category Icons & Expense Rows"
 Cohesion: 0.08
-Nodes (26): actorState, ADMIN, cookieJar, acceptInvite, declineInvite, markAllNotificationsRead, actorState, cookieJar (+18 more)
+Nodes (32): inviteToHousehold, actorState, ADMIN, cookieJar, acceptInvite, declineInvite, markAllNotificationsRead, actorState (+24 more)
 
 ### Community 33 - "Drizzle Schema & Types"
 Cohesion: 0.08
@@ -552,11 +571,11 @@ Nodes (26): count, key, window_start, autoincrement, name, notNull, primaryKey, 
 
 ### Community 34 - "Drizzle Snapshot 0006 #34"
 Cohesion: 0.08
-Nodes (25): autoincrement, name, notNull, primaryKey, type, avatar, email, household_id (+17 more)
+Nodes (26): autoincrement, name, notNull, primaryKey, type, avatar, email, include_in_settle_up (+18 more)
 
 ### Community 35 - "Drizzle Snapshot 0006 #35"
 Cohesion: 0.08
-Nodes (25): checkConstraints, columns, compositePrimaryKeys, columns, isUnique, name, indexes, name (+17 more)
+Nodes (24): checkConstraints, columns, compositePrimaryKeys, columns, isUnique, name, indexes, name (+16 more)
 
 ### Community 36 - "Drizzle Snapshot 0006 #36"
 Cohesion: 0.14
@@ -564,43 +583,43 @@ Nodes (14): checkConstraints, compositePrimaryKeys, indexes, name, uniqueConstra
 
 ### Community 37 - "Drizzle Snapshot 0006 #37"
 Cohesion: 0.08
-Nodes (25): autoincrement, name, notNull, primaryKey, type, amount_minor, date, from_member_id (+17 more)
+Nodes (25): date, from_member_id, note, to_member_id, autoincrement, name, notNull, primaryKey (+17 more)
 
 ### Community 38 - "Package Scripts"
 Cohesion: 0.11
 Nodes (19): scripts, build, db:e2e, db:e2e:reset, db:generate, db:init, db:migrate, db:migrate:model-b (+11 more)
 
 ### Community 39 - "Settlement Actions & Rate Limits"
-Cohesion: 0.09
-Nodes (17): actorState, cookieJar, createExpense, deleteExpense, updateExpense, actorState, cookieJar, expenseForm() (+9 more)
+Cohesion: 0.08
+Nodes (20): actorState, cookieJar, createExpense, deleteExpense, updateExpense, actorState, cookieJar, expenseForm() (+12 more)
 
 ### Community 40 - "Settle-Up & Features Doc"
-Cohesion: 0.13
-Nodes (20): TopProgressBar(), emit(), endAction(), getServerProgressSnapshot(), isProgressActive(), Listener, listeners, setNavInFlight() (+12 more)
+Cohesion: 0.11
+Nodes (22): CategoryIcon(), CategoryIconProps, iconMap, ExpenseItem, ExpenseList(), ExpenseRow(), ExpenseRowItem, ExpenseRowProps (+14 more)
 
 ### Community 41 - "Drizzle Snapshot 0005 #41"
-Cohesion: 0.12
-Nodes (17): columns, isUnique, name, columns, isUnique, name, columns, isUnique (+9 more)
+Cohesion: 0.05
+Nodes (39): household_members_household_id_households_id_fk, household_members_user_id_users_id_fk, checkConstraints, compositePrimaryKeys, columns, isUnique, name, foreignKeys (+31 more)
 
 ### Community 42 - "App Layout & Household Provider"
-Cohesion: 0.07
-Nodes (37): inviteToHousehold, updateHouseholdCurrency, AppLayout(), getCurrentActor, memberRole(), Model B Per-User Household Auth, Money as Integer Minor Units, Outlay — Household Expense Tracker PWA (+29 more)
+Cohesion: 0.28
+Nodes (7): ACCENT_KEYS, AccentKey, AccentPair, isAccentKey(), resolveAccent(), AccentFormData, accentSchema
 
 ### Community 43 - "Household Switcher & Dropdown"
-Cohesion: 0.16
-Nodes (12): HouseholdSwitcher(), useHouseholds(), DropdownMenuCheckboxItem(), DropdownMenuContent(), DropdownMenuGroup(), DropdownMenuLabel(), DropdownMenuRadioItem(), DropdownMenuSeparator() (+4 more)
+Cohesion: 0.06
+Nodes (41): logout(), loadNotifications, AppLogo(), ExportButtonProps, downloadBlob(), ExpenseRecord, firstName(), greeting() (+33 more)
 
 ### Community 44 - "Currency Switcher & Constants"
-Cohesion: 0.18
-Nodes (11): checkConstraints, compositePrimaryKeys, foreignKeys, columns, isUnique, name, indexes, name (+3 more)
+Cohesion: 0.11
+Nodes (19): checkConstraints, compositePrimaryKeys, foreignKeys, columns, isUnique, name, columnsFrom, columnsTo (+11 more)
 
 ### Community 45 - "Drizzle Snapshot 0006 #45"
 Cohesion: 0.09
 Nodes (21): id, dialect, checkConstraints, compositePrimaryKeys, foreignKeys, indexes, name, uniqueConstraints (+13 more)
 
 ### Community 46 - "Import Actions & Seed"
-Cohesion: 0.11
-Nodes (19): payload, read_at, type, columns, autoincrement, name, notNull, primaryKey (+11 more)
+Cohesion: 0.09
+Nodes (22): id, payload, type, autoincrement, name, notNull, primaryKey, type (+14 more)
 
 ### Community 47 - "Drizzle Snapshot 0000 #47"
 Cohesion: 0.13
@@ -615,16 +634,16 @@ Cohesion: 0.14
 Nodes (14): currency, name, autoincrement, default, name, notNull, primaryKey, type (+6 more)
 
 ### Community 50 - "Drizzle Snapshot 0003 #50"
-Cohesion: 0.10
-Nodes (21): columns, autoincrement, default, name, notNull, primaryKey, type, color (+13 more)
-
-### Community 51 - "Drizzle Snapshot 0003 #51"
-Cohesion: 0.14
-Nodes (14): currency, name, autoincrement, default, name, notNull, primaryKey, type (+6 more)
-
-### Community 52 - "Drizzle Snapshot 0005 #52"
 Cohesion: 0.13
 Nodes (15): columns, autoincrement, default, name, notNull, primaryKey, type, color (+7 more)
+
+### Community 51 - "Drizzle Snapshot 0003 #51"
+Cohesion: 0.13
+Nodes (15): currency, autoincrement, default, name, notNull, primaryKey, type, checkConstraints (+7 more)
+
+### Community 52 - "Drizzle Snapshot 0005 #52"
+Cohesion: 0.14
+Nodes (14): columns, autoincrement, default, name, notNull, primaryKey, type, color (+6 more)
 
 ### Community 53 - "Drizzle Snapshot 0000 #53"
 Cohesion: 0.14
@@ -643,8 +662,8 @@ Cohesion: 0.14
 Nodes (14): autoincrement, name, notNull, primaryKey, type, accent, currency, autoincrement (+6 more)
 
 ### Community 57 - "Drizzle Snapshot 0004 #57"
-Cohesion: 0.13
-Nodes (15): columns, autoincrement, default, name, notNull, primaryKey, type, color (+7 more)
+Cohesion: 0.14
+Nodes (14): columns, autoincrement, default, name, notNull, primaryKey, type, color (+6 more)
 
 ### Community 58 - "Drizzle Snapshot 0005 #58"
 Cohesion: 0.14
@@ -659,12 +678,12 @@ Cohesion: 0.08
 Nodes (24): Milestone 1 — Schema & identity foundation, Milestone 2 — Authorization core, Milestone 3 — Session cut & route split, Milestone 4 — Invitations, Milestone 5 — UI: onboarding, header, members invite, Milestone 6 — Migration, e2e, docs, Model B — User-Owned Households + Superadmin Passcode Implementation Plan, Post-implementation (operator steps — not code) (+16 more)
 
 ### Community 61 - "Export Formatting Helpers"
-Cohesion: 0.14
-Nodes (14): household_members_household_id_households_id_fk, checkConstraints, compositePrimaryKeys, foreignKeys, columnsFrom, columnsTo, name, onDelete (+6 more)
+Cohesion: 0.06
+Nodes (31): checkConstraints, compositePrimaryKeys, columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom (+23 more)
 
 ### Community 62 - "PWA Manifest & Icons"
-Cohesion: 0.15
-Nodes (14): FilterSummary(), Outlay PWA App Icon 512px (Rupee Coin), PWA Manifest Icon Set (installable app identity), Indian Rupee (₹) Currency Symbol Branding, formatMinor(), notificationText(), num(), base (+6 more)
+Cohesion: 0.12
+Nodes (17): SummaryCards(), Outlay PWA App Icon 512px (Rupee Coin), PWA Manifest Icon Set (installable app identity), Indian Rupee (₹) Currency Symbol Branding, formatMinor(), notificationText(), num(), base (+9 more)
 
 ### Community 63 - "Drizzle Snapshot 0000 #63"
 Cohesion: 0.15
@@ -688,7 +707,7 @@ Nodes (12): dialect, enums, id, internal, indexes, _meta, columns, schemas (+4 m
 
 ### Community 68 - "Drizzle Snapshot 0001 #68"
 Cohesion: 0.08
-Nodes (25): date, description, member_id, notes, autoincrement, name, notNull, primaryKey (+17 more)
+Nodes (25): autoincrement, name, notNull, primaryKey, type, category_id, description, member_id (+17 more)
 
 ### Community 69 - "Drizzle Snapshot 0001 #69"
 Cohesion: 0.11
@@ -719,32 +738,32 @@ Cohesion: 0.15
 Nodes (12): dialect, enums, id, internal, indexes, _meta, columns, schemas (+4 more)
 
 ### Community 76 - "Drizzle Snapshot 0003 #76"
-Cohesion: 0.10
-Nodes (20): autoincrement, name, notNull, primaryKey, type, avatar, role, user_id (+12 more)
+Cohesion: 0.11
+Nodes (19): autoincrement, name, notNull, primaryKey, type, avatar, email, user_id (+11 more)
 
 ### Community 77 - "Drizzle Snapshot 0003 #77"
 Cohesion: 0.11
-Nodes (19): autoincrement, name, notNull, primaryKey, type, amount_minor, date, member_id (+11 more)
+Nodes (19): date, description, updated_at, autoincrement, name, notNull, primaryKey, type (+11 more)
 
 ### Community 78 - "Drizzle Snapshot 0003 #78"
-Cohesion: 0.11
-Nodes (19): created_at, email, image, autoincrement, name, notNull, primaryKey, type (+11 more)
+Cohesion: 0.15
+Nodes (13): image, name, autoincrement, name, notNull, primaryKey, type, autoincrement (+5 more)
 
 ### Community 79 - "Drizzle Snapshot 0003 #79"
-Cohesion: 0.12
-Nodes (17): columns, isUnique, name, columns, isUnique, name, columns, isUnique (+9 more)
+Cohesion: 0.07
+Nodes (27): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, checkConstraints (+19 more)
 
 ### Community 80 - "Drizzle Snapshot 0004 #80"
 Cohesion: 0.15
 Nodes (12): dialect, enums, id, internal, indexes, _meta, columns, schemas (+4 more)
 
 ### Community 81 - "Drizzle Snapshot 0004 #81"
-Cohesion: 0.10
-Nodes (20): autoincrement, name, notNull, primaryKey, type, avatar, role, user_id (+12 more)
+Cohesion: 0.15
+Nodes (13): autoincrement, name, notNull, primaryKey, type, avatar, user_id, columns (+5 more)
 
 ### Community 82 - "Drizzle Snapshot 0004 #82"
-Cohesion: 0.11
-Nodes (19): autoincrement, name, notNull, primaryKey, type, amount_minor, date, description (+11 more)
+Cohesion: 0.15
+Nodes (13): date, description, autoincrement, name, notNull, primaryKey, type, autoincrement (+5 more)
 
 ### Community 83 - "Drizzle Snapshot 0004 #83"
 Cohesion: 0.15
@@ -779,16 +798,16 @@ Cohesion: 0.09
 Nodes (23): notifications_user_id_users_id_fk, notifications_user_created_idx, notifications_user_unread_idx, checkConstraints, compositePrimaryKeys, foreignKeys, indexes, name (+15 more)
 
 ### Community 91 - "Drizzle Snapshot 0003 #91"
-Cohesion: 0.11
-Nodes (19): checkConstraints, compositePrimaryKeys, foreignKeys, indexes, name, uniqueConstraints, users_email_unique, tables (+11 more)
+Cohesion: 0.17
+Nodes (12): users_email_unique, tables, users, checkConstraints, compositePrimaryKeys, columns, isUnique, name (+4 more)
 
 ### Community 92 - "Drizzle Snapshot 0004 #92"
-Cohesion: 0.11
-Nodes (19): checkConstraints, compositePrimaryKeys, foreignKeys, indexes, name, uniqueConstraints, users_email_unique, tables (+11 more)
+Cohesion: 0.18
+Nodes (11): users_email_unique, users, checkConstraints, compositePrimaryKeys, columns, isUnique, name, foreignKeys (+3 more)
 
 ### Community 93 - "Member Actions"
-Cohesion: 0.07
-Nodes (45): createMember, deleteMember, updateMember, actorState, cookieJar, DashboardContent(), categories, Expense (+37 more)
+Cohesion: 0.08
+Nodes (33): importExpenses, actorState, baseRows, cookieJar, resolutions, actorState, cookieJar, migrateOwner() (+25 more)
 
 ### Community 94 - "Root Layout & Fonts"
 Cohesion: 0.22
@@ -819,12 +838,12 @@ Cohesion: 0.11
 Nodes (19): checkConstraints, compositePrimaryKeys, foreignKeys, columnsFrom, columnsTo, name, onDelete, onUpdate (+11 more)
 
 ### Community 101 - "Drizzle Snapshot 0004 #101"
-Cohesion: 0.11
-Nodes (19): checkConstraints, compositePrimaryKeys, foreignKeys, columnsFrom, columnsTo, name, onDelete, onUpdate (+11 more)
+Cohesion: 0.18
+Nodes (11): checkConstraints, compositePrimaryKeys, foreignKeys, columns, isUnique, name, indexes, name (+3 more)
 
 ### Community 102 - "Drizzle Snapshot 0005 #102"
 Cohesion: 0.18
-Nodes (11): checkConstraints, compositePrimaryKeys, columns, isUnique, name, indexes, name, uniqueConstraints (+3 more)
+Nodes (11): checkConstraints, compositePrimaryKeys, foreignKeys, columns, isUnique, name, indexes, name (+3 more)
 
 ### Community 103 - "Drizzle Snapshot 0005 #103"
 Cohesion: 0.18
@@ -847,8 +866,8 @@ Cohesion: 0.13
 Nodes (15): checkConstraints, compositePrimaryKeys, foreignKeys, columnsFrom, columnsTo, name, onDelete, onUpdate (+7 more)
 
 ### Community 108 - "Project Overview Concepts"
-Cohesion: 0.10
-Nodes (29): CategoryManager(), CategoryContent(), metadata, EditExpensePage(), metadata, ExpenseContent(), ExpensesPage(), metadata (+21 more)
+Cohesion: 0.09
+Nodes (34): updateHouseholdCurrency, CategoryManager(), CategoryContent(), metadata, EditExpensePage(), metadata, ImportExpenses(), HouseholdManager() (+26 more)
 
 ### Community 109 - "Fresh Ledger Design System"
 Cohesion: 0.10
@@ -860,11 +879,11 @@ Nodes (25): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo
 
 ### Community 111 - "Drizzle Snapshot 0000 #111"
 Cohesion: 0.07
-Nodes (28): 2026‑06‑05 → 06‑10 (previous session), 2026‑06‑11 — Repo audit + top‑5 hardening pass, 2026‑06‑12 — Audit milestone 2 (committed + pushed), 2026‑06‑12 (later) — Audit complete: 1.5, 1.6, all of milestone 3 + Claude Code config, 2026‑06‑15 (end of day) — Fresh Ledger redesign MERGED to `main` + DEPLOYED to prod, 2026‑06‑15 — "Fresh Ledger" UI redesign: spec + implementation plan (NOT yet built), 2026‑06‑15 (later) — M4 expenses redesign: e2e suite made reliably green (`9997fa3`), 2026‑06‑15 (latest) — M5/M6 final verification: isolation e2e + a11y → Lighthouse 100 (+20 more)
+Nodes (29): 2026‑06‑05 → 06‑10 (previous session), 2026‑06‑11 — Repo audit + top‑5 hardening pass, 2026‑06‑12 — Audit milestone 2 (committed + pushed), 2026‑06‑12 (later) — Audit complete: 1.5, 1.6, all of milestone 3 + Claude Code config, 2026‑06‑15 (end of day) — Fresh Ledger redesign MERGED to `main` + DEPLOYED to prod, 2026‑06‑15 — "Fresh Ledger" UI redesign: spec + implementation plan (NOT yet built), 2026‑06‑15 (later) — M4 expenses redesign: e2e suite made reliably green (`9997fa3`), 2026‑06‑15 (latest) — M5/M6 final verification: isolation e2e + a11y → Lighthouse 100 (+21 more)
 
 ### Community 112 - "Drizzle Snapshot 0000 #112"
-Cohesion: 0.11
-Nodes (19): autoincrement, name, notNull, primaryKey, type, avatar, email, user_id (+11 more)
+Cohesion: 0.10
+Nodes (20): autoincrement, name, notNull, primaryKey, type, avatar, email, include_in_settle_up (+12 more)
 
 ### Community 113 - "Drizzle Snapshot 0000 #113"
 Cohesion: 0.13
@@ -879,8 +898,8 @@ Cohesion: 0.09
 Nodes (23): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, checkConstraints (+15 more)
 
 ### Community 116 - "Drizzle Snapshot 0001 #116"
-Cohesion: 0.10
-Nodes (20): autoincrement, name, notNull, primaryKey, type, accent, currency, notify_expense_over_minor (+12 more)
+Cohesion: 0.11
+Nodes (19): autoincrement, name, notNull, primaryKey, type, accent, created_at, notify_expense_over_minor (+11 more)
 
 ### Community 117 - "Drizzle Snapshot 0001 #117"
 Cohesion: 0.15
@@ -895,8 +914,8 @@ Cohesion: 0.09
 Nodes (23): household_members_household_id_households_id_fk, household_members_user_id_users_id_fk, checkConstraints, compositePrimaryKeys, foreignKeys, columnsFrom, columnsTo, name (+15 more)
 
 ### Community 120 - "Drizzle Snapshot 0002 #120"
-Cohesion: 0.13
-Nodes (15): columns, autoincrement, default, name, notNull, primaryKey, type, color (+7 more)
+Cohesion: 0.29
+Nodes (7): autoincrement, default, name, notNull, primaryKey, type, color
 
 ### Community 121 - "Drizzle Snapshot 0002 #121"
 Cohesion: 0.10
@@ -911,32 +930,32 @@ Cohesion: 0.11
 Nodes (19): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, checkConstraints (+11 more)
 
 ### Community 124 - "Drizzle Snapshot 0003 #124"
-Cohesion: 0.10
-Nodes (20): autoincrement, name, notNull, primaryKey, type, accent, currency, notify_expense_over_minor (+12 more)
+Cohesion: 0.08
+Nodes (26): autoincrement, name, notNull, primaryKey, type, accent, currency, name (+18 more)
 
 ### Community 125 - "Drizzle Snapshot 0003 #125"
-Cohesion: 0.11
-Nodes (19): autoincrement, name, notNull, primaryKey, type, avatar, email, user_id (+11 more)
+Cohesion: 0.33
+Nodes (6): email, autoincrement, name, notNull, primaryKey, type
 
 ### Community 126 - "Drizzle Snapshot 0004 #126"
 Cohesion: 0.11
 Nodes (18): checkConstraints, columns, compositePrimaryKeys, columns, isUnique, name, indexes, name (+10 more)
 
 ### Community 127 - "Drizzle Snapshot 0004 #127"
-Cohesion: 0.31
-Nodes (7): Balance, computeNetBalances(), computeShares(), MemberPaid, MemberShare, SettlementRow, Transfer
+Cohesion: 0.19
+Nodes (12): FEATURES.md Generator Skill, End-User Features Overview (FEATURES.md), Append-Only Activity Audit Feed, Settle-Up & Balances Feature, Balance, computeNetBalances(), computeShares(), MemberPaid (+4 more)
 
 ### Community 128 - "Drizzle Snapshot 0004 #128"
-Cohesion: 0.29
-Nodes (7): autoincrement, name, notNull, primaryKey, type, columns, action
+Cohesion: 0.11
+Nodes (19): autoincrement, name, notNull, primaryKey, type, columns, action, household_id (+11 more)
 
 ### Community 129 - "Drizzle Snapshot 0005 #129"
-Cohesion: 0.25
-Nodes (8): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, activity_household_id_households_id_fk
+Cohesion: 0.08
+Nodes (26): autoincrement, name, notNull, primaryKey, type, accent, currency, name (+18 more)
 
 ### Community 130 - "Drizzle Snapshot 0005 #130"
-Cohesion: 0.09
-Nodes (21): Access Gate, API Reference (Server Actions & Queries), Architecture, Data Model, Database & Migrations, Deployment, Environment Variables, Features (+13 more)
+Cohesion: 0.08
+Nodes (24): Access Model, API Reference (Server Actions & Queries), Architecture, Data Model, Database & Migrations, Deployment, Documentation Map, Environment Variables (+16 more)
 
 ### Community 131 - "Claude Settings & Hooks"
 Cohesion: 0.25
@@ -947,16 +966,16 @@ Cohesion: 0.33
 Nodes (7): Cream Background Tile (#f7eecf, rounded rect rx=108), Rationale: use Lucide path so icon is font-independent and consistent with app iconography, Source Palette from Home Photos (cream #f7eecf, rose #d97da2, ink #1a1a1a), Lucide IndianRupee Icon Path, Outlay App Icon (A1 "Mosaic O · Clean"), Rose Ring — the "O" of Outlay (#d97da2, stroke-width 64), Indian Rupee Glyph (ink #1a1a1a, centered in ring)
 
 ### Community 133 - "Drizzle Snapshot 0000 #133"
-Cohesion: 0.18
-Nodes (11): checkConstraints, compositePrimaryKeys, foreignKeys, columns, isUnique, name, indexes, name (+3 more)
+Cohesion: 0.08
+Nodes (25): checkConstraints, columns, compositePrimaryKeys, columns, isUnique, name, indexes, name (+17 more)
 
 ### Community 134 - "Drizzle Snapshot 0000 #134"
-Cohesion: 0.15
-Nodes (13): count, window_start, autoincrement, name, notNull, primaryKey, type, columns (+5 more)
+Cohesion: 0.11
+Nodes (19): count, key, window_start, autoincrement, name, notNull, primaryKey, type (+11 more)
 
 ### Community 135 - "Drizzle Snapshot 0000 #135"
-Cohesion: 0.11
-Nodes (19): payload, read_at, type, columns, autoincrement, name, notNull, primaryKey (+11 more)
+Cohesion: 0.08
+Nodes (25): created_at, payload, read_at, type, autoincrement, name, notNull, primaryKey (+17 more)
 
 ### Community 136 - "Drizzle Snapshot 0000 #136"
 Cohesion: 0.12
@@ -983,8 +1002,8 @@ Cohesion: 0.20
 Nodes (10): Audit Report, Code quality, Correctness / data integrity, Dependencies, DevEx & operations, Documentation, Performance, Security (+2 more)
 
 ### Community 143 - "Drizzle Snapshot 0001 #143"
-Cohesion: 0.22
-Nodes (8): AnimatedNumber(), AnimatedNumberProps, useReducedMotionMock, MotionCardProps, PageTransition(), PageTransitionProps, StaggerItemProps, StaggerProps
+Cohesion: 0.16
+Nodes (13): SummaryCardsProps, AnimatedNumber(), AnimatedNumberProps, useReducedMotionMock, MotionCardProps, PageTransition(), PageTransitionProps, containerVariants (+5 more)
 
 ### Community 144 - "Drizzle Snapshot 0001 #144"
 Cohesion: 0.12
@@ -1019,32 +1038,32 @@ Cohesion: 0.11
 Nodes (19): expense_id, member_id, share_minor, autoincrement, name, notNull, primaryKey, type (+11 more)
 
 ### Community 152 - "Drizzle Snapshot 0004 #152"
-Cohesion: 0.09
-Nodes (22): household_members_household_id_households_id_fk, household_members_user_id_users_id_fk, checkConstraints, compositePrimaryKeys, foreignKeys, columnsFrom, columnsTo, name (+14 more)
+Cohesion: 0.05
+Nodes (39): household_members_household_id_households_id_fk, household_members_user_id_users_id_fk, checkConstraints, compositePrimaryKeys, columns, isUnique, name, foreignKeys (+31 more)
 
 ### Community 153 - "Drizzle Snapshot 0004 #153"
-Cohesion: 0.22
-Nodes (9): notifications_user_created_idx, notifications_user_unread_idx, indexes, columns, isUnique, name, columns, isUnique (+1 more)
+Cohesion: 0.08
+Nodes (26): autoincrement, name, notNull, primaryKey, type, avatar, email, role (+18 more)
 
 ### Community 154 - "Drizzle Snapshot 0004 #154"
-Cohesion: 0.32
-Nodes (6): ExportButton(), ExportButtonProps, downloadBlob(), ExpenseRecord, DropdownMenu(), DropdownMenuItem()
+Cohesion: 0.08
+Nodes (25): autoincrement, name, notNull, primaryKey, type, columns, autoincrement, name (+17 more)
 
 ### Community 155 - "Drizzle Snapshot 0005 #155"
 Cohesion: 0.29
 Nodes (7): is_default, autoincrement, default, name, notNull, primaryKey, type
 
 ### Community 156 - "Drizzle Snapshot 0005 #156"
-Cohesion: 0.25
-Nodes (8): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, expenses_household_id_households_id_fk
+Cohesion: 0.08
+Nodes (25): autoincrement, name, notNull, primaryKey, type, autoincrement, name, notNull (+17 more)
 
 ### Community 157 - "Drizzle Snapshot 0006 #157"
 Cohesion: 0.25
 Nodes (8): household_members_household_id_households_id_fk, columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo
 
 ### Community 158 - "Drizzle Snapshot 0006 #158"
-Cohesion: 0.25
-Nodes (8): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, categories_household_id_households_id_fk
+Cohesion: 0.22
+Nodes (9): foreignKeys, columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo (+1 more)
 
 ### Community 159 - "Import Validators"
 Cohesion: 0.29
@@ -1071,8 +1090,8 @@ Cohesion: 0.47
 Nodes (3): isNavItemActive(), MobileNav(), navItems
 
 ### Community 165 - "Drizzle Snapshot 0000 #165"
-Cohesion: 0.13
-Nodes (15): from_member_id, household_id, id, name, autoincrement, name, notNull, primaryKey (+7 more)
+Cohesion: 0.10
+Nodes (22): autoincrement, name, notNull, primaryKey, type, avatar, from_member_id, household_id (+14 more)
 
 ### Community 166 - "Drizzle Snapshot 0000 #166"
 Cohesion: 0.33
@@ -1087,16 +1106,16 @@ Cohesion: 0.13
 Nodes (14): 10. Out of Scope (deferred to real-auth milestone), 11. Open question (non-blocking), 1. Goal, 2. Locked Decisions, 3. The linchpin: "current household", 4. Data flow, 5. File-by-File Changes, 6. Key flows (+6 more)
 
 ### Community 169 - "Drizzle Snapshot 0000 #169"
-Cohesion: 0.09
-Nodes (26): importExpenses, actorState, baseRows, cookieJar, resolutions, GET(), DB, CLEANUP_RETENTION_DAYS (+18 more)
+Cohesion: 0.12
+Nodes (18): GET(), CLEANUP_RETENTION_DAYS, cleanupAbandonedAccounts(), CleanupResult, hasLedgerRows(), Env, envSchema, formatEnvError() (+10 more)
 
 ### Community 170 - "Drizzle Snapshot 0000 #170"
-Cohesion: 0.25
-Nodes (8): household_members_user_id_users_id_fk, columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo
+Cohesion: 0.13
+Nodes (14): createMember, deleteMember, updateMember, actorState, cookieJar, actorState, cookieJar, settlements (+6 more)
 
 ### Community 171 - "Drizzle Snapshot 0000 #171"
-Cohesion: 0.14
-Nodes (14): notifications_user_id_users_id_fk, checkConstraints, compositePrimaryKeys, foreignKeys, name, uniqueConstraints, columnsFrom, columnsTo (+6 more)
+Cohesion: 0.09
+Nodes (23): notifications_user_id_users_id_fk, notifications_user_created_idx, notifications_user_unread_idx, checkConstraints, compositePrimaryKeys, foreignKeys, indexes, name (+15 more)
 
 ### Community 172 - "Drizzle Snapshot 0000 #172"
 Cohesion: 0.33
@@ -1115,8 +1134,8 @@ Cohesion: 0.25
 Nodes (8): settlements_to_member_id_household_members_id_fk, columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo
 
 ### Community 176 - "Drizzle Snapshot 0001 #176"
-Cohesion: 0.33
-Nodes (6): checkConstraints, compositePrimaryKeys, foreignKeys, name, uniqueConstraints, activity
+Cohesion: 0.18
+Nodes (11): checkConstraints, compositePrimaryKeys, foreignKeys, columns, isUnique, name, indexes, name (+3 more)
 
 ### Community 177 - "Drizzle Snapshot 0001 #177"
 Cohesion: 0.05
@@ -1143,8 +1162,8 @@ Cohesion: 0.29
 Nodes (7): role, autoincrement, default, name, notNull, primaryKey, type
 
 ### Community 183 - "Drizzle Snapshot 0002 #183"
-Cohesion: 0.29
-Nodes (7): checkConstraints, compositePrimaryKeys, foreignKeys, indexes, name, uniqueConstraints, households
+Cohesion: 0.09
+Nodes (22): columns, autoincrement, default, name, notNull, primaryKey, type, color (+14 more)
 
 ### Community 184 - "Drizzle Snapshot 0002 #184"
 Cohesion: 0.33
@@ -1167,28 +1186,28 @@ Cohesion: 0.29
 Nodes (7): autoincrement, name, notNull, primaryKey, type, amount_minor, columns
 
 ### Community 189 - "Drizzle Snapshot 0003 #189"
-Cohesion: 0.25
-Nodes (7): dialect, id, prevId, name, tables, settlements, version
+Cohesion: 0.09
+Nodes (21): dialect, checkConstraints, compositePrimaryKeys, foreignKeys, indexes, name, uniqueConstraints, id (+13 more)
 
 ### Community 190 - "Drizzle Snapshot 0003 #190"
 Cohesion: 0.25
 Nodes (8): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, activity_actor_user_id_users_id_fk
 
 ### Community 191 - "Drizzle Snapshot 0003 #191"
-Cohesion: 0.25
-Nodes (8): household_members_household_id_households_id_fk, columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo
+Cohesion: 0.10
+Nodes (21): created_at, household_id, read_at, autoincrement, name, notNull, primaryKey, type (+13 more)
 
 ### Community 192 - "Drizzle Snapshot 0003 #192"
-Cohesion: 0.25
-Nodes (8): household_members_user_id_users_id_fk, columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo
+Cohesion: 0.17
+Nodes (11): DashboardContent(), DashboardPage(), metadata, BeforeInstallPromptEvent, InstallPrompt(), getCategoryBreakdown(), getDashboardStats(), getMemberSpending() (+3 more)
 
 ### Community 193 - "Drizzle Snapshot 0003 #193"
 Cohesion: 0.33
 Nodes (6): id, autoincrement, name, notNull, primaryKey, type
 
 ### Community 194 - "Drizzle Snapshot 0003 #194"
-Cohesion: 0.38
-Nodes (4): ExpenseRow(), ExpenseRowItem, ExpenseRowProps, shouldRevealDelete()
+Cohesion: 0.11
+Nodes (19): checkConstraints, compositePrimaryKeys, foreignKeys, columnsFrom, columnsTo, name, onDelete, onUpdate (+11 more)
 
 ### Community 195 - "Drizzle Snapshot 0003 #195"
 Cohesion: 0.29
@@ -1207,8 +1226,8 @@ Cohesion: 0.15
 Nodes (12): 1. Goal, 2. Locked Decisions, 3. Why these choices, 4. Architecture, 5. File-by-File Changes, 6. Default → INR migration, 7. Implementation Steps (each with a verification gate), 8. Acceptance Criteria (+4 more)
 
 ### Community 199 - "Drizzle Snapshot 0004 #199"
-Cohesion: 0.22
-Nodes (9): foreignKeys, columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo (+1 more)
+Cohesion: 0.25
+Nodes (8): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, categories_household_id_households_id_fk
 
 ### Community 200 - "Drizzle Snapshot 0004 #200"
 Cohesion: 0.33
@@ -1243,8 +1262,8 @@ Cohesion: 0.15
 Nodes (12): 10. Out of scope (now), 1. Goal, 2. Locked decisions, 3. What Google buys us in Model A, 4. Technical design, 5. File-by-file changes, 6. External setup (Google Cloud), 7. Implementation steps (each with a verification gate) (+4 more)
 
 ### Community 208 - "Drizzle Snapshot 0005 #208"
-Cohesion: 0.33
-Nodes (6): date, autoincrement, name, notNull, primaryKey, type
+Cohesion: 0.15
+Nodes (13): date, description, autoincrement, name, notNull, primaryKey, type, autoincrement (+5 more)
 
 ### Community 209 - "Drizzle Snapshot 0005 #209"
 Cohesion: 0.33
@@ -1263,8 +1282,8 @@ Cohesion: 0.33
 Nodes (6): id, autoincrement, name, notNull, primaryKey, type
 
 ### Community 213 - "Drizzle Snapshot 0005 #213"
-Cohesion: 0.15
-Nodes (13): autoincrement, name, notNull, primaryKey, type, amount_minor, updated_at, columns (+5 more)
+Cohesion: 0.33
+Nodes (6): autoincrement, name, notNull, primaryKey, type, amount_minor
 
 ### Community 214 - "Drizzle Snapshot 0005 #214"
 Cohesion: 0.33
@@ -1299,8 +1318,8 @@ Cohesion: 0.17
 Nodes (12): Global Constraints, Task 10: Navigation wiring, Task 11: Docs, Task 1: Schema + migration (settlements, activity, member toggle), Task 2: Balance math (pure functions), Task 3: Activity logging helper + query, Task 4: Settle-up queries, Task 5: Settlement validator + actions (+4 more)
 
 ### Community 222 - "Drizzle Snapshot 0006 #222"
-Cohesion: 0.06
-Nodes (31): autoincrement, name, notNull, primaryKey, type, category_id, description, member_id (+23 more)
+Cohesion: 0.08
+Nodes (25): autoincrement, name, notNull, primaryKey, type, autoincrement, name, notNull (+17 more)
 
 ### Community 223 - "Drizzle Snapshot 0006 #223"
 Cohesion: 0.29
@@ -1375,8 +1394,8 @@ Cohesion: 0.22
 Nodes (9): foreignKeys, columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo (+1 more)
 
 ### Community 265 - "Community 265"
-Cohesion: 0.29
-Nodes (7): icon, autoincrement, default, name, notNull, primaryKey, type
+Cohesion: 0.11
+Nodes (19): expense_id, member_id, share_minor, autoincrement, name, notNull, primaryKey, type (+11 more)
 
 ### Community 266 - "Community 266"
 Cohesion: 0.33
@@ -1387,8 +1406,8 @@ Cohesion: 0.25
 Nodes (8): Conventions (canonical — read first), Critical Files for Implementation, Task 1: Restyle the grouped expense list shell (sticky headers + soft rows), Task 2: Build the ExpenseRow with swipe-to-delete and a button fallback, Task 3: Convert the expense form to a chip category selector + avatar member chips + large amount, Task 4: Mobile add/edit bottom sheet that the FAB morphs into (desktop keeps the route), Task 5: Visual verification (screenshots, both breakpoints, both themes), Task 6: Playwright e2e — add an expense and assert list + dashboard update
 
 ### Community 268 - "Community 268"
-Cohesion: 0.33
-Nodes (6): household_id, autoincrement, name, notNull, primaryKey, type
+Cohesion: 0.18
+Nodes (11): safeAction(), Data Flow Pattern, Money as Integer Minor Units, Outlay — Household Expense Tracker PWA, Mosaic O Logo Concepts (rupee currency variants), safeAction Server-Action Pattern, In-Memory libSQL Integration Tests, Lazy libSQL Client During next build (+3 more)
 
 ### Community 269 - "Community 269"
 Cohesion: 0.22
@@ -1423,20 +1442,20 @@ Cohesion: 0.33
 Nodes (6): updated_at, autoincrement, name, notNull, primaryKey, type
 
 ### Community 277 - "Community 277"
-Cohesion: 0.33
-Nodes (6): description, autoincrement, name, notNull, primaryKey, type
+Cohesion: 0.15
+Nodes (12): dialect, checkConstraints, compositePrimaryKeys, foreignKeys, indexes, name, uniqueConstraints, id (+4 more)
 
 ### Community 278 - "Community 278"
-Cohesion: 0.05
-Nodes (43): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, columns (+35 more)
+Cohesion: 0.15
+Nodes (13): columns, isUnique, name, columns, isUnique, name, indexes, columns (+5 more)
 
 ### Community 279 - "Community 279"
 Cohesion: 0.33
 Nodes (6): autoincrement, name, notNull, primaryKey, type, category_id
 
 ### Community 280 - "Community 280"
-Cohesion: 0.29
-Nodes (7): checkConstraints, compositePrimaryKeys, foreignKeys, indexes, name, uniqueConstraints, rate_limits
+Cohesion: 0.22
+Nodes (9): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, foreignKeys (+1 more)
 
 ### Community 281 - "Community 281"
 Cohesion: 0.31
@@ -1447,44 +1466,44 @@ Cohesion: 0.29
 Nodes (6): actions/, db/, Library Directory Context, queries/, Tests, validators/
 
 ### Community 283 - "Community 283"
-Cohesion: 0.33
-Nodes (6): updated_at, autoincrement, name, notNull, primaryKey, type
+Cohesion: 0.25
+Nodes (8): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, expenses_member_id_household_members_id_fk
 
 ### Community 284 - "Community 284"
-Cohesion: 0.29
-Nodes (7): icon, autoincrement, default, name, notNull, primaryKey, type
+Cohesion: 0.25
+Nodes (8): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, categories_household_id_households_id_fk
 
 ### Community 285 - "Community 285"
-Cohesion: 0.29
-Nodes (7): include_in_settle_up, autoincrement, default, name, notNull, primaryKey, type
-
-### Community 286 - "Community 286"
 Cohesion: 0.25
 Nodes (8): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, expenses_household_id_households_id_fk
+
+### Community 286 - "Community 286"
+Cohesion: 0.22
+Nodes (9): foreignKeys, columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo (+1 more)
 
 ### Community 287 - "Community 287"
 Cohesion: 0.07
 Nodes (27): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, checkConstraints (+19 more)
 
 ### Community 288 - "Community 288"
-Cohesion: 0.14
-Nodes (14): checkConstraints, compositePrimaryKeys, foreignKeys, columnsFrom, columnsTo, name, onDelete, onUpdate (+6 more)
+Cohesion: 0.25
+Nodes (8): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, expenses_member_id_household_members_id_fk
 
 ### Community 289 - "Community 289"
 Cohesion: 0.33
 Nodes (6): member_id, autoincrement, name, notNull, primaryKey, type
 
 ### Community 290 - "Community 290"
-Cohesion: 0.33
-Nodes (6): description, autoincrement, name, notNull, primaryKey, type
+Cohesion: 0.25
+Nodes (8): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, expenses_member_id_household_members_id_fk
 
 ### Community 291 - "Community 291"
 Cohesion: 0.29
 Nodes (7): is_default, autoincrement, default, name, notNull, primaryKey, type
 
 ### Community 292 - "Community 292"
-Cohesion: 0.29
-Nodes (7): is_default, autoincrement, default, name, notNull, primaryKey, type
+Cohesion: 0.25
+Nodes (8): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, expenses_category_id_categories_id_fk
 
 ### Community 293 - "Community 293"
 Cohesion: 0.29
@@ -1515,20 +1534,20 @@ Cohesion: 0.29
 Nodes (7): role, autoincrement, default, name, notNull, primaryKey, type
 
 ### Community 300 - "Community 300"
-Cohesion: 0.11
-Nodes (19): columns, autoincrement, name, notNull, primaryKey, type, autoincrement, name (+11 more)
+Cohesion: 0.08
+Nodes (25): autoincrement, name, notNull, primaryKey, type, columns, autoincrement, name (+17 more)
 
 ### Community 301 - "Community 301"
 Cohesion: 0.33
 Nodes (6): id, autoincrement, name, notNull, primaryKey, type
 
 ### Community 302 - "Community 302"
-Cohesion: 0.29
-Nodes (7): checkConstraints, compositePrimaryKeys, foreignKeys, indexes, name, uniqueConstraints, households
+Cohesion: 0.15
+Nodes (13): checkConstraints, compositePrimaryKeys, name, uniqueConstraints, checkConstraints, compositePrimaryKeys, foreignKeys, indexes (+5 more)
 
 ### Community 303 - "Community 303"
-Cohesion: 0.33
-Nodes (6): autoincrement, name, notNull, primaryKey, type, category_id
+Cohesion: 0.25
+Nodes (8): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, expenses_household_id_households_id_fk
 
 ### Community 304 - "Community 304"
 Cohesion: 0.29
@@ -1555,8 +1574,8 @@ Cohesion: 0.25
 Nodes (8): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, expenses_household_id_households_id_fk
 
 ### Community 310 - "Community 310"
-Cohesion: 0.11
-Nodes (19): autoincrement, name, notNull, primaryKey, type, amount_minor, description, updated_at (+11 more)
+Cohesion: 0.29
+Nodes (7): autoincrement, name, notNull, primaryKey, type, amount_minor, columns
 
 ### Community 311 - "Community 311"
 Cohesion: 0.29
@@ -1567,8 +1586,8 @@ Cohesion: 0.33
 Nodes (6): created_at, autoincrement, name, notNull, primaryKey, type
 
 ### Community 313 - "Community 313"
-Cohesion: 0.33
-Nodes (6): to_member_id, autoincrement, name, notNull, primaryKey, type
+Cohesion: 0.25
+Nodes (8): columnsFrom, columnsTo, name, onDelete, onUpdate, tableFrom, tableTo, expenses_member_id_household_members_id_fk
 
 ### Community 314 - "Community 314"
 Cohesion: 0.25
@@ -1603,12 +1622,12 @@ Cohesion: 0.33
 Nodes (5): Repo Memory (Outlay), Style, What counts as "significant", When you FINISH significant work, When you START work
 
 ### Community 322 - "Community 322"
-Cohesion: 0.33
-Nodes (6): autoincrement, name, notNull, primaryKey, type, action
+Cohesion: 0.29
+Nodes (7): role, autoincrement, default, name, notNull, primaryKey, type
 
 ### Community 323 - "Community 323"
 Cohesion: 0.29
-Nodes (7): include_in_settle_up, autoincrement, default, name, notNull, primaryKey, type
+Nodes (7): icon, autoincrement, default, name, notNull, primaryKey, type
 
 ### Community 324 - "Community 324"
 Cohesion: 0.50
@@ -1627,8 +1646,8 @@ Cohesion: 0.50
 Nodes (3): Auth in e2e, Never assert `getByRole("alert")`, Playwright e2e rules
 
 ### Community 328 - "Community 328"
-Cohesion: 0.33
-Nodes (6): created_at, autoincrement, name, notNull, primaryKey, type
+Cohesion: 0.29
+Nodes (7): role, autoincrement, default, name, notNull, primaryKey, type
 
 ### Community 330 - "Community 330"
 Cohesion: 0.29
@@ -1639,8 +1658,8 @@ Cohesion: 0.29
 Nodes (7): role, autoincrement, default, name, notNull, primaryKey, type
 
 ### Community 332 - "Community 332"
-Cohesion: 0.33
-Nodes (6): key, autoincrement, name, notNull, primaryKey, type
+Cohesion: 0.29
+Nodes (7): checkConstraints, compositePrimaryKeys, foreignKeys, indexes, name, uniqueConstraints, households
 
 ### Community 333 - "Community 333"
 Cohesion: 0.33
@@ -1659,44 +1678,44 @@ Cohesion: 0.29
 Nodes (7): show_in_paid_by, autoincrement, default, name, notNull, primaryKey, type
 
 ### Community 337 - "Community 337"
-Cohesion: 0.29
-Nodes (7): checkConstraints, compositePrimaryKeys, foreignKeys, indexes, name, uniqueConstraints, households
+Cohesion: 0.15
+Nodes (12): dialect, checkConstraints, compositePrimaryKeys, foreignKeys, indexes, name, uniqueConstraints, id (+4 more)
 
 ### Community 338 - "Community 338"
 Cohesion: 0.33
 Nodes (6): summary, autoincrement, name, notNull, primaryKey, type
 
 ### Community 339 - "Community 339"
-Cohesion: 0.33
-Nodes (6): household_id, autoincrement, name, notNull, primaryKey, type
+Cohesion: 0.29
+Nodes (7): icon, autoincrement, default, name, notNull, primaryKey, type
 
 ### Community 340 - "Community 340"
 Cohesion: 0.33
 Nodes (6): member_id, autoincrement, name, notNull, primaryKey, type
 
 ### Community 341 - "Community 341"
-Cohesion: 0.33
-Nodes (6): created_at, autoincrement, name, notNull, primaryKey, type
+Cohesion: 0.29
+Nodes (7): is_default, autoincrement, default, name, notNull, primaryKey, type
 
 ### Community 342 - "Community 342"
-Cohesion: 0.33
-Nodes (6): household_id, autoincrement, name, notNull, primaryKey, type
+Cohesion: 0.29
+Nodes (7): autoincrement, default, name, notNull, primaryKey, type, color
 
 ### Community 343 - "Community 343"
 Cohesion: 0.33
 Nodes (6): member_id, autoincrement, name, notNull, primaryKey, type
 
 ### Community 344 - "Community 344"
-Cohesion: 0.33
-Nodes (6): name, autoincrement, name, notNull, primaryKey, type
+Cohesion: 0.29
+Nodes (7): currency, autoincrement, default, name, notNull, primaryKey, type
 
 ### Community 345 - "Community 345"
 Cohesion: 0.33
 Nodes (6): notes, autoincrement, name, notNull, primaryKey, type
 
 ### Community 346 - "Community 346"
-Cohesion: 0.33
-Nodes (6): id, autoincrement, name, notNull, primaryKey, type
+Cohesion: 0.29
+Nodes (7): include_in_settle_up, autoincrement, default, name, notNull, primaryKey, type
 
 ### Community 347 - "Community 347"
 Cohesion: 0.33
@@ -1723,8 +1742,8 @@ Cohesion: 0.33
 Nodes (6): checkConstraints, compositePrimaryKeys, foreignKeys, name, uniqueConstraints, expenses
 
 ### Community 353 - "Community 353"
-Cohesion: 0.22
-Nodes (8): dialect, id, indexes, name, prevId, tables, notifications, version
+Cohesion: 0.29
+Nodes (7): show_in_paid_by, autoincrement, default, name, notNull, primaryKey, type
 
 ### Community 354 - "Community 354"
 Cohesion: 0.33
@@ -1743,8 +1762,8 @@ Cohesion: 0.33
 Nodes (6): metadata, autoincrement, name, notNull, primaryKey, type
 
 ### Community 358 - "Community 358"
-Cohesion: 0.33
-Nodes (6): summary, autoincrement, name, notNull, primaryKey, type
+Cohesion: 0.60
+Nodes (3): buildUpiPayLink(), clip(), formatUpiAmount()
 
 ### Community 359 - "Community 359"
 Cohesion: 0.33
@@ -1752,38 +1771,114 @@ Nodes (6): notes, autoincrement, name, notNull, primaryKey, type
 
 ### Community 360 - "Community 360"
 Cohesion: 0.33
-Nodes (6): checkConstraints, compositePrimaryKeys, foreignKeys, name, uniqueConstraints, household_members
+Nodes (6): date, autoincrement, name, notNull, primaryKey, type
 
 ### Community 361 - "Community 361"
 Cohesion: 0.33
 Nodes (6): updated_at, autoincrement, name, notNull, primaryKey, type
 
 ### Community 362 - "Community 362"
-Cohesion: 0.40
-Nodes (4): ActivityActorFilter(), actors, router, searchParams
+Cohesion: 0.33
+Nodes (6): autoincrement, name, notNull, primaryKey, type, amount_minor
 
 ### Community 363 - "Community 363"
 Cohesion: 0.33
 Nodes (6): checkConstraints, compositePrimaryKeys, foreignKeys, name, uniqueConstraints, expense_splits
 
 ### Community 364 - "Community 364"
-Cohesion: 0.40
-Nodes (5): columns, isUnique, name, indexes, activity_household_created_idx
+Cohesion: 0.33
+Nodes (6): created_at, autoincrement, name, notNull, primaryKey, type
 
 ### Community 365 - "Community 365"
-Cohesion: 0.40
-Nodes (4): HouseholdContext, HouseholdContextValue, HouseholdProvider(), HouseholdSummary
+Cohesion: 0.33
+Nodes (6): household_id, autoincrement, name, notNull, primaryKey, type
 
 ### Community 366 - "Community 366"
-Cohesion: 0.50
-Nodes (3): ExpenseFormData, expenseSchema, base
+Cohesion: 0.33
+Nodes (6): member_id, autoincrement, name, notNull, primaryKey, type
+
+### Community 367 - "Community 367"
+Cohesion: 0.33
+Nodes (6): autoincrement, name, notNull, primaryKey, type, amount_minor
+
+### Community 368 - "Community 368"
+Cohesion: 0.33
+Nodes (6): checkConstraints, compositePrimaryKeys, name, uniqueConstraints, tables, expenses
+
+### Community 369 - "Community 369"
+Cohesion: 0.33
+Nodes (6): updated_at, autoincrement, name, notNull, primaryKey, type
+
+### Community 370 - "Community 370"
+Cohesion: 0.33
+Nodes (6): window_start, autoincrement, name, notNull, primaryKey, type
+
+### Community 371 - "Community 371"
+Cohesion: 0.33
+Nodes (6): description, autoincrement, name, notNull, primaryKey, type
+
+### Community 372 - "Community 372"
+Cohesion: 0.33
+Nodes (6): updated_at, autoincrement, name, notNull, primaryKey, type
+
+### Community 373 - "Community 373"
+Cohesion: 0.33
+Nodes (6): description, autoincrement, name, notNull, primaryKey, type
+
+### Community 374 - "Community 374"
+Cohesion: 0.33
+Nodes (6): updated_at, autoincrement, name, notNull, primaryKey, type
+
+### Community 375 - "Community 375"
+Cohesion: 0.33
+Nodes (6): user_id, autoincrement, name, notNull, primaryKey, type
+
+### Community 376 - "Community 376"
+Cohesion: 0.33
+Nodes (6): checkConstraints, compositePrimaryKeys, foreignKeys, name, uniqueConstraints, expenses
+
+### Community 377 - "Community 377"
+Cohesion: 0.33
+Nodes (6): read_at, autoincrement, name, notNull, primaryKey, type
+
+### Community 378 - "Community 378"
+Cohesion: 0.33
+Nodes (6): user_id, autoincrement, name, notNull, primaryKey, type
+
+### Community 379 - "Community 379"
+Cohesion: 0.33
+Nodes (6): autoincrement, name, notNull, primaryKey, type, actor_user_id
+
+### Community 380 - "Community 380"
+Cohesion: 0.33
+Nodes (6): date, autoincrement, name, notNull, primaryKey, type
+
+### Community 381 - "Community 381"
+Cohesion: 0.33
+Nodes (6): id, autoincrement, name, notNull, primaryKey, type
+
+### Community 382 - "Community 382"
+Cohesion: 0.33
+Nodes (6): notes, autoincrement, name, notNull, primaryKey, type
+
+### Community 383 - "Community 383"
+Cohesion: 0.33
+Nodes (6): payload, autoincrement, name, notNull, primaryKey, type
+
+### Community 384 - "Community 384"
+Cohesion: 0.33
+Nodes (6): type, autoincrement, name, notNull, primaryKey, type
+
+### Community 385 - "Community 385"
+Cohesion: 0.33
+Nodes (6): user_id, autoincrement, name, notNull, primaryKey, type
 
 ## Ambiguous Edges - Review These
 - `Logo Concept A2 — Mosaic O with Rupee + Dollar` → `Rupee-Dominant Currency Hierarchy (large black ₹ above smaller accent $)`  [AMBIGUOUS]
   public/logos/concepts/A2-rupee-dollar.svg · relation: conceptually_related_to
 
 ## Knowledge Gaps
-- **3180 isolated node(s):** `FORMATTABLE`, `allow`, `deny`, `PostToolUse`, `SessionEnd` (+3175 more)
+- **3499 isolated node(s):** `FORMATTABLE`, `allow`, `deny`, `PostToolUse`, `SessionEnd` (+3494 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -1794,13 +1889,13 @@ _Questions this graph is uniquely positioned to answer:_
   _Edge tagged AMBIGUOUS (relation: conceptually_related_to) - confidence is low._
 - **Why does `tables` connect `Drizzle Snapshot 0006 #45` to `Drizzle Snapshot 0006 #35`, `Drizzle Snapshot 0006 #6`, `Drizzle Snapshot 0006 #7`, `Drizzle Snapshot 0006 #10`, `Drizzle Snapshot 0006 #20`, `Community 287`?**
   _High betweenness centrality (0.005) - this node is a cross-community bridge._
-- **Why does `columns` connect `Community 310` to `Drizzle Snapshot 0000 #165`, `Community 328`, `Community 273`, `Community 305`, `Community 278`, `Community 343`, `Community 345`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
 - **Why does `expenses` connect `Drizzle Snapshot 0006 #6` to `Drizzle Snapshot 0006 #45`, `Drizzle Snapshot 0006 #222`?**
   _High betweenness centrality (0.004) - this node is a cross-community bridge._
+- **Why does `columns` connect `Community 310` to `Drizzle Snapshot 0000 #165`, `Drizzle Snapshot 0000 #135`, `Community 273`, `Community 305`, `Community 373`, `Community 374`, `Community 343`, `Community 376`, `Community 345`?**
+  _High betweenness centrality (0.003) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `getCurrentHousehold` (e.g. with `AppLayout()` and `getCurrentActor`) actually correct?**
   _`getCurrentHousehold` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `FORMATTABLE`, `allow`, `deny` to the rest of the system?**
-  _3193 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _3512 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `App Pages & Activity Feed` be split into smaller, more focused modules?**
   _Cohesion score 0.05128205128205128 - nodes in this community are weakly interconnected._

@@ -1,0 +1,1 @@
+ALTER TABLE `household_members` ADD `upi_id` text;

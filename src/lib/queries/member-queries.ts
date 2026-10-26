@@ -18,6 +18,7 @@ export async function getMembersWithStats(householdId: string) {
       role: householdMembers.role,
       avatar: householdMembers.avatar,
       email: householdMembers.email,
+      upiId: householdMembers.upiId,
       userId: householdMembers.userId,
       includeInSettleUp: householdMembers.includeInSettleUp,
       showInPaidBy: householdMembers.showInPaidBy,

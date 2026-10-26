@@ -68,7 +68,14 @@ describe("getSettleUp", () => {
     expect(byId.mb).toBe(-3000);
     expect(res.balances.find((b) => b.memberId === "mx")).toBeUndefined();
     expect(res.suggestions).toEqual([
-      { fromId: "mb", fromName: "B", toId: "ma", toName: "A", amount: 3000 },
+      {
+        fromId: "mb",
+        fromName: "B",
+        toId: "ma",
+        toName: "A",
+        amount: 3000,
+        amountMinor: 300000,
+      },
     ]);
     expect(res.settledUp).toBe(false);
   });

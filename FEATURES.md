@@ -4,7 +4,7 @@ Outlay is a shared expense tracker for your household. Everyone who lives togeth
 can log what they spend, see where the money goes, and settle up who owes whom —
 on the web or installed on your phone.
 
-_Last updated: 2026-09-28_
+_Last updated: 2026-10-21_
 
 ## Track your spending
 - Add an expense in seconds: amount, date, description, category, who paid, and an
@@ -21,6 +21,7 @@ _Last updated: 2026-09-28_
   with their own icon and color; add your own.
 - **Members** — the people in your home. Give each a name, optionally an email,
   and an admin or member role. People who don't use the app can still be tracked.
+  Add a member's UPI ID so others can pay them straight from Settle up.
 
 ## See where the money goes
 A dashboard that updates as you add expenses:
@@ -44,6 +45,11 @@ A dashboard that updates as you add expenses:
   expenses split by hand show a "Split" tag in the list.
 - Made a mistake recording a payment? Edit it from the settle-up history
   instead of deleting and re-adding it.
+- **Pay with any UPI app.** When the person you owe has a UPI ID and the
+  household uses ₹, each suggested payment gets a **Pay** button: it shows a QR
+  code to scan and an "Open UPI app" button on your phone, with the amount and
+  payee already filled in. Outlay can't see whether the payment went through,
+  so tap "Record payment" afterwards to settle it in the app.
 
 ## Stay in the loop
 - A bell in the header shows your unread count and keeps itself up to date while

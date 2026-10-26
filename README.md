@@ -49,11 +49,11 @@ and usable offline.
 | **Dashboard** | This month's total and change vs last month, expense count, daily average; 30‑day spending bar chart; category donut; per‑member bar chart; recent expenses. |
 | **Expenses** | Create / edit / delete (swipe‑to‑delete on mobile); date‑grouped list; **filters in the URL** (search, date range with presets, category, payer) so a view survives refresh and can be shared; **CSV import** with column detection, category suggestions and duplicate skipping; **export** of exactly the filtered rows to CSV, Excel or PDF. |
 | **Splits** | Any expense can be split **equally** (default, no extra data) or **by hand** — pick who is in and adjust each share; the form keeps the shares adding up and the list tags hand‑split expenses. |
-| **Settle up** | Per‑member net balances computed on read, the smallest set of payments that squares everyone (greedy), one‑tap "Settle up" to record a payment, edit or delete recorded payments, per‑member **include in settle‑up** toggle. |
+| **Settle up** | Per‑member net balances computed on read, the smallest set of payments that squares everyone (greedy), one‑tap "Settle up" to record a payment, edit or delete recorded payments, per‑member **include in settle‑up** toggle. **Pay via UPI** (INR households): each suggestion whose payee has a UPI ID opens a dialog with a scannable UPI QR code and an "Open UPI app" `upi://pay` deep link carrying payee + exact amount, then hands off to the record sheet — no payment integration, nothing is verified. |
 | **Activity** | Append‑only audit feed of every change (who, what, when), grouped by day, with "show more" and a **who‑did‑it** filter in the URL. |
 | **Notifications** | Bell with an unread badge that polls while the tab is visible; invites received / accepted / declined, payments recorded, and expenses over an admin‑set threshold; accept or decline an invite from the bell; unread items highlighted; `/notifications` history. |
 | **Categories** | Icon + color per category, default set seeded per household, per‑category counts; a category with expenses can't be deleted. |
-| **Members** | Roles (`admin` / `member`), optional email, **show in "Paid by"** and **include in settle‑up** toggles, attribution‑only people who never sign in; **invite by email** from `/members` (claimed on the invitee's next sign‑in); deletion is refused while any expense, split share or settlement references the member. |
+| **Members** | Roles (`admin` / `member`), optional email, optional **UPI ID** (stored lowercase, feeds Pay via UPI), **show in "Paid by"** and **include in settle‑up** toggles, attribution‑only people who never sign in; **invite by email** from `/members` (claimed on the invitee's next sign‑in); deletion is refused while any expense, split share or settlement references the member. |
 | **Households** | Several households per user, each with its own currency and accent theme; create / rename / delete / switch and pick the accent on `/households`; currency and the large‑expense alert threshold live in Settings. |
 | **Access** | Google sign‑in (Auth.js v5) scoped by membership, plus an owner‑only superadmin passcode at `/admin`; "Lock admin" drops the elevation without signing out of Google. Every mutation is scoped to the active household. |
 | **Guardrails** | Caps on users, households per user and expenses per household; per‑household write rate limits; a daily cron that removes abandoned, empty accounts. |
@@ -72,6 +72,7 @@ and usable offline.
 | Auth | **Auth.js v5** (Google, JWT sessions) + a Web Crypto HMAC passcode gate |
 | Validation | **Zod v4** |
 | Charts | **Recharts 3** |
+| QR codes | **qrcode.react** (SVG UPI QR in the Pay via UPI dialog) |
 | Import / export | CSV parsing in‑house; **exceljs** (Excel) and **jsPDF** (PDF) |
 | Lint / format | **Biome 2** (replaces ESLint + Prettier), enforced by a lint‑staged pre‑commit hook |
 | Tests | **Vitest** (unit + integration on in‑memory libSQL) and **Playwright** (mobile e2e) |
@@ -175,6 +176,7 @@ erDiagram
         text role "admin | member"
         bool include_in_settle_up "default true"
         bool show_in_paid_by "default true"
+        text upi_id "nullable, lowercase VPA"
         int  created_at
     }
     categories {

@@ -109,6 +109,7 @@ export async function getSettleUp(householdId: string) {
     toId: t.toMemberId,
     toName: nameById.get(t.toMemberId) ?? "",
     amount: t.amountMinor / 100,
+    amountMinor: t.amountMinor,
   }));
 
   return { balances, suggestions, settledUp: transfers.length === 0 };
