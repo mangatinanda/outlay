@@ -44,7 +44,8 @@ export function UpiPayDialog({
         payeeVpa,
         payeeName,
         amountMinor,
-        note: `Outlay · ${householdName}`,
+        // ASCII prefix: some UPI apps reject or garble non-ASCII in `tn`.
+        note: `Outlay - ${householdName}`,
       }),
     [payeeVpa, payeeName, amountMinor, householdName],
   );
@@ -61,17 +62,15 @@ export function UpiPayDialog({
         </DialogHeader>
         <div className="flex flex-col items-center gap-3">
           <div className="overflow-hidden rounded-xl">
-            {/* Deliberate non-token colors: a QR must be black-on-white to
-                scan reliably in both themes (same exemption as brand SVGs).
+            {/* No theme tokens on purpose: qrcode.react's defaults are black
+                on white, which a QR needs to scan reliably in both themes.
                 marginSize=4 paints the standard four-module quiet zone in
-                bgColor so the dark dialog never touches the code. */}
+                that white so the dark dialog never touches the code. */}
             <QRCodeSVG
               value={link}
               size={200}
               level="M"
               marginSize={4}
-              fgColor="#000000"
-              bgColor="#ffffff"
               role="img"
               aria-label={`UPI QR code to pay ${payeeName}`}
             />

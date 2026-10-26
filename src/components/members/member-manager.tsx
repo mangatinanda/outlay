@@ -171,7 +171,7 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
                         {member.name.slice(0, 2).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
-                    <div>
+                    <div className="min-w-0">
                       <div className="flex items-center gap-2">
                         <p className="font-display font-medium">
                           {member.name}
@@ -208,7 +208,7 @@ export function MemberManager({ members }: { members: MemberItem[] }) {
                         )}
                       </div>
                       {member.upiId && (
-                        <p className="mt-1 truncate text-muted-foreground text-xs tabular-nums">
+                        <p className="mt-1 truncate text-muted-foreground text-xs">
                           {member.upiId}
                         </p>
                       )}

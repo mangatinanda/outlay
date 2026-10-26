@@ -7,9 +7,12 @@ import { expect, test } from "@playwright/test";
  * three ₹100 expenses), so /settle-up has no suggestions out of the box. The
  * spec adds a second settle-up member through the Members sheet, gives Alice
  * a UPI ID, and then expects a "<Carol> → Alice ₹150" suggestion with a
- * "Pay via UPI" button whose dialog carries the upi://pay deep link. The
- * shared fixture is never edited (switch-household-isolation.spec.ts counts
- * expense rows, which this spec does not touch).
+ * "Pay via UPI" button whose dialog carries the upi://pay deep link.
+ *
+ * This writes to the shared e2e DB (a new member, Alice's UPI ID) but leaves
+ * the seed code alone; switch-household-isolation.spec.ts counts expense rows,
+ * which this spec never adds. Specs run in parallel on one DB, so the amount
+ * is read back from the link rather than asserted as a fixed ₹150.
  *
  * The passcode value matches HOUSEHOLD_PASSCODE in playwright.config.ts's
  * webServer.env ("e2e-pass"). Never assert getByRole("alert") here — it

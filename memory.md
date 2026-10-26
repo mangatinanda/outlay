@@ -75,16 +75,19 @@ Spec + plan are **HTML** (owner's standing preference from this date: docs as `.
   `createMember`/`updateMember`, selected by `getMembersWithStats`. No uniqueness (a couple may share a VPA).
 - **Link:** `src/lib/upi.ts` — `formatUpiAmount(minor)` (integer‑only, throws on ≤0/non‑integer) and
   `buildUpiPayLink({payeeVpa, payeeName, amountMinor, note})` → `upi://pay?pa&pn&am&cu=INR&tn` in that order.
-  `pa` is left **raw** (`name@bank`, as NPCI QR codes carry it — the validator bounds its charset); `pn`/`tn` go
-  through `encodeURIComponent` (not `URLSearchParams`, which emits `+`) and are clipped to 50 code points.
+  `pa` is encoded with the `@` put back (`name@bank`, as NPCI QR codes carry it — safe even if a row bypassed the
+  validator); `pn`/`tn` go through `encodeURIComponent` (not `URLSearchParams`, which emits `+`) and are clipped to
+  50 code points. The note is ASCII (`Outlay - <household>`) because some apps garble non‑ASCII in `tn`.
   `getSettleUp` suggestions now also carry `amountMinor` so the link never comes from a float.
 - **UI:** Members sheet gets a "UPI ID (optional)" input; the card shows it muted. Settle‑up rows get a
   compact outline **Pay** button (`aria-label="Pay via UPI"`) when the payee has a VPA and the household
   currency is INR (`useCurrency()`), else a muted "Add X's UPI ID" link to `/members`. `UpiPayDialog`
   (`src/components/settle-up/upi-pay-dialog.tsx`) shows a `qrcode.react` SVG QR of the same link, the amount,
   `payee · vpa`, "Record payment" (→ the existing record sheet, prefilled) and "Open UPI app" — a **plain
-  `<a>` with `buttonVariants()`**, not Base UI `Button render=`, which reports `role=button`. The QR is the one
-  deliberate non‑token colour pair (black on white) so it scans in dark mode. Nothing in the dialog writes.
+  `<a>` with `buttonVariants()`**, not Base UI `Button render=`, which reports `role=button`. The QR uses
+  qrcode.react's default black‑on‑white (no hex literals, per `ui.md`) so it scans in dark mode. The dialog stays
+  mounted on the last suggestion so its exit transition plays. Nothing in the dialog writes.
+  `graphify update` writes a dated backup folder (`graphify-out/20*/`, ~120k lines) — now gitignored.
 - **Tests:** validator + action + link unit tests; `e2e/pay-via-upi.spec.ts` adds a second member (the e2e
   fixture seeds one per household, so there are no suggestions otherwise), sets Alice's UPI ID, and asserts
   the dialog's `href` and 44 px hit areas. Browser bridges were unavailable in the session, so the hand‑check was

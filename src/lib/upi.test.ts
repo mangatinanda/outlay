@@ -28,11 +28,22 @@ describe("buildUpiPayLink", () => {
         payeeVpa: "priya@okaxis",
         payeeName: "Priya",
         amountMinor: 124000,
-        note: "Outlay · Home",
+        note: "Outlay - Home",
       }),
     ).toBe(
-      "upi://pay?pa=priya@okaxis&pn=Priya&am=1240.00&cu=INR&tn=Outlay%20%C2%B7%20Home",
+      "upi://pay?pa=priya@okaxis&pn=Priya&am=1240.00&cu=INR&tn=Outlay%20-%20Home",
     );
+  });
+
+  it("encodes anything in the VPA that would break the query, even if validation was bypassed", () => {
+    const link = buildUpiPayLink({
+      payeeVpa: "x@ybl&am=1.00",
+      payeeName: "x",
+      amountMinor: 100,
+      note: "n",
+    });
+    expect(link.split("&")).toHaveLength(5);
+    expect(link).toContain("pa=x@ybl%26am%3D1.00&");
   });
 
   it("keeps the payee VPA raw: the @ stays unencoded as in NPCI QR codes", () => {

@@ -3,7 +3,7 @@
 import { ArrowRight, Check, Pencil, QrCode, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 import {
   useCurrency,
@@ -108,6 +108,11 @@ export function SettleUpView({
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [paying, setPaying] = useState<Suggestion | null>(null);
+  // Keep the last suggestion so the dialog stays mounted (and can animate
+  // out) after `paying` is cleared.
+  const lastPaying = useRef<Suggestion | null>(null);
+  if (paying) lastPaying.current = paying;
+  const shownPaying = paying ?? lastPaying.current;
   const [loading, setLoading] = useState(false);
   const [prefill, setPrefill] = useState<Prefill>(() =>
     blankPrefill(participants),
@@ -320,16 +325,16 @@ export function SettleUpView({
         </Card>
       )}
 
-      {paying && (
+      {shownPaying && (
         <UpiPayDialog
-          open
+          open={paying !== null}
           onOpenChange={(o) => !o && setPaying(null)}
-          payeeName={paying.toName}
-          payeeVpa={upiById.get(paying.toId) ?? ""}
-          amountMinor={paying.amountMinor}
+          payeeName={shownPaying.toName}
+          payeeVpa={upiById.get(shownPaying.toId) ?? ""}
+          amountMinor={shownPaying.amountMinor}
           householdName={householdName}
           onRecord={() => {
-            const s = paying;
+            const s = shownPaying;
             setPaying(null);
             openRecord(s);
           }}
