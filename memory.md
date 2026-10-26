@@ -65,7 +65,7 @@ double‑spec; CI reads pnpm from `packageManager`).
 
 ## Work log
 
-### 2026‑10‑21 — Pay via UPI (PR #14, branch `feat/pay-via-upi`)
+### 2026‑10‑21 — Pay via UPI (PR #14 — squash‑merged + deployed 2026‑10‑26)
 
 First "Indian context" feature, picked in a brainstorm over recurring outflows and share‑to‑app SMS parsing.
 Spec + plan are **HTML** (owner's standing preference from this date: docs as `.html`, not `.md`):
@@ -92,8 +92,12 @@ Spec + plan are **HTML** (owner's standing preference from this date: docs as `.
   fixture seeds one per household, so there are no suggestions otherwise), sets Alice's UPI ID, and asserts
   the dialog's `href` and 44 px hit areas. Browser bridges were unavailable in the session, so the hand‑check was
   Playwright screenshots (phone light/dark + desktop). **Not yet done: a real‑phone scan with GPay/PhonePe/Paytm/BHIM**
-  — do it once before merging. Review deferred minors (grapheme‑safe clipping, long non‑Latin payloads, activity
-  summary naming the UPI change, per‑app amount limits) are listed in the PR.
+  — still pending after the merge; do it on prod. A second `/code-review 14 high` pass before merging fixed:
+  defensive VPA encoding (`@` restored), ASCII `tn`, no hex on the QR, `min-w-0` on the member card, dialog exit
+  animation, and dropped the graphify backup snapshot. Declined: collapsing `amount`/`amountMinor` on suggestions
+  (the spec wants the integer for the link). Deferred minors (grapheme‑safe clipping, long non‑Latin payloads,
+  activity summary naming the UPI change, per‑app amount limits) are listed in the PR. Prod migrated via
+  `scripts/migrate-if-prod.mjs` in the Vercel build (`0010_past_mauler`).
 
 ### 2026‑09‑28 — Per‑expense custom splits (#13) + the deferred polish list (#12) — merged
 
